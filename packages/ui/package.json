@@ -12,7 +12,7 @@
   ],
   "exports": {
     "./styles.css": "./dist/index.css",
-    "./button": "./src/button.tsx"
+    ".": "./src/index.ts"
   },
   "scripts": {
     "build": "npx tailwindcss -i ./src/styles.css -o ./dist/index.css",

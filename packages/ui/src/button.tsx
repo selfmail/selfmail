@@ -4,7 +4,7 @@
  * The button.
  * @returns 
  */
-export default function Button() {
+export function Button() {
     return (
         <button className="bg-blue-500">
             hello
