@@ -92,13 +92,17 @@ export default function Email() {
 
         // the recipient is not defined, send an email to the sender, that the recipient was not found
         if (!user) {
-            //TODO: add rate limiting
-            // sending back a information email, that the recipient was not found
+            /**
+             * Sends the error email to the user.
+             * The defined template will be used, or the default template, if the template is not defined.
+             * 
+             * TODO: add rate limiting
+             */
             const { data, error } = await resend.emails.send({
                 from: config.SUPPORT_MAIL,
                 to: emailSchema.data.recipient,
                 subject: "Email could not be delivered.",
-                html: '<strong>Sorry, we weren\'t able to deliver your email. The choosen recipient don\'t exists.</strong>'
+                html: c.get("error_html") || '<strong>Sorry, we weren\'t able to deliver your email. The choosen recipient don\'t exists.</strong>'
             });
             if (config.LOG_ERRORS_INTO_CONSOLE && !error) {
                 console.log(chalk.redBright(`[i] Email could not be delivered. The choosen recipient don't exists.`))

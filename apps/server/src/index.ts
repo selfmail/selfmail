@@ -12,11 +12,18 @@ type Variables = {
    * The html string for the error page.
    * This will be send to the sender if an error occures as an email.
    */
-  error_html: string
+  error_html: string,
+  /**
+   * The htmls string when the recipient is not found.
+   */
+  email_recipient_not_found: string,
+  /**
+   * The html string when the rate limit is exceeded.
+   */
+  rate_limited: string
 }
 
 export const app = new Hono<{ Variables: Variables }>()
-
 
 
 app.use(async (c, next) => {
@@ -24,10 +31,12 @@ app.use(async (c, next) => {
    * Set the error_html variable to the html string of the error page.
    * This will be send to the sender if an error occures as an email.
    */
-  c.set("error_html", await fs.promises.readFile("../templates/error", "utf-8"))
-  console.log(c.get("error_html"))
+  c.set("error_html", await fs.promises.readFile("./templates/error.html", "utf-8"))
+  c.set("email_recipient_not_found", await fs.promises.readFile("./templates/email-recipient-not-found.html", "utf-8"))
+  c.set("rate_limited", await fs.promises.readFile("./templates/rate-limited.html", "utf-8"))
   await next()
 })
+
 
 app.get("/", (c) => {
   return c.html("Hello World")
