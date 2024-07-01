@@ -1,6 +1,7 @@
 import { app } from "..";
-import {z} from "zod"
+import { z } from "zod"
 import { db } from "database"
+import { resend } from "../../resend";
 /**
  * Handle the Email related routes.
  * 
@@ -85,6 +86,27 @@ export default function Email() {
                 email: emailSchema.data.recipient
             }
         })
+
+        if (!user) {
+            // sending back a information email, that the recipient was not found
+            const { data, error } = await resend.emails.send({
+                from: 'onboarding@resend.dev',
+                to: emailSchema.data.recipient,
+                subject: "Email could not be delivered.",
+                html: '<strong>Sorry, we weren\'t able to deliver your email. The choosen recipient don\'t exists.</strong>'
+            });
+
+
+            // return the 404 status code back
+            return c.json({
+                error: "Recipient was not found"
+            }, {
+                status: 404,
+                statusText: "User not found"
+            })
+        }
+
+
 
 
         /**
