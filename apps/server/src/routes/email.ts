@@ -3,6 +3,7 @@ import { z } from "zod"
 import { db } from "database"
 import { resend } from "../../resend";
 import { config } from "../../config";
+import chalk from "chalk"
 /**
  * Handle the Email related routes.
  * 
@@ -96,6 +97,13 @@ export default function Email() {
                 subject: "Email could not be delivered.",
                 html: '<strong>Sorry, we weren\'t able to deliver your email. The choosen recipient don\'t exists.</strong>'
             });
+            if (config.LOG_ERRORS_INTO_CONSOLE && !error) {
+                console.log(chalk.redBright(`[i] Email could not be delivered. The choosen recipient don't exists.`))
+            }
+            if (error && config.LOG_ERRORS_INTO_CONSOLE) {
+                console.error(chalk.red(`[i] Email could not be delivered. The error:\n${error}`))
+            }
+            //TODO: implement the error log into the db
 
 
             // return the 404 status code back

@@ -1,6 +1,9 @@
 export const config: {
     RESEND: string,
-    SUPPORT_MAIL: `${string}@${string}.${string}`
+    SUPPORT_MAIL: `${string}@${string}.${string}`,
+    LOG_ERRORS_INTO_DB: boolean,
+    LOG_ERRORS_INTO_CONSOLE: boolean
+
 } = {
     /**
      * You resend api key. You need a custom domain with permissions for this,
@@ -24,6 +27,13 @@ export const config: {
      * TODO: add docs information for the support mail
      * @see
      */
-    SUPPORT_MAIL: "support@example.com"
-    
+    SUPPORT_MAIL: "support@example.com",
+    /**
+     * If you want to log the errors into the db, set this to true.
+     */
+    LOG_ERRORS_INTO_DB: false,
+    /**
+     * If you want to log the errors into the console of your server, set this to true.
+     */
+    LOG_ERRORS_INTO_CONSOLE: false,
 }

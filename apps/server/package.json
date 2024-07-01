@@ -7,7 +7,9 @@
     "@hono/node-server": "^1.11.4",
     "hono": "^4.4.10",
     "zod": "^3.23.3",
-    "database": "workspace:*"
+    "database": "workspace:*",
+    "resend": "^3.4.0",
+    "chalk": "^5.3.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",

@@ -1,6 +1,6 @@
 import fs from "node:fs"
 /**
- * The handler: import all of the function from the "./routes" folder
+ * The handler: import all of the functions from the "./routes" folder dynamiccaly.
  */
 export default async function Handler() {
     // get an array of the filenames in the "./src/routes" directory
