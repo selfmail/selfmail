@@ -105,10 +105,10 @@ export default function Email() {
                 html: c.get("error_html") || '<strong>Sorry, we weren\'t able to deliver your email. The choosen recipient don\'t exists.</strong>'
             });
             if (config.LOG_ERRORS_INTO_CONSOLE && !error) {
-                console.log(chalk.redBright(`[i] Email could not be delivered. The choosen recipient don't exists.`))
+                console.log(`[i] Email could not be delivered. The choosen recipient don't exists.`)
             }
             if (error && config.LOG_ERRORS_INTO_CONSOLE) {
-                console.error(chalk.red(`[i] Email could not be delivered. The error:\n${error}`))
+                console.error(`[i] Email could not be delivered. The error:\n${error}`)
             }
             //TODO: implement the error log into the db
 
@@ -134,13 +134,13 @@ export default function Email() {
                 sender: emailSchema.data.sender,
                 subject: emailSchema.data.subject,
                 recipient: emailSchema.data.recipient,
-                userId: user.id
+                userId: "clq35555555555555555555555555555555"
             }
         })
 
         // the email could not be saved in the db, an error is occured
         if (!email) {
-            console.error(chalk.red("[i] Email could not be saved in the database. Email was send by: " + emailSchema.data.sender + " and the recipient is: " + emailSchema.data.recipient))
+            console.error("[i] Email could not be saved in the database. Email was send by: " + emailSchema.data.sender + " and the recipient is: " + emailSchema.data.recipient)
             return c.json({
                 error: "Database error: cannot save the email"
             }, {

@@ -25,7 +25,12 @@ type Variables = {
 
 export const app = new Hono<{ Variables: Variables }>()
 
-
+/**
+ * The hono middleware
+ * The html string variables are here defined with the c.set("variable_name", "variable_content") function. They can be used in the routes with c.get("variable_name")
+ * 
+ * @see https://hono.dev/docs/api/context#set-get
+ */
 app.use(async (c, next) => {
   /**
    * Set the error_html variable to the html string of the error page.
@@ -39,7 +44,7 @@ app.use(async (c, next) => {
 
 
 app.get("/", (c) => {
-  return c.html("Hello World")
+  return c.html("hello ddddssssss")
 })
 
 Handler()
