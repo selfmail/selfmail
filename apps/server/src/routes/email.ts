@@ -2,6 +2,7 @@ import { app } from "..";
 import { z } from "zod"
 import { db } from "database"
 import { resend } from "../../resend";
+import { config } from "../../config";
 /**
  * Handle the Email related routes.
  * 
@@ -14,7 +15,7 @@ import { resend } from "../../resend";
 export default function Email() {
 
     /**
-     * Receive an email with this post endpoint.
+     * Receive an email with this post endpoint. This endpoint will be requested, when in the cloudflare worker came an email.
      * 
      * @param token - the bearer auth token
      * 
@@ -90,7 +91,7 @@ export default function Email() {
         if (!user) {
             // sending back a information email, that the recipient was not found
             const { data, error } = await resend.emails.send({
-                from: 'onboarding@resend.dev',
+                from: config.SUPPORT_MAIL,
                 to: emailSchema.data.recipient,
                 subject: "Email could not be delivered.",
                 html: '<strong>Sorry, we weren\'t able to deliver your email. The choosen recipient don\'t exists.</strong>'
