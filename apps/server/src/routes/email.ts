@@ -3,8 +3,8 @@ import { z } from "zod"
 import { db } from "database"
 import { resend } from "../../resend";
 import { config } from "../../config";
-import chalk from "chalk"
-
+import { HfInference } from "@huggingface/inference";
+import { env } from "hono/adapter";
 /**
  * Handle the Email related routes.
  * 

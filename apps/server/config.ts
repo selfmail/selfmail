@@ -1,3 +1,5 @@
+import { env } from "hono/adapter"
+
 export const config: {
     RESEND: string,
     SUPPORT_MAIL: `${string}@${string}.${string}`,
@@ -10,7 +12,7 @@ export const config: {
      * You resend api key. You need a custom domain with permissions for this,
      * then you can go to https://resend.com and get your api key.
      */
-    RESEND: "",
+    RESEND: process.env.RESEND || "",
     /**
      * The support email address, which the user can contact, if the recipient was not found, or something unexpected happened.
      * This mail must be defined.
@@ -28,7 +30,7 @@ export const config: {
      * TODO: add docs information for the support mail
      * @see
      */
-    SUPPORT_MAIL: "support@example.com",
+    SUPPORT_MAIL: process.env.SUPPORT_MAIL as `${string}@${string}.${string}` | undefined || "" as `${string}@${string}.${string}`,
     /**
      * If you want to log the errors into the db, set this to true.
      */

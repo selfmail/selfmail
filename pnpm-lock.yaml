@@ -44,6 +44,9 @@ importers:
       '@hono/node-server':
         specifier: ^1.11.4
         version: 1.11.4
+      '@huggingface/inference':
+        specifier: ^2.7.0
+        version: 2.7.0
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
@@ -1252,6 +1255,17 @@ packages:
   /@hono/node-server@1.11.4:
     resolution: {integrity: sha512-8TOiiiAqcFC6f62P7M9p6adQREAlWdVi1awehAwgWW+3R65/rKzHnLARO/Hu/466z01VNViBoogqatqXJMyItA==}
     engines: {node: '>=18.14.1'}
+    dev: false
+
+  /@huggingface/inference@2.7.0:
+    resolution: {integrity: sha512-u7Fn637Q3f7nUB1tajM4CgzhvoFQkOQr5W5Fm+2wT9ETgGoLBh25BLlYPTJRjAd2WY01s71v0lqAwNvHHCc3mg==}
+    engines: {node: '>=18'}
+    dependencies:
+      '@huggingface/tasks': 0.10.21
+    dev: false
+
+  /@huggingface/tasks@0.10.21:
+    resolution: {integrity: sha512-IryAkW/F9XxXRQNUjkmva2fOqEQ0cjiF9P3BPBijuzIdGykyCd8TO7Ju0cxqYLqjp1Cf4NQSpiF7HUZQ4/gKfA==}
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:

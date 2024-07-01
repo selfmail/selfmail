@@ -1,7 +1,7 @@
 {
   "name": "server",
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts  --env-file=.env "
   },
   "dependencies": {
     "@hono/node-server": "^1.11.4",
