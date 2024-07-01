@@ -4,6 +4,7 @@ import { db } from "database"
 import { resend } from "../../resend";
 import { config } from "../../config";
 import chalk from "chalk"
+
 /**
  * Handle the Email related routes.
  * 

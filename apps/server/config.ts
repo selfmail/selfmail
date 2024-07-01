@@ -9,7 +9,7 @@ export const config: {
      * You resend api key. You need a custom domain with permissions for this,
      * then you can go to https://resend.com and get your api key.
      */
-    RESEND: process.env.RESEND || "",
+    RESEND: "re_RVrHmFQn_9yYcL6dvnjxLCH5HRU8PHxqJ",
     /**
      * The support email address, which the user can contact, if the recipient was not found, or something unexpected happened.
      * This mail must be defined.
