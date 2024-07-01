@@ -16,6 +16,13 @@ datasource db {
 model User {
   id       String    @id
   sessions Session[]
+  email    String @unique
+  name     String @unique // works like a handle (e.g: @john, @jane, @john.doe, etc)
+  bio      String?
+  image    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  emailSend EmailSend[]
 }
 
 model Session {
@@ -24,4 +31,23 @@ model Session {
   expiresAt DateTime
 
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+// The emails, which the user send
+model EmailSend {
+  id        String   @id
+  userId    String
+  email    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model Label {
+  id        String   @id
+  name      String
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

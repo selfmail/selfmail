@@ -1,6 +1,6 @@
 import { app } from "..";
 import {z} from "zod"
-import {} from "database"
+import { db } from "database"
 /**
  * Handle the Email related routes.
  * 
@@ -78,8 +78,13 @@ export default function Email() {
         }
 
         /**
-         * Checkinng the recipient in the db (if the recipient exists)
+         * Checking if the recipient exists in the database (if the recipient exists)
          */
+        const user = await db.user.findUnique({
+            where: {
+                email: emailSchema.data.recipient
+            }
+        })
 
 
         /**
