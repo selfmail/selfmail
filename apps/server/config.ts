@@ -2,7 +2,8 @@ export const config: {
     RESEND: string,
     SUPPORT_MAIL: `${string}@${string}.${string}`,
     LOG_ERRORS_INTO_DB: boolean,
-    LOG_ERRORS_INTO_CONSOLE: boolean
+    LOG_ERRORS_INTO_CONSOLE: boolean,
+    HUGGING_FACE_API_KEY: string | undefined
 
 } = {
     /**
@@ -37,8 +38,9 @@ export const config: {
      */
     LOG_ERRORS_INTO_CONSOLE: true,
     /**
-     * If you want to use ai to process emails faster, mark spam and more, you can set here your openai api key.
-     * This means, we cannot control what happens with your data. If you have any questions about how openai is
-     * processing your data, please contact them.
+     * If you want to use ai to process emails faster, mark spam and more, you can set here your hugging face api key.
+     * This means, we cannot control what happens with your data. If you have any questions about how hugging face is
+     * processing your data, please contact them. You can also set this field to `undefined`, if you don't want to use ai.
      */
+    HUGGING_FACE_API_KEY: undefined
 }
