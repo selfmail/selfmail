@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 
+import "ui/styles.css";
 import { GeistSans } from "geist/font/sans";
 
 export const metadata = {
