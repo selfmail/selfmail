@@ -44,7 +44,7 @@ app.use(async (c, next) => {
 
 
 app.get("/", (c) => {
-  return c.html("hello ddddssssss")
+  return c.html("hello world")
 })
 
 Handler()

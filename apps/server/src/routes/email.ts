@@ -39,22 +39,22 @@ export default function Email() {
          * 
          * [see on google](https://www.google.com/search?q=what+is+an+email+subject&oq=what+is+an+email+subject&sourceid=chrome&ie=UTF-8)
          */
-        const subject: string = btoa(body.subject as string)
+        const subject: string = body.subject as string
 
         /**
          * The Email content.
          */
-        const content: string = btoa(body.content as string)
+        const content: string = body.content as string
 
         /**
          * The sender of the email.
          */
-        const sender: string = btoa(body.sender as string)
+        const sender: string = body.sender as string
 
         /**
          * The recipient of the email. Usefull when you use multiple adresses or domains.
          */
-        const recipient: string = btoa(body.recipient as string)
+        const recipient: string = body.recipient as string
 
         /**
          * Parsing the provided fields with zod, to make sure, we can working with the variables.
@@ -73,6 +73,7 @@ export default function Email() {
 
         // The provided values are not matching the required types, an error will be send back.
         if (!emailSchema.success) {
+            console.log(emailSchema.error)
             return c.json({
                 error: "Typeerror: cannot parse the required fields"
             }, {
@@ -108,7 +109,7 @@ export default function Email() {
                 console.log(`[i] Email could not be delivered. The choosen recipient don't exists.`)
             }
             if (error && config.LOG_ERRORS_INTO_CONSOLE) {
-                console.error(`[i] Email could not be delivered. The error:\n${error}`)
+                console.error(`[i] Email could not be delivered. The error:\n${error.message}`)
             }
             //TODO: implement the error log into the db
 
@@ -140,7 +141,15 @@ export default function Email() {
 
         // the email could not be saved in the db, an error is occured
         if (!email) {
-            console.error("[i] Email could not be saved in the database. Email was send by: " + emailSchema.data.sender + " and the recipient is: " + emailSchema.data.recipient)
+            const { data, error } = await resend.emails.send({
+                from: config.SUPPORT_MAIL,
+                to: emailSchema.data.recipient,
+                subject: "Email could not be delivered.",
+                html: c.get("error_html") || '<strong>Sorry, we we have an error by saving your email. Please contact us.</strong>'
+            });
+            if (config.LOG_ERRORS_INTO_CONSOLE) {
+                console.error("[i] Email could not be saved in the database. Email was send by: " + emailSchema.data.sender + " and the recipient is: " + emailSchema.data.recipient)
+            }
             return c.json({
                 error: "Database error: cannot save the email"
             }, {

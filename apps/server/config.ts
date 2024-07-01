@@ -9,7 +9,7 @@ export const config: {
      * You resend api key. You need a custom domain with permissions for this,
      * then you can go to https://resend.com and get your api key.
      */
-    RESEND: "re_RVrHmFQn_9yYcL6dvnjxLCH5HRU8PHxqJ",
+    RESEND: "",
     /**
      * The support email address, which the user can contact, if the recipient was not found, or something unexpected happened.
      * This mail must be defined.
@@ -35,7 +35,7 @@ export const config: {
     /**
      * If you want to log the errors into the console of your server, set this to true.
      */
-    LOG_ERRORS_INTO_CONSOLE: false,
+    LOG_ERRORS_INTO_CONSOLE: true,
     /**
      * If you want to use ai to process emails faster, mark spam and more, you can set here your openai api key.
      * This means, we cannot control what happens with your data. If you have any questions about how openai is
