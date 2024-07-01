@@ -1,6 +1,6 @@
 import { app } from "..";
 import {z} from "zod"
-
+import {} from "database"
 /**
  * Handle the Email related routes.
  * 
@@ -35,22 +35,22 @@ export default function Email() {
          * 
          * [see on google](https://www.google.com/search?q=what+is+an+email+subject&oq=what+is+an+email+subject&sourceid=chrome&ie=UTF-8)
          */
-        const subject: string = body.subject as string
+        const subject: string = btoa(body.subject as string)
 
         /**
          * The Email content.
          */
-        const content: string = body.content as string
+        const content: string = btoa(body.content as string)
 
         /**
          * The sender of the email.
          */
-        const sender: string = body.sender as string
+        const sender: string = btoa(body.sender as string)
 
         /**
          * The recipient of the email. Usefull when you use multiple adresses or domains.
          */
-        const recipient: string = body.recipient as string
+        const recipient: string = btoa(body.recipient as string)
 
         /**
          * Parsing the provided fields with zod, to make sure, we can working with the variables.
@@ -77,7 +77,14 @@ export default function Email() {
             })
         }
 
-        /*All is going correctly, send the 200 status code back */
+        /**
+         * Checkinng the recipient in the db (if the recipient exists)
+         */
+
+
+        /**
+         * All is going correctly, send the 200 status code back 
+         */
         return c.json({
             error: undefined
         }, {
