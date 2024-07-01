@@ -36,4 +36,9 @@ export const config: {
      * If you want to log the errors into the console of your server, set this to true.
      */
     LOG_ERRORS_INTO_CONSOLE: false,
+    /**
+     * If you want to use ai to process emails faster, mark spam and more, you can set here your openai api key.
+     * This means, we cannot control what happens with your data. If you have any questions about how openai is
+     * processing your data, please contact them.
+     */
 }

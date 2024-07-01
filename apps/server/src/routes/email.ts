@@ -89,7 +89,9 @@ export default function Email() {
             }
         })
 
+        // the recipient is not defined, send an email to the sender, that the recipient was not found
         if (!user) {
+            //TODO: add rate limiting
             // sending back a information email, that the recipient was not found
             const { data, error } = await resend.emails.send({
                 from: config.SUPPORT_MAIL,
@@ -112,6 +114,33 @@ export default function Email() {
             }, {
                 status: 404,
                 statusText: "User not found"
+            })
+        }
+
+        /**
+         * Uploading the email to the database. The email will be proceed with ai.
+         * 
+         * TODO: add rate limiting
+         * TODO: add ai processing
+         */
+        const email = await db.email.create({
+            data: {
+                content: emailSchema.data.content,
+                sender: emailSchema.data.sender,
+                subject: emailSchema.data.subject,
+                recipient: emailSchema.data.recipient,
+                userId: user.id
+            }
+        })
+
+        // the email could not be saved in the db, an error is occured
+        if (!email) {
+            console.error(chalk.red("[i] Email could not be saved in the database. Email was send by: " + emailSchema.data.sender + " and the recipient is: " + emailSchema.data.recipient))
+            return c.json({
+                error: "Database error: cannot save the email"
+            }, {
+                status: 500,
+                statusText: "Database error"
             })
         }
 

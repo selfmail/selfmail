@@ -14,15 +14,16 @@ datasource db {
 }
 
 model User {
-  id       String    @id
-  sessions Session[]
-  email    String @unique
-  name     String @unique // works like a handle (e.g: @john, @jane, @john.doe, etc)
-  bio      String?
-  image    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String      @id
+  sessions  Session[]
+  email     String      @unique // the email which the user has
+  name      String      @unique // works like a handle (e.g: @john, @jane, @john.doe, etc)
+  bio       String?
+  image     String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   emailSend EmailSend[]
+  emails    Email[] // the emails which the user received
 }
 
 model Session {
@@ -30,24 +31,35 @@ model Session {
   userId    String
   expiresAt DateTime
 
-  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
 // The emails, which the user send
 model EmailSend {
-  id        String   @id
+  id        String   @id @unique @default(cuid())
   userId    String
-  email    String
+  email     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
 model Label {
-  id        String   @id
-  name      String
+  id          String   @id @unique @default(cuid())
+  name        String
   description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Email {
+  id        String   @id @unique @default(cuid())
+  content   String
+  sender    String
+  subject   String
+  recipient String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId    String
 }
