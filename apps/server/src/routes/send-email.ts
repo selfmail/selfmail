@@ -2,6 +2,7 @@ import { z } from "zod";
 import { app } from "..";
 import { db } from "database";
 import { config } from "../../config";
+import { resend } from "../../resend";
 
 export default function SendEmail() {
     app.post("/email/send", async (c) => {
@@ -73,6 +74,30 @@ export default function SendEmail() {
                 statusText: "There was an error in the db: we can't find the sender in the db."
             })
         }
+
+        const {data, error} = await resend.emails.send({
+            from: emailSchema.data.sender,
+            to: emailSchema.data.recipient,
+            subject: subject,
+            html: content
+        });
+
+        if (error) {
+            if (config.LOG_ERRORS_INTO_CONSOLE) console.error("Could not send email to the recipient: \n\n" + error)
+            return c.json({
+                error: "Could not deliver email to the recipient: \n\n" + error
+            }, {
+                status: 500,
+                statusText: "Internal server error"
+            })
+        }
+
+        return c.json({
+            message: "Send the email successfully"
+        }, {
+            status: 200,
+            statusText: "OK"
+        })
 
         
     })
