@@ -25,7 +25,6 @@ type Variables = {
 
 export const app = new Hono<{ Variables: Variables }>()
 
-console.log(process.env.RESEND)
 
 /**
  * The hono middleware

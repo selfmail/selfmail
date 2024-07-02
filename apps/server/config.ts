@@ -1,4 +1,5 @@
 import { env } from "hono/adapter"
+
 /**
  * This is the config for the selfmail backend. 
  * Please read the introductions above the keys. 
