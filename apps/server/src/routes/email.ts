@@ -73,7 +73,7 @@ export default function Email() {
 
         // The provided values are not matching the required types, an error will be send back.
         if (!emailSchema.success) {
-            console.log(emailSchema.error)
+            console.error(emailSchema.error)
             return c.json({
                 error: "Typeerror: cannot parse the required fields"
             }, {
@@ -147,9 +147,15 @@ export default function Email() {
                 subject: "Email could not be delivered.",
                 html: c.get("error_html") || '<strong>Sorry, we we have an error by saving your email. Please contact us.</strong>'
             });
-            if (config.LOG_ERRORS_INTO_CONSOLE) {
+            // only warn in the console
+            if (config.LOG_ERRORS_INTO_CONSOLE && !error) {
                 console.error("[i] Email could not be saved in the database. Email was send by: " + emailSchema.data.sender + " and the recipient is: " + emailSchema.data.recipient)
             }
+            // warn in the console, that also the delivering of the error email went wrong
+            if (error && config.LOG_ERRORS_INTO_CONSOLE) {
+                console.error(`[i] Email could not be delivered and an error occures when saving the data into the database. The error:\n\n${error.message}`)
+            }
+            // return the status code
             return c.json({
                 error: "Database error: cannot save the email"
             }, {
