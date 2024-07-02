@@ -12,7 +12,7 @@ export const config: {
     LOG_ERRORS_INTO_DB: boolean,
     LOG_ERRORS_INTO_CONSOLE: boolean,
     HUGGING_FACE_API_KEY: string | undefined
-
+    MAX_USER_SPACE: number | undefined
 } = {
     /**
      * You resend api key. You need a custom domain with permissions for this,
@@ -60,5 +60,13 @@ export const config: {
      * TODO: add web documentation
      * @see
      */
-    HUGGING_FACE_API_KEY: undefined
+    HUGGING_FACE_API_KEY: undefined,
+    /**
+     * You can have multiple users in your dashboard.
+     * You can give them access for more features and so on.
+     * And the normal user becomes the role "User", this means he has no special rights.
+     * You can define now, how much space they can use. If you don't want to set a limit, you can set 
+     * this field to undefined.
+     */
+    MAX_USER_SPACE: process.env.MAX_USER_SPACE as number | undefined || undefined
 }

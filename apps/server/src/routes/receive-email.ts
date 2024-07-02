@@ -5,15 +5,9 @@ import { resend } from "../../resend";
 import { config } from "../../config"
 
 /**
- * Handle the Email related routes.
- * 
- * On this file:
- * - receive an email
- * - send an email
- * - delete an email
- * - archive an email
+ * Handles the route to receive an email.
  */
-export default function Email() {
+export default function ReceiveEmail() {
 
     /**
      * Receive an email with this post endpoint. This endpoint will be requested, when in the cloudflare worker came an email.
@@ -130,13 +124,15 @@ export default function Email() {
          * TODO: add rate limiting
          * TODO: add ai processing
          */
+
+
         const email = await db.email.create({
             data: {
                 content: emailSchema.data.content,
                 sender: emailSchema.data.sender,
                 subject: emailSchema.data.subject,
                 recipient: emailSchema.data.recipient,
-                userId: "clq35555555555555555555555555555555"
+                userId: "clq35555555555555555555555555555555",
             }
         })
 
