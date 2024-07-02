@@ -40,6 +40,7 @@ app.use(async (c, next) => {
   c.set("error_html", await fs.promises.readFile("./templates/error.html", "utf-8"))
   c.set("email_recipient_not_found", await fs.promises.readFile("./templates/email-recipient-not-found.html", "utf-8"))
   c.set("rate_limited", await fs.promises.readFile("./templates/rate-limited.html", "utf-8"))
+  // Go to the next check or open the requested route
   await next()
 })
 
@@ -51,6 +52,7 @@ app.get("/", (c) => {
 Handler()
 CheckConfig()
 
+// run the server
 const port = 5000
 console.log(`[i] Server is running on port ${port}`)
 

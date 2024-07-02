@@ -1,5 +1,6 @@
 import { env } from "hono/adapter"
-
+import {config as dotenv} from "dotenv"
+dotenv()
 /**
  * This is the config for the selfmail backend. 
  * Please read the introductions above the keys. 
@@ -15,6 +16,8 @@ export const config: {
     /**
      * You resend api key. You need a custom domain with permissions for this,
      * then you can go to https://resend.com and get your api key.
+     * 
+     * Required!
      */
     RESEND: process.env.RESEND || "",
     /**
@@ -30,6 +33,8 @@ export const config: {
      * someone trys to register this email address. 
      * 
      * As an admin, you can also send custom emails from this email.
+     * 
+     * Required!
      * 
      * TODO: add docs information for the support mail
      * @see
