@@ -65,6 +65,7 @@ model Email {
   userId    String
 }
 
+// TODO: add references to the emails which are made by this contact, and the user received
 model Contact {
   id          String   @id @unique @default(cuid())
   name        String

@@ -2,9 +2,8 @@ import { app } from "..";
 import { z } from "zod"
 import { db } from "database"
 import { resend } from "../../resend";
-import { config } from "../../config";
-import { HfInference } from "@huggingface/inference";
-import { env } from "hono/adapter";
+import { config } from "../../config"
+
 /**
  * Handle the Email related routes.
  * 
@@ -124,7 +123,9 @@ export default function Email() {
         }
 
         /**
-         * Uploading the email to the database. The email will be proceed with ai.
+         * Uploading the email to the database. 
+         * The email can now rated by the ai.
+         * E.g: add labels or mark as spam, newsletter or ads.
          * 
          * TODO: add rate limiting
          * TODO: add ai processing
