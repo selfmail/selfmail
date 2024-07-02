@@ -1,5 +1,8 @@
 import { env } from "hono/adapter"
-
+/**
+ * This is the config for the selfmail backend. 
+ * Please read the introductions above the keys. 
+ */
 export const config: {
     RESEND: string,
     SUPPORT_MAIL: `${string}@${string}.${string}`,
@@ -30,19 +33,25 @@ export const config: {
      * TODO: add docs information for the support mail
      * @see
      */
-    SUPPORT_MAIL: process.env.SUPPORT_MAIL as `${string}@${string}.${string}` | undefined || "" as `${string}@${string}.${string}`,
+    //                                                                                        ↓ you can insert here your key, when you don't want to use env variables
+    SUPPORT_MAIL: process.env.SUPPORT_MAIL as `${string}@${string}.${string}` | undefined || " " as `${string}@${string}.${string}`,
     /**
      * If you want to log the errors into the db, set this to true.
+     * You can later access the logs in your dashboard as the admin.
      */
     LOG_ERRORS_INTO_DB: false,
     /**
      * If you want to log the errors into the console of your server, set this to true.
+     * You need access to the logs of your server.
      */
     LOG_ERRORS_INTO_CONSOLE: true,
     /**
      * If you want to use ai to process emails faster, mark spam and more, you can set here your hugging face api key.
      * This means, we cannot control what happens with your data. If you have any questions about how hugging face is
      * processing your data, please contact them. You can also set this field to `undefined`, if you don't want to use ai.
+     * 
+     * TODO: add web documentation
+     * @see
      */
     HUGGING_FACE_API_KEY: undefined
 }
