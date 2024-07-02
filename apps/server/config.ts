@@ -1,6 +1,7 @@
-import { env } from "hono/adapter"
 import {config as dotenv} from "dotenv"
+// run the config() function from dotenv
 dotenv()
+
 /**
  * This is the config for the selfmail backend. 
  * Please read the introductions above the keys. 

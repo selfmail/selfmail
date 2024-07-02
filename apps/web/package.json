@@ -5,18 +5,12 @@
   "type": "module",
   "scripts": {
     "build": "next build",
-    "db:generate": "prisma migrate dev",
-    "db:migrate": "prisma migrate deploy",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio",
     "dev": "next dev",
-    "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start"
   },
   "dependencies": {
     "@lucia-auth/adapter-prisma": "^4.0.1",
-    "@prisma/client": "^5.14.0",
     "@t3-oss/env-nextjs": "^0.10.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -47,7 +41,6 @@
     "postcss": "^8.4.34",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.14",
-    "prisma": "^5.14.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.2"
