@@ -4,6 +4,11 @@ import { db } from "database";
 import { config } from "../../config";
 import { resend } from "../../resend";
 
+/**
+ * Send a new email with the API.
+ * This is the default export, which
+ * will later be used in the index.ts at `src/`.
+ */
 export default function SendEmail() {
     app.post("/email/send", async (c) => {
         /**
@@ -75,7 +80,7 @@ export default function SendEmail() {
             })
         }
 
-        const {data, error} = await resend.emails.send({
+        const { error} = await resend.emails.send({
             from: emailSchema.data.sender,
             to: emailSchema.data.recipient,
             subject: subject,
@@ -98,7 +103,5 @@ export default function SendEmail() {
             status: 200,
             statusText: "OK"
         })
-
-        
     })
 }
