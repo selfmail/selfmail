@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { YStack, H2, Separator, Theme } from 'tamagui';
 
 import { EditScreenInfo } from './EditScreenInfo';
 
@@ -10,16 +10,13 @@ type ScreenContentProps = {
 
 export const ScreenContent = ({ title, path, children }: ScreenContentProps) => {
   return (
-    <View className={styles.container}>
-      <Text className={styles.title}>{title}</Text>
-      <View className={styles.separator} />
-      <EditScreenInfo path={path} />
-      {children}
-    </View>
+    <Theme name="light">
+      <YStack flex={1} alignItems="center" justifyContent="center">
+        <H2>{title}</H2>
+        <Separator />
+        <EditScreenInfo path={path} />
+        {children}
+      </YStack>
+    </Theme>
   );
-};
-const styles = {
-  container: `items-center flex-1 justify-center`,
-  separator: `h-[1px] my-7 w-4/5 bg-gray-200`,
-  title: `text-xl font-bold`,
 };

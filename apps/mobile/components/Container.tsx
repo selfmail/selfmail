@@ -1,9 +1,9 @@
-import { SafeAreaView } from 'react-native';
+import { YStack } from 'tamagui';
 
 export const Container = ({ children }: { children: React.ReactNode }) => {
-  return <SafeAreaView className={styles.container}>{children}</SafeAreaView>;
-};
-
-const styles = {
-  container: 'flex flex-1 p-6',
+  return (
+    <YStack flex={1} padding="$6">
+      {children}
+    </YStack>
+  );
 };

@@ -6,11 +6,11 @@
       "name": "expo-router",
       "type": "navigation",
       "options": {
-        "type": "tabs"
+        "type": "stack"
       }
     },
     {
-      "name": "nativewind",
+      "name": "tamagui",
       "type": "styling"
     }
   ],

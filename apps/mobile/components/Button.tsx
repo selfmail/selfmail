@@ -1,24 +1,16 @@
-import { forwardRef } from 'react';
-import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { ComponentProps, forwardRef } from 'react';
+import { TamaguiElement } from 'tamagui';
+
+import { Button as TButton } from '../tamagui.config';
 
 type ButtonProps = {
   title: string;
-} & TouchableOpacityProps;
+} & ComponentProps<typeof TButton>;
 
-export const Button = forwardRef<TouchableOpacity, ButtonProps>(
-  ({ title, ...touchableProps }, ref) => {
-    return (
-      <TouchableOpacity
-        ref={ref}
-        {...touchableProps}
-        className={`${styles.button} ${touchableProps.className}`}>
-        <Text className={styles.buttonText}>{title}</Text>
-      </TouchableOpacity>
-    );
-  }
-);
-
-const styles = {
-  button: 'items-center bg-indigo-500 rounded-[28px] shadow-md p-4',
-  buttonText: 'text-white text-lg font-semibold text-center',
-};
+export const Button = forwardRef<TamaguiElement, ButtonProps>(({ title, ...tButtonProps }, ref) => {
+  return (
+    <TButton {...tButtonProps} ref={ref}>
+      {title}
+    </TButton>
+  );
+});
