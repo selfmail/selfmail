@@ -1,13 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform } from 'react-native';
+import { Anchor, Paragraph, View, XStack } from 'tamagui'
 
-import { ScreenContent } from '~/components/ScreenContent';
-
-export default function Modal() {
+export default function ModalScreen() {
   return (
-    <>
-      <ScreenContent path="app/modal.tsx" title="Modal" />
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-    </>
-  );
+    <View flex={1} alignItems="center" justifyContent="center">
+      <XStack gap="$2">
+        <Paragraph ta="center">Made by</Paragraph>
+        <Anchor col="$blue10" href="https://twitter.com/natebirdman" target="_blank">
+          @natebirdman,
+        </Anchor>
+        <Anchor
+          color="$purple10"
+          href="https://github.com/tamagui/tamagui"
+          target="_blank"
+          rel="noreferrer"
+        >
+          give it a ⭐️
+        </Anchor>
+      </XStack>
+    </View>
+  )
 }
