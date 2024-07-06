@@ -1,6 +1,13 @@
-<p align="center">
-  <h2 align="center">the selfmail ui</h2>
-  <p align="center">This is the ui library for selfmail.</p>
-</p>
+# The selfmail ui library
 
-### What is this library?
+### Roadmap:
+- [ ] Button (`./src/components/button.tsx`)
+- [ ] Dropdown-Menu (`./src/components/dropdown.tsx`)
+- [ ] Context-Menu (`./src/components/context.tsx`)
+- [ ] Topbar (`./components/topbar.tsx`)
+- [ ] Dialog (`./src/components/dialog.tsx`)
+- [ ] Multi-Dialog (`./src/components/multi-dialog.tsx`)
+- [ ] Sheet (`./src/components/sheet.tsx`)
+- [ ] Drawer (`./src/components/drawer.tsx`)
+- [ ] Checkbox (`./src/components/checkbox.tsx`)
+- [ ] Input (`./src/components/input.tsx`)
