@@ -6,7 +6,7 @@
       "name": "expo-router",
       "type": "navigation",
       "options": {
-        "type": "stack"
+        "type": "tabs"
       }
     },
     {

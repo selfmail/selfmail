@@ -1,5 +1,5 @@
-import { ComponentProps, forwardRef } from 'react';
-import { TamaguiElement } from 'tamagui';
+import  {type ComponentProps, forwardRef } from 'react';
+import type{ TamaguiElement } from 'tamagui';
 
 import { Button as TButton } from '../tamagui.config';
 
