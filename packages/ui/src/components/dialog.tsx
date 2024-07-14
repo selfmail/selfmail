@@ -35,7 +35,7 @@ type action = {
 /**
  * A zustand store for tracking the state of the dialog.
  */
-export const useDialogStore = create<state & action>((set) => ({
+const useDialogStore = create<state & action>((set) => ({
     open: false,
     openId: undefined,
     content: undefined,
@@ -73,7 +73,7 @@ function DialogProvider({ children }: { children: React.ReactNode }) {
                             setOpen(false)
                         }} />
                         {/*FIXME: This is your modal. You can style it now. */}
-                        <div className={cn("absolute z-50 text-black bg-white lg:min-w-[500px] rounded-lg p-2", classNames)}>
+                        <div className={cn("absolute z-50 text-black bg-white lg:w-[500px] rounded-lg p-2", classNames)}>
                             {content}
                         </div>
                     </div>
@@ -171,6 +171,44 @@ function DialogHeader({ children, showIcon = true, customIcon, ...props }: Dialo
         </div>
     )
 }
+interface DialogDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {
+    children: React.ReactNode,
+}
+function DialogDescription({children, ...props}: DialogDescriptionProps) {
+    return (
+        <p className={cn("mt-2 text-neutral-700", props.className)} {...props}>
+            {children}
+        </p>
+    )
+}
+
+interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+    children: React.ReactNode,
+}
+function DialogFooter({children, ...props}: DialogFooterProps) {
+    return (
+        <div className={cn("flex justify-end items-center", props.className)} {...props}>
+            {children}
+        </div>
+    )
+}
+
+function DialogClose({children}: {children: React.ReactNode}) {
+    const { setOpen, setContent, setOpenId } = useDialogStore()
+    return (
+        <div onClick={() => {
+            setContent(undefined)
+            setOpenId(undefined)
+            setOpen(false)
+        }} onKeyDown={() => {
+            setContent(undefined)
+            setOpenId(undefined)
+            setOpen(false)
+        }}>
+            {children}
+        </div>
+    )
+}
 
 // export all of the components
-export { Dialog, DialogProvider, DialogTrigger, DialogContent, DialogHeader }
+export { Dialog, DialogProvider, DialogTrigger, DialogContent, DialogHeader, DialogDescription, DialogFooter, useDialogStore, DialogClose }
