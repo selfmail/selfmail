@@ -1,5 +1,6 @@
 "use client"
 
+import { X } from "lucide-react"
 import { cn } from "../cn"
 import { createContext, useContext, useEffect } from "react"
 import { create } from "zustand"
@@ -42,7 +43,7 @@ export const useDialogStore = create<state & action>((set) => ({
     setOpenId: (state: number | undefined) => set({ openId: state }),
     setContent: (state) => set({ content: state }),
     classNames: undefined,
-    setClassNames: (state) => set({classNames: state})
+    setClassNames: (state) => set({ classNames: state })
 }))
 
 
@@ -124,7 +125,7 @@ function DialogTrigger({ children, ...props }: TriggerProps) {
  * will be used inside an other element, which will be rendered on the root
  * of the react tree.
  */
-function DialogContent({ children, className }: { children: React.ReactNode, className: string }) {
+function DialogContent({ children, className }: { children: React.ReactNode, className?: string }) {
     const { open, openId, setContent, setClassNames } = useDialogStore()
     const id = useContext(IdContext)
 
@@ -141,14 +142,32 @@ function DialogContent({ children, className }: { children: React.ReactNode, cla
 
 // components for the look
 interface DialogHeaderProps extends React.HTMLAttributes<HTMLHeadingElement> {
-    children: React.ReactNode
+    children: React.ReactNode,
+    customIcon?: React.ReactNode,
+    showIcon?: boolean
 }
-function DialogHeader({children, ...props}: DialogHeaderProps) {
+function DialogHeader({ children, showIcon = true, customIcon, ...props }: DialogHeaderProps) {
+    const { setOpen, setContent, setOpenId } = useDialogStore()
     return (
-        <div className="flex">
-            <h2 className={cn("", props.className)} {...props}>
+        <div className="flex justify-between items-center">
+            <h2 className={cn("text-lg font-semibold", props.className)} {...props}>
                 {children}
             </h2>
+            {showIcon && !customIcon &&(
+                <X className="cursor-pointer h-4 w-4" onClick={() => {
+                    setContent(undefined)
+                    setOpenId(undefined)
+                    setOpen(false)
+                }} onKeyDown={() => {
+                    setContent(undefined)
+                    setOpenId(undefined)
+                    setOpen(false)
+                }} />
+            )}
+            {showIcon && customIcon && (
+                <>{customIcon}</>
+            )}
+
         </div>
     )
 }

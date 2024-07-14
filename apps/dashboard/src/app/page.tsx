@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTrigger } from "ui";
+import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "ui";
 
 export default function HomePage() {
   return (
@@ -8,7 +8,9 @@ export default function HomePage() {
           hey, das ist der Dialog
         </DialogTrigger>
         <DialogContent>
-          this is the content
+          <DialogHeader>
+            Share this email
+          </DialogHeader>
         </DialogContent>
       </Dialog>
     </main>
