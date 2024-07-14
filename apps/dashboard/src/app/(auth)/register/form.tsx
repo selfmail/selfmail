@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, Input, PasswordInput } from "ui"
+import { Button, EmailInput, Input, PasswordInput } from "ui"
 
 /**
  * This is the form for the register page.
@@ -11,9 +11,13 @@ import { Button, Input, PasswordInput } from "ui"
 export default function RegisterForm() {
     return (
         <form className="lg:w-[500px] flex flex-col space-y-2">
-            <Input placeholder="hey" />
-            <PasswordInput placeholder="password" />
-            <Input placeholder="password" />
+            <Input placeholder="Username" />
+            <EmailInput placeholder="Email" />
+            <PasswordInput placeholder="Password" />
+            <Input placeholder="Repeat Password" />
+            <div>
+                <Button>Register</Button>
+            </div>
         </form>
     )
 }

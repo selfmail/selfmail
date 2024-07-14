@@ -1,12 +1,9 @@
 "use client"
-import { MotionConfig, motion } from "framer-motion"
 
 export default function RegisterImage() {
     return (
-        <MotionConfig reducedMotion="always" transition={{duration: 0.3, type: "spring"}}>
-            <div className="bg-[#fd9d9a] hidden lg:flex lg:w-[50%] m-2 rounded-xl justify-end items-end">
-                <motion.h2 initial={{opacity: 0}} animate={{opacity: 1}} className="text-5xl p-3 font-semibold">The better inbox - <i>selfmail</i></motion.h2>
-            </div>
-        </MotionConfig>
+        <div className="w-[50%] flex items-center justify-center m-3 bg-[#f4f4f4] rounded-xl">
+            <h2 className="text-2xl">An image of a plane with a big heading, that we are a email service</h2>
+        </div>
     )
 }
