@@ -1,7 +1,4 @@
 import Header from "@/components/elements/header";
-import Link from "next/link";
-import { Button } from "ui";
-import Img from "next/image";
 
 export default function HomePage() {
   return (

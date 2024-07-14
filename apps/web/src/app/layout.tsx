@@ -1,9 +1,9 @@
 import "@/styles/globals.css";
 
-import "ui/styles.css";
 import { GeistSans } from "geist/font/sans";
 import { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
+import "ui/styles.css";
 
 export const metadata: Metadata = {
   title: {
