@@ -1,3 +1,4 @@
+// FIXME: not a priority
 export default function Analytics() {
     return (
         <main className="min-h-screen bg-[#e8e8e8]">
