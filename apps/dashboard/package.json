@@ -12,6 +12,8 @@
   "dependencies": {
     "@lucia-auth/adapter-prisma": "^4.0.1",
     "@t3-oss/env-nextjs": "^0.10.1",
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt": "^5.1.1",
     "cmdk": "^1.0.0",
     "database": "workspace:*",
     "framer-motion": "^11.2.12",

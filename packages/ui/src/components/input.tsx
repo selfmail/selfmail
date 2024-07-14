@@ -5,7 +5,7 @@ import { cn } from "../cn"
 /**
  * The default text input.
  */
-interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     placeholder?: string
 }
 function Input({ placeholder, ...props }: InputProps) {
@@ -13,7 +13,7 @@ function Input({ placeholder, ...props }: InputProps) {
         <input type="text" placeholder={placeholder} className={cn("border-2 border-[#dddddddd] p-2 rounded-xl bg-[#f4f4f4] focus-visible:outline-none focus-visible:border-[#666666]", props.className)} {...props} />
     )
 }
-interface PasswordInputProps extends React.HTMLAttributes<HTMLInputElement> {
+interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     placeholder?: string
 }
 function PasswordInput({ ...props }: PasswordInputProps) {
@@ -21,7 +21,7 @@ function PasswordInput({ ...props }: PasswordInputProps) {
         <input type="password" className={cn("p-2 rounded-xl bg-[#f4f4f4] border-2 border-[#dddddddd] focus-visible:outline-none focus-visible:border-[#666666]", props.className)} {...props} />
     )
 }
-interface EmailInputProps extends React.HTMLAttributes<HTMLInputElement> {
+interface EmailInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     placeholder?: string
 }
 function EmailInput({ ...props }: EmailInputProps) {
