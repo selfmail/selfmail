@@ -73,7 +73,7 @@ function DialogProvider({ children }: { children: React.ReactNode }) {
                             setOpen(false)
                         }} />
                         {/*FIXME: This is your modal. You can style it now. */}
-                        <div className={cn("absolute z-50 text-black bg-white lg:w-[500px] rounded-lg p-2", classNames)}>
+                        <div className={cn("absolute z-50 text-black bg-[#f4f4f4] lg:w-[500px] rounded-lg p-2", classNames)}>
                             {content}
                         </div>
                     </div>

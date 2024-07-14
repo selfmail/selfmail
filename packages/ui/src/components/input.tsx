@@ -1,34 +1,43 @@
 "use client"
 
+import { cn } from "../cn"
+
 /**
  * The default text input.
  */
-export function Input() {
+interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
+    placeholder?: string
+}
+function Input({placeholder, ...props}: InputProps) {
     return (
-        <input type="text" />
+        <input type="text" placeholder={placeholder} className={cn("border-2 border-[#dddddddd] p-2 rounded-xl bg-[#f4f4f4] focus-visible:outline-none focus-visible:border-[#3775b8]", props.className)} {...props} />
+    )
+}
+interface PasswordInputProps extends React.HTMLAttributes<HTMLInputElement> {
+    placeholder?: string
+}
+function PasswordInput({...props}: PasswordInputProps) {
+    return (
+        <input type="password" className={cn("p-2 rounded-xl bg-[#f4f4f4] border-2 border-[#dddddddd] focus-visible:outline-none focus-visible:border-[#3775b8]", props.className)} {...props}/>
     )
 }
 
-export function PasswordInput() {
-    return (
-        <input type="password" />
-    )
-}
-
-export function FileInput() {
+function FileInput() {
     return (
         <input type="file" />
     )
 }
 
-export function NumberInput() {
+function NumberInput() {
     return (
         <input type="number" />
     )
 }
 
-export function UrlInput() {
+function UrlInput() {
     return (
         <input type="url" />
     )
 }
+
+export {Input, FileInput, NumberInput, PasswordInput, UrlInput, }

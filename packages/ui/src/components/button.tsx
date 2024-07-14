@@ -25,6 +25,9 @@ export const ButtonStyles = cva("badge", {
         "border-[#616161]",
         "px-2",
       ],
+      danger: [
+        "bg-[#e76176]"
+      ]
     },
     size: {
       small: ["text-sm", "py-0", "px-1"],

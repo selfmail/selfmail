@@ -1,5 +1,7 @@
 "use client"
 
+import { Button, Input, PasswordInput } from "ui"
+
 /**
  * This is the form for the register page.
  * This form is a client component, because
@@ -8,8 +10,10 @@
  */
 export default function RegisterForm() {
     return (
-        <form className="lg:w-[800px]">
-            
+        <form className="lg:w-[500px] flex flex-col space-y-2">
+            <Input placeholder="hey" />
+            <PasswordInput placeholder="password" />
+            <Input placeholder="password" />
         </form>
     )
 }
