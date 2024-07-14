@@ -72,7 +72,7 @@ export default function Sidebar() {
                     <HelpCircle className="h-4 w-4 mr-3" />
                     <span>Help center</span>
                 </Link>
-                <Link href="/help" className="text-sm flex items-center p-1 mb-1 w-full rounded-xl">
+                <Link href="/contact" className="text-sm flex items-center p-1 mb-1 w-full rounded-xl">
                     <Contact className="h-4 w-4 mr-3" />
                     <span>Contact</span>
                 </Link>
