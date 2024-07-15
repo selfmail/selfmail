@@ -22,13 +22,6 @@ export default async function Inbox(): Promise<JSX.Element> {
   return (
     <main className="min-h-screen bg-[#e8e8e8]">
       <div className="mt-3 flex flex-col">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center ml-2">
-            <input type="checkbox" className="h-4 w-4 mr-3" />
-            <h2 className="text-3xl font-medium mx-3 ">Your Inbox</h2>
-          </div>
-          <p>accounts</p>
-        </div>
         <DataTable data={emails} />
         <div className="border-t-2 border-[#cccccc]" />
       </div>
