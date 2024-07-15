@@ -12,7 +12,7 @@ const formDataSchema = z.object({
     password: z.string().min(8).max(24)
 })
 
-export async function register(prevState: unknown, e: FormData): Promise<{
+export async function login(prevState: unknown, e: FormData): Promise<{
     message?: string,
     error?: string
 }> {

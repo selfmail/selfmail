@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useFormState, useFormStatus } from "react-dom"
 import { Button, EmailInput, Input, PasswordInput } from "ui"
 import { z } from "zod"
-import { register } from "./action"
+import { login } from "./action"
 
 export const initialState = {
     message: undefined,
@@ -16,9 +16,9 @@ export const initialState = {
  * we need the return value of the server
  * action.
  */
-export default function RegisterForm() {
+export default function LoginForm() {
     const [error, setError] = useState<string | undefined>(undefined)
-    const [state, formAction] = useFormState(register, initialState)
+    const [state, formAction] = useFormState(login, initialState)
     const formDataSchema = z.object({
         username: z.string().min(3),
         email: z.string().email(),
