@@ -50,5 +50,5 @@ export async function login(prevState: unknown, e: FormData): Promise<{
 
     cookies().set("Set-Cookie", sessionCookie.serialize())
 
-    redirect("/dashboard")
+    redirect("/")
 }

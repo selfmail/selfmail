@@ -16,7 +16,7 @@ datasource db {
 model User {
   id        String      @id @default(uuid())
   sessions  Session[]
-  email     String      @unique // the email which the user has
+  email     String      @unique // the email which the user has (the root email)
   username  String      @unique // works like a handle (e.g: @john, @jane, @john.doe, etc)
   password  String
   bio       String?
