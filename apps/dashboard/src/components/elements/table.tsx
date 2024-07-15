@@ -2,7 +2,7 @@
 
 import { cn } from "lib/cn";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Button } from "ui";
 import { create } from "zustand";
 
@@ -43,9 +43,6 @@ export const useIds = create<state & action>((set) => ({
 export default function DataTable({ data }: { data: email[] }): JSX.Element {
     const { id, setId } = useIds()
     const emails = useMemo(() => data, [data])
-    useEffect(() => {
-        console.log(id)
-    }, [id])
     const router = useRouter()
     return (
         <div>
@@ -54,9 +51,9 @@ export default function DataTable({ data }: { data: email[] }): JSX.Element {
                     <input type="checkbox" className="h-4 w-4 mr-3" />
                     <h2 className="text-3xl font-medium mx-3 ">Your Inbox</h2>
                 </div>
-                <div className="flex">
+                <div className="flex space-x-2 items-center mr-2">
                     {id.length > 0 && <>
-                        <Button onClick={() => {
+                        <Button variant={"secondary"} onClick={() => {
                             for (const i of id) {
                                 (document.getElementById(i) as HTMLInputElement).checked = false
                             }

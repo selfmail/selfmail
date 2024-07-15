@@ -26,7 +26,14 @@ export const ButtonStyles = cva("badge", {
         "px-2",
       ],
       danger: [
-        "bg-[#e76176]"
+        "bg-gradient-to-t",
+        "text-white",
+        "from-[#e76176]",
+        "to-[#e76171]",
+        "rounded-[8px]",
+        "border-[2px]",
+        "border-[#e76176]",
+        "px-2",
       ]
     },
     size: {
@@ -42,10 +49,10 @@ export const ButtonStyles = cva("badge", {
 
 export interface ButtonProps
   extends React.DetailedHTMLProps<
-      React.ButtonHTMLAttributes<HTMLButtonElement>,
-      HTMLButtonElement
-    >,
-    VariantProps<typeof ButtonStyles> {
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  >,
+  VariantProps<typeof ButtonStyles> {
   children: React.ReactNode;
 }
 
