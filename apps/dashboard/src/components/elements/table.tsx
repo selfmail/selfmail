@@ -1,5 +1,6 @@
 "use client"
 
+import { cn } from "lib/cn";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { Button } from "ui";
@@ -53,27 +54,27 @@ export default function DataTable({ data }: { data: email[] }): JSX.Element {
                     <input type="checkbox" className="h-4 w-4 mr-3" />
                     <h2 className="text-3xl font-medium mx-3 ">Your Inbox</h2>
                 </div>
-                <p>accounts</p>
+                <div className="flex">
+                    {id.length > 0 && <>
+                        <Button onClick={() => {
+                            for (const i of id) {
+                                (document.getElementById(i) as HTMLInputElement).checked = false
+                            }
+                            setId([])
+                        }}>Clear</Button>
+                        <Button onClick={() => {
+                        }} variant="danger">Delete</Button>
+                    </>}
+                </div>
             </div>
-            <div className="flex">
-                {id.length > 0 && <>
-                    <Button onClick={() => {
-                        for (const i of id) {
-                            (document.getElementById(i) as HTMLInputElement).checked = false
-                        }
-                        setId([])
-                    }}>Clear</Button>
-                    <Button onClick={() => {
-                    }} variant="danger">Delete</Button>
-                </>}
-            </div>
+
             <div className="overflow-x-auto">
                 {emails.length > 0 && emails.map((email) => (
-                    <div key={email.id} className="hover:bg-gray-100 border-t-2 relative border-t-[#cccccc] p-2 cursor-pointer w-full flex justify-between items-center" >
+                    <div key={email.id} className={cn("hover:bg-gray-100 border-t-2 relative border-t-[#cccccc] p-2 cursor-pointer w-full flex justify-between items-center", (id.includes(email.id) && "bg-gray-100"))} >
                         <input type="checkbox" id={email.id} className="h-4 w-4 mr-3 z-20" onClick={() => {
                             setId(id.includes(email.id) ? id.filter(id => id !== email.id) : [...id, email.id])
                         }} />
-                        <p>{email.sender}</p>
+                        <p onClick={() => router.push(`/contacts/${email.sender}`)} onKeyDown={() => router.push(`/contacts/${email.sender}`)}>{email.sender}</p>
                         <p>{email.subject}</p>
                         <p>{email.createdAt.toLocaleDateString()}</p>
                         {/* The background div for going to the mail page */}
