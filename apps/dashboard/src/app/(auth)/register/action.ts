@@ -5,7 +5,6 @@ import { db } from "database"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { z } from "zod"
-
 const formDataSchema = z.object({
     username: z.string().min(3),
     email: z.string().email(),
@@ -32,18 +31,32 @@ export async function register(prevState: unknown, e: FormData): Promise<{
             error: "Validation error. Check your email or your password."
         }
     }
-    // checks if the user exists in the db
-    const user = await db.user.findUnique({
+    if (!email.endsWith("@selfmail.app")) return {
+        message: undefined,
+        error: "Invalid email. Your email must end with @selfmail.app. You can choose your own handle."
+    }
+    // checks if the user is already registered
+    const checkUser = await db.user.findUnique({
         where: {
             email,
             username
         },
     })
-    if (!user) return {
+
+    if (checkUser) return {
         message: undefined,
-        error: "User not found. Please check your email and your username."
+        error: "User already registered. Please login."
     }
-    const compare = await bcrypt.compare(password, user.password)
+
+    // create the user
+    const user = await db.user.create({
+        data: {
+            email,
+            username,
+            password: await bcrypt.hash(password, 10),
+        }
+    })
+    
     // all checks done, now the authentication logic
     const session = await lucia.createSession(user.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
