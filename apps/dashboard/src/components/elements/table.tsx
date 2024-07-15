@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo } from "react";
+import { Button } from "ui";
 import { create } from "zustand";
 type email = {
     id: string;
@@ -43,19 +44,34 @@ export default function Table({ data }: { data: email[] }): JSX.Element {
         console.log(id)
     }, [id])
     return (
-        <table>
-            <tbody>
-                {emails.map((email) => (
-                    <tr key={email.id}>
-                        <input type="checkbox" name="" id="" className="h-4 w-4 mr-3" onClick={() => {
-                            setId(id.includes(email.id) ? id.filter(id => id !== email.id) : [...id, email.id])
-                        }} />
-                        <td>{email.sender}</td>
-                        <td>{email.subject}</td>
-                        <td>{email.createdAt.toString()}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+        <div>
+            <div className="flex">
+                {id.length > 0 && <>
+                    <Button onClick={() => {
+                        for (const i of id) {
+                            (document.getElementById(i) as HTMLInputElement).checked = false
+                        }
+                        setId([])
+                    }}>Clear</Button>
+                    <Button onClick={() => {
+                        setId([])
+                    }} variant="danger">Delete</Button>
+                </>}
+            </div>
+            <table>
+                <tbody>
+                    {emails.map((email) => (
+                        <tr key={email.id}>
+                            <input type="checkbox" name="" id={email.id} className="h-4 w-4 mr-3" onClick={() => {
+                                setId(id.includes(email.id) ? id.filter(id => id !== email.id) : [...id, email.id])
+                            }} />
+                            <td>{email.sender}</td>
+                            <td>{email.subject}</td>
+                            <td>{email.createdAt.toString()}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     )
 }

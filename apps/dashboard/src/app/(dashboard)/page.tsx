@@ -1,4 +1,4 @@
-import Table from "@/components/elements/table";
+import DataTable from "@/components/elements/table";
 import { checkRequest } from "@/server/checkRequest";
 import { db } from "database";
 
@@ -29,7 +29,7 @@ export default async function Inbox(): Promise<JSX.Element> {
           </div>
           <p>accounts</p>
         </div>
-        <Table data={emails} />
+        <DataTable data={emails} />
         <div className="border-t-2 border-[#cccccc]" />
       </div>
     </main>
