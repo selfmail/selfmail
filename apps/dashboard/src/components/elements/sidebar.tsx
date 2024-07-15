@@ -14,7 +14,7 @@ export default function Sidebar() {
                     <ChevronsUpDown className="h-4 w-4" />
                 </div>
                 <div className="flex flex-col mx-3">
-                    <div className="flex items-center p-2 justify-between cursor-pointer hover:bg-[#f4f4f4] rounded-xl" onClick={console.log}>
+                    <div className="flex items-center p-2 justify-between cursor-pointer hover:bg-[#f4f4f4] rounded-xl">
                         <div className="flex">
                             <Search className="h-4 w-4 mr-3" />
                             <span className="text-sm">Search</span>
@@ -81,7 +81,7 @@ export default function Sidebar() {
                     <div className="flex items-center space-x-2">
                         <p>free plan </p><span className="ml-2 rounded-full animate-pulse h-2 w-2 bg-[#555555]" />
                     </div>
-                    <span className="text-sm ml-4 text-[#f4f4f4]  bg-[#666666] h-min p-1 rounded-md cursor-pointer" onClick={console.log}>
+                    <span className="text-sm ml-4 text-[#f4f4f4]  bg-[#666666] h-min p-1 rounded-md cursor-pointer">
                         upgrade
                     </span>
                 </div>
