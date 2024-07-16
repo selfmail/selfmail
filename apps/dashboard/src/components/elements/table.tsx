@@ -58,7 +58,7 @@ export default function DataTable({ data }: { data: email[] }): JSX.Element {
                                 (document.getElementById(i) as HTMLInputElement).checked = false
                             }
                             setId([])
-                        }}>Clear</Button>
+                        }}>Clear Selection</Button>
                         <Button onClick={() => {
                         }} variant="danger">Delete</Button>
                     </>}
@@ -76,9 +76,9 @@ export default function DataTable({ data }: { data: email[] }): JSX.Element {
                         <p>{email.createdAt.toLocaleDateString()}</p>
                         {/* The background div for going to the mail page */}
                         <div className="absolute inset-0 " onClick={() => {
-                            router.push(`/mail/${email.id}`)
+                            router.push(`/email/${email.id}`)
                         }} onKeyDown={() => {
-                            router.push(`/mail/${email.id}`)
+                            router.push(`/email/${email.id}`)
                         }} />
                     </div>
                 )) || (
