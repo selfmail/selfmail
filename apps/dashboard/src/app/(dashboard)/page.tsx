@@ -1,4 +1,5 @@
 import DataTable from "@/components/elements/table";
+import { getGroqChatCompletion } from "@/server/ai";
 import { checkRequest } from "@/server/checkRequest";
 import { db } from "database";
 
@@ -19,6 +20,8 @@ export default async function Inbox(): Promise<JSX.Element> {
     }
   })
   console.log(emails)
+  const chat = await getGroqChatCompletion()
+  console.log(chat)
   return (
     <main className="min-h-screen bg-[#e8e8e8]">
       <div className="mt-3 flex flex-col">
