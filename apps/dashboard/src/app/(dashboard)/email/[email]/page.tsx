@@ -1,4 +1,5 @@
 import { db } from "database";
+import { notFound } from "next/navigation";
 
 export default async function Email({
     params
@@ -12,8 +13,16 @@ export default async function Email({
             id: params.email
         }
     })
+    if (!email) notFound()
     console.log(email)
     return (
-        <div>Email</div>
+        <div>
+            <header>
+                <h1 className="text-2xl">{email.sender}</h1>
+                <p className="text-sm">{email.createdAt.toLocaleDateString()}</p>
+            </header>
+            <h1 className="text-2xl">{email.subject}</h1>
+            <p className="text-[#666666]">{email.content}</p>
+        </div>
     )
 }
