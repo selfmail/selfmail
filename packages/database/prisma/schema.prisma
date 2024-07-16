@@ -56,14 +56,15 @@ model Label {
 }
 
 model Email {
-  id        String   @id @unique @default(cuid())
-  content   String
-  sender    String
-  subject   String
-  recipient String
-  createdAt DateTime @default(now())
-  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
-  userId    String
+  id         String   @id @unique @default(cuid())
+  content    String
+  sender     String
+  subject    String
+  recipient  String
+  createdAt  DateTime @default(now())
+  user       User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId     String
+  summarzied String?
 }
 
 // TODO: add references to the emails which are made by this contact, and the user received

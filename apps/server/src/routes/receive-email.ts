@@ -1,4 +1,5 @@
 import { db } from "database";
+import Groq from "groq-sdk";
 import { z } from "zod";
 import { app } from "..";
 import { config } from "../../config";
@@ -128,6 +129,26 @@ export default function ReceiveEmail() {
 			);
 		}
 
+		// processing the email with the groq ai
+		const ai = new Groq({
+			apiKey: config.GROQ_API_KEY,
+		});
+		const chat = await ai.chat.completions.create({
+			messages: [
+				{
+					role: "system",
+					content:
+						"You are a bot which scans emails and summarizes them in a few senctences. Use the language from the email. You can write normal textes, don't use paragraphs. You get a text, which shows you the subject and the content of the email. The subject is the first line of the email. The content is the rest of the email.",
+				},
+				{
+					role: "user",
+					content: `Subject: ${emailSchema.data.subject}\nContent: ${emailSchema.data.content}`,
+				},
+			],
+			model: "llama3-8b-8192",
+			max_tokens: 1024,
+		});
+
 		/**
 		 * Uploading the email to the database.
 		 * The email can now rated by the ai.
@@ -136,14 +157,14 @@ export default function ReceiveEmail() {
 		 * TODO: add rate limiting
 		 * TODO: add ai processing
 		 */
-
 		const email = await db.email.create({
 			data: {
 				content: emailSchema.data.content,
 				sender: emailSchema.data.sender,
 				subject: emailSchema.data.subject,
 				recipient: emailSchema.data.recipient,
-				userId: "clq35555555555555555555555555555555",
+				userId: user.id,
+				summarzied: chat.choices[0]?.message?.content,
 			},
 		});
 
