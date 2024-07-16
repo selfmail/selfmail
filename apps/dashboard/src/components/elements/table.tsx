@@ -48,7 +48,6 @@ export default function DataTable({ data }: { data: email[] }): JSX.Element {
         <div>
             <div className="flex items-center justify-between">
                 <div className="flex items-center ml-2">
-                    <input type="checkbox" className="h-4 w-4 mr-3" />
                     <h2 className="text-3xl font-medium mx-3 ">Your Inbox</h2>
                 </div>
                 <div className="flex space-x-2 items-center mr-2">
