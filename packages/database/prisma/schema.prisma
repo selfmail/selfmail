@@ -26,6 +26,7 @@ model User {
   emailSend EmailSend[]
   emails    Email[] // the emails which the user received
   contacts  Contact[]
+  helpPosts HelpPost[]
 }
 
 model Session {
@@ -77,4 +78,16 @@ model Contact {
   description String
   user        User     @relation(fields: [userId], references: [id])
   userId      String
+}
+
+// the help page
+model HelpPost {
+  id          String   @id @unique @default(cuid())
+  title       String
+  content     String
+  description String
+  image       String?
+  createdAt   DateTime @default(now())
+  author      User     @relation(fields: [userId], references: [id])
+  userId      String   @unique
 }
