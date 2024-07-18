@@ -14,19 +14,28 @@ datasource db {
 }
 
 model User {
-  id        String      @id @default(uuid())
-  sessions  Session[]
-  email     String      @unique // the email which the user has (the root email)
-  username  String      @unique // works like a handle (e.g: @john, @jane, @john.doe, etc)
-  password  String
-  bio       String?
-  image     String?
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  emailSend EmailSend[]
-  emails    Email[] // the emails which the user received
-  contacts  Contact[]
-  helpPosts HelpPost[]
+  id               String            @id @default(uuid())
+  sessions         Session[]
+  email            String            @unique // the email which the user has (the root email)
+  username         String            @unique // works like a handle (e.g: @john, @jane, @john.doe, etc)
+  password         String
+  bio              String?
+  image            String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  role             Roles             @default(user) // standart role is the user. The first sign-in will be the admin
+  emailSend        EmailSend[]
+  emails           Email[] // the emails which the user received
+  contacts         Contact[]
+  helpPosts        HelpPost[]
+  deletedHelpPosts DeletedHelpPost[]
+  mod              Mod?
+}
+
+enum Roles {
+  mod
+  admin
+  user
 }
 
 model Session {
@@ -90,4 +99,26 @@ model HelpPost {
   createdAt   DateTime @default(now())
   author      User     @relation(fields: [userId], references: [id])
   userId      String   @unique
+}
+
+model DeletedHelpPost {
+  id          String   @id @unique @default(cuid())
+  title       String
+  content     String
+  description String
+  image       String?
+  deletedAt   DateTime @default(now())
+  author      User     @relation(fields: [userId], references: [id])
+  userId      String   @unique
+  createdAt   DateTime
+  mod         Mod      @relation(fields: [modId], references: [id])
+  modId       String   @unique
+}
+
+model Mod {
+  id     String            @id @unique @default(cuid())
+  user   User              @relation(fields: [userId], references: [id])
+  userId String            @unique
+  mod    DeletedHelpPost[]
+  modId  String            @unique
 }
