@@ -7,6 +7,7 @@ import TrashButton from "./trash-button"
 import { Button, Dialog, DialogContent, DialogTrigger, Input } from "ui"
 import { z } from "zod"
 import { userAgent } from "next/server"
+import ModDeletionModal from "./mod-deletion-form"
 
 /**
  * View a community article or guide.
@@ -61,12 +62,7 @@ export default async function Help({
                                     Delete
                                 </DialogTrigger>
                                 <DialogContent>
-                                    <form action={deletePostByMod}>
-                                        <Input placeholder="The reason"/>
-                                        <Button type="submit">
-                                            Submit
-                                        </Button>
-                                    </form>
+                                    <ModDeletionModal modId={user.id} postId={article.id} userId={articleUser.id} />
                                 </DialogContent>
                             </Dialog>
                         </>
@@ -90,45 +86,4 @@ export default async function Help({
             <p>{article.content}</p>
         </div>
     )
-}
-/**
- * 
- * @param e {FormData}
- * @param {String} id the id of the post 
- * @param {String} userId the id of the user, from which the psot will be deleted
- * @param {String} modId the id of the mod, which delets the post
- */
-async function deletePostByMod(e: FormData, id: string, userId: string, modId: string) {
-    "use server"
-
-    const formDataSchema = z.object({
-        reason: z.string()
-    })
-
-    const parse = await formDataSchema.safeParseAsync({
-        reason: e.get("reason") as string
-    })
-
-    if (!parse.success) {
-        throw new Error("Validation Error: the input field \"reason\" is not matching the type string.")
-    }
-
-    const post = await db.helpPost.findUnique({
-        where: {
-            id
-        }
-    })
-
-    const deletedPost = await db.deletedHelpPost.create({
-        data: {
-            ...post,     
-            userId
-        }
-    })
-    const deletion = await db.helpPost.delete({
-        where: {
-            id
-        }
-    })
-    
 }
