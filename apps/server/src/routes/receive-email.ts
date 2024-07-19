@@ -26,7 +26,8 @@ export default function ReceiveEmail() {
 		/**
 		 * Parsed body from hono. You can get now the provided email fields.
 		 */
-		const body = await c.req.parseBody();
+		const body = await c.req.json();
+		console.log(body)
 
 		/**The email subject.
 		 *
@@ -48,7 +49,12 @@ export default function ReceiveEmail() {
 		 * The recipient of the email. Usefull when you use multiple adresses or domains.
 		 */
 		const recipient: string = body.recipient as string;
-
+		console.log({
+			recipient,
+			sender,
+			content,
+			subject
+		})
 		/**
 		 * Parsing the provided fields with zod, to make sure, we can working with the variables.
 		 */
@@ -68,7 +74,7 @@ export default function ReceiveEmail() {
 
 		// The provided values are not matching the required types, an error will be send back.
 		if (!emailSchema.success) {
-			console.error(emailSchema.error);
+			
 			return c.json(
 				{
 					error: "Typeerror: cannot parse the required fields",

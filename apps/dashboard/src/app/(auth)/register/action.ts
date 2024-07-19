@@ -33,12 +33,11 @@ export async function register(prevState: unknown, e: FormData): Promise<{
     }
     if (!email.endsWith("@selfmail.app")) return {
         message: undefined,
-        error: "Invalid email. Your email must end with @selfmail.app. You can choose your own handle."
+        error: "Invalid email. Your email must end with @selfmail.app."
     }
     // checks if the user is already registered
     const checkUser = await db.user.findUnique({
         where: {
-            email,
             username
         },
     })
@@ -51,9 +50,16 @@ export async function register(prevState: unknown, e: FormData): Promise<{
     // create the user
     const user = await db.user.create({
         data: {
-            email,
             username,
             password: await bcrypt.hash(password, 10),
+        }
+    })
+    // create the main adresse
+    const adresse = await db.adresse.create({
+        data: {
+            email,
+            type: "main",
+            userId: user.id
         }
     })
     

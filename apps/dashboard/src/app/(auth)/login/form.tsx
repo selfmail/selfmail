@@ -23,7 +23,6 @@ export default function LoginForm() {
         username: z.string().min(3),
         email: z.string().email(),
         password: z.string().min(8).max(24),
-        rePassword: z.string().min(8).max(24)
     })
     const { pending } = useFormStatus()
     return (
@@ -32,25 +31,24 @@ export default function LoginForm() {
             const clientParse = formDataSchema.safeParse({
                 email: e.get("email"),
                 password: e.get("password"),
-                username: e.get("username"),
-                rePassword: e.get("rePassword")
+                username: e.get("username")
             })
             if (!clientParse.success) {
-                setError("Validation error. Please check your email, your username and your password.")
+                setError("Validation error. Please check your email, your username and your password. client")
                 return
             }
             formAction(e)
         }} className="lg:w-[500px] flex flex-col space-y-2">
+            <h2 className="text-xl">Login</h2>
             <Input placeholder="Username" name="username" />
             <EmailInput placeholder="Email" name="email" />
             <PasswordInput placeholder="Password" name="password" />
-            <PasswordInput placeholder="Repeat Password" name="rePassword" />
             {
                 error && <div className="text-red-500">{error}</div> ||
                 state.error && <div className="text-red-500">{state.error}</div>
             }
             <div>
-                <Button disabled={pending}>Register</Button>
+                <Button disabled={pending}>Login</Button>
             </div>
         </form>
     )

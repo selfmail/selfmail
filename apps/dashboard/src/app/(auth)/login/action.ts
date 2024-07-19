@@ -35,15 +35,26 @@ export async function login(prevState: unknown, e: FormData): Promise<{
     // checks if the user exists in the db
     const user = await db.user.findUnique({
         where: {
-            email,
             username
         },
     })
-    if (!user) return {
+    const adresse = await db.adresse.findUnique({
+        where: {
+            email,
+            type: "main",
+            userId: user?.id
+        }
+    })
+    if (!user || !adresse) return {
         message: undefined,
         error: "User not found. Please check your email and your username."
     }
+
     const compare = await bcrypt.compare(password, user.password)
+    if (!compare) return {
+        error: "Password is wrong!",
+        message: undefined
+    }
     // all checks done, now the authentication logic
     const session = await lucia.createSession(user.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);

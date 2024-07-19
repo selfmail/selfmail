@@ -41,6 +41,7 @@ export default function RegisterForm() {
             }
             formAction(e)
         }} className="lg:w-[500px] flex flex-col space-y-2">
+            <h2 className="text-xl">Register</h2>
             <Input placeholder="Username" name="username" />
             <EmailInput placeholder="Email" name="email" />
             <PasswordInput placeholder="Password" name="password" />

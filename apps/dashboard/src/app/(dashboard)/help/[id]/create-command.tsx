@@ -12,12 +12,12 @@ export const initialState = {
 }
 
 /**
- * Form for creating a new command. The site will be reoloaded to show the changes.
+ * Form for creating a new comment. The site will be reoloaded to show the changes.
  * 
  * @returns {JSX.Element}
  */
 
-export default function CreateCommandForm(): JSX.Element {
+export default function CreateCommentForm(): JSX.Element {
     const [error, setError] = useState<string | undefined>(undefined)
     const [state, formAction] = useFormState(createComment, initialState)
     const [description, setDescription] = useState<number>(0)

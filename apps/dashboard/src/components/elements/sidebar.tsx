@@ -1,9 +1,13 @@
 "use client"
 
-import { ChevronsUpDown, Contact, HelpCircle, Home, Keyboard, Mail, Plane, Search, Settings, Trash, User, Users } from "lucide-react"
+import { ChevronsUpDown, Contact, HelpCircle, Home, Inbox, Keyboard, Mail, Plane, Search, Settings, Trash, User, Users } from "lucide-react"
 import Link from "next/link"
 
-export default function Sidebar() {
+export default function Sidebar({
+    adresses
+}: {
+    adresses: { email: string }[]
+}) {
     return (
         <div className="hidden fixed left-0 top-0 bottom-0 lg:flex lg:w-[200px] xl:w-[250px] min-h-screen overflow-auto border-r-2  border-r-[#dddddddd] flex-col justify-between">
             <div className="space-y-3">
@@ -52,19 +56,14 @@ export default function Sidebar() {
                         <span className="text-[#666666] text-sm">Aliases</span>
                         <hr className="border-2 border-[#cccccccc] w-full ml-2" />
                     </div>
-                    <Link href="/settings" className="flex items-center p-2 w-full  hover:bg-[#f4f4f4] rounded-xl">
-                        <Mail className="h-4 w-4 mr-3" />
-                        <span className="text-sm">me@henri.gg</span>
-                        <span className="h-2 w-2 rounded-full bg-green-400 ml-2 animate-pulse" />
-                    </Link>
-                    <Link href="/settings" className="flex items-center p-2 w-full  hover:bg-[#f4f4f4] rounded-xl">
-                        <Keyboard className="h-4 w-4 mr-3" />
-                        <span className="text-sm">work@henri.gg</span>
-                    </Link>
-                    <Link href="/settings" className="flex items-center p-2 w-full  hover:bg-[#f4f4f4] rounded-xl">
-                        <Trash className="h-4 w-4 mr-3" />
-                        <span className="text-sm">spam@henri.gg</span>
-                    </Link>
+                    {
+                        adresses.map((adresse) => (
+                            <Link href={`/adresse/${adresse.email}`} className="flex items-center p-2 w-full  hover:bg-[#f4f4f4] rounded-xl">
+                                <Inbox className="h-4 w-4 mr-3" />
+                                <span className="text-sm">{adresse.email}</span>
+                            </Link>
+                        ))
+                    }
                 </div>
             </div>
             <div className="mx-3 pb-4">

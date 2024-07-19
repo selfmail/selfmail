@@ -16,7 +16,6 @@ datasource db {
 model User {
   id               String            @id @default(uuid())
   sessions         Session[]
-  email            String            @unique // the email which the user has (the root email)
   username         String            @unique // works like a handle (e.g: @john, @jane, @john.doe, etc)
   password         String
   bio              String?
@@ -24,13 +23,29 @@ model User {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   role             Roles             @default(user) // standart role is the user. The first sign-in will be the admin
-  emailSend        EmailSend[]
-  emails           Email[] // the emails which the user received
   contacts         Contact[]
   helpPosts        HelpPost[]
   deletedHelpPosts DeletedHelpPost[]
+  adresse          Adresse[]
   mod              Mod?
   comments         Comment[]
+}
+
+model Adresse {
+  id            String         @id @unique @default(cuid())
+  email         String         @unique
+  type          AdresseType
+  emails        Email[]
+  emailSend     EmailSend[]
+  user          User           @relation(fields: [userId], references: [id])
+  userId        String
+  deletedEmails DeletedEmail[]
+}
+
+enum AdresseType {
+  main
+  second
+  spam
 }
 
 enum Roles {
@@ -50,12 +65,19 @@ model Session {
 // The emails, which the user send
 model EmailSend {
   id        String   @id @unique @default(cuid())
-  userId    String
   email     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  contact   Contact? @relation(fields: [contactId], references: [id])
+  contactId String
+  adresse   Adresse  @relation(fields: [adresseId], references: [id])
+  adresseId String
+}
 
-  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+model DeletedEmail {
+  id        String  @id @unique @default(cuid())
+  adresse   Adresse @relation(fields: [adresseId], references: [id])
+  adresseId String
 }
 
 model Label {
@@ -73,21 +95,25 @@ model Email {
   subject    String
   recipient  String
   createdAt  DateTime @default(now())
-  user       User     @relation(references: [id], fields: [userId], onDelete: Cascade)
-  userId     String
+  adresse    Adresse  @relation(references: [id], fields: [adresseId], onDelete: Cascade)
+  adresseId  String
+  contact    Contact? @relation(fields: [contactId], references: [id])
+  contactId  String
   summarzied String?
 }
 
 // TODO: add references to the emails which are made by this contact, and the user received
 model Contact {
-  id          String   @id @unique @default(cuid())
+  id          String      @id @unique @default(cuid())
   name        String
-  email       String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  email       String // the mail adresse for this user
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
   description String
-  user        User     @relation(fields: [userId], references: [id])
+  user        User        @relation(fields: [userId], references: [id])
   userId      String
+  emails      Email[]
+  emailSend   EmailSend[]
 }
 
 // the help page
