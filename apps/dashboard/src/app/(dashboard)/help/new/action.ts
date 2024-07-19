@@ -44,5 +44,6 @@ export async function createPost(initialState: unknown, e: FormData) : Promise<{
             userId: user.id,
         }
     })
+    // redirect the user to his/her post
     redirect(`/help/${data.id}`)
 }

@@ -8,6 +8,7 @@ import { Button, Dialog, DialogContent, DialogTrigger, Input } from "ui"
 import { z } from "zod"
 import { userAgent } from "next/server"
 import ModDeletionModal from "./mod-deletion-form"
+import CreateCommandForm from "./create-command"
 
 /**
  * View a community article or guide.
@@ -30,7 +31,7 @@ export default async function Help({
     })
     // no user is matching with the id in the cookies
     if (!user) redirect("/login")
-    
+
     const article = await db.helpPost.findUnique({
         where: {
             id: params.id
@@ -43,6 +44,27 @@ export default async function Help({
         }
     })
     if (!articleUser) throw new Error("The author of this post can't be found.")
+
+    // fetch the comments
+    let comments:  {
+        id: string,
+        content: string,
+        userId: string,
+        postId: string
+    }[] = [] as  {
+        id: string,
+        content: string,
+        userId: string,
+        postId: string
+    }[]
+    if (article.allowComments) {
+        const dbComments = await db.comment.findMany({
+            where: {
+                postId: article.id
+            }
+        })
+        comments = dbComments
+    }
     return (
         <div className="mt-3 mx-3">
             <div className="flex items-center justify-between">
@@ -84,6 +106,25 @@ export default async function Help({
             </p>
             <hr />
             <p>{article.content}</p>
+            {/* The comment system */}
+            {
+                article.allowComments && (
+                    <>
+                        <hr />
+                        <div>
+                            <h2 className="text-2xl font-medium">Comments</h2>
+                            {/* Show the comments */}
+                            { comments.map((comment) => (
+                                <div>
+                                    {comment.content}
+                                </div>
+                            )) }
+                            {/* Create a new comment */}
+                            <CreateCommandForm />
+                        </div>
+                    </>
+                )
+            }
         </div>
     )
 }

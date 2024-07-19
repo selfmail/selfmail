@@ -1,6 +1,7 @@
 "use server"
 
 import { db } from "database"
+import { redirect } from "next/navigation"
 import { z } from "zod"
 
 /**
@@ -13,6 +14,7 @@ export async function deletePost(id: string) {
             id
         }
     })
+    redirect("/help")
 }
 /**
 * 
@@ -55,4 +57,8 @@ export async function deletePostByMod(e: FormData, id: string, userId: string, m
        }
    })
    
+}
+
+export async function createComment(prevState: unknown, e: FormData) {
+
 }
