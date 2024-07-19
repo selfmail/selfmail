@@ -3,6 +3,10 @@
 import { db } from "database"
 import { z } from "zod"
 
+/**
+ * Deletes a post from the user.
+ * @param {string} id the id of the post, which should be deleted 
+ */
 export async function deletePost(id: string) {
     const del = await db.helpPost.delete({
         where: {
@@ -12,7 +16,7 @@ export async function deletePost(id: string) {
 }
 /**
 * 
-* @param e {FormData}
+* @param {FormData} e
 * @param {String} id the id of the post 
 * @param {String} userId the id of the user, from which the psot will be deleted
 * @param {String} modId the id of the mod, which delets the post

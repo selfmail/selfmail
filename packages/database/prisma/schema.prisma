@@ -30,6 +30,7 @@ model User {
   helpPosts        HelpPost[]
   deletedHelpPosts DeletedHelpPost[]
   mod              Mod?
+  comments         Comment[]
 }
 
 enum Roles {
@@ -91,14 +92,16 @@ model Contact {
 
 // the help page
 model HelpPost {
-  id          String   @id @unique @default(cuid())
-  title       String
-  content     String
-  description String
-  image       String?
-  createdAt   DateTime @default(now())
-  author      User     @relation(fields: [userId], references: [id])
-  userId      String   @unique
+  id            String    @id @unique @default(cuid())
+  title         String
+  content       String
+  description   String
+  image         String?
+  createdAt     DateTime  @default(now())
+  author        User      @relation(fields: [userId], references: [id])
+  userId        String
+  comments      Comment[]
+  allowComments Boolean   @default(false)
 }
 
 model DeletedHelpPost {
@@ -112,7 +115,7 @@ model DeletedHelpPost {
   userId      String   @unique
   createdAt   DateTime
   mod         Mod      @relation(fields: [modId], references: [id])
-  modId       String   @unique
+  modId       String
 }
 
 model Mod {
@@ -121,4 +124,13 @@ model Mod {
   userId String            @unique
   mod    DeletedHelpPost[]
   modId  String            @unique
+}
+
+model Comment {
+  id      String   @id @unique @default(cuid())
+  content String
+  user    User     @relation(fields: [userId], references: [id])
+  userId  String
+  post    HelpPost @relation(fields: [postId], references: [id])
+  postId  String
 }

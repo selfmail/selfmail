@@ -40,10 +40,9 @@ export async function createPost(initialState: unknown, e: FormData) : Promise<{
             content,
             description,
             title,
+            allowComments,
             userId: user.id,
         }
     })
-    return {
-        message: "all good"
-    }
+    redirect(`/help/${data.id}`)
 }
