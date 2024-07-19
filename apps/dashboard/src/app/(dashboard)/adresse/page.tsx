@@ -21,7 +21,8 @@ export default async function Adresse(): Promise<JSX.Element> {
         }
     })
     return (
-        <div>
+        <div className="mx-3 mt-3">
+            <h2 className="text-3xl font-medium">Your Adresses <span className="text-[#666666]">{adresses.length}</span></h2>
             {
                 adresses.map((adresse) => (
                     <p>{adresse.email}: {adresse.type}: {adresse.userId}</p>

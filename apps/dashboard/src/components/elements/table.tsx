@@ -47,7 +47,7 @@ export default function DataTable({ data }: { data: email[] }): JSX.Element {
     return (
         <div>
             <div className="flex items-center justify-between">
-                <div className="flex items-center ml-2">
+                <div className="flex items-center">
                     <h2 className="text-3xl font-medium mx-3 ">Your Inbox</h2>
                 </div>
                 <div className="flex space-x-2 items-center mr-2">
@@ -81,9 +81,12 @@ export default function DataTable({ data }: { data: email[] }): JSX.Element {
                         }} />
                     </div>
                 )) || (
-                        <p className="text-[#666666]">You have no emails received yet.</p>
+                        <p className="text-[#666666] mx-3 mt-3">You have no emails received yet.</p>
                     )}
             </div>
+            { emails.length > 0 && (
+                <hr className="border-t-2 border-[#cccccc]" />
+            )}
         </div>
     )
 }

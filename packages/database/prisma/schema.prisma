@@ -29,6 +29,7 @@ model User {
   adresse          Adresse[]
   mod              Mod?
   comments         Comment[]
+  emails           Email[]
 }
 
 model Adresse {
@@ -100,6 +101,8 @@ model Email {
   contact    Contact? @relation(fields: [contactId], references: [id])
   contactId  String
   summarzied String?
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
 }
 
 // TODO: add references to the emails which are made by this contact, and the user received
