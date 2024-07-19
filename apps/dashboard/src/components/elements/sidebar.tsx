@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronsUpDown, Contact, HelpCircle, Home, Inbox, Keyboard, Mail, Plane, Search, Settings, Trash, User, Users } from "lucide-react"
+import { ChevronsUpDown, Contact, HandCoins, HelpCircle, Home, Inbox, Keyboard, Mail, Mailbox, Plane, Search, Settings, Trash, User, Users } from "lucide-react"
 import Link from "next/link"
 
 export default function Sidebar({
@@ -45,6 +45,14 @@ export default function Sidebar({
                     <Link href="/team" className="flex items-center p-2 w-full  hover:bg-[#f4f4f4] rounded-xl">
                         <Users className="h-4 w-4 mr-3" />
                         <span className="text-sm">Teams</span>
+                    </Link>
+                    <Link href="/upgrade" className="flex items-center p-2 w-full  hover:bg-[#f4f4f4] rounded-xl">
+                        <HandCoins className="h-4 w-4 mr-3" />
+                        <span className="text-sm">Upgrade</span>
+                    </Link>
+                    <Link href="/adresse" className="flex items-center p-2 w-full  hover:bg-[#f4f4f4] rounded-xl">
+                        <Mailbox className="h-4 w-4 mr-3" />
+                        <span className="text-sm">Adresses</span>
                     </Link>
                     <Link href="/settings" className="flex items-center p-2 w-full  hover:bg-[#f4f4f4] rounded-xl">
                         <Settings className="h-4 w-4 mr-3" />
