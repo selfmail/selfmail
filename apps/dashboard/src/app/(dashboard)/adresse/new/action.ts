@@ -6,8 +6,14 @@
  * @param {"spam" | "second"} type 
  */
 export async function CreateAdresse(
-    email: string,
-    type: "spam" | "second",
-) {
-
+    prevState: unknown,
+    e: FormData
+): Promise<{
+    error: string | undefined,
+    message: string | undefined
+}> {
+    return {
+        message: "All ok",
+        error: undefined
+    }
 }
