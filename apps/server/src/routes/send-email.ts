@@ -68,14 +68,14 @@ export default function SendEmail() {
     }
 
     // checking if the sender is in the db
-    const user = await db.user.findUnique({
+    const adresse = await db.adresse.findUnique({
       where: {
         email: emailSchema.data.sender,
       },
     });
 
-    // user is not defined in the database
-    if (!user) {
+    // adresse is not defined in the database
+    if (!adresse) {
       if (config.LOG_ERRORS_INTO_CONSOLE)
         console.error("Sender is not defined in the database.");
       return c.json(
