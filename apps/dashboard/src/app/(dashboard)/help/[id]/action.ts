@@ -59,6 +59,12 @@ export async function deletePostByMod(e: FormData, id: string, userId: string, m
    
 }
 
-export async function createComment(prevState: unknown, e: FormData) {
-
+export async function createComment(prevState: unknown, e: FormData): Promise<{
+    message: string | undefined,
+    error: string | undefined
+}> {
+    return {
+        message: "all ok",
+        error: undefined
+    }
 }
