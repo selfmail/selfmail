@@ -24,7 +24,7 @@ export default function NewAdresseForm() {
             console.log(e.get("second") && "second" || e.get("spam") && "spam")
             const parse = await adresseSchema.safeParseAsync({
                 email: e.get("email"),
-                type: e.get("second") && "second" || e.get("spam") && "spam"
+                type: e.get("type")
             })
             if (!parse.success) {
                 setError("We had an error when parsing the provided fields. Please check your inputs!")
@@ -35,14 +35,10 @@ export default function NewAdresseForm() {
             <EmailInput required className="w-full" placeholder="You adresse" name="email" />
             <div className="flex flex-col">
                 <h3 className="text-xl">Type</h3>
-                <div className="space-x-2 flex items-center">
-                    <input type="radio" name="second" id="second" />
-                    <label htmlFor="second">Second</label>
-                </div>
-                <div className="flex space-x-2 items-ceter">
-                    <input type="radio" name="spam" id="spam" />
-                    <label htmlFor="spam">Spam</label>
-                </div>
+                <select name="type" id="" className="p-2 rounded-lg">
+                    <option value="second">Second</option>
+                    <option value="spam">Spam</option>
+                </select>
             </div>
             {
                 state.error && (
