@@ -10,6 +10,7 @@ import { resend } from "../../resend";
  * will later be used in the index.ts at `src/`.
  */
 export default function SendEmail() {
+  // TODO: add authentication
   app.post("/email/send", async (c) => {
     /**
      * Parsed body from hono. You can get now the provided email fields.
