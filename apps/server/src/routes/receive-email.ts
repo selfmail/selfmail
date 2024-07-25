@@ -27,7 +27,6 @@ export default function ReceiveEmail() {
 		 * Parsed body from hono. You can get now the provided email fields.
 		 */
 		const body = await c.req.json();
-		console.log(body)
 
 		/**The email subject.
 		 *
@@ -89,14 +88,14 @@ export default function ReceiveEmail() {
 		/**
 		 * Checking if the recipient exists in the database (if the recipient exists)
 		 */
-		const user = await db.user.findUnique({
+		const adresse = await db.adresse.findUnique({
 			where: {
 				email: emailSchema.data.recipient,
 			},
 		});
 
 		// the recipient is not defined, send an email to the sender, that the recipient was not found
-		if (!user) {
+		if (!adresse) {
 			/**
 			 * Sends the error email to the user.
 			 * The defined template will be used, or the default template, if the template is not defined.
@@ -156,6 +155,34 @@ export default function ReceiveEmail() {
 		});
 
 		/**
+		 * Contacts:
+		 * 
+		 * for every new incoming email, a contact will be searched. If there if no contact, a
+		 * new contact will be created. A contact is like a infomation card. This contains information
+		 * about the contact, the emails which the contact searched and more. If the user don't wont to
+		 * receive email from this contact anymore, he can block this contact.
+		 */
+		let contact = await db.contact.findUnique({
+			where: {
+				email_userId: {
+					email: sender,
+					userId: adresse.userId
+				}
+			}
+		})
+		// contact is not defined yet, we will create a new one in the db
+		if (!contact) {
+			contact = await db.contact.create({
+				data: {
+					email: sender,
+					userId: adresse.userId,
+					name: sender,
+					description: `Emails from ${sender}`
+				}
+			})
+		}
+
+		/**
 		 * Uploading the email to the database.
 		 * The email can now rated by the ai.
 		 * E.g: add labels or mark as spam, newsletter or ads.
@@ -167,9 +194,12 @@ export default function ReceiveEmail() {
 			data: {
 				content: emailSchema.data.content,
 				sender: emailSchema.data.sender,
+
 				subject: emailSchema.data.subject,
 				recipient: emailSchema.data.recipient,
-				userId: user.id,
+				adresseId: adresse.id,
+				contactId: contact.id,
+				userId: adresse.userId,
 				summarzied: chat.choices[0]?.message?.content,
 			},
 		});

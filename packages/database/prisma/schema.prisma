@@ -115,8 +115,12 @@ model Contact {
   description String
   user        User        @relation(fields: [userId], references: [id])
   userId      String
+  // emails which this contact sends
   emails      Email[]
+  // emails which the user has sent to this
   emailSend   EmailSend[]
+
+  @@unique([email, userId])
 }
 
 // the help page
