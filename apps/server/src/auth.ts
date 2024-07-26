@@ -10,11 +10,13 @@ import { Context } from "hono";
  * or for the cloudflare workers.
  */
 export async function auth({token, context}: {token: string, context: Context}): Promise<boolean>  {
+    console.log(token)
     const key = await db.key.findUnique({
         where: {
             token
         }
     })
+    console.log(key)
     if (!key) return false
     // service api key
     if (key && key.service) return true

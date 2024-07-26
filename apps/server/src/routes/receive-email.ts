@@ -26,12 +26,14 @@ export default function ReceiveEmail() {
 	 */
 	app.post("/email/receive", bearerAuth({
 		verifyToken: async (token, c) => {
+			console.log(token)
 			return await auth({
 				context: c,
 				token: token
 			})
 		}
 	}), async (c) => {
+		console.log("log complete")
 		/**
 		 * Parsed body from hono. You can get now the provided email fields.
 		 */

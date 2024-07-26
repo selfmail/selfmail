@@ -70,7 +70,7 @@ export default function Sidebar({
                     </div>
                     {
                         adresses.map((adresse) => (
-                            <Link href={`/adresse/${adresse.email}`} className="flex items-center p-2 w-full  hover:bg-[#f4f4f4] rounded-xl">
+                            <Link key={adresse.email} href={`/adresse/${adresse.email}`} className="flex items-center p-2 w-full  hover:bg-[#f4f4f4] rounded-xl">
                                 <Inbox className="h-4 w-4 mr-3" />
                                 <span className="text-sm">{adresse.email}</span>
                             </Link>
