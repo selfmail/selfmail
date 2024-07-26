@@ -4,6 +4,8 @@ import { z } from "zod";
 import { app } from "..";
 import { config } from "../../config";
 import { resend } from "../../resend";
+import { bearerAuth } from "hono/bearer-auth";
+import { auth } from "../auth";
 
 /**
  * Handles the route to receive an email.
@@ -22,7 +24,14 @@ export default function ReceiveEmail() {
 	 * TODO: add documentation link
 	 * @see
 	 */
-	app.post("/email/receive", async (c) => {
+	app.post("/email/receive", bearerAuth({
+		verifyToken: async (token, c) => {
+			return await auth({
+				context: c,
+				token: token
+			})
+		}
+	}), async (c) => {
 		/**
 		 * Parsed body from hono. You can get now the provided email fields.
 		 */
@@ -48,12 +57,6 @@ export default function ReceiveEmail() {
 		 * The recipient of the email. Usefull when you use multiple adresses or domains.
 		 */
 		const recipient: string = body.recipient as string;
-		console.log({
-			recipient,
-			sender,
-			content,
-			subject
-		})
 		/**
 		 * Parsing the provided fields with zod, to make sure, we can working with the variables.
 		 */

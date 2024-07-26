@@ -3,6 +3,8 @@ import { app } from "..";
 import { db } from "database";
 import { config } from "../../config";
 import { resend } from "../../resend";
+import { bearerAuth } from "hono/bearer-auth";
+import { auth } from "../auth";
 
 /**
  * Send a new email with the API.
@@ -11,7 +13,14 @@ import { resend } from "../../resend";
  */
 export default function SendEmail() {
   // TODO: add authentication
-  app.post("/email/send", async (c) => {
+  app.post("/email/send", bearerAuth({
+    verifyToken: async (token, c) => {
+      return await auth({
+        token,
+        context: c
+      })
+    }
+  }), async (c) => {
     /**
      * Parsed body from hono. You can get now the provided email fields.
      */
@@ -111,6 +120,8 @@ export default function SendEmail() {
         },
       );
     }
+
+    // TODO: When the email was sent without an error, the contact should be updated
 
     return c.json(
       {

@@ -23,6 +23,7 @@ model User {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   role             Roles             @default(user) // standart role is the user. The first sign-in will be the admin
+  api_key          Key?
   contacts         Contact[]
   helpPosts        HelpPost[]
   deletedHelpPosts DeletedHelpPost[]
@@ -166,4 +167,14 @@ model Comment {
   userId  String
   post    HelpPost @relation(fields: [postId], references: [id])
   postId  String
+}
+
+// An api key. Every user can only have 1 api key.
+model Key {
+  id        String   @id @unique @default(cuid())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?  @unique
+  token     String   @unique @default(cuid())
+  createdAt DateTime @default(now())
+  service   Boolean  @default(false) // if this api key is for the service
 }
