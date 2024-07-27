@@ -23,7 +23,7 @@ export default function RootLayout({
       <body>
         <DialogProvider>
           {children}
-          <Toaster />
+          <Toaster richColors />
         </DialogProvider>
       </body>
     </html>

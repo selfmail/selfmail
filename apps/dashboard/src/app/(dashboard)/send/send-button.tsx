@@ -3,6 +3,8 @@
 import { Button } from "ui"
 import { useMailStore } from "./store"
 import { useState } from "react"
+import { toast } from "sonner"
+import { Pen } from "lucide-react"
 
 export default function SendButton({
     action
@@ -27,7 +29,10 @@ export default function SendButton({
     return (
         <Button onClick={async() => {
             if (!(adresse && content && recipient && subject)){
-                setError("Values not defined")
+                console.log(adresse, content, recipient, subject)
+                toast.error("Some values are not defined.", {
+                    description: "Content, Adresse, Recipient or subject are not defined."
+                })
                 return
             }
             const msg = await action({
@@ -36,6 +41,13 @@ export default function SendButton({
                 recipient,
                 subject
             })
+            if (msg) {
+                toast.error("We had an internal server error.", {
+                    description: msg
+                })
+                return
+            }
+            blancFields()
         }}>
             send
         </Button>
