@@ -20,8 +20,8 @@ const useMailStore = create<State & Action>((set) => ({
     content: undefined,
     recipient: undefined,
     subject: undefined,
-    updateAdresse: (adresse) => set(() => {adresse: adresse}),
-    updateContent: (content) => set(() => {content}),
-    updateRecipient: (recipient) => set(() => {recipient}),
-    updateSubject: (subject) => set(() => {subject})
+    updateAdresse: (adresse) => set(() => ({ adresse })),
+    updateContent: (content) => set(() => ({ content })),
+    updateRecipient: (recipient) => set(() => ({ recipient })),
+    updateSubject: (subject) => set(() => ({ subject }))
 }))
