@@ -5,6 +5,7 @@ import { redirect } from "next/navigation"
 import { Button } from "ui"
 import AdressCard from "./adresse-card"
 import Link from "next/link"
+import { DeleteAdresse } from "./action"
 
 /**
  * Manage you adresses on this page.
@@ -29,7 +30,7 @@ export default async function Adresse(): Promise<JSX.Element> {
             <p>With adresses you can adresses. For each adress will you get also an inbox.</p>
             {
                 adresses.map((adresse) => (
-                    <AdressCard key={adresse.email} adresse={adresse} />
+                    <AdressCard action={DeleteAdresse} key={adresse.email} adresse={adresse} />
                 ))
             }
             <Link href="/adresse/new">

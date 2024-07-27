@@ -3,24 +3,38 @@
 import { cn } from "lib/cn"
 import { Button, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTrigger } from "ui"
 import TrashButton from "./trash-button"
+import { Trash } from "lucide-react"
+import { DeleteAdresse } from "./action"
+import { useState } from "react"
 
 /**
  * The card for the adresses on the `/adresse` page.
  */
 export default function AdressCard({
-    adresse
+    adresse,
+    action
 }: {
     adresse: {
         email: string,
         id: string,
         type: "main" | "second" | "spam",
         userId: string,
-    }
+    },
+    action: (id: string) => Promise<void | string>
 }) {
+    const [error, setError] = useState<string | undefined>(undefined)
     return (
         <div className="p-2 ring-1 items-center border-b border-b-[#666666] bg-[#f4f4f4] justify-between ring-[#666666] rounded-xl flex">
             <p>{adresse.email}</p>
-            <div className="flex">
+            <div className="flex items-center space-x-2">
+                <p className="text-red-500">
+                    {error}
+                </p>
+                <Trash color="red" onClick={async () => {
+                    const msg = await action(adresse.id)
+                    if (!msg) window.location.reload()
+                    if (msg) setError(msg)
+                }} className="cursor-pointer h-4 w-4" />
                 <Dialog>
                     <DialogTrigger>
                         <p className={cn(adresse.type === "main" && "text-green-700", adresse.type === "spam" && "text-red-700", adresse.type === "second" && "text-neutral-700")}>

@@ -42,7 +42,7 @@ export default function InlineMenu() {
     <>
       <InlinePopover
         data-testid="inline-menu-main"
-        className='z-10 box-border border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-neutral-900 shadow-lg [&:not([data-state])]:hidden relative flex min-w-[120px] space-x-1 overflow-auto whitespace-nowrap rounded-md p-1'
+        className='z-10 box-border border text-white border-zinc-200 dark:border-zinc-800 bg-white dark:bg-neutral-900 shadow-lg [&:not([data-state])]:hidden relative flex min-w-[120px] space-x-1 overflow-auto whitespace-nowrap rounded-md p-1'
         onOpenChange={(open) => {
           if (!open) {
             setLinkMenuOpen(false)
