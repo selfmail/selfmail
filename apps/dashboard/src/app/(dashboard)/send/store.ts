@@ -15,7 +15,7 @@ type Action = {
     updateSubject: (subject: State["subject"]) => void
 }
 
-const useMailStore = create<State & Action>((set) => ({
+export const useMailStore = create<State & Action>((set) => ({
     adresse: undefined,
     content: undefined,
     recipient: undefined,

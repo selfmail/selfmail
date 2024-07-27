@@ -5,6 +5,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button, ButtonStyles } from "node_modules/ui/src/components/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTrigger } from "ui";
+import DeleteButton from "./delete-button";
+import { DeleteMail } from "./action";
 
 export default async function Email({
     params
@@ -40,14 +42,12 @@ export default async function Email({
                             <DialogDescription>
                                 Are you sure to delete this email? You are not able to undo this action.
                             </DialogDescription>
-                            <DialogFooter className="flex space-x-3 ">
+                            <DialogFooter className="flex space-x-3 items-center justify-end">
                                 <DialogClose>
                                     No
                                 </DialogClose>
                                 <DialogClose>
-                                    <Button variant={"danger"}>
-                                        Delete
-                                    </Button>
+                                    <DeleteButton id={email.id} action={DeleteMail} />
                                 </DialogClose>
                             </DialogFooter>
                         </DialogContent>

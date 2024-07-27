@@ -11,21 +11,24 @@ import InlineMenu from './inline-menu'
 import SlashMenu from './slash-menu'
 import "@/styles/prosekit.css"
 import { cn } from 'lib/cn'
+import { useMailStore } from '@/app/(dashboard)/send/store'
 export default function Editor({
   defaultContent,
-  onDocUpdate,
 }: {
   defaultContent?: NodeJSON
-  onDocUpdate?: (doc: NodeJSON) => void
 }) {
+  const {updateContent} = useMailStore()
+  const docUpdate = (doc: NodeJSON) => {
+    updateContent(doc.text)
+  }
   const editor = useMemo(() => {
     const extension = defineExtension()
     return createEditor({ extension, defaultDoc: defaultContent })
   }, [defaultContent])
 
   const handleDocChange = useCallback(
-    (doc: ProseMirrorNode) => onDocUpdate?.(jsonFromNode(doc)),
-    [onDocUpdate],
+    (doc: ProseMirrorNode) => docUpdate?.(jsonFromNode(doc)),
+    [docUpdate],
   )
   useDocChange(handleDocChange, { editor })
 
