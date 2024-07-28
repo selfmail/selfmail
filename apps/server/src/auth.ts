@@ -19,6 +19,7 @@ export async function auth({token, context}: {token: string, context: Context}):
     console.log(key)
     if (!key) return false
     // service api key
+    console.log("key is there")
     if (key && key.service) return true
     
     // checking if the user has the permissions to send or receive an email with this api key

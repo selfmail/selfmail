@@ -11,7 +11,7 @@ export default function DropdownMailList({
             <h3 className="font-medium">
                 Adresse:
             </h3>
-            <select value={adresse} onChange={(e) => updateAdresse(e.currentTarget.value)} name="adresse" className="p-1 outline-none rounded-md">
+            <select  onChange={(e) => updateAdresse(e.currentTarget.value)} name="adresse" className="p-1 outline-none border bg-[#f4f4f4] rounded-md">
                 {
                     adresses.map((a) => (
                         <option key={a} value={a}>

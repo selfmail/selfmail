@@ -7,10 +7,9 @@ export async function SendMail(mail: {
     subject: string,
 }): Promise<void | string> {
     "use server"
-
-    const req = await fetch(process.env.NODE_ENV === "development"? "https://localhost:5000/v1/email/send": `${process.env.BACKEND_URL}/v1/email/send`, {
+    const req = await fetch(process.env.NODE_ENV === "development"? "http://localhost:5000/v1/email/send": `${process.env.BACKEND_URL}/v1/email/send`, {
         method: "POST",
-        body: JSON.stringify({ adresse: mail.adresse, content: mail.content, recipient: mail.recipient, subject: mail.subject }),
+        body: JSON.stringify({ sender: mail.adresse, content: mail.content, recipient: mail.recipient, subject: mail.subject }),
         headers: {
             "Authorization": `Bearer ${process.env.API_KEY}`
         }

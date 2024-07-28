@@ -19,7 +19,7 @@ export default function Editor({
 }) {
   const {updateContent} = useMailStore()
   const docUpdate = (doc: string) => {
-    console.log(doc)
+    updateContent(doc)
   }
   const editor = useMemo(() => {
     const extension = defineExtension()

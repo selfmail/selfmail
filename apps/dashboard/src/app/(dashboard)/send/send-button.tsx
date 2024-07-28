@@ -29,7 +29,6 @@ export default function SendButton({
     return (
         <Button onClick={async() => {
             if (!(adresse && content && recipient && subject)){
-                console.log(adresse, content, recipient, subject)
                 toast.error("Some values are not defined.", {
                     description: "Content, Adresse, Recipient or subject are not defined."
                 })
@@ -47,7 +46,6 @@ export default function SendButton({
                 })
                 return
             }
-            blancFields()
         }}>
             send
         </Button>

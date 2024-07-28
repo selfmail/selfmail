@@ -14,16 +14,14 @@ export default async function Send() {
         where: {
             userId: req.userId
         }
-    }) 
+    })
     return (
         <main className="min-h-screen bg-[#e8e8e8]">
             <header id="send-header" className="flex flex-col">
                 <div className="flex items-center justify-between px-4 pt-4">
-                    <div className="flex items-cener space-x-2">
-                        <div className="flex items-center">
-                            <Link href={"/"}><ChevronLeft className="w-4 h-4" /></Link>
-                            <DropdownMailList adresses={adresses.map((a) => a.email)} />
-                        </div>
+                    <div className="flex items-center space-x-3">
+                        <Link href={"/"}><ChevronLeft className="w-4 h-4" /></Link>
+                        <DropdownMailList adresses={adresses.map((a) => a.email)} />
                     </div>
                     <div className="flex items-center">
                         <SendButton action={SendMail} />

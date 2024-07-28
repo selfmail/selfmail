@@ -24,7 +24,7 @@ export default function SendEmail() {
     /**
      * Parsed body from hono. You can get now the provided email fields.
      */
-    const body = await c.req.parseBody();
+    const body = await c.req.json();
 
     /**The email subject.
      *
@@ -50,14 +50,14 @@ export default function SendEmail() {
     /**
      * Parsing the provided fields with zod, to make sure, we can working with the variables.
      */
-    const emailSchema = z
+    const emailSchema = await z
       .object({
         content: z.string(),
         sender: z.string().email(),
         subject: z.string(),
         recipient: z.string().email(),
       })
-      .safeParse({
+      .safeParseAsync({
         subject,
         content,
         sender,
@@ -76,7 +76,6 @@ export default function SendEmail() {
         },
       );
     }
-
     // checking if the sender is in the db
     const adresse = await db.adresse.findUnique({
       where: {
@@ -109,10 +108,10 @@ export default function SendEmail() {
 
     if (error) {
       if (config.LOG_ERRORS_INTO_CONSOLE)
-        console.error("Could not send email to the recipient: \n\n" + error);
+        console.error("Could not send email to the recipient: \n\n" + error.message);
       return c.json(
         {
-          error: "Could not deliver email to the recipient: \n\n" + error,
+          error: "Could not deliver email to the recipient: \n\n" + error.message,
         },
         {
           status: 500,
