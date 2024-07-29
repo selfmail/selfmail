@@ -1,6 +1,5 @@
 import { checkRequest } from "@/server/checkRequest"
 import { db } from "database"
-import { User } from "lucide-react"
 import { redirect } from "next/navigation"
 import { Button } from "ui"
 import AdressCard from "./adresse-card"

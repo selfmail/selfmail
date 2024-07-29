@@ -2,6 +2,7 @@
 
 import { BarChart, ChevronsUpDown, Contact, HandCoins, HelpCircle, Home, Inbox, Keyboard, Mail, Mailbox, Plane, Search, Settings, Trash, User, Users } from "lucide-react"
 import Link from "next/link"
+import { Command, CommandItem, KBD } from "ui"
 
 export default function Sidebar({
     adresses
@@ -18,16 +19,23 @@ export default function Sidebar({
                     <ChevronsUpDown className="h-4 w-4" />
                 </div>
                 <div className="flex flex-col mx-3">
+
+                </div>
+                <Command trigger={
                     <div className="flex items-center p-2 justify-between cursor-pointer hover:bg-[#f4f4f4] rounded-xl">
                         <div className="flex">
                             <Search className="h-4 w-4 mr-3" />
                             <span className="text-sm">Search</span>
                         </div>
-                        <span className="text-sm bg-[#f5f5f5] text-black px-[4px] rounded-md border-b border-b-[#e5e5e5] ring-1 ring-[#d4d4d4]">
+                        <KBD>
                             ⌘ K
-                        </span>
+                        </KBD>
                     </div>
-                </div>
+                }>
+                    <CommandItem value="hey">
+                        hey
+                    </CommandItem>
+                </Command>
                 {/* The platform located links */}
                 <div className="flex flex-col mx-3">
                     <div className="flex items-center">
