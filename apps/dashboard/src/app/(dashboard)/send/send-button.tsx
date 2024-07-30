@@ -47,7 +47,7 @@ export default function SendButton({
                 return
             }
         }}>
-            send
+            send now
         </Button>
     )
 }

@@ -81,7 +81,7 @@ export default function DataTable({ data }: { data: email[] }): JSX.Element {
                         }} />
                     </div>
                 )) || (
-                        <p className="text-[#666666] mx-3 mt-3">You have no emails received yet.</p>
+                        <div className="text-[#666666] mx-3 flex items-center space-x-2"><span className="h-2 w-2 rounded-full bg-neutral-400 animate-pulse" /><p>We are listening on emails for you...</p></div>
                     )}
             </div>
             { emails.length > 0 && (

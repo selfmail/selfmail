@@ -2,13 +2,15 @@
 
 import { BarChart, ChevronsUpDown, Contact, HandCoins, HelpCircle, Home, Inbox, Keyboard, Mail, Mailbox, Plane, Search, Settings, Trash, User, Users } from "lucide-react"
 import Link from "next/link"
-import { Command, CommandItem, KBD } from "ui"
+import { KBD } from "ui"
+import { useCommandStore } from "./command"
 
 export default function Sidebar({
     adresses
 }: {
     adresses: { email: string }[]
 }) {
+    const {setOpen} = useCommandStore()
     return (
         <div className="hidden fixed left-0 top-0 bottom-0 lg:flex lg:w-[200px] xl:w-[250px] min-h-screen overflow-auto border-r-2  border-r-[#dddddddd] flex-col justify-between">
             <div className="space-y-3">
@@ -18,10 +20,7 @@ export default function Sidebar({
                     <p>henri</p>
                     <ChevronsUpDown className="h-4 w-4" />
                 </div>
-                <div className="flex flex-col mx-3">
-
-                </div>
-                <Command trigger={
+                <div className="flex flex-col mx-3" onClick={() => setOpen(true)}>
                     <div className="flex items-center p-2 justify-between cursor-pointer hover:bg-[#f4f4f4] rounded-xl">
                         <div className="flex">
                             <Search className="h-4 w-4 mr-3" />
@@ -31,11 +30,7 @@ export default function Sidebar({
                             ⌘ K
                         </KBD>
                     </div>
-                }>
-                    <CommandItem value="hey">
-                        hey
-                    </CommandItem>
-                </Command>
+                </div>
                 {/* The platform located links */}
                 <div className="flex flex-col mx-3">
                     <div className="flex items-center">

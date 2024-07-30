@@ -5,6 +5,7 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { DialogProvider } from "ui"
 import {Toaster} from "sonner"
+import CommandMenu from "@/components/elements/command";
 
 export const metadata: Metadata = {
   title: {
@@ -24,6 +25,7 @@ export default function RootLayout({
         <DialogProvider>
           {children}
           <Toaster richColors />
+          <CommandMenu />
         </DialogProvider>
       </body>
     </html>
