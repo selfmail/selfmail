@@ -4,7 +4,8 @@ import { Command } from "cmdk"
 import { Inbox, AtSign, User2, Info, Users, KeyRound, Loader, Loader2 } from "lucide-react"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 import { redirect, useRouter } from "next/navigation"
-import React, { useEffect, useMemo, useState } from "react"
+import React, { KeyboardEvent, useEffect, useMemo, useState } from "react"
+import { toast } from "sonner"
 import { KBD } from "ui"
 import { create } from "zustand"
 // Command state
@@ -108,6 +109,18 @@ export default function CommandMenu() {
         className: "focus-visible:border border-black"
     }
     const router = useRouter()
+
+    useEffect(() => {
+        const action = (e: globalThis.KeyboardEvent) => {
+            console.log(e)
+            if (e.key === "k" && e.ctrlKey) setOpen(!open)
+        }
+        document.addEventListener("keypress", (e) => action(e))
+
+        return (() => {
+            document.removeEventListener("keypress", (e) => action(e))
+        })
+    }, [])
 
     return (
         <>

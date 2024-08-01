@@ -1,3 +1,5 @@
+import Footer from "@/components/elements/footer";
+import Header from "@/components/elements/header";
 import "@/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
@@ -20,15 +22,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="en" className={`${GeistSans.variable} bg-[#e8e8e8] w-full flex justify-center`}>
       <body>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
+          <Header />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

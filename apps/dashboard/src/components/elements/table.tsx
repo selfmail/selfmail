@@ -9,12 +9,10 @@ import { create } from "zustand";
 
 type email = {
     id: string;
-    content: string;
     sender: string;
     subject: string;
     recipient: string;
     createdAt: Date;
-    userId: string;
 }
 
 // zustand store for the ids from the checked emails
@@ -40,7 +38,7 @@ export const useIds = create<state & action>((set) => ({
  * @param data - an array of mails
  * @returns {JSX.Element}
  */
-export default function DataTable({ data }: { data: email[] }): JSX.Element {
+export default function DataTable({ data, pagniation }: { data: email[], pagniation: /* Steps of the pagniation */ {first: number, last: number, difference: number} }): JSX.Element {
     const { id, setId } = useIds()
     const emails = useMemo(() => data, [data])
     const router = useRouter()

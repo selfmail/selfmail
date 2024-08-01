@@ -2,7 +2,7 @@
 import { type VariantProps, cva } from "class-variance-authority";
 import { cn } from "../cn";
 
-export const ButtonStyles = cva("badge", {
+export const ButtonStyles = cva("button", {
   variants: {
     variant: {
       primary: [
@@ -20,10 +20,11 @@ export const ButtonStyles = cva("badge", {
         "bg-gradient-to-t",
         "text-white",
         "bg-[#f4f4f4]",
-        "rounded-[8px]",
+        "rounded-md",
         "border-[2px]",
-        "border-[#616161]",
-        "px-2",
+        "border-neutral-700",
+        "px-3",
+        "py-1"
       ],
       danger: [
         "bg-gradient-to-t",
