@@ -14,7 +14,8 @@ export const ButtonStyles = cva("button", {
         "border-t-[1px]",
         "border-t-[#5e91f8]",
         "px-3",
-        "py-1"
+        "py-1",
+        "disabled:bg-red-400"
       ],
       secondary: [
         "bg-gradient-to-t",

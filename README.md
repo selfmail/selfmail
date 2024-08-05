@@ -17,11 +17,17 @@ You can easily try selfmail on your local machine. Git, Docker, Node.js and bun 
 ### How can I selfhost selfmail?
 
 A detailed documentation is on our [website](https://selfmail.app/docs). Here is a shord Guide: <br>
-TODO: implement the short guide
+- install [docker](https://docker.com) on your machine
+- insall the selfmail image
+- provide a db conection string and your resend api key
+... And your ready to start 🥳
+(docker image not avaiable yet)
 
 <p style="color: lightblue">
 [i] A custom domain, a <a href="https://resend.com">resend</a> account and a <a href="https://cloudflare.com">cloudflare</a> account is required to selfhost selfmail. Optional is a <a href="https://groq.com">Groq</a> account, for the ai features.
 </p>
+
+[i] We are planning to switch to a smtp server soon.
 
 ---
 Made by [henri](https://henri.gg) and the [community on github](https://github.com/i-am-henri/selfmail).

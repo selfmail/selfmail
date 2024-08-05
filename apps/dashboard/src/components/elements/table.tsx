@@ -38,7 +38,7 @@ export const useIds = create<state & action>((set) => ({
  * @param data - an array of mails
  * @returns {JSX.Element}
  */
-export default function DataTable({ data, pagniation }: { data: email[], pagniation: /* Steps of the pagniation */ {first: number, last: number, difference: number} }): JSX.Element {
+export default function DataTable({ data, pagniation, mailCounter }: { data: email[], pagniation: /* Steps of the pagniation */ {first: number, last: number, difference: number}, mailCounter: number }): JSX.Element {
     const { id, setId } = useIds()
     const emails = useMemo(() => data, [data])
     const router = useRouter()
@@ -46,7 +46,7 @@ export default function DataTable({ data, pagniation }: { data: email[], pagniat
         <div>
             <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                    <h2 className="text-3xl font-medium mx-3 ">Your Inbox</h2>
+                    <h2 className="text-3xl font-medium mx-3 ">Your Inbox <span className="ml-2 text-[#666666]">{mailCounter}</span></h2>
                 </div>
                 <div className="flex space-x-2 items-center mr-2">
                     {id.length > 0 && <>
@@ -84,6 +84,18 @@ export default function DataTable({ data, pagniation }: { data: email[], pagniat
             </div>
             { emails.length > 0 && (
                 <hr className="border-t-2 border-[#cccccc]" />
+            )}
+            {(
+                // row for the pagnation buttons
+                <div className="flex items-center space-x-2 p-4">
+                    <button className="disabled:bg-red-500" type="submit" disabled={pagniation.first === 0} onClick={() => router.push(`/?s=${pagniation.first - pagniation.difference}-${pagniation.last - pagniation.difference}`)}>
+                        before
+                    </button>
+                    <button className="disabled:bg-red-500" type="submit"  disabled={data.length < pagniation.difference} onClick={() => router.push(`/?s=${pagniation.last}-${pagniation.last + pagniation.difference}`)}>
+                        next
+                    </button>
+                    <p> - showing {pagniation.difference} items per page.</p>
+                </div>
             )}
         </div>
     )

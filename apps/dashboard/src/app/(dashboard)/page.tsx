@@ -40,6 +40,7 @@ export default async function Inbox({
     [key: string]: string | string[] | undefined
   }
 }): Promise<JSX.Element> {
+  
 
   // getting the pagniation
   const s = searchParams?.s as string
@@ -47,7 +48,7 @@ export default async function Inbox({
 
   // checking if the search param is a string an not array or undefined
   const pagniationSchema = await z.string().safeParseAsync(s)
-  if (!pagniationSchema.success) throw new Error("Seachparams have the wrong format.") 
+  if (!pagniationSchema.success) throw new Error("Seachparams have the wrong format.")
 
   // validating the numbers in this string
   const numbers = await checkPagniation(s)
@@ -84,10 +85,25 @@ export default async function Inbox({
     skip: first
   })
 
+  const emailcount = await db.email.count({
+    where: {
+      userId: req.userId
+    }
+  })
+  // no emails fount? => pushing the user to the last page with emails.
+  if (emails.length === 0 && first !== 0) {
+    const length = await db.email.count({
+      where: {
+        userId: req.userId
+      }
+    })
+    redirect(`/?s=${length - dif}-${length}`)
+  }
+
   return (
     <main className="min-h-screen bg-[#e8e8e8]">
       <div className="mt-3 flex flex-col">
-        <DataTable pagniation={{first, last, difference: dif}} data={emails} />
+        <DataTable mailCounter={emailcount} pagniation={{ first, last, difference: dif }} data={emails} />
       </div>
     </main>
   );

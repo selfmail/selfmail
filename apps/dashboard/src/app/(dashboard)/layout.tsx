@@ -14,7 +14,6 @@ export default async function DashboardLayout({
             email: true
         }
     })
-    console.log(adresses)
     return (
         <div className="min-h-screen bg-[#e8e8e8] flex">
             {/* 

@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Plus } from "lucide-react"
 
 export default async function HelpPage() {
+    //TODO: implement pagniation
     /**
      * The first 20 posts in the db
      */

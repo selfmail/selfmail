@@ -3,9 +3,8 @@
 import { Command } from "cmdk"
 import { Inbox, AtSign, User2, Info, Users, KeyRound, Loader, Loader2 } from "lucide-react"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
-import { redirect, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import React, { KeyboardEvent, useEffect, useMemo, useState } from "react"
-import { toast } from "sonner"
 import { KBD } from "ui"
 import { create } from "zustand"
 // Command state
@@ -126,7 +125,7 @@ export default function CommandMenu() {
         <>
             {open &&
                 (<>
-                    <Command.Dialog className="z-20 hidden md:flex flex-col lg:w-[500px]  translate-x-[-50%] translate-y-[-50%] p-2 border fixed left-[50%] top-[50%] rounded-xl bg-white" onOpenChange={setOpen} open={open}>
+                    <Command.Dialog className="z-30 hidden md:flex flex-col lg:w-[500px]  translate-x-[-50%] translate-y-[-50%] p-2 border fixed left-[50%] top-[50%] rounded-xl bg-white" onOpenChange={setOpen} open={open}>
                         <Command.Input placeholder="Type to search..." className="mb-2 border-2 border-[#dddddddd] p-2 rounded-xl bg-[#f4f4f4] focus-visible:outline-none focus-visible:border-[#666666]" />
                         <Command.Empty className="flex items-center space-x-2">
                             <Info className="h-4 w-4 text-red-400" /> <p>Command not found.</p>
@@ -154,7 +153,7 @@ export default function CommandMenu() {
                             ))}
                         </Command.List>
                     </Command.Dialog>
-                    <div className="z-10 hidden md:flex fixed top-0 bottom-0 right-0 left-0 bg-[#0000004b]" />
+                    <div className="z-20 hidden md:flex fixed top-0 bottom-0 right-0 left-0 bg-[#0000004b]" />
                 </>)
             }
         </>
