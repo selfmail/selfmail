@@ -2,18 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
-    h1 {
-        @apply text-2xl font-medium
-    }
-    h2 {
-        @apply text-xl font-medium
-    }
-    h3 {
-        @apply text-lg font-medium
-    }
-    p {
-        @apply text-[#666666]
-    }
+  h1 {
+    @apply text-2xl font-medium;
+  }
+  h2 {
+    @apply text-xl font-medium;
+  }
+  h3 {
+    @apply text-lg font-medium;
+  }
+  p {
+    @apply text-[#666666];
+  }
 }

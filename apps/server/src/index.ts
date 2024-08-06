@@ -23,7 +23,7 @@ type Variables = {
   rate_limited: string;
 };
 
-export const app = new Hono<{ Variables: Variables }>().basePath("/v1")
+export const app = new Hono<{ Variables: Variables }>().basePath("/v1");
 
 /**
  * The hono middleware

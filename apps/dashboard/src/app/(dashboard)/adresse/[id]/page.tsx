@@ -1,7 +1,3 @@
 export default async function AdresseInbox() {
-    return (
-        <div>
-            
-        </div>
-    )
+  return <div></div>;
 }

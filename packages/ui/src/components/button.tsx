@@ -15,7 +15,7 @@ export const ButtonStyles = cva("button", {
         "border-t-[#5e91f8]",
         "px-3",
         "py-1",
-        "disabled:bg-red-400"
+        "disabled:bg-red-400",
       ],
       secondary: [
         "bg-gradient-to-t",
@@ -25,7 +25,7 @@ export const ButtonStyles = cva("button", {
         "border-[2px]",
         "border-neutral-700",
         "px-3",
-        "py-1"
+        "py-1",
       ],
       danger: [
         "bg-gradient-to-t",
@@ -36,7 +36,7 @@ export const ButtonStyles = cva("button", {
         "border-[2px]",
         "border-[#e76176]",
         "px-2",
-      ]
+      ],
     },
     size: {
       small: ["text-sm", "py-0", "px-1"],
@@ -51,10 +51,10 @@ export const ButtonStyles = cva("button", {
 
 export interface ButtonProps
   extends React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  >,
-  VariantProps<typeof ButtonStyles> {
+      React.ButtonHTMLAttributes<HTMLButtonElement>,
+      HTMLButtonElement
+    >,
+    VariantProps<typeof ButtonStyles> {
   children: React.ReactNode;
 }
 

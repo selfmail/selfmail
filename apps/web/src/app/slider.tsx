@@ -1,15 +1,13 @@
-"use client"
+"use client";
 
-import Image from "next/image"
+import Image from "next/image";
 
 export default function Slider() {
-    return (
-        <div className="space-y-4">
-            <div className="flex">
+  return (
+    <div className="space-y-4">
+      <div className="flex"></div>
 
-            </div>
-
-            <Image src={""} alt="" />
-        </div>
-    )
+      <Image src={""} alt="" />
+    </div>
+  );
 }

@@ -1,51 +1,51 @@
-"use client"
-import type { LinkAttrs } from 'prosekit/extensions/link'
-import type { EditorState } from 'prosekit/pm/state'
-import { useEditor } from 'prosekit/react'
-import { InlinePopover } from 'prosekit/react/inline-popover'
-import { useState } from 'react'
+"use client";
+import type { LinkAttrs } from "prosekit/extensions/link";
+import type { EditorState } from "prosekit/pm/state";
+import { useEditor } from "prosekit/react";
+import { InlinePopover } from "prosekit/react/inline-popover";
+import { useState } from "react";
 
-import Button from './button'
-import type { EditorExtension } from './extension'
+import Button from "./button";
+import type { EditorExtension } from "./extension";
 
 export default function InlineMenu() {
-  const editor = useEditor<EditorExtension>({ update: true })
+  const editor = useEditor<EditorExtension>({ update: true });
 
-  const [linkMenuOpen, setLinkMenuOpen] = useState(false)
-  const toggleLinkMenuOpen = () => setLinkMenuOpen((open) => !open)
+  const [linkMenuOpen, setLinkMenuOpen] = useState(false);
+  const toggleLinkMenuOpen = () => setLinkMenuOpen((open) => !open);
 
   const getCurrentLink = (state: EditorState): string | undefined => {
-    const { $from } = state.selection
-    const marks = $from.marksAcross($from)
+    const { $from } = state.selection;
+    const marks = $from.marksAcross($from);
     if (!marks) {
-      return
+      return;
     }
     for (const mark of marks) {
-      if (mark.type.name === 'link') {
-        return (mark.attrs as LinkAttrs).href
+      if (mark.type.name === "link") {
+        return (mark.attrs as LinkAttrs).href;
       }
     }
-  }
+  };
 
   const handleLinkUpdate = (href?: string) => {
     if (href) {
-      editor.commands.addLink({ href })
+      editor.commands.addLink({ href });
     } else {
-      editor.commands.removeLink()
+      editor.commands.removeLink();
     }
 
-    setLinkMenuOpen(false)
-    editor.focus()
-  }
+    setLinkMenuOpen(false);
+    editor.focus();
+  };
 
   return (
     <>
       <InlinePopover
         data-testid="inline-menu-main"
-        className='z-10 box-border border text-white border-zinc-200 dark:border-zinc-800 bg-white dark:bg-neutral-900 shadow-lg [&:not([data-state])]:hidden relative flex min-w-[120px] space-x-1 overflow-auto whitespace-nowrap rounded-md p-1'
+        className="relative z-10 box-border flex min-w-[120px] space-x-1 overflow-auto whitespace-nowrap rounded-md border border-zinc-200 bg-white p-1 text-white shadow-lg dark:border-zinc-800 dark:bg-neutral-900 [&:not([data-state])]:hidden"
         onOpenChange={(open) => {
           if (!open) {
-            setLinkMenuOpen(false)
+            setLinkMenuOpen(false);
           }
         }}
       >
@@ -55,7 +55,7 @@ export default function InlineMenu() {
           onClick={() => editor.commands.toggleBold()}
           tooltip="Bold"
         >
-          <div className='i-lucide-bold h-5 w-5'></div>
+          <div className="i-lucide-bold h-5 w-5"></div>
         </Button>
 
         <Button
@@ -64,7 +64,7 @@ export default function InlineMenu() {
           onClick={() => editor.commands.toggleItalic()}
           tooltip="Italic"
         >
-          <div className='i-lucide-italic h-5 w-5'></div>
+          <div className="i-lucide-italic h-5 w-5"></div>
         </Button>
 
         <Button
@@ -73,7 +73,7 @@ export default function InlineMenu() {
           onClick={() => editor.commands.toggleUnderline()}
           tooltip="Underline"
         >
-          <div className='i-lucide-underline h-5 w-5'></div>
+          <div className="i-lucide-underline h-5 w-5"></div>
         </Button>
 
         <Button
@@ -82,7 +82,7 @@ export default function InlineMenu() {
           onClick={() => editor.commands.toggleStrike()}
           tooltip="Strikethrough"
         >
-          <div className='i-lucide-strikethrough h-5 w-5'></div>
+          <div className="i-lucide-strikethrough h-5 w-5"></div>
         </Button>
 
         <Button
@@ -91,44 +91,44 @@ export default function InlineMenu() {
           onClick={() => editor.commands.toggleCode()}
           tooltip="Code"
         >
-          <div className='i-lucide-code h-5 w-5'></div>
+          <div className="i-lucide-code h-5 w-5"></div>
         </Button>
 
-        {editor.commands.addLink.canApply({ href: '' }) && (
+        {editor.commands.addLink.canApply({ href: "" }) && (
           <Button
             pressed={editor.marks.link.isActive()}
             onClick={() => {
-              editor.commands.expandLink()
-              toggleLinkMenuOpen()
+              editor.commands.expandLink();
+              toggleLinkMenuOpen();
             }}
             tooltip="Link"
           >
-            <div className='i-lucide-link h-5 w-5'></div>
+            <div className="i-lucide-link h-5 w-5"></div>
           </Button>
         )}
       </InlinePopover>
 
       <InlinePopover
-        placement={'bottom'}
+        placement={"bottom"}
         defaultOpen={false}
         open={linkMenuOpen}
         onOpenChange={setLinkMenuOpen}
         data-testid="inline-menu-link"
-        className='z-10 box-border border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-neutral-900 shadow-lg [&:not([data-state])]:hidden relative flex flex-col w-xs rounded-lg p-4 gap-y-2 items-stretch'
+        className="w-xs relative z-10 box-border flex flex-col items-stretch gap-y-2 rounded-lg border border-zinc-200 bg-white p-4 shadow-lg dark:border-zinc-800 dark:bg-neutral-900 [&:not([data-state])]:hidden"
       >
         {linkMenuOpen && (
           <form
             onSubmit={(event) => {
-              event.preventDefault()
-              const target = event.target as HTMLFormElement | null
-              const href = target?.querySelector('input')?.value?.trim()
-              handleLinkUpdate(href)
+              event.preventDefault();
+              const target = event.target as HTMLFormElement | null;
+              const href = target?.querySelector("input")?.value?.trim();
+              handleLinkUpdate(href);
             }}
           >
             <input
               placeholder="Paste the link..."
               defaultValue={getCurrentLink(editor.state)}
-              className='flex h-9 rounded-md w-full bg-white dark:bg-neutral-900 px-3 py-2 text-sm placeholder:text-zinc-500 dark:placeholder:text-zinc-500 transition border box-border border-zinc-200 dark:border-zinc-800 border-solid ring-0 ring-transparent focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-300 focus-visible:ring-offset-0 outline-none focus-visible:outline-none file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:cursor-not-allowed disabled:opacity-50'
+              className="box-border flex h-9 w-full rounded-md border border-solid border-zinc-200 bg-white px-3 py-2 text-sm outline-none ring-0 ring-transparent transition file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-neutral-900 dark:placeholder:text-zinc-500 dark:focus-visible:ring-zinc-300"
             ></input>
           </form>
         )}
@@ -136,12 +136,12 @@ export default function InlineMenu() {
           <button
             onClick={() => handleLinkUpdate()}
             onMouseDown={(event) => event.preventDefault()}
-            className='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white dark:ring-offset-neutral-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-300 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border-0 bg-zinc-900 dark:bg-zinc-50 text-zinc-50 dark:text-zinc-900 hover:bg-zinc-900/90 dark:hover:bg-zinc-50/90 h-9 px-3'
+            className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md border-0 bg-zinc-900 px-3 text-sm font-medium text-zinc-50 ring-offset-white transition-colors hover:bg-zinc-900/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:ring-offset-neutral-900 dark:hover:bg-zinc-50/90 dark:focus-visible:ring-zinc-300"
           >
             Remove link
           </button>
         )}
       </InlinePopover>
     </>
-  )
+  );
 }

@@ -29,11 +29,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.cjs",
-    "**/*.js",
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.js"],
   "exclude": ["node_modules"]
 }

@@ -1,8 +1,7 @@
 const config = {
-    plugins: {
-      tailwindcss: {},
-    },
-  };
-  
+  plugins: {
+    tailwindcss: {},
+  },
+};
+
 module.exports = config;
-  

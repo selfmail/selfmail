@@ -1,15 +1,9 @@
 export default function Contact({
-    params
+  params,
 }: {
-    params: {
-        id: string
-    }
+  params: {
+    id: string;
+  };
 }) {
-    return (
-        <div>
-            {
-                params.id
-            }
-        </div>
-    )
+  return <div>{params.id}</div>;
 }

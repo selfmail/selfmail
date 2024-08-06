@@ -12,7 +12,7 @@
  */
 
 import PostalMime from 'postal-mime';
-import {z} from "zod"
+import { z } from 'zod';
 
 export default {
 	async email(message, env, ctx): Promise<void> {
@@ -26,37 +26,41 @@ export default {
 		 * `env.API_KEY`.
 		 */
 		const req = await fetch(`https://api.selfmail.app/v1/receive/`, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				Authorization: `Bearer ${env.API_KEY}`
-			}
-		})
-		
-		const data = await req.json() as {
-			error: string | null,
-			message: string | null,
-			code: number
-		}
-		const parse = await z.object({
-			error: z.string().nullable(),
-			message: z.string().nullable(),
-			code: z.number()
-		}).safeParseAsync({
-			error: data.error,
-			message: data.message,
-			code: data.code
-		})
+				Authorization: `Bearer ${env.API_KEY}`,
+			},
+		});
+
+		const data = (await req.json()) as {
+			error: string | null;
+			message: string | null;
+			code: number;
+		};
+		const parse = await z
+			.object({
+				error: z.string().nullable(),
+				message: z.string().nullable(),
+				code: z.number(),
+			})
+			.safeParseAsync({
+				error: data.error,
+				message: data.message,
+				code: data.code,
+			});
 
 		if (!parse.success) {
-			message.setReject("Your email was rejected. We had an internal server error. Please contact us here: https://selfmail.app.")
-			return
+			message.setReject('Your email was rejected. We had an internal server error. Please contact us here: https://selfmail.app.');
+			return;
 		}
 
-		const {code, error} = parse.data
-		const msg = parse.data.message
+		const { code, error } = parse.data;
+		const msg = parse.data.message;
 		// error handling
 		if (error) {
-			message.setReject(`We have an internal server error. Please contact us here: https://selfmail.app. The error: ${error}, code: ${code}`)
+			message.setReject(
+				`We have an internal server error. Please contact us here: https://selfmail.app. The error: ${error}, code: ${code}`,
+			);
 		}
 	},
 } satisfies ExportedHandler<Env>;

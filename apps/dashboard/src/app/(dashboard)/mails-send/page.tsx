@@ -1,7 +1,3 @@
 export default function MailsSend() {
-    return (
-        <div>
-            
-        </div>
-    )
+  return <div></div>;
 }

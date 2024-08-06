@@ -1,12 +1,8 @@
-"use client"
+"use client";
 
 /**
- * 
+ *
  */
 export default function TrashButton() {
-    return (
-        <div>
-            
-        </div>
-    )
+  return <div></div>;
 }

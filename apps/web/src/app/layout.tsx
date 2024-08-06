@@ -12,7 +12,8 @@ export const metadata: Metadata = {
     default: "Selfmail | your email provider",
     template: "%s | Selfmail",
   },
-  description: "Selfmail is a collaberative email provider, completely open source.",
+  description:
+    "Selfmail is a collaberative email provider, completely open source.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
@@ -22,13 +23,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${GeistSans.variable} bg-[#e8e8e8] w-full flex justify-center`}>
+    <html
+      lang="en"
+      className={`${GeistSans.variable} flex w-full justify-center bg-[#e8e8e8]`}
+    >
       <body>
-        <ThemeProvider
-          attribute="class"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
           <Header />
           {children}
           <Footer />
