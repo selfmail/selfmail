@@ -18,8 +18,8 @@ async function checkPagniation(s: string): Promise<{
     first: z.number(),
     last: z.number(),
   }).safeParseAsync({
-    first: +string[0]!,
-    last: +string[1]!
+    first: Number(string[0]),
+    last: Number(string[1]),
   })
   if (!parse.success) return undefined
 
@@ -40,7 +40,7 @@ export default async function Inbox({
     [key: string]: string | string[] | undefined
   }
 }): Promise<JSX.Element> {
-  
+
 
   // getting the pagniation
   const s = searchParams?.s as string
