@@ -34,3 +34,7 @@ A detailed documentation is on our [website](https://selfmail.app/docs). Here is
 ---
 
 Made by [henri](https://henri.gg) and the [community on github](https://github.com/i-am-henri/selfmail).
+
+---
+⚠️⚠️⚠️
+This project is not ready yet. It's still in development, tests are misssing, the documentation is not started yet, there is for now only a basic and insecure version of the api, the docker image is not there and the smtp server is still not implemented. You can try it out, but please don't use this project in production.
