@@ -13,6 +13,7 @@
     "@egoist/tailwindcss-icons": "^1.8.1",
     "@iconify-json/lucide": "^1.1.202",
     "@lucia-auth/adapter-prisma": "^4.0.1",
+    "@prosekit/extensions": "^0.7.9",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "^5.51.1",
     "@tanstack/react-table": "^8.19.3",

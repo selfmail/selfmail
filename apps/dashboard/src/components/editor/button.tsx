@@ -26,6 +26,7 @@ export default function Button({
           data-state={pressed ? "on" : "off"}
           disabled={disabled}
           onClick={() => onClick?.()}
+          type="button"
           onMouseDown={(event) => event.preventDefault()}
           className="outline-unset focus-visible:outline-unset flex min-h-9 min-w-9 items-center justify-center rounded-md bg-transparent p-2 text-sm font-medium transition hover:bg-zinc-100 focus-visible:ring-2 focus-visible:ring-zinc-900 disabled:pointer-events-none disabled:opacity-50 hover:disabled:opacity-50 data-[state=on]:bg-gray-200 dark:hover:bg-zinc-800 dark:focus-visible:ring-zinc-300 dark:data-[state=on]:bg-gray-700"
         >

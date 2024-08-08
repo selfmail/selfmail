@@ -55,7 +55,7 @@ export default function InlineMenu() {
           onClick={() => editor.commands.toggleBold()}
           tooltip="Bold"
         >
-          <div className="i-lucide-bold h-5 w-5"></div>
+          <div className="i-lucide-bold h-5 w-5" />
         </Button>
 
         <Button
@@ -64,7 +64,7 @@ export default function InlineMenu() {
           onClick={() => editor.commands.toggleItalic()}
           tooltip="Italic"
         >
-          <div className="i-lucide-italic h-5 w-5"></div>
+          <div className="i-lucide-italic h-5 w-5" />
         </Button>
 
         <Button
@@ -73,7 +73,7 @@ export default function InlineMenu() {
           onClick={() => editor.commands.toggleUnderline()}
           tooltip="Underline"
         >
-          <div className="i-lucide-underline h-5 w-5"></div>
+          <div className="i-lucide-underline h-5 w-5" />
         </Button>
 
         <Button
@@ -82,7 +82,7 @@ export default function InlineMenu() {
           onClick={() => editor.commands.toggleStrike()}
           tooltip="Strikethrough"
         >
-          <div className="i-lucide-strikethrough h-5 w-5"></div>
+          <div className="i-lucide-strikethrough h-5 w-5" />
         </Button>
 
         <Button
@@ -91,7 +91,7 @@ export default function InlineMenu() {
           onClick={() => editor.commands.toggleCode()}
           tooltip="Code"
         >
-          <div className="i-lucide-code h-5 w-5"></div>
+          <div className="i-lucide-code h-5 w-5" />
         </Button>
 
         {editor.commands.addLink.canApply({ href: "" }) && (
@@ -103,7 +103,7 @@ export default function InlineMenu() {
             }}
             tooltip="Link"
           >
-            <div className="i-lucide-link h-5 w-5"></div>
+            <div className="i-lucide-link h-5 w-5" />
           </Button>
         )}
       </InlinePopover>
@@ -129,11 +129,12 @@ export default function InlineMenu() {
               placeholder="Paste the link..."
               defaultValue={getCurrentLink(editor.state)}
               className="box-border flex h-9 w-full rounded-md border border-solid border-zinc-200 bg-white px-3 py-2 text-sm outline-none ring-0 ring-transparent transition file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-neutral-900 dark:placeholder:text-zinc-500 dark:focus-visible:ring-zinc-300"
-            ></input>
+            />
           </form>
         )}
         {editor.marks.link.isActive() && (
           <button
+            type="button"
             onClick={() => handleLinkUpdate()}
             onMouseDown={(event) => event.preventDefault()}
             className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md border-0 bg-zinc-900 px-3 text-sm font-medium text-zinc-50 ring-offset-white transition-colors hover:bg-zinc-900/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:ring-offset-neutral-900 dark:hover:bg-zinc-50/90 dark:focus-visible:ring-zinc-300"

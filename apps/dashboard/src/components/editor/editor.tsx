@@ -2,21 +2,19 @@
 import "prosekit/basic/style.css";
 
 import {
-  createEditor,
-  htmlFromNode,
-  jsonFromNode,
   type NodeJSON,
+  createEditor,
+  htmlFromNode
 } from "prosekit/core";
 import type { ProseMirrorNode } from "prosekit/pm/model";
 import { ProseKit, useDocChange } from "prosekit/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { useMailStore } from "@/app/(dashboard)/send/store";
+import "@/styles/prosekit.css";
 import { defineExtension } from "./extension";
 import InlineMenu from "./inline-menu";
 import SlashMenu from "./slash-menu";
-import "@/styles/prosekit.css";
-import { cn } from "lib/cn";
-import { useMailStore } from "@/app/(dashboard)/send/store";
 export default function Editor({
   defaultContent,
 }: {
@@ -43,7 +41,7 @@ export default function Editor({
   useEffect(() => {
     const element = document.getElementById("send-header");
     setHeight(element?.offsetHeight || 0);
-  }, [height, setHeight]);
+  }, []);
   console.log(height);
 
   return (
@@ -54,7 +52,7 @@ export default function Editor({
             ref={editor.mount}
             style={{ minHeight: `calc(100vh - ${height}px - 32px)` }}
             className='ProseMirror box-border overflow-y-auto outline-none outline-0 [&_pre]:bg-zinc-800 [&_pre]:text-white [&_span[data-mention="tag"]]:text-violet-500 [&_span[data-mention="user"]]:text-blue-500'
-          ></div>
+          />
           <SlashMenu />
           <InlineMenu />
         </div>
