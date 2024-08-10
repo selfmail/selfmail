@@ -1,5 +1,5 @@
 import { db } from "database";
-import { Context } from "hono";
+import type { Context } from "hono";
 
 /**
  * Authentication for the api.
@@ -10,25 +10,23 @@ import { Context } from "hono";
  * or for the cloudflare workers.
  */
 export async function auth({
-  token,
-  context,
+	token,
 }: {
-  token: string;
-  context: Context;
+	token: string;
+	context: Context;
 }): Promise<boolean> {
-  console.log(token);
-  const key = await db.key.findUnique({
-    where: {
-      token,
-    },
-  });
-  console.log(key);
-  if (!key) return false;
-  // service api key
-  console.log("key is there");
-  if (key && key.service) return true;
+	console.log(token);
+	const key = await db.key.findUnique({
+		where: {
+			token,
+		},
+	});
+	if (!key) return false;
+	// service api key
+	console.log("key is there");
+	if (key?.service) return true;
 
-  // checking if the user has the permissions to send or receive an email with this api key
-  // TODO: implement this security thing
-  return true;
+	// checking if the user has the permissions to send or receive an email with this api key
+	// TODO: implement this security thing
+	return true;
 }

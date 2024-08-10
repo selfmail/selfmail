@@ -8,7 +8,7 @@ import {
 } from "prosekit/core";
 import type { ProseMirrorNode } from "prosekit/pm/model";
 import { ProseKit, useDocChange } from "prosekit/react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useMailStore } from "@/app/(dashboard)/send/store";
 import "@/styles/prosekit.css";
@@ -29,10 +29,7 @@ export default function Editor({
     return createEditor({ extension, defaultDoc: defaultContent });
   }, [defaultContent]);
 
-  const handleDocChange = useCallback(
-    (doc: ProseMirrorNode) => docUpdate?.(htmlFromNode(doc)),
-    [docUpdate],
-  );
+  const handleDocChange = (doc: ProseMirrorNode) => docUpdate?.(htmlFromNode(doc))
   useDocChange(handleDocChange, { editor });
 
   // get the height of the header
