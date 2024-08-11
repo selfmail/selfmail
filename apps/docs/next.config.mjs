@@ -1,6 +1,10 @@
-import { withContentCollections } from '@content-collections/next';
+import createMDX from 'fumadocs-mdx/config';
+
+const withMDX = createMDX();
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const config = {
+  reactStrictMode: true,
+};
 
-export default withContentCollections(nextConfig);
+export default withMDX(config);
