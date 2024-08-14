@@ -8,15 +8,12 @@ import {
   HelpCircle,
   Home,
   Inbox,
-  Keyboard,
-  Mail,
   Mailbox,
   Plane,
   Search,
   Settings,
-  Trash,
   User,
-  Users,
+  Users
 } from "lucide-react";
 import Link from "next/link";
 import { KBD } from "ui";
@@ -37,7 +34,7 @@ export default function Sidebar({
           <p>henri</p>
           <ChevronsUpDown className="h-4 w-4" />
         </div>
-        <div className="mx-3 flex flex-col" onClick={() => setOpen(true)}>
+        <div className="mx-3 flex flex-col" onClick={() => setOpen(true)} onKeyDown={() => setOpen(true)}>
           <div className="flex cursor-pointer items-center justify-between rounded-xl p-2 hover:bg-[#f4f4f4]">
             <div className="flex">
               <Search className="mr-3 h-4 w-4" />
@@ -136,13 +133,7 @@ export default function Sidebar({
         </Link>
         <hr className="w-full border-2 border-[#cccccccc]" />
         <div className="mt-2 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <p>free plan </p>
-            <span className="ml-2 h-2 w-2 animate-pulse rounded-full bg-[#555555]" />
-          </div>
-          <span className="ml-4 h-min cursor-pointer rounded-md bg-[#666666] p-1 text-sm text-[#f4f4f4]">
-            upgrade
-          </span>
+
         </div>
       </div>
     </div>

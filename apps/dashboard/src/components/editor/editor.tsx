@@ -15,21 +15,19 @@ import "@/styles/prosekit.css";
 import { defineExtension } from "./extension";
 import InlineMenu from "./inline-menu";
 import SlashMenu from "./slash-menu";
-export default function Editor({
+
+export default function EditorComponent({
   defaultContent,
 }: {
   defaultContent?: NodeJSON;
 }) {
   const { updateContent } = useMailStore();
-  const docUpdate = (doc: string) => {
-    updateContent(doc);
-  };
   const editor = useMemo(() => {
-    const extension = defineExtension();
+    const extension = defineExtension()
     return createEditor({ extension, defaultDoc: defaultContent });
-  }, [defaultContent]);
+  }, [defaultContent])
 
-  const handleDocChange = (doc: ProseMirrorNode) => docUpdate?.(htmlFromNode(doc))
+  const handleDocChange = (doc: ProseMirrorNode) => updateContent?.(htmlFromNode(doc))
   useDocChange(handleDocChange, { editor });
 
   // get the height of the header

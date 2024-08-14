@@ -1,8 +1,6 @@
-import Header from "@/components/elements/header";
 import { cn } from "@/lib/utils";
 import { Newsreader } from "next/font/google";
 import { Button } from "ui";
-import Slider from "./slider";
 const newsreader = Newsreader({
   style: "normal",
   subsets: ["latin"],
@@ -27,8 +25,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Slider */}
-      <Slider />
     </main>
   );
 }

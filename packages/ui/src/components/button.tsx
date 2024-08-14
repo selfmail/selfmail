@@ -6,63 +6,44 @@ export const ButtonStyles = cva("button", {
   variants: {
     variant: {
       primary: [
-        "bg-gradient-to-t",
         "text-white",
-        "from-[#2d73f0]",
-        "to-[#3776f5]",
-        "rounded-md",
-        "border-t-[1px]",
-        "border-t-[#5e91f8]",
-        "px-3",
-        "py-1",
-        "disabled:bg-red-400",
+        "bg-[#296dff]",
+        "disabled:bg-[#296dffaa]",
+        "disabled:cursor-not-allowed",
       ],
       secondary: [
-        "bg-gradient-to-t",
+        "bg-[#252525]",
         "text-white",
-        "bg-[#f4f4f4]",
-        "rounded-md",
-        "border-[2px]",
-        "border-neutral-700",
-        "px-3",
-        "py-1",
+        "disabled:bg-[#252525aa]",
+        "disabled:cursor-not-allowed",
       ],
       danger: [
-        "bg-gradient-to-t",
         "text-white",
-        "from-[#e76176]",
-        "to-[#e76171]",
-        "rounded-[8px]",
-        "border-[2px]",
-        "border-[#e76176]",
-        "px-2",
+        "bg-[#e76176]",
+        "disabled:bg-[#e76176aa]",
+        "disabled:cursor-not-allowed",
       ],
-    },
-    size: {
-      small: ["text-sm", "py-0", "px-1"],
-      medium: ["text-base", "py-0", "px-2"],
     },
   },
   defaultVariants: {
     variant: "primary",
-    size: "medium",
   },
 });
 
 export interface ButtonProps
   extends React.DetailedHTMLProps<
-      React.ButtonHTMLAttributes<HTMLButtonElement>,
-      HTMLButtonElement
-    >,
-    VariantProps<typeof ButtonStyles> {
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  >,
+  VariantProps<typeof ButtonStyles> {
   children: React.ReactNode;
 }
 
-export function Button({ variant, children, size, ...props }: ButtonProps) {
+export function Button({ variant, children, ...props }: ButtonProps) {
   return (
     <button
       {...props}
-      className={cn(ButtonStyles({ variant, size }), props.className)}
+      className={cn(ButtonStyles({ variant }), props.className, "px-3 text-[16px] h-[32px] rounded-[0.5rem]")}
     >
       {children}
     </button>

@@ -2,18 +2,15 @@
 
 import { Command } from "cmdk";
 import {
-  Inbox,
   AtSign,
-  User2,
+  Inbox,
   Info,
-  Users,
-  KeyRound,
-  Loader,
-  Loader2,
+  User2,
+  Users
 } from "lucide-react";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import React, { KeyboardEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, } from "react";
 import { KBD } from "ui";
 import { create } from "zustand";
 // Command state
@@ -77,13 +74,13 @@ export const actions: ActionArray = [
     title: "Teams",
     group: "Platform",
     icon: <Users className="h-4 w-4" />,
-    action: () => {},
+    action: () => { },
   },
   {
     title: "Settings",
     group: "Platform",
     icon: <User2 className="h-4 w-4" />,
-    action: () => {},
+    action: () => { },
   },
 ];
 
@@ -94,7 +91,7 @@ const actionsWithGroup = actions.filter((a) => {
 }) as ActionArrayWithGroup;
 
 // filter the unique groups
-let groups: ActionArrayWithGroup = [];
+const groups: ActionArrayWithGroup = [];
 actions.map((action) => {
   if (!action.group) return;
   const group = groups.find((a) => a.group === action.group);
@@ -110,9 +107,6 @@ const getActions = (group: string): ActionArrayWithGroup => {
 
 export default function CommandMenu() {
   const { open, setOpen } = useCommandStore();
-  const style = {
-    className: "focus-visible:border border-black",
-  };
   const router = useRouter();
 
   useEffect(() => {
@@ -125,7 +119,7 @@ export default function CommandMenu() {
     return () => {
       document.removeEventListener("keypress", (e) => action(e));
     };
-  }, []);
+  }, [open, setOpen]);
 
   return (
     <>

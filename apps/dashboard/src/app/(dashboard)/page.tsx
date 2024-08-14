@@ -11,9 +11,9 @@ import { z } from "zod";
  */
 async function checkPagniation(s: string): Promise<
   | {
-      first: number;
-      last: number;
-    }
+    first: number;
+    last: number;
+  }
   | undefined
 > {
   const string = s.split("-"); // ["01", "-", "10"]
@@ -45,6 +45,7 @@ export default async function Inbox({
     [key: string]: string | string[] | undefined;
   };
 }): Promise<JSX.Element> {
+
   // getting the pagniation
   const s = searchParams?.s as string;
   if (!s) redirect("/?s=0-10");
@@ -58,8 +59,7 @@ export default async function Inbox({
   const numbers = await checkPagniation(s);
   if (!numbers) throw new Error("Pagniation failed.");
   const { first, last } = numbers;
-  if (first >= last)
-    throw new Error("First value can't be bigger than the last one.");
+  if (first >= last) throw new Error("First value can't be bigger than the last one.");
 
   const dif = Math.abs(first - last);
 
@@ -95,15 +95,6 @@ export default async function Inbox({
       userId: req.userId,
     },
   });
-  // no emails fount? => pushing the user to the last page with emails.
-  if (emails.length === 0 && first !== 0) {
-    const length = await db.email.count({
-      where: {
-        userId: req.userId,
-      },
-    });
-    redirect(`/?s=${length - dif}-${length}`);
-  }
 
   return (
     <main className="min-h-screen bg-[#e8e8e8]">

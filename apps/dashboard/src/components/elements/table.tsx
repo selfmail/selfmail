@@ -77,7 +77,7 @@ export default function DataTable({
               >
                 Clear Selection
               </Button>
-              <Button onClick={() => {}} variant="danger">
+              <Button onClick={() => { }} variant="danger">
                 Delete
               </Button>
             </>
@@ -127,18 +127,17 @@ export default function DataTable({
               />
             </div>
           ))) || (
-          <div className="mx-3 flex items-center space-x-2 text-[#666666]">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-neutral-400" />
-            <p>We are listening on emails for you...</p>
-          </div>
-        )}
+            <div className="mx-3 flex items-center space-x-2 text-[#666666]">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-neutral-400" />
+              <p>We are listening on emails for you...</p>
+            </div>
+          )}
       </div>
       {emails.length > 0 && <hr className="border-t-2 border-[#cccccc]" />}
       {
         // row for the pagnation buttons
         <div className="flex items-center space-x-2 p-4">
-          <button
-            className="disabled:bg-red-500"
+          <Button
             type="submit"
             disabled={pagniation.first === 0}
             onClick={() =>
@@ -148,11 +147,10 @@ export default function DataTable({
             }
           >
             before
-          </button>
-          <button
-            className="disabled:bg-red-500"
+          </Button>
+          <Button
             type="submit"
-            disabled={data.length < pagniation.difference}
+            disabled={data.length < pagniation.difference || pagniation.last === mailCounter}
             onClick={() =>
               router.push(
                 `/?s=${pagniation.last}-${pagniation.last + pagniation.difference}`,
@@ -160,8 +158,7 @@ export default function DataTable({
             }
           >
             next
-          </button>
-          <p> - showing {pagniation.difference} items per page.</p>
+          </Button>
         </div>
       }
     </div>
