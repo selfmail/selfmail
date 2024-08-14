@@ -2,7 +2,7 @@
 	"name": "selfmail",
 	"devDependencies": {
 		"prettier": "^3.3.3",
-		"turbo": "^2.0.6",
+		"turbo": "^2.0.13",
 		"typescript": "^5.5.3"
 	},
 	"engines": {

@@ -1,12 +1,15 @@
-import Editor from "@/components/editor/editor";
-import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
-import SendButton from "./send-button";
-import { SendMail } from "./action";
-import HeaderInputs from "./inputs";
-import DropdownMailList from "./dropdown-mail";
+
 import { checkRequest } from "@/server/checkRequest";
 import { db } from "database";
+import { ChevronLeft } from "lucide-react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { SendMail } from "./action";
+import DropdownMailList from "./dropdown-mail";
+import HeaderInputs from "./inputs";
+import SendButton from "./send-button";
+
+const Editor = dynamic(() => import("@/components/editor/editor"), { ssr: false });
 
 export default async function Send() {
   const req = await checkRequest();
