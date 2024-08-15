@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+[contentEditable="true"]:empty:not(:focus):before {
+  content: "im the placeholder";
+  color: inherit;
+  opacity: 1;
+}
+[data-placeholder]:empty:not(:focus):before {
+  content: "im the placeholder";
+  color: inherit;
+  opacity: 1;
+}
+
+[date-placeholder]:empty:not(:focus):before {
+  content: " ";
+}
+.remirror-editor {
+  min-height: attr(data-height);
+}
