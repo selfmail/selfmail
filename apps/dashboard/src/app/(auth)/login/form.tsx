@@ -1,57 +1,94 @@
 "use client";
-
-import { useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
-import { Button, EmailInput, Input, PasswordInput } from "ui";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { Button, Input } from "ui";
 import { z } from "zod";
 import { login } from "./action";
 
-export const initialState = {
-  message: undefined,
-  error: undefined,
-};
-/**
- * This is the form for the register page.
- * This form is a client component, because
- * we need the return value of the server
- * action.
- */
-export default function LoginForm() {
-  const [error, setError] = useState<string | undefined>(undefined);
-  const [state, formAction] = useFormState(login, initialState);
-  const formDataSchema = z.object({
-    username: z.string().min(3),
-    email: z.string().email(),
-    password: z.string().min(8).max(24),
+export const loginSchema = z
+  .object({
+    email: z.string().email("Invalid email").endsWith("@selfmail.app", "Only selfmail adresses are allowed"),
+    password: z.string().min(10, "Password must be at least 10 characters"),
+    username: z.string().min(3, "Username must be at least 3 characters"),
+    confirmPassword: z.string().min(10, "Password must be at least 10 characters"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords must match",
+    path: ["confirmPassword"],
   });
-  const { pending } = useFormStatus();
+
+export type TSLoginSchema = z.infer<typeof loginSchema>;
+
+export default function FormWithReactHookFormAndZodAndServer() {
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    setError,
+  } = useForm<TSLoginSchema>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: TSLoginSchema) => {
+    const msg = await login(data)
+
+    if (msg) {
+      setError("email", {
+        type: "server",
+        message: msg,
+      });
+      toast.error(msg);
+      return
+    }
+  };
+
   return (
-    <form
-      action={(e: FormData) => {
-        setError(undefined);
-        const clientParse = formDataSchema.safeParse({
-          email: e.get("email"),
-          password: e.get("password"),
-          username: e.get("username"),
-        });
-        if (!clientParse.success) {
-          setError(
-            "Validation error. Please check your email, your username and your password. client",
-          );
-          return;
-        }
-        formAction(e);
-      }}
-      className="flex flex-col space-y-2 lg:w-[500px]"
-    >
-      <h2 className="text-xl">Login</h2>
-      <Input placeholder="Username" name="username" />
-      <EmailInput placeholder="Email" name="email" />
-      <PasswordInput placeholder="Password" name="password" />
-      {(error && <div className="text-red-500">{error}</div>) ||
-        (state.error && <div className="text-red-500">{state.error}</div>)}
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-2 w-[500px]">
+      <Input
+        {...register("username")}
+        type="text"
+        placeholder="Username"
+      />
+      {errors.username && (
+        <p className="text-red-500">{`${errors.username.message}`}</p>
+      )}
+      <Input
+        {...register("email")}
+        type="email"
+        placeholder="Email"
+      />
+      {errors.email && (
+        <p className="text-red-500">{`${errors.email.message}`}</p>
+      )}
+
+      <Input
+        {...register("password")}
+        type="password"
+        placeholder="Password"
+      />
+      {errors.password && (
+        <p className="text-red-500">{`${errors.password.message}`}</p>
+      )}
+
+      <Input
+        {...register("confirmPassword")}
+        type="password"
+        placeholder="Confirm password"
+      />
+      {errors.confirmPassword && (
+        <p className="text-red-500">{`${errors.confirmPassword.message}`}</p>
+      )}
+
       <div>
-        <Button disabled={pending}>Login</Button>
+        <Button
+          disabled={isSubmitting}
+          type="submit"
+        >
+          Submit
+        </Button>
       </div>
     </form>
   );
