@@ -1,19 +1,11 @@
 "use client"
 
-import { Remirror, useKeymap, useRemirror } from '@remirror/react';
+import { useMailStore } from "@/app/(dashboard)/send/store";
+import { OnChangeHTML, Remirror, useRemirror } from '@remirror/react';
 import { cn } from "lib/cn";
 import { useCallback, useEffect, useState } from "react";
 import { BoldExtension, CodeExtension, HeadingExtension, ItalicExtension, LinkExtension, PlaceholderExtension, StrikeExtension } from 'remirror/extensions';
 import 'remirror/styles/all.css';
-const hooks = [
-  () => {
-    useKeymap('Mod-u', () => {
-      console.log('Save to backend');
-      return true;
-    });
-  },
-  // writing the logic in here i think
-];
 
 export default function Editor() {
   const extensions = useCallback(
@@ -28,6 +20,20 @@ export default function Editor() {
     stringHandler: 'html',
   });
 
+  const { content, updateContent } = useMailStore();
+
+  const hooks = [
+    () => {
+      OnChangeHTML({
+        onChange(html) {
+          console.log(html);
+          updateContent(html);
+        },
+      })
+    }
+  ];
+
+
   // get the height of the header
   const [height, setHeight] = useState<number>(0);
 
@@ -38,11 +44,9 @@ export default function Editor() {
 
     setHeight(element?.offsetHeight || 0);
   }, []);
-  console.log();
-
   return (
     <div style={{ minHeight: `calc(100vh - ${height}px - 32px)` }}>
-      <Remirror data-text={"I'm a placeholder"} classNames={[cn("outline-none text-neutral-900 h-46 remirror-editor remirror-a11y-dark", `h-[calc(100vh - ${height}px - 32px)]`)]} manager={manager} initialContent={state} hooks={hooks}>
+      <Remirror classNames={[cn("outline-none text-neutral-900 h-46 remirror-editor remirror-a11y-dark", `h-[calc(100vh - ${height}px - 32px)]`)]} manager={manager} initialContent={state} hooks={hooks}>
 
       </Remirror>
     </div>

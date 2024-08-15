@@ -9,7 +9,16 @@ import DropdownMailList from "./dropdown-mail";
 import HeaderInputs from "./inputs";
 import SendButton from "./send-button";
 
-const Editor = dynamic(() => import("@/components/editor/editor"), { ssr: false });
+const Editor = dynamic(() => import("@/components/editor/editor"), {
+  ssr: false, loading: () => (
+    <div className="flex items-center">
+      <span className="mr-2 ml-2 h-2 w-2 animate-pulse rounded-full bg-neutral-700" />
+      <p>
+        Loading the editor...
+      </p>
+    </div>
+  )
+});
 
 export default async function Send() {
   const req = await checkRequest();

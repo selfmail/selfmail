@@ -111,7 +111,6 @@ export default function CommandMenu() {
 
   useEffect(() => {
     const action = (e: globalThis.KeyboardEvent) => {
-      console.log(e);
       if (e.key === "k" && e.ctrlKey) setOpen(!open);
     };
     document.addEventListener("keypress", (e) => action(e));

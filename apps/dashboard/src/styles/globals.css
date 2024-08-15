@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("./remirror.css");
+
 [contentEditable="true"]:empty:not(:focus):before {
   content: "im the placeholder";
   color: inherit;
