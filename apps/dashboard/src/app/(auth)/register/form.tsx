@@ -1,61 +1,108 @@
 "use client";
 
-import { useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
-import { Button, EmailInput, Input, PasswordInput } from "ui";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { InputStyles } from "node_modules/ui/src/components/input";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { Button } from "ui";
 import { z } from "zod";
-import { register } from "./action";
+import { register as RegisterAction } from "./action";
 
-export const initialState = {
-  message: undefined,
-  error: undefined,
-};
-/**
- * This is the form for the register page.
- * This form is a client component, because
- * we need the return value of the server
- * action.
- */
-export default function RegisterForm() {
-  const [error, setError] = useState<string | undefined>(undefined);
-  const [state, formAction] = useFormState(register, initialState);
-  const formDataSchema = z.object({
-    username: z.string().min(3),
-    email: z.string().email(),
-    password: z.string().min(8).max(24),
-    rePassword: z.string().min(8).max(24),
+export const signUpSchema = z
+  .object({
+    email: z.string().email().endsWith("@selfmail.app", "Only selfmail adresses are allowed"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    username: z.string().min(3, "Username must be at least 3 characters").max(20, "Username must be at most 20 characters"),
+    confirmPassword: z.string().min(8, "Password must be at least 8 characters"),
+  }).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  })
+
+export type TSignUpSchema = z.infer<typeof signUpSchema>;
+export default function FormWithReactHookFormAndZodAndServer() {
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    setError,
+  } = useForm<TSignUpSchema>({
+    resolver: zodResolver(signUpSchema),
   });
-  const { pending } = useFormStatus();
+
+  const onSubmit = async (data: TSignUpSchema) => {
+    const msg = await RegisterAction(data)
+    if (msg) {
+      setError("root", {
+        type: "server",
+        message: msg,
+      });
+      toast.error(msg);
+      return
+    }
+    reset();
+  };
+
   return (
-    <form
-      action={(e: FormData) => {
-        setError(undefined);
-        const clientParse = formDataSchema.safeParse({
-          email: e.get("email"),
-          password: e.get("password"),
-          username: e.get("username"),
-          rePassword: e.get("rePassword"),
-        });
-        if (!clientParse.success) {
-          setError(
-            "Validation error. Please check your email, your username and your password.",
-          );
-          return;
-        }
-        formAction(e);
-      }}
-      className="flex flex-col space-y-2 lg:w-[500px]"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-2 lg:w-[400px]">
+
       <h2 className="text-xl">Register</h2>
-      <Input placeholder="Username" name="username" />
-      <EmailInput placeholder="Email" name="email" />
-      <PasswordInput placeholder="Password" name="password" />
-      <PasswordInput placeholder="Repeat Password" name="rePassword" />
-      {(error && <div className="text-red-500">{error}</div>) ||
-        (state.error && <div className="text-red-500">{state.error}</div>)}
+
+      <input
+        {...register("username")}
+        type="text"
+        placeholder="Username"
+        className={InputStyles}
+      />
+      {errors.username && (
+        <p className="text-red-500">{`${errors.username.message}`}</p>
+      )}
+
+      <input
+        {...register("email")}
+        type="email"
+        placeholder="Email"
+        className={InputStyles}
+      />
+      {errors.email && (
+        <p className="text-red-500">{`${errors.email.message}`}</p>
+      )}
+
+      <input
+        {...register("password")}
+        type="password"
+        placeholder="Password"
+        className={InputStyles}
+      />
+      {errors.password && (
+        <p className="text-red-500">{`${errors.password.message}`}</p>
+      )}
+
+      <input
+        {...register("confirmPassword")}
+        type="password"
+        placeholder="Repeat Password"
+        className={InputStyles}
+      />
+      {errors.confirmPassword && (
+        <p className="text-red-500">{`${errors.confirmPassword.message}`}</p>
+      )}
+      {
+        errors.root?.type === "server" && (
+          <p className="text-red-500">{`${errors.root.message}`}</p>
+        )
+      }
+
       <div>
-        <Button disabled={pending}>Register</Button>
+        <Button
+          disabled={isSubmitting}
+          type="submit"
+        >
+          Submit
+        </Button>
       </div>
-    </form>
+    </form >
   );
 }

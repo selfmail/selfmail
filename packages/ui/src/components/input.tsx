@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "../cn";
-
+export const InputStyles = "border-2 border-[#dddddddd] p-2 rounded-xl bg-[#f4f4f4] focus-visible:outline-none focus-visible:border-[#666666]"
 /**
  * The default text input.
  */
@@ -14,7 +14,7 @@ function Input({ placeholder, ...props }: InputProps) {
       type="text"
       placeholder={placeholder}
       className={cn(
-        "border-2 border-[#dddddddd] p-2 rounded-xl bg-[#f4f4f4] focus-visible:outline-none focus-visible:border-[#666666]",
+
         props.className,
       )}
       {...props}
@@ -30,7 +30,7 @@ function PasswordInput({ ...props }: PasswordInputProps) {
     <input
       type="password"
       className={cn(
-        "p-2 rounded-xl bg-[#f4f4f4] border-2 border-[#dddddddd] focus-visible:outline-none focus-visible:border-[#666666]",
+        InputStyles,
         props.className,
       )}
       {...props}
@@ -46,7 +46,7 @@ function EmailInput({ ...props }: EmailInputProps) {
       type="email"
       {...props}
       className={cn(
-        "p-2 rounded-xl bg-[#f4f4f4] border-2 border-[#dddddddd] focus-visible:outline-none focus-visible:border-[#666666]",
+        InputStyles,
         props.className,
       )}
     />
@@ -66,3 +66,4 @@ function UrlInput() {
 }
 
 export { EmailInput, FileInput, Input, NumberInput, PasswordInput, UrlInput };
+

@@ -1,11 +1,11 @@
 "use client";
 
+import Image from "next/image";
+
 export default function LoginImage() {
   return (
-    <div className="m-3 hidden lg:flex w-[50%] items-center justify-center rounded-xl bg-[#f4f4f4]">
-      <h2 className="text-2xl">
-        An image of a plane with a big heading, that we are a email service
-      </h2>
+    <div className="m-3 hidden lg:block w-[50%] rounded-xl bg-[#f4f4f4] relative">
+      <Image src="/plane.png" alt="Plane" layout="fill" objectFit="contain" />
     </div>
   );
 }
