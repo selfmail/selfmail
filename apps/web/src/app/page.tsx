@@ -1,30 +1,49 @@
-import { cn } from "@/lib/utils";
-import { Newsreader } from "next/font/google";
-import { Button } from "ui";
-const newsreader = Newsreader({
-  style: "normal",
-  subsets: ["latin"],
+import { Inbox, ToyBrick, Users } from "lucide-react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { Button, EmailInput } from "ui";
+
+const ScrollAnimation = dynamic(() => import("./animation"), {
+  ssr: false, loading: () => <div id="svg-container" className="flex space-x-2">
+    <Inbox className="text-[#666666] h-5 w-5" />
+    <Users className="text-[#666666] h-5 w-5" />
+    <ToyBrick className="text-[#666666] h-5 w-5" />
+  </div>
 });
+
 export default function HomePage() {
   return (
-    <main className="mx-5 mt-32 min-h-screen space-y-32 text-black md:w-[500px] lg:w-[600px]">
-      <div className="space-y-4">
-        <h1 className={cn("text-5xl")}>
-          Privacy friendly emails on a hole new level, free{" "}
-          <span className={newsreader.className}>&</span> open-source.
-        </h1>
-        <p className="text-[#666666]">
-          Our platform aims to be the bridge between modern and sleek interfaces
-          and privacy friendly systems.
-        </p>
-        <div className="flex space-x-2">
-          <Button>Start now</Button>
-          <Button className="text-black" variant={"secondary"}>
-            Login
+    <main className="min-h-screen flex flex-col space-y-16 text-black md:w-[450px] lg:w-[500px]">
+      <header className="flex justify-between items-center h-16">
+        <h3 className="text-[#66666]">
+          s
+        </h3>
+        <nav className="space-x-2">
+          <Link href="/" className="text-[#666666] hover:text-black duration-200">
+            Home
+          </Link>
+          <Link href="/about" className="text-[#666666] hover:text-black duration-200">
+            About
+          </Link>
+        </nav>
+      </header>
+      <div className="space-y-2">
+        <h2 className=" text-2xl font-medium mt-[50%]">Open source email experience</h2>
+        <p className="text-[#121212] ">Selfmail is a collaberative email provider, proudly open source. Sign the waitlist below to get notified when we launch.</p>
+        <div className="relative flex items-center">
+          <EmailInput placeholder="Your email" className="w-full" />
+          <Button className="absolute right-2">
+            Send
           </Button>
         </div>
       </div>
-
+      <hr className="border-black/10" />
+      <div className="space-y-2">
+        <h2 className="text-xl font-[450]">The missing piece</h2>
+        <ScrollAnimation />
+        <p className="text-[#121212]">Selfmail is made for you, your team and your family. We are providing a secure, private and easy to use email service with a great user experience and support.</p>
+      </div>
+      <div className="h-screen" />
     </main>
   );
 }
