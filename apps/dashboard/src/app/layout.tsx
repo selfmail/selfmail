@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 // the ui style file, because without this, the styles won't working
 import CommandMenu from "@/components/elements/command";
+import { ThemeProvider } from "@/components/provider/theme-provider";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
@@ -21,13 +22,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        <DialogProvider>
+        <ThemeProvider attribute="class">
           <DialogProvider>
-            {children}
-            <Toaster richColors />
-            <CommandMenu />
+            <DialogProvider>
+              {children}
+              <Toaster richColors />
+              <CommandMenu />
+            </DialogProvider>
           </DialogProvider>
-        </DialogProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
