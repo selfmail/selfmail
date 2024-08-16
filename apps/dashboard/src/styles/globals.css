@@ -2,22 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* For a better experience, we are splitting this file into the important parts and the rest */
 @import url("./remirror.css");
+@import url("./colors.css");
 
-[contentEditable="true"]:empty:not(:focus):before {
-  content: "im the placeholder";
-  color: inherit;
-  opacity: 1;
-}
-[data-placeholder]:empty:not(:focus):before {
-  content: "im the placeholder";
-  color: inherit;
-  opacity: 1;
-}
-
-[date-placeholder]:empty:not(:focus):before {
-  content: " ";
-}
-.remirror-editor {
-  min-height: attr(data-height);
-}
+/* The rest of the styles */

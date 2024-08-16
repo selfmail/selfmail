@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import { useEffect, } from "react";
+import { useHotkeys } from 'react-hotkeys-hook';
 import { KBD } from "ui";
 import { create } from "zustand";
 // Command state
@@ -109,16 +109,7 @@ export default function CommandMenu() {
   const { open, setOpen } = useCommandStore();
   const router = useRouter();
 
-  useEffect(() => {
-    const action = (e: globalThis.KeyboardEvent) => {
-      if (e.key === "k" && e.ctrlKey) setOpen(!open);
-    };
-    document.addEventListener("keypress", (e) => action(e));
-
-    return () => {
-      document.removeEventListener("keypress", (e) => action(e));
-    };
-  }, [open, setOpen]);
+  useHotkeys("meta+k", () => setOpen(!open));
 
   return (
     <>

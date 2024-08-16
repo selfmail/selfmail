@@ -1,10 +1,9 @@
 "use client";
 
-import { Button } from "ui";
-import { useMailStore } from "./store";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Pen } from "lucide-react";
+import { Button } from "ui";
+import { useMailStore } from "./store";
 
 export default function SendButton({
   action,
@@ -14,7 +13,7 @@ export default function SendButton({
     content: string;
     recipient: string;
     subject: string;
-  }) => Promise<void | string>;
+  }) => Promise<undefined | string>;
 }) {
   const [error, setError] = useState<string | undefined>();
 
@@ -32,7 +31,8 @@ export default function SendButton({
   const blancFields = () => {
     updateAdresse(undefined);
     updateContent(undefined);
-    updateRecipient(undefined), updateSubject(undefined);
+    updateRecipient(undefined);
+    updateSubject(undefined);
   };
   return (
     <Button
