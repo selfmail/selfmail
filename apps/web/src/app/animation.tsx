@@ -34,7 +34,7 @@ const Motion: React.FC<{
     height: number
 
 } & React.HTMLAttributes<HTMLDivElement>> = ({ children, initial, animate, height, ...props }) => {
-    const [position, setPosition] = useState({ x: "0px", y: "0px", scale: 1, rotate: "0deg" });
+    const [position, setPosition] = useState({ x: `${initial.x.sign}${initial.x.value}px`, y: `${initial.y.sign}${initial.y.value}px`, scale: initial.scale, rotate: `${initial.rotate.sign}${initial.rotate.value}deg` });
     const { scrollY } = useScroll()
 
     useMotionValueEvent(scrollY, "change", (latest) => {
@@ -85,8 +85,59 @@ export default function ScrollAnimation() {
             >
                 <Inbox className="text-[#666666] h-5 w-5" />
             </Motion>
-            <Users className="text-[#666666] h-5 w-5" />
-            <ToyBrick className="text-[#666666] h-5 w-5" />
+            <Motion
+                height={300}
+                initial={{
+                    x: {
+                        value: 500,
+                        sign: ""
+                    },
+                    y: {
+                        value: 500,
+                        sign: "-"
+                    },
+                    scale: 3,
+                    rotate: {
+                        value: 40,
+                        sign: ""
+                    }
+                }}
+                animate={{
+                    x: 0,
+                    y: 0,
+                    scale: 1,
+                    rotate: 360
+                }}
+            >
+                <Users className="text-[#666666] h-5 w-5" />
+            </Motion>
+            <Motion
+                height={300}
+                initial={{
+                    x: {
+                        value: 200,
+                        sign: "-"
+                    },
+                    y: {
+                        value: 200,
+                        sign: ""
+                    },
+                    scale: 3,
+                    rotate: {
+                        value: 40,
+                        sign: ""
+                    }
+                }}
+                animate={{
+                    x: 0,
+                    y: 0,
+                    scale: 1,
+                    rotate: 360
+                }}
+            >
+                <ToyBrick className="text-[#666666] h-5 w-5" />
+            </Motion>
+
         </div >
     )
 }

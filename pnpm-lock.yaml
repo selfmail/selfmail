@@ -342,7 +342,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       zod:
-        specifier: ^3.23.3
+        specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
       '@biomejs/biome':
