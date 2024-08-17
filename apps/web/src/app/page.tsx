@@ -2,7 +2,8 @@ import { Inbox, ToyBrick, Users } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { Button, EmailInput } from "ui";
+import { waitlist } from "./action";
+import Form from "./form";
 import Logo from "./logo";
 
 const ScrollAnimation = dynamic(() => import("./animation"), {
@@ -32,12 +33,7 @@ export default function HomePage() {
       <div className="space-y-2">
         <h2 className=" text-2xl font-medium mt-[50%]">Open source email experience</h2>
         <p className="text-[#121212] ">Selfmail is a collaberative email provider, proudly open source. Sign the waitlist below to get notified when we launch.</p>
-        <div className="relative flex items-center">
-          <EmailInput placeholder="Your email" className="w-full" />
-          <Button className="absolute right-2">
-            Send
-          </Button>
-        </div>
+        <Form action={waitlist} />
       </div>
       <hr className="border-black/10" />
       <div className="space-y-2">

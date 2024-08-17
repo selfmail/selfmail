@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
 import "ui/styles.css";
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
+          <Toaster />
           {children}
         </ThemeProvider>
       </body>

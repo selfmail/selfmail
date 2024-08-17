@@ -24,6 +24,7 @@ export {
 	EmailInput,
 	FileInput,
 	Input,
+	InputStyles,
 	NumberInput,
 	PasswordInput,
 	UrlInput,

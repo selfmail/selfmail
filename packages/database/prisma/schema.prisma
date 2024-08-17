@@ -178,3 +178,11 @@ model Key {
   createdAt DateTime @default(now())
   service   Boolean  @default(false) // if this api key is for the service
 }
+
+// waitlist for the homepage
+model Waitlist {
+  id        String   @id @unique @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
