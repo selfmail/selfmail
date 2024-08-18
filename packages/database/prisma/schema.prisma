@@ -185,4 +185,5 @@ model Waitlist {
   email     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  verified  Boolean  @default(false)
 }

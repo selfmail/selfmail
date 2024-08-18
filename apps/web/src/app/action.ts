@@ -11,6 +11,7 @@ export async function waitlist(email: string): Promise<string | undefined> {
 	"use server";
 
 	const schema = await z.string().email().safeParseAsync(email);
+
 	if (!schema.success) {
 		return "Could not validate email address";
 	}
@@ -24,8 +25,9 @@ export async function waitlist(email: string): Promise<string | undefined> {
 		.catch((err) => {
 			return err;
 		});
+
 	if (!mail) {
-		return "Could not sign you on the waitlist";
+		return "Could not sign you on the waitlist - please try again";
 	}
 
 	// return nothing to indicate success

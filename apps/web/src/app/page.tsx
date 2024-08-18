@@ -51,7 +51,15 @@ export default function HomePage() {
         <Image src="/editor.png" width={1000} height={1000} alt="editor" className="rounded-lg border border-[#e1e1e1]" />
         <p className="text-[#121212]">The entire platform is open source, this means, you can easily selfhost selfmail on your own server. This makes it cheaper for teams and businesses to collaberate on emails.</p>
       </div>
-      <div className="h-screen" />
+      <footer className="flex justify-between items-center ">
+        <p className="text-[#121212] text-sm">© 2024 Selfmail. All rights reserved.</p>
+        <div className="flex space-x-2">
+          <Link href="/changelog" className="text-[#121212] text-sm">Changelog</Link>
+          <Link href="/privacy" className="text-[#121212] text-sm">Privacy</Link>
+          <Link href="/legal" className="text-[#121212] text-sm">Legal</Link>
+        </div>
+      </footer>
+      <div className="h-16" />
     </main>
   );
 }
