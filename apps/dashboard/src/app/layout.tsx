@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/components/provider/theme-provider";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
-import { DialogProvider } from "ui";
 import "ui/styles.css";
 export const metadata: Metadata = {
   title: {
@@ -23,13 +22,9 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <ThemeProvider attribute="class">
-          <DialogProvider>
-            <DialogProvider>
-              {children}
-              <Toaster richColors />
-              <CommandMenu />
-            </DialogProvider>
-          </DialogProvider>
+          {children}
+          <Toaster richColors />
+          <CommandMenu />
         </ThemeProvider>
       </body>
     </html>

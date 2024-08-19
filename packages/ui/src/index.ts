@@ -1,11 +1,20 @@
 export { Button } from "./components/button";
 export {
+	ContextMenu,
+	ContextMenuContent,
+	ContextMenuItem,
+	ContextMenuSeparator,
+	ContextMenuTrigger,
+} from "./components/context";
+export {
 	Dialog,
 	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
 	DialogHeader,
+	DialogOverlay,
+	DialogPortal,
 	DialogTrigger,
 } from "./components/dialog";
 export {
