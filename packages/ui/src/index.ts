@@ -6,10 +6,14 @@ export {
 	DialogDescription,
 	DialogFooter,
 	DialogHeader,
-	DialogProvider,
 	DialogTrigger,
-	useDialogStore,
 } from "./components/dialog";
+export {
+	DrawerClose,
+	DrawerContent,
+	DrawerHandle,
+	DrawerTrigger,
+} from "./components/drawer";
 export {
 	DropdownMenu,
 	DropdownMenuContent,

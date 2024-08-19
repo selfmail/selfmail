@@ -16,7 +16,7 @@ export default function HeaderInputs() {
             e.currentTarget.value === "" ? undefined : e.currentTarget.value,
           )
         }
-        className="mt-2 border border-b-2 border-t-2 border-b-[#d1d1d1] border-t-[#d1d1d1] bg-transparent p-2 outline-none"
+        className="mt-2 border border-b-2 border-t-2 border-b-[#d1d1d1] text-black border-t-[#d1d1d1] bg-transparent p-2 outline-none"
       />
       <Input
         placeholder="Recipient..."
@@ -26,7 +26,7 @@ export default function HeaderInputs() {
             e.currentTarget.value === "" ? undefined : e.currentTarget.value,
           )
         }
-        className="mb-2 border border-b-2 border-b-[#d1d1d1] bg-transparent p-2 outline-none"
+        className="mb-2 border border-b-2 border-b-[#d1d1d1]  text-black bg-transparent p-2 outline-none"
       />
     </>
   );

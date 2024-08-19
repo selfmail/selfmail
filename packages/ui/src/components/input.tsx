@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "../cn";
-export const InputStyles = "border-2 border-[#dddddddd] p-2 rounded-xl bg-[#f4f4f4] focus-visible:outline-none focus-visible:border-[#666666]"
+export const InputStyles = "border-2 border-[#dddddddd] p-2 rounded-xl text-black bg-[#f4f4f4] focus-visible:outline-none focus-visible:border-[#666666]"
 /**
  * The default text input.
  */
