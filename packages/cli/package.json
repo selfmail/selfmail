@@ -1,0 +1,26 @@
+{
+	"name": "cli",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"dev": "tsx index.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"devDependencies": {
+		"@types/node": "^22.4.1",
+		"tsx": "^4.7.1",
+		"typescript": "^5.5.4"
+	},
+	"dependencies": {
+		"@clack/core": "^0.3.4",
+		"@clack/prompts": "^0.7.0",
+		"chalk": "^5.3.0",
+		"citty": "^0.1.6",
+		"consola": "^3.2.3",
+		"ora": "^8.0.1",
+		"zod": "^3.23.8"
+	}
+}

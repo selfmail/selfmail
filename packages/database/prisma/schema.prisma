@@ -18,6 +18,7 @@ model User {
   sessions         Session[]
   username         String            @unique // works like a handle (e.g: @john, @jane, @john.doe, etc)
   password         String
+  useAi            Boolean           @default(false)
   bio              String?
   image            String?
   createdAt        DateTime          @default(now())
