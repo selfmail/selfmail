@@ -1,31 +1,27 @@
-import { execSync } from "child_process"
-import { Command } from "commander"
-import { handleError } from "../actions/error"
-
-/*
- * Description:
- * update you selfmail installation
- */
-export const update = new Command()
-    .name("update")
-
-    .description("update your selfmail installation")
-    // TODO: add options
-    // .option("-y, --yes", "skip confirmation prompt.", false)
-    .action(async (opts) => {
-        try {
-            // copy the .env files
-            execSync("cp selfmail/.env.example selfmail/.env")
-            // removing the current selfmail repository
-            execSync("rm -rf selfmail")
-            // pulling the new repository
-
-            // installing the dependencies
-
-            // copying the .env file
-
-            // migrating the database
-        } catch (error) {
-            handleError(error)
-        }
+import { confirm } from "@clack/prompts"
+import consola from "consola"
+import { space } from "../actions/space"
+export const update = async () => {
+    consola.info("Updating your selfmail package...")
+    space()
+    const requirements = await confirm({
+        message: "Have you installed git and pnpm?"
     })
+    if (!requirements) {
+        // TODO: install terminal link
+        consola.error("You need to have git and pnpm installed. Read more about here.")
+        process.exit(1)
+    }
+    const license = await confirm({
+        message: "Have you read our license and TOS and accepting these?"
+    })
+    if (!license) {
+        // TODO: install terminal link
+        consola.error("You need to accept our license. You can read about our license here.")
+        process.exit(1)
+    }
+
+    // pulling the repository
+    space()
+    consola.info("Pulling the git repository...")
+}

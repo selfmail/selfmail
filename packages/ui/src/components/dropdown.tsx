@@ -26,7 +26,7 @@ const DropdownMenuTrigger: React.FC<{
     return (
         <DropdownMenuPrimitive.Trigger
             {...props}
-            className="flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none bg-accent"
+            className="flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none"
         >
             {children}
         </DropdownMenuPrimitive.Trigger>
