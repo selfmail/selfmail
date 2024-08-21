@@ -3,7 +3,7 @@
 import { cn } from "lib/cn";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
-import { Button } from "ui";
+import { Button, Checkbox, CheckboxIndicator } from "ui";
 import { create } from "zustand";
 
 type email = {
@@ -95,18 +95,16 @@ export default function DataTable({
                 id.includes(email.id) && "bg-gray-100",
               )}
             >
-              <input
-                type="checkbox"
-                id={email.id}
-                className="z-20 mr-3 h-4 w-4"
-                onClick={() => {
-                  setId(
-                    id.includes(email.id)
-                      ? id.filter((id) => id !== email.id)
-                      : [...id, email.id],
-                  );
-                }}
-              />
+
+              <Checkbox id={email.id} className="mr-3 z-20" onClick={() => {
+                setId(
+                  id.includes(email.id)
+                    ? id.filter((id) => id !== email.id)
+                    : [...id, email.id],
+                );
+              }}>
+                <CheckboxIndicator />
+              </Checkbox>
               <p
                 onClick={() => router.push(`/contacts/${email.sender}`)}
                 onKeyDown={() => router.push(`/contacts/${email.sender}`)}

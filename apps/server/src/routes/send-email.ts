@@ -1,9 +1,9 @@
+import { db } from "database";
+import { bearerAuth } from "hono/bearer-auth";
 import { z } from "zod";
 import { app } from "..";
-import { db } from "database";
 import { config } from "../../config";
 import { resend } from "../../resend";
-import { bearerAuth } from "hono/bearer-auth";
 import { auth } from "../auth";
 
 /**
@@ -112,12 +112,12 @@ export default function SendEmail() {
       if (error) {
         if (config.LOG_ERRORS_INTO_CONSOLE)
           console.error(
-            "Could not send email to the recipient: \n\n" + error.message,
+            `Could not send email to the recipient: \n\n${error.message}`,
           );
         return c.json(
           {
             error:
-              "Could not deliver email to the recipient: \n\n" + error.message,
+              `Could not deliver email to the recipient: \n\n${error.message}`,
           },
           {
             status: 500,

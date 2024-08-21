@@ -1,4 +1,4 @@
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogOverlay, DialogPortal, DialogTrigger } from "ui";
+import { Checkbox, CheckboxIndicator, ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogOverlay, DialogPortal, DialogTrigger } from "ui";
 
 export default async function Settings() {
   return (
@@ -38,6 +38,10 @@ export default async function Settings() {
           <ContextMenuItem>Delete Mails</ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
+      <Checkbox>
+        <CheckboxIndicator />
+      </Checkbox>
+      <input type="checkbox" className="" />
     </div>
   );
 }

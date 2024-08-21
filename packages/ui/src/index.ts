@@ -1,10 +1,14 @@
 export { Button } from "./components/button";
 export {
+	Checkbox,
+	CheckboxIndicator
+} from "./components/checkbox";
+export {
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
 	ContextMenuSeparator,
-	ContextMenuTrigger,
+	ContextMenuTrigger
 } from "./components/context";
 export {
 	Dialog,
@@ -15,13 +19,13 @@ export {
 	DialogHeader,
 	DialogOverlay,
 	DialogPortal,
-	DialogTrigger,
+	DialogTrigger
 } from "./components/dialog";
 export {
 	DrawerClose,
 	DrawerContent,
 	DrawerHandle,
-	DrawerTrigger,
+	DrawerTrigger
 } from "./components/drawer";
 export {
 	DropdownMenu,
@@ -31,7 +35,7 @@ export {
 	DropdownMenuPortal,
 	DropdownMenuRadioGroup,
 	DropdownMenuSub,
-	DropdownMenuTrigger,
+	DropdownMenuTrigger
 } from "./components/dropdown";
 export {
 	EmailInput,
@@ -40,6 +44,7 @@ export {
 	InputStyles,
 	NumberInput,
 	PasswordInput,
-	UrlInput,
+	UrlInput
 } from "./components/input";
 export { KBD } from "./components/kbd";
+

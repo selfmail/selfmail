@@ -1,6 +1,7 @@
 import { confirm } from "@clack/prompts"
 import consola from "consola"
 import { space } from "../actions/space"
+
 export const update = async () => {
     consola.info("Updating your selfmail package...")
     space()
