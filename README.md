@@ -25,16 +25,11 @@ A detailed documentation is on our [website](https://selfmail.app/docs). Here is
   ... And your ready to start 🥳
   (docker image not avaiable yet)
 
-<p style="color: lightblue">
-[i] A custom domain, a <a href="https://resend.com">resend</a> account and a <a href="https://cloudflare.com">cloudflare</a> account is required to selfhost selfmail. Optional is a <a href="https://groq.com">Groq</a> account, for the ai features.
-</p>
-
-[i] We are planning to switch to a smtp server soon.
-
 ---
 
 Made by [henri](https://henri.gg) and the [community on github](https://github.com/i-am-henri/selfmail).
 
 ---
+
 ⚠️⚠️⚠️
 This project is not ready yet. It's still in development, tests are misssing, the documentation is not started yet, there is for now only a basic and insecure version of the api, the docker image is not there and the smtp server is still not implemented. You can try it out, but please don't use this project in production.

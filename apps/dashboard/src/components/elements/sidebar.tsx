@@ -4,6 +4,7 @@ import {
   BarChart,
   ChevronsUpDown,
   Contact,
+  Download,
   HandCoins,
   HelpCircle,
   Home,
@@ -126,10 +127,17 @@ export default function Sidebar({
         </Link>
         <Link
           href="/contact"
-          className="mb-1 flex w-full items-center rounded-xl p-1 text-sm"
+          className="flex w-full items-center rounded-xl p-1 text-sm"
         >
           <Contact className="mr-3 h-4 w-4" />
           <span>Contact</span>
+        </Link>
+        <Link
+          href="/download"
+          className="mb-1 flex w-full items-center rounded-xl p-1 text-sm"
+        >
+          <Download className="mr-3 h-4 w-4" />
+          <span>Downloads</span>
         </Link>
         <hr className="w-full border-2 border-[#cccccccc]" />
         <div className="mt-2 flex items-center justify-between">
