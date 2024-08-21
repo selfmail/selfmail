@@ -3,6 +3,7 @@ import * as RadixCheckBox from "@radix-ui/react-checkbox";
 import { cva } from "class-variance-authority";
 import { Check } from "lucide-react";
 import type React from "react";
+import { cn } from "../cn";
 
 export const ButtonStyles = cva("checkbox", {
     variants: {
@@ -10,7 +11,7 @@ export const ButtonStyles = cva("checkbox", {
             primary: [
                 "text-white",
                 "bg-[#33c891]",
-                "disabled:bg-[#296dffaa]",
+                "disabled:bg-[#33c891aa]",
                 "disabled:cursor-not-allowed",
             ],
             danger: [
@@ -27,7 +28,7 @@ export const ButtonStyles = cva("checkbox", {
 });
 
 export const Checkbox: React.FC<RadixCheckBox.CheckboxProps> = (props) => {
-    return <RadixCheckBox.Root {...props} className="border border-[#DBDBDB] hover:bg-violet3 flex h-[15px] w-[15px] appearance-none items-center justify-center rounded-[4px] bg-white shadow-[0_2px_10px] outline-none " />;
+    return <RadixCheckBox.Root {...props} className={cn("border border-[#DBDBDB] hover:bg-violet3 flex h-[15px] w-[15px] appearance-none items-center justify-center rounded-[4px] bg-white shadow-[0_2px_10px] outline-none ", props.className)} />;
 };
 export const CheckboxIndicator: React.FC<RadixCheckBox.CheckboxIndicatorProps> = (props) => {
     return (<RadixCheckBox.Indicator {...props} className="flex items-center justify-center h-[15px] border border-[#DBDBDB] w-[15px] rounded-[4px] bg-[#33c891]  text-white">

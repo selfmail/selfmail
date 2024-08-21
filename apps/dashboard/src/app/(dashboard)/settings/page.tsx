@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxIndicator, ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogOverlay, DialogPortal, DialogTrigger } from "ui";
+import { Button, Checkbox, CheckboxIndicator, ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogOverlay, DialogPortal, DialogTrigger, Sheet, SheetComponent, SheetContent, SheetFooter, SheetTitle, SheetTrigger } from "ui";
 
 export default async function Settings() {
   return (
@@ -41,6 +41,21 @@ export default async function Settings() {
       <Checkbox>
         <CheckboxIndicator />
       </Checkbox>
+      <Sheet>
+        <SheetTrigger>
+          open settings
+        </SheetTrigger>
+        <SheetContent>
+          <SheetTitle>Settings</SheetTitle>
+          <SheetComponent>
+            This is the settings page on the sheet
+          </SheetComponent>
+          <SheetFooter>
+            <Button>Save</Button>
+            <Button variant="danger">Cancel</Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
       <input type="checkbox" className="" />
     </div>
   );

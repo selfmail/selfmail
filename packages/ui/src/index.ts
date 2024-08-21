@@ -47,4 +47,23 @@ export {
 	UrlInput
 } from "./components/input";
 export { KBD } from "./components/kbd";
+export {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem, SelectItemIndicator, SelectItemText,
+	SelectTrigger,
+	SelectValue
+} from "./components/select";
+export {
+	Sheet,
+	SheetClose,
+	SheetComponent,
+	SheetContent,
+	SheetFooter,
+	SheetOverlay,
+	SheetPortal,
+	SheetTitle,
+	SheetTrigger
+} from "./components/sheet";
 

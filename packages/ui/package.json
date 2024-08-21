@@ -45,6 +45,8 @@
     "@radix-ui/react-context-menu": "^2.2.1",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
+    "@radix-ui/react-select": "^2.1.1",
+    "@radix-ui/react-switch": "^1.1.0",
     "cmdk": "^1.0.0",
     "lucide-react": "^0.408.0",
     "vaul": "^0.9.1",
