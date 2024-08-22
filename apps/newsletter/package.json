@@ -5,23 +5,18 @@
   "type": "module",
   "scripts": {
     "build": "next build",
-    "db:generate": "prisma migrate dev",
-    "db:migrate": "prisma migrate deploy",
-    "db:studio": "prisma studio",
     "dev": "next dev --port=1000",
-    "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start"
   },
   "dependencies": {
-    "@prisma/client": "^5.14.0",
     "@t3-oss/env-nextjs": "^0.10.1",
+    "database": "workspace:*",
     "geist": "^1.3.0",
     "next": "^14.2.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "ui": "workspace:*",
-    "database": "workspace:*",
     "zod": "^3.23.3"
   },
   "devDependencies": {
@@ -36,7 +31,6 @@
     "postcss": "^8.4.39",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",
-    "prisma": "^5.14.0",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.5.3"
   },
