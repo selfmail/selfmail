@@ -1,12 +1,14 @@
+import Header from "@/components/header";
 import Image from "next/image";
 import Link from "next/link";
 export default function HomePage() {
     return (
-        <div className="w-full mx-2 sm:mx-5 md:w-[500px] md:mx-0 lg:w-[650px]">
+        <div className="w-full mx-2 sm:mx-5 md:w-[500px] md:mx-0 lg:w-[650px] min-h-screen">
+            <Header />
             <div className="min-h-screen">
-                <div>
-                    <h1 className="text-3xl font-medium">The selfmail newsletter</h1>
-                    <p>Professional tool to create and maintain your newsletters.</p>
+                <div className="mt-[35vh]">
+                    <h1 className="text-3xl font-medium">The selfmail newsletter tool</h1>
+                    <p className="text-accent w-[70%]">Professional tool to create and maintain your newsletters. Completely open source and self hostable.</p>
                 </div>
             </div>
             <div className="flex justify-between">
