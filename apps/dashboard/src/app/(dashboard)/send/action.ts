@@ -7,6 +7,7 @@ export async function SendMail(mail: {
 	subject: string;
 }): Promise<undefined | string> {
 	"use server";
+
 	const req = await fetch(
 		process.env.NODE_ENV === "development"
 			? "http://localhost:5000/v1/email/send"
@@ -25,7 +26,8 @@ export async function SendMail(mail: {
 		},
 	);
 	if (!req) return "Internal server error. Try again.";
-	const data = await req.json();
+
+	const data = await req.json()
 
 	const parse = await z
 		.object({
@@ -35,6 +37,8 @@ export async function SendMail(mail: {
 		.safeParseAsync({
 			...data,
 		});
+
+	if (data.error) return data.error;
 
 	if (!parse.success) return "Internal server error.";
 }
