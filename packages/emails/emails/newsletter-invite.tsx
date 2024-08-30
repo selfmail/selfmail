@@ -1,11 +1,11 @@
 import {
     Body,
+    Button,
     Container,
     Head,
     Heading,
     Html,
     Link,
-    Markdown,
     Preview,
     Section,
     Text
@@ -13,11 +13,11 @@ import {
 import * as React from 'react';
 
 interface InviteEmailProps {
-    content: string;
+    username: string;
     token: string;
 }
 
-export const NewsletterEmail = ({ content, token }: InviteEmailProps) => (
+export const NewsletterInviteEmail = ({ username, token }: InviteEmailProps) => (
     <Html>
         <Head>
             <title>Welcome to selfmail</title>
@@ -27,15 +27,17 @@ export const NewsletterEmail = ({ content, token }: InviteEmailProps) => (
             <Container style={container} className="container">
                 <Section style={mainContentSection} className="content">
                     <Heading as="h2" style={h2}>
-                        The selfmail newsletter!
+                        You got an Newsletter invitation 🥳!
                     </Heading>
                     <Text style={text}>
-                        We got a new update to share with you 🥳. Here is what we have for you:
+                        You got an invitation from {username} to join the selfmail newsletter. Please click the button below to verify your email. (You will be redirected to the selfmail app)
                     </Text>
+                    <Container style={{}} className="container">
+                        <Button style={button} href={`https://selfmail.app/api/invite/${token}`}>
+                            Join the newsletter
+                        </Button>
+                    </Container>
                 </Section>
-                <Markdown
-                    markdownContainerStyles={contentSection}
-                >{"# content"}</Markdown>
                 <Section style={contentSection} className="content">
                     <Heading as="h2" style={h2}>
                         Contact us
@@ -57,8 +59,15 @@ export const NewsletterEmail = ({ content, token }: InviteEmailProps) => (
     </Html>
 );
 
-export default NewsletterEmail;
+export default NewsletterInviteEmail;
 
+const button = {
+    backgroundColor: "#296dff",
+    borderRadius: "4px",
+    color: "#ffffff",
+    padding: "7px 14px",
+    marginTop: "16px",
+}
 
 const main = {
     backgroundColor: '#ffffff',
