@@ -1,3 +1,4 @@
+import FadeIn from "@/components/fade-in";
 import { Inbox, ToyBrick, Users } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -7,7 +8,7 @@ import Form from "./form";
 import Logo from "./logo";
 
 const ScrollAnimation = dynamic(() => import("./animation"), {
-  ssr: false, loading: () => <div id="svg-container" className="flex space-x-2">
+  ssr: false, loading: () => <div id="svg-container" className="hidden md:flex space-x-2">
     <Inbox className="text-[#666666] h-5 w-5" />
     <Users className="text-[#666666] h-5 w-5" />
     <ToyBrick className="text-[#666666] h-5 w-5" />
@@ -16,49 +17,71 @@ const ScrollAnimation = dynamic(() => import("./animation"), {
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col space-y-16 text-black md:w-[450px] lg:w-[500px]">
-      <header className="flex justify-between items-center h-16">
-        <Link href="/" className="text-[#666666] hover:text-black duration-200 h-5 w-5">
-          <Logo />
-        </Link>
-        <nav className="space-x-2">
-          <Link href="/" className="text-[#666666] hover:text-black duration-200">
-            Home
+    <main className="min-h-screen flex flex-col space-y-16 text-black  md:w-[450px] lg:w-[500px]">
+      <FadeIn variant={1}>
+        <header className="flex justify-between items-center h-16">
+          <Link href="/" className="text-[#666666] hover:text-black duration-200 h-5 w-5">
+            <Logo />
           </Link>
-          <Link href="/about" className="text-[#666666] hover:text-black duration-200">
-            About
-          </Link>
-        </nav>
-      </header>
-      <div className="space-y-2">
-        <h2 className=" text-2xl font-medium mt-[50%]">Open source email experience</h2>
-        <p className="text-[#121212] ">Selfmail is a collaberative email provider, proudly open source. Sign the waitlist below to get notified when we launch.</p>
-        <Form action={waitlist} />
-      </div>
-      <hr className="border-black/10" />
-      <div className="space-y-2">
-        <h2 className="text-xl font-[450]">The missing piece</h2>
-        <ScrollAnimation />
-        <p className="text-[#121212]">Selfmail is made for you, your team and your family. We are providing a secure, private and easy to use email service with a great user experience and support.</p>
-      </div>
-      <div className="space-y-2 relative">
-        <h2 className="text-xl font-[450]">The best editor</h2>
-        <Image src="/editor.png" width={1000} height={1000} alt="editor" className="rounded-lg border border-[#e1e1e1]" />
-        <p className="text-[#121212]">We provide you a notion-like, collaberative first text editor. You can write your emails faster and together with a big team in real time.</p>
-      </div>
-      <div className="space-y-2 relative">
-        <h2 className="text-xl font-[450]">Team experience on a new level</h2>
-        <Image src="/editor.png" width={1000} height={1000} alt="editor" className="rounded-lg border border-[#e1e1e1]" />
-        <p className="text-[#121212]">The entire platform is open source, this means, you can easily selfhost selfmail on your own server. This makes it cheaper for teams and businesses to collaberate on emails.</p>
-      </div>
-      <footer className="flex justify-between items-center ">
-        <p className="text-[#121212] text-sm">© 2024 Selfmail. All rights reserved.</p>
-        <div className="flex space-x-2">
-          <Link href="/changelog" className="text-[#121212] text-sm">Changelog</Link>
-          <Link href="/privacy" className="text-[#121212] text-sm">Privacy</Link>
-          <Link href="/legal" className="text-[#121212] text-sm">Legal</Link>
+          <nav className="space-x-2">
+            <Link href="/" className="text-[#666666] hover:text-black duration-200">
+              Home
+            </Link>
+            <Link href="/about" className="text-[#666666] hover:text-black duration-200">
+              About
+            </Link>
+          </nav>
+        </header>
+      </FadeIn>
+      <FadeIn variant={2}>
+        <div className="space-y-2">
+          <h2 className=" text-2xl font-medium mt-[50%]">Open source email experience</h2>
+          <p className="text-[#121212] ">Selfmail is a collaberative email provider, proudly open source. Sign the waitlist below to get notified when we launch.</p>
+          <Form action={waitlist} />
         </div>
-      </footer>
+      </FadeIn>
+      <FadeIn variant={3}>
+        <hr className="border-black/10" />
+      </FadeIn>
+      <FadeIn variant={4}>
+        <div className="space-y-2">
+          <h2 className="text-xl font-[450]">The missing piece</h2>
+          <ScrollAnimation />
+          <p className="text-[#121212]">Selfmail is made for you, your team and your family. We are providing a secure, private and easy to use email service with a great user experience and support.</p>
+        </div>
+      </FadeIn>
+      <FadeIn className="space-y-16" variant={5}>
+        <div className="space-y-2 relative">
+          <h2 className="text-xl font-[450]">The best editor</h2>
+          <Image src="/editor.png" width={1000} height={1000} alt="editor" className="rounded-lg border border-[#e1e1e1]" />
+          <p className="text-[#121212]">We provide you a notion-like, collaberative first text editor. You can write your emails faster and together with a big team in real time.</p>
+        </div>
+        <div className="space-y-2 relative">
+          <h2 className="text-xl font-[450]">Team experience on a new level</h2>
+          <Image src="/editor.png" width={1000} height={1000} alt="editor" className="rounded-lg border border-[#e1e1e1]" />
+          <p className="text-[#121212]">The entire platform is open source, this means, you can easily selfhost selfmail on your own server. This makes it cheaper for teams and businesses to collaberate on emails.</p>
+        </div>
+        <div className="space-y-2 relative">
+          <h2 className="text-xl font-[450]">Make it yours!</h2>
+          <Image src="/editor.png" width={1000} height={1000} alt="editor" className="rounded-lg border border-[#e1e1e1]" />
+          <p className="text-[#121212]">You can use our api to create your own frontend. And it's completely up to you, which frontend you want to use. We have an example for an selfmail client <Link href="https://github.com/selfmail/grids" className="underline">here</Link>. This is "grids", a minimalistic selfmail client, based on the selfmail api and the official sselfmail SDKs.</p>
+        </div>
+        <div className="space-y-2 relative">
+          <h2 className="text-xl font-[450]">The company lover</h2>
+          <Image src="/editor.png" width={1000} height={1000} alt="editor" className="rounded-lg border border-[#e1e1e1]" />
+          <p className="text-[#121212]">You want to use selfmail seriously in your company? We have you covered! You can not only collaberate with your team on selfmail, you can also write entire newsletters with the <Link href="https://newsletter.selfmail.app" className="underline">selfmail newsletter tool</Link>!</p>
+        </div>
+      </FadeIn>
+      <FadeIn variant={6}>
+        <footer className="flex flex-col md:flex-row justify-between items-center ">
+          <p className="text-[#121212] text-sm">© 2024 Selfmail. All rights reserved.</p>
+          <div className="flex space-x-2">
+            <Link href="/changelog" className="text-[#121212] text-sm">Changelog</Link>
+            <Link href="/privacy" className="text-[#121212] text-sm">Privacy</Link>
+            <Link href="/legal" className="text-[#121212] text-sm">Legal</Link>
+          </div>
+        </footer>
+      </FadeIn>
       <div className="h-16" />
     </main>
   );

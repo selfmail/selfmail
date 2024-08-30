@@ -58,7 +58,7 @@ const Motion: React.FC<{
 
 export default function ScrollAnimation() {
     return (
-        <div id="svg-container" className="flex space-x-2">
+        <div id="svg-container" className="space-x-2 hidden md:flex">
             <Motion
                 height={300}
                 initial={{

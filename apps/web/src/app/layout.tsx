@@ -29,7 +29,9 @@ export default function RootLayout({
       <body>
         <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
           <Toaster />
-          {children}
+          <div className="px-5 md:px-0">
+            {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>
