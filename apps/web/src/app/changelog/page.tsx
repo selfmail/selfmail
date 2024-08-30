@@ -1,7 +1,9 @@
 import FadeIn from "@/components/fade-in";
+import Render from "@/components/render";
 import { allChangelogs } from "content-collections";
 import Link from "next/link";
 import Logo from "../logo";
+
 export default function Changelog() {
     return (
         <div className="min-h-screen flex flex-col space-y-16 text-black  md:w-[450px] lg:w-[500px]">
@@ -30,14 +32,25 @@ export default function Changelog() {
                             <h2 className="text-[#121212] text-lg">{post.title}</h2>
                             <p className="text-[#121212] text-sm font-[450]">{post.date.toLocaleDateString()}</p>
                         </div>
-                        <div className="text-[#666666]" dangerouslySetInnerHTML={{ __html: post.html }} />
+                        <Render code={post.mdx} />
                         <div className="w-full flex items-center justify-between">
-                            <Link className="text-[#666666] hover:text-black duration-200" href={`/changelog/${post._meta.fileName}`}>Read more</Link>
+                            <Link className="text-[#666666] hover:text-black duration-200" href={`/changelog/${post._meta.path}`}>Read more</Link>
                             <Link className="text-[#666666] hover:text-black duration-200" href="/changelog">Share</Link>
                         </div>
                     </FadeIn>
                 ))
             }
+            <FadeIn variant={3}>
+                <footer className="flex flex-col md:flex-row justify-between items-center ">
+                    <p className="text-[#121212] text-sm">© 2024 Selfmail. All rights reserved.</p>
+                    <div className="flex space-x-2">
+                        <Link href="/changelog" className="text-[#121212] text-sm">Changelog</Link>
+                        <Link href="/privacy" className="text-[#121212] text-sm">Privacy</Link>
+                        <Link href="/legal" className="text-[#121212] text-sm">Legal</Link>
+                    </div>
+                </footer>
+            </FadeIn>
+            <div className="h-16" />
         </div>
     )
 }

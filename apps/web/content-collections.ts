@@ -1,5 +1,5 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
-import { compileMarkdown } from "@content-collections/markdown";
+import { compileMDX } from "@content-collections/mdx";
 
 const changelog = defineCollection({
     name: "changelog",
@@ -11,13 +11,13 @@ const changelog = defineCollection({
         date: z.string()
     }),
     transform: async (document, context) => {
-        const html = await compileMarkdown(context, document);
+        const mdx = await compileMDX(context, document);
         const date = new Date(document.date);
         const dateDocument = (({ date, ...rest }) => rest)(document)
         return {
             ...dateDocument,
             date,
-            html,
+            mdx,
         };
     },
 });
