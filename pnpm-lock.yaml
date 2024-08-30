@@ -347,6 +347,9 @@ importers:
       nodemailer:
         specifier: ^6.9.14
         version: 6.9.14
+      postal-js:
+        specifier: ^1.0.1
+        version: 1.0.1
       resend:
         specifier: ^3.4.0
         version: 3.4.0
@@ -6595,6 +6598,9 @@ packages:
   possible-typed-array-names@1.0.0:
     resolution: {integrity: sha512-d7Uw+eZoloe0EHDIYoe+bQ5WXnGMOpmiZFTuMWCwpjzzkL2nTjcKiAk4hh8TjnGye2TwWOk3UXucZ+3rbmBa8Q==}
     engines: {node: '>= 0.4'}
+
+  postal-js@1.0.1:
+    resolution: {integrity: sha512-yjRKDAaTr3Yh1WbyfZuNph5T8fZNHQ/9fgWNICcw3bPbeCMRm2WdV2r/Z4OQocuIjmjDccMrLW5hXRdyJeLxbw==}
 
   postal-mime@2.2.6:
     resolution: {integrity: sha512-FNobloQOyMgpWr5LdllmVjy9QAHoi3qmTmEb7CBcHjXTQNcPV2FuvUBC0YLbSiMZxyQmip47nlCVd9EqZL2EIg==}
@@ -15427,6 +15433,8 @@ snapshots:
   pluralize@8.0.0: {}
 
   possible-typed-array-names@1.0.0: {}
+
+  postal-js@1.0.1: {}
 
   postal-mime@2.2.6: {}
 
