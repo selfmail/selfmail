@@ -17,7 +17,7 @@ export default function UnsubscribePage() {
             </nav>
         </header>
         <div className="space-y-2">
-            <h1 className="text-2xl font-medium mt-[25%] text-blue-800">You habe been removed from the waitlist</h1>
+            <h1 className="text-2xl font-medium  pt-24 text-blue-800">You habe been removed from the waitlist</h1>
             <p>You are removed from the waitlist. All of your data is deleted on our server. You can resubscribe anytime by going back to the homepage <Link className="underline" href="/">here</Link>. Please also note, that you can subscribe to a specigic topic. For example, if you felt overhelmed by our emails, you can unsubscribe from them, but get notified when we launch.</p>
         </div>
     </main>

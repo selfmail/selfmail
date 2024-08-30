@@ -17,7 +17,7 @@ export default function WelcomePage() {
             </nav>
         </header>
         <div className="space-y-2">
-            <h1 className="text-2xl font-medium mt-[25%] text-green-800">Welcome to the waitlist</h1>
+            <h1 className="text-2xl font-medium pt-24 text-green-800">Welcome to the waitlist</h1>
             <p>Welcoem to the waitlist! We are sending you updates on our progress every month and (of course) you can unsubscribe anytime. Below you can manage your subscriptions (which emails you want to receive).</p>
         </div>
     </main>

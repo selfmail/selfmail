@@ -22,7 +22,7 @@ export default function ErrorPage({
             </nav>
         </header>
         <div className="space-y-2">
-            <h1 className="text-2xl font-medium mt-[25%] text-red-800">We had an Error</h1>
+            <h1 className="text-2xl font-medium  pt-24 text-red-800">We had an Error</h1>
             <p>An error occured while processing your request. Please try again later or contact us for support <Link href="/contact" className="underline">here</Link>.</p>
             <p className="text-red-500">{error}</p>
         </div>

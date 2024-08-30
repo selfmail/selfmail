@@ -20,7 +20,7 @@ export default function AboutPage() {
             </header>
             <div className="space-y-3">
                 <FadeIn variant={1}>
-                    <h2 className=" text-2xl font-medium mt-[25%]">About selfmail...</h2>
+                    <h2 className=" text-2xl font-medium pt-24">About selfmail...</h2>
                 </FadeIn>
                 <FadeIn variant={2}>
                     <p className="text-[#121212] ">We are developing this platform since the june of 2024. This project was initially started by <Link className="underline" href="https://henri.gg" target="_blank">henri</Link>. Since then, we are constantly improving this project with new features and fixes. Our mission is to create a modern email provider which is free & open source. Transparent, fair & privacy friendly is in our world nowadays a big problem in the most companies, some big companies own this market. We are trying to change this with our platform.</p>

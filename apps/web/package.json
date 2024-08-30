@@ -33,6 +33,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@content-collections/core": "^0.6.4",
+    "@content-collections/markdown": "^0.1.0",
     "@content-collections/next": "^0.2.0",
     "@types/eslint": "^8.56.2",
     "@types/node": "^20.11.20",
