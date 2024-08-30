@@ -28,7 +28,7 @@ export default function Changelog() {
                 allChangelogs.map((post, i) => (
                     <FadeIn variant={i + 3} className="flex flex-col space-y-2" key={post._meta.fileName}>
                         <hr className="border-t border-t-[#8b8b8b] w-full" />
-                        <div className="w-full flex justify-between h-12 rounded-b-md px-2 items-center sticky top-0 bg-[#e8e8e8]/80 backdrop-blur-sm">
+                        <div className="w-full flex justify-between h-12 rounded-b-md px-2 items-center sticky top-0 bg-[#e8e8e8]/90 backdrop-blur-sm">
                             <h2 className="text-[#121212] text-lg">{post.title}</h2>
                             <p className="text-[#121212] text-sm font-[450]">{post.date.toLocaleDateString()}</p>
                         </div>
