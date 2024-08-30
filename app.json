@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "selfmail",
+    "slug": "selfmail",
+    "version": "1.0.0",
+    "sdkVersion": "51.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "android": {
+      "package": "com.henri.gg.selfmail"
+    }
+  }
+}

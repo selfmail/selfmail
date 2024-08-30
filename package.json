@@ -1,20 +1,28 @@
 {
-	"name": "selfmail",
-	"devDependencies": {
-		"prettier": "^3.3.3",
-		"turbo": "^2.1.0",
-		"typescript": "^5.5.3"
-	},
-	"engines": {
-		"node": ">=18"
-	},
-	"packageManager": "pnpm@8.15.6",
-	"private": true,
-	"scripts": {
-		"build": "turbo build",
-		"dev": "turbo dev",
-		"lint": "turbo lint",
-		"format": "npx biome --write \"**/*.{ts,tsx,md}\"",
-		"start": "turbo start"
-	}
+  "name": "selfmail",
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "turbo": "^2.1.0",
+    "typescript": "^5.5.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@8.15.6",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "npx biome --write \"**/*.{ts,tsx,md}\"",
+    "start": "turbo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
+  },
+  "version": "1.0.0",
+  "dependencies": {
+    "expo": "~51.0.28",
+    "react": "18.2.0",
+    "react-native": "0.74.5"
+  }
 }
