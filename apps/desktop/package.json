@@ -1,0 +1,27 @@
+{
+    "name": "vite-electron-ts",
+    "version": "1.0.0",
+    "private": true,
+    "main": "dist/main/main.js",
+    "scripts": {
+        "dev": "concurrently \"npm run dev:renderer\" \"npm run dev:main\"",
+        "dev:renderer": "vite",
+        "dev:main": "tsc -w -p tsconfig.main.json",
+        "build": "npm run build:renderer && npm run build:main",
+        "build:renderer": "vite build",
+        "build:main": "tsc -p tsconfig.main.json",
+        "start": "electron ."
+    },
+    "dependencies": {
+        "electron": "^25.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.14.10",
+        "@types/react": "^18.3.5",
+        "@types/react-dom": "^18.3.0",
+        "@vitejs/plugin-react": "^4.0.0",
+        "concurrently": "^8.0.0",
+        "typescript": "^5.0.0",
+        "vite": "^4.0.0"
+    }
+}
