@@ -117,7 +117,8 @@ export default function Sidebar({
           ))}
         </div>
       </div>
-      <div className="mx-3 pb-4">
+      <div className="mx-3 pb-2">
+        <hr className="w-full border-t-2 border-t-[#cccccccc] p-1" />
         <Link
           href="/help"
           className="flex w-full items-center rounded-xl p-1 text-sm"
@@ -139,10 +140,6 @@ export default function Sidebar({
           <Download className="mr-3 h-4 w-4" />
           <span>Downloads</span>
         </Link>
-        <hr className="w-full border-2 border-[#cccccccc]" />
-        <div className="mt-2 flex items-center justify-between">
-
-        </div>
       </div>
     </div>
   );

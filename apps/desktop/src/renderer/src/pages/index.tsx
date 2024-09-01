@@ -1,3 +1,8 @@
+import { X } from "lucide-react";
+
+
 export default function IndexPage() {
-    return <div>Index Page</div>
+    return <div>
+        <X />
+    </div>
 }

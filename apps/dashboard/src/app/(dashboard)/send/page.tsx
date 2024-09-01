@@ -12,7 +12,7 @@ import SendButton from "./send-button";
 const Editor = dynamic(() => import("@/components/editor/editor"), {
   ssr: false, loading: () => (
     <div className="flex items-center">
-      <span className="mr-2 ml-2 h-2 w-2 animate-pulse rounded-full bg-neutral-700" />
+      <span className="mx-2 h-2 w-2 animate-pulse rounded-full bg-neutral-700" />
       <p>
         Loading the editor...
       </p>
@@ -21,12 +21,14 @@ const Editor = dynamic(() => import("@/components/editor/editor"), {
 });
 
 export default async function Send() {
+
   const req = await checkRequest();
   const adresses = await db.adresse.findMany({
     where: {
       userId: req.userId,
     },
   });
+
   return (
     <main className="min-h-screen bg-[#e8e8e8]">
       <header id="send-header" className="flex flex-col">

@@ -2,8 +2,8 @@
   "name": "selfmail",
   "devDependencies": {
     "prettier": "^3.3.3",
-    "turbo": "^2.1.0",
-    "typescript": "^5.5.3"
+    "turbo": "^2.1.1",
+    "typescript": "^5.5.4"
   },
   "engines": {
     "node": ">=18"
@@ -12,7 +12,7 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "turbo dev --parallel",
     "lint": "turbo lint",
     "format": "npx biome --write \"**/*.{ts,tsx,md}\"",
     "start": "turbo start",
@@ -21,7 +21,7 @@
   },
   "version": "1.0.0",
   "dependencies": {
-    "expo": "~51.0.28",
+    "expo": "~51.0.31",
     "react": "18.2.0",
     "react-native": "0.74.5"
   }

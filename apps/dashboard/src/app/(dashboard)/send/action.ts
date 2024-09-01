@@ -1,3 +1,4 @@
+import { SendMessage } from "postal-js";
 import { z } from "zod";
 
 export async function SendMail(mail: {
@@ -8,24 +9,19 @@ export async function SendMail(mail: {
 }): Promise<undefined | string> {
 	"use server";
 
-	const req = await fetch(
-		process.env.NODE_ENV === "development"
-			? "http://localhost:5000/v1/email/send"
-			: `${process.env.BACKEND_URL}/v1/email/send`,
+	const req = await fetch("http://localhost:5000/v1/email/send",
 		{
 			method: "POST",
 			body: JSON.stringify({
-				sender: mail.adresse,
-				content: mail.content,
-				recipient: mail.recipient,
+				from: mail.adresse,
+				to: [mail.recipient],
 				subject: mail.subject,
-			}),
-			headers: {
-				Authorization: `Bearer ${process.env.API_KEY}`,
-			},
+				html_body: mail.content,
+			} satisfies SendMessage),
 		},
 	);
-	if (!req) return "Internal server error. Try again.";
+	console.log(req.statusText)
+	if (!req || !req.ok) return "Internal server error.";
 
 	const data = await req.json()
 

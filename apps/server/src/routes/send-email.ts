@@ -1,10 +1,8 @@
 import { db } from "database";
-import { bearerAuth } from "hono/bearer-auth";
 import type { SendMessage } from "postal-js";
 import { z } from "zod";
 import { app } from "..";
 import { handleErrorWithResponse } from "../actions/handleError";
-import { auth } from "../auth";
 import { postal } from "../postal";
 
 /**
@@ -16,14 +14,6 @@ export default function SendEmail() {
   // TODO: add authentication
   app.post(
     "/email/send",
-    bearerAuth({
-      verifyToken: async (token, c) => {
-        return await auth({
-          token,
-          context: c,
-        });
-      },
-    }),
     async (c) => {
       const body = await c.req.json() as SendMessage
 
@@ -82,14 +72,16 @@ export default function SendEmail() {
         sender,
         tag
       });
+      console.log(msg)
 
       if (!msg.success) {
+        console.log("msg not successful")
         handleErrorWithResponse(`Could not send email to the recipient: \n\n${msg.data.message}`, c);
         return
       }
 
       // TODO: When the email was sent without an error, the contact should be updated
-
+      console.log("log complete");
       return c.json(
         {
           message: "Send the email successfully",

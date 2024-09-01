@@ -7,7 +7,7 @@ export default function DropdownMailList({ adresses }: { adresses: string[] }) {
   const { adresse, updateAdresse } = useMailStore();
   return (
     <div className="flex items-center space-x-1 ">
-      <Select>
+      <Select onValueChange={(value) => updateAdresse(value)}>
         <SelectTrigger>
           <SelectValue placeholder="Select an adresse" />
         </SelectTrigger>

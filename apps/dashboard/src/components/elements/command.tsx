@@ -122,7 +122,7 @@ export default function CommandMenu() {
           >
             <Command.Input
               placeholder="Type to search..."
-              className="mb-2 rounded-xl border-2 border-[#dddddddd] bg-[#f4f4f4] p-2 focus-visible:border-[#666666] focus-visible:outline-none"
+              className="mb-2 rounded-xl border-2 border-[#dddddddd] bg-[#f4f4f4] p-2 text-black focus-visible:border-[#666666] focus-visible:outline-none"
             />
             <Command.Empty className="flex items-center space-x-2">
               <Info className="h-4 w-4 text-red-400" />{" "}

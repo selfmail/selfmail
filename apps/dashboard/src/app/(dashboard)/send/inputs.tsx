@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "ui";
+import { cn } from "lib/cn";
 import { useMailStore } from "./store";
 
 export default function HeaderInputs() {
@@ -8,25 +8,25 @@ export default function HeaderInputs() {
 
   return (
     <>
-      <Input
-        placeholder="Subject..."
-        value={subject}
-        onChange={(e) =>
-          updateSubject(
-            e.currentTarget.value === "" ? undefined : e.currentTarget.value,
-          )
-        }
-        className="mt-2 border border-b-2 border-t-2 border-b-[#d1d1d1] text-black border-t-[#d1d1d1] bg-transparent p-2 outline-none"
-      />
-      <Input
+      <input
+        type="text"
         placeholder="Recipient..."
-        value={recipient}
         onChange={(e) =>
           updateRecipient(
             e.currentTarget.value === "" ? undefined : e.currentTarget.value,
           )
         }
-        className="mb-2 border border-b-2 border-b-[#d1d1d1]  text-black bg-transparent p-2 outline-none"
+        className={cn("mt-2 border border-b-2 border-t-2 border-b-[#d1d1d1] text-black border-t-[#d1d1d1] bg-transparent p-2 outline-none")}
+      />
+      <input
+        type="text"
+        placeholder="Subject..."
+        onChange={(e) =>
+          updateSubject(
+            e.currentTarget.value === "" ? undefined : e.currentTarget.value,
+          )
+        }
+        className={cn(" border border-b-2  border-b-[#d1d1d1] text-black bg-transparent p-2 outline-none")}
       />
     </>
   );

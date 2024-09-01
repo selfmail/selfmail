@@ -46,7 +46,7 @@ export default function Editor() {
   }, []);
   return (
     <div style={{ minHeight: `calc(100vh - ${height}px - 32px)` }}>
-      <Remirror classNames={[cn("outline-none text-neutral-900 h-46 remirror-editor remirror-a11y-dark", `h-[calc(100vh - ${height}px - 32px)]`)]} manager={manager} initialContent={state} hooks={hooks}>
+      <Remirror classNames={[cn("px-2 outline-none text-neutral-900 h-46 remirror-editor remirror-a11y-dark", `h-[calc(100vh - ${height}px - 32px)]`)]} manager={manager} initialContent={state} hooks={hooks}>
 
       </Remirror>
     </div>
