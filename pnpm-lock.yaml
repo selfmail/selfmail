@@ -287,8 +287,8 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
       postal-js:
-        specifier: ^1.0.3
-        version: 1.0.3
+        specifier: ^1.0.4
+        version: 1.0.4
       prosekit:
         specifier: ^0.9.8
         version: 0.9.8(@types/hast@3.0.4)(prosemirror-model@1.22.3)(prosemirror-state@1.4.3)(prosemirror-transform@1.9.0)(prosemirror-view@1.33.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(svelte@4.2.18)(vue@3.4.31(typescript@5.5.3))
@@ -612,8 +612,8 @@ importers:
         specifier: ^6.9.14
         version: 6.9.14
       postal-js:
-        specifier: ^1.0.3
-        version: 1.0.3
+        specifier: ^1.0.4
+        version: 1.0.4
       resend:
         specifier: ^3.4.0
         version: 3.4.0
@@ -2649,7 +2649,7 @@ packages:
 
   '@expo/bunyan@4.0.1':
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
-    engines: {node: '>=0.10.0'}
+    engines: {'0': node >=0.10.0}
 
   '@expo/cli@0.18.29':
     resolution: {integrity: sha512-X810C48Ss+67RdZU39YEO1khNYo1RmjouRV+vVe0QhMoTe8R6OA3t+XYEdwaNbJ5p/DJN7szfHfNmX2glpC7xg==}
@@ -10139,8 +10139,8 @@ packages:
     resolution: {integrity: sha512-d7Uw+eZoloe0EHDIYoe+bQ5WXnGMOpmiZFTuMWCwpjzzkL2nTjcKiAk4hh8TjnGye2TwWOk3UXucZ+3rbmBa8Q==}
     engines: {node: '>= 0.4'}
 
-  postal-js@1.0.3:
-    resolution: {integrity: sha512-mlT5R2ZuAoyDcATfaLddPJiZhguAyybKHDoszXuj9m0f4c4AzAW0LkJYpcSlgk7AHqVgCbVwgYhrrI5MdnCEig==}
+  postal-js@1.0.4:
+    resolution: {integrity: sha512-JAEVn7pPQvwOD1bdzQcez2SStXrUpaq1KBJswjl2VIdY6OuQFFbEcV73oMWEBprTqT1JQmlL6VKCtCJlESDgJw==}
 
   postal-mime@2.2.6:
     resolution: {integrity: sha512-FNobloQOyMgpWr5LdllmVjy9QAHoi3qmTmEb7CBcHjXTQNcPV2FuvUBC0YLbSiMZxyQmip47nlCVd9EqZL2EIg==}
@@ -10194,8 +10194,8 @@ packages:
     resolution: {integrity: sha512-0vzE+lAiG7hZl1/9I8yzKLx3aR9Xbof3fBHKunvMfOCYAtMhrsnccJY2iTURb9EZd5+pLuiNV9/c/GZJOHsgIw==}
     engines: {node: ^10 || ^12 || >=14}
 
-  postcss@8.4.42:
-    resolution: {integrity: sha512-hywKUQB9Ra4dR1mGhldy5Aj1X3MWDSIA1cEi+Uy0CjheLvP6Ual5RlwMCh8i/X121yEDLDIKBsrCQ8ba3FDMfQ==}
+  postcss@8.4.44:
+    resolution: {integrity: sha512-Aweb9unOEpQ3ezu4Q00DPvvM2ZTUitJdNKeP/+uQgr1IBIqu574IaZoURId7BKtWMREwzKa9OgzPzezWGPWFQw==}
     engines: {node: ^10 || ^12 || >=14}
 
   precision@1.0.1:
@@ -20047,7 +20047,7 @@ snapshots:
       '@vue/shared': 3.4.31
       estree-walker: 2.0.2
       magic-string: 0.30.11
-      postcss: 8.4.42
+      postcss: 8.4.44
       source-map-js: 1.2.0
 
   '@vue/compiler-ssr@3.4.31':
@@ -25328,7 +25328,7 @@ snapshots:
 
   possible-typed-array-names@1.0.0: {}
 
-  postal-js@1.0.3: {}
+  postal-js@1.0.4: {}
 
   postal-mime@2.2.6: {}
 
@@ -25380,7 +25380,7 @@ snapshots:
       picocolors: 1.0.1
       source-map-js: 1.2.0
 
-  postcss@8.4.42:
+  postcss@8.4.44:
     dependencies:
       nanoid: 3.3.7
       picocolors: 1.0.1

@@ -268,5 +268,5 @@
 // }
 
 export default async function ReceiveEmail() {
-	console.log("log complete");
+	""
 }

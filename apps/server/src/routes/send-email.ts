@@ -72,16 +72,13 @@ export default function SendEmail() {
         sender,
         tag
       });
-      console.log(msg)
 
       if (!msg.success) {
-        console.log("msg not successful")
         handleErrorWithResponse(`Could not send email to the recipient: \n\n${msg.data.message}`, c);
         return
       }
 
       // TODO: When the email was sent without an error, the contact should be updated
-      console.log("log complete");
       return c.json(
         {
           message: "Send the email successfully",
