@@ -66,4 +66,7 @@ export {
 	SheetTitle,
 	SheetTrigger
 } from "./components/sheet";
+export {
+	useClickOutside
+} from "./hooks/use-click-outside";
 

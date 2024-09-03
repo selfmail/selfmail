@@ -1,40 +1,17 @@
 // import { db } from "database";
 // import Groq from "groq-sdk";
-// import { bearerAuth } from "hono/bearer-auth";
-// import { z } from "zod";
+// import type { SendMessage } from "postal-js";
+// import { z, ZodType } from "zod";
 // import { app } from "..";
 // import { config } from "../../config";
-// import { resend } from "../../resend";
-// import { auth } from "../auth";
+// import { handleErrorWithResponse } from "../actions/handleError";
 
 // /**
 //  * Handles the route to receive an email.
 //  */
 // export default function ReceiveEmail() {
-// 	/**
-// 	 * Receive an email with this post endpoint. This endpoint will be requested, when in the cloudflare worker came an email.
-// 	 *
-// 	 * @param token - the bearer auth token
-// 	 *
-// 	 * @param content - the email content
-// 	 * @param subject - the email subject
-// 	 * @param sender - the sender of this email
-// 	 * @param recipient - the recipient of this emai
-// 	 *
-// 	 * TODO: add documentation link
-// 	 * @see
-// 	 */
 // 	app.post(
-// 		"/email/receive",
-// 		bearerAuth({
-// 			verifyToken: async (token, c) => {
-// 				console.log(token);
-// 				return await auth({
-// 					context: c,
-// 					token: token,
-// 				});
-// 			},
-// 		}),
+// 		"/email/receive", //TODO: add seucred auth
 // 		async (c) => {
 // 			console.log("log complete");
 // 			/**
@@ -42,62 +19,38 @@
 // 			 */
 // 			const body = await c.req.json();
 
-// 			/**The email subject.
-// 			 *
-// 			 * [see on google](https://www.google.com/search?q=what+is+an+email+subject&oq=what+is+an+email+subject&sourceid=chrome&ie=UTF-8)
-// 			 */
-// 			const subject: string = body.subject as string;
-
-// 			/**
-// 			 * The Email content.
-// 			 */
-// 			const content: string = body.content as string;
-
-// 			/**
-// 			 * The sender of the email.
-// 			 */
-// 			const sender: string = body.sender as string;
-
-// 			/**
-// 			 * The recipient of the email. Usefull when you use multiple adresses or domains.
-// 			 */
-// 			const recipient: string = body.recipient as string;
-// 			/**
-// 			 * Parsing the provided fields with zod, to make sure, we can working with the variables.
-// 			 */
 // 			const emailSchema = z
 // 				.object({
-// 					content: z.string(),
-// 					sender: z.string().email(),
-// 					subject: z.string(),
-// 					recipient: z.string().email(),
-// 				})
+// 					attachments: z.array(z.string()).optional(),
+// 					bcc: z.array(z.string().email()).optional(),
+// 					cc: z.array(z.string().email()).optional(),
+// 					from: z.string().email(),
+// 					bounce: z.boolean().optional(),
+// 					html_body: z.string().optional(),
+// 					plain_body: z.string().optional(),
+// 					reply_to: z.string().email().optional(),
+// 					subject: z.string().optional(),
+// 					to: z.array(z.string().email()).optional(),
+// 					sender: z.string().email().optional(),
+// 					tag: z.string().optional(),
+// 				} satisfies Record<keyof SendMessage, ZodType>)
 // 				.safeParse({
-// 					subject,
-// 					content,
-// 					sender,
-// 					recipient,
+// 					...body,
 // 				});
 
 // 			// The provided values are not matching the required types, an error will be send back.
 // 			if (!emailSchema.success) {
-// 				return c.json(
-// 					{
-// 						error: "Typeerror: cannot parse the required fields",
-// 					},
-// 					{
-// 						status: 400,
-// 						statusText: "Required fields are not valid or have a wrong schema.",
-// 					},
-// 				);
+// 				handleErrorWithResponse("Validation of the fields is failed", c, 400, "Required fields are not valid or have a wrong schema.");
 // 			}
+
+// 			const { from, attachments, to, cc, bcc, reply_to, tag, bounce, plain_body, html_body, subject, sender } = emailSchema.data as SendMessage;
 
 // 			/**
 // 			 * Checking if the recipient exists in the database (if the recipient exists)
 // 			 */
 // 			const adresse = await db.adresse.findUnique({
 // 				where: {
-// 					email: emailSchema.data.recipient,
+// 					email: to
 // 				},
 // 			});
 
@@ -266,7 +219,3 @@
 // 		},
 // 	);
 // }
-
-export default async function ReceiveEmail() {
-	""
-}
