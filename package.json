@@ -19,10 +19,5 @@
     "android": "expo run:android",
     "ios": "expo run:ios"
   },
-  "version": "1.0.0",
-  "dependencies": {
-    "expo": "~51.0.31",
-    "react": "18.2.0",
-    "react-native": "0.74.5"
-  }
+  "version": "1.0.0"
 }

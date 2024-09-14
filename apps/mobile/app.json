@@ -1,16 +1,17 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "mobile",
+    "slug": "mobile",
     "version": "1.0.0",
-    "scheme": "app",
+    "scheme": "mobile",
     "web": {
       "bundler": "metro",
       "output": "static",
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "@prisma/react-native"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -34,8 +35,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.henri.gg.app"
+      }
     }
   }
 }

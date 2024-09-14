@@ -1,12 +1,12 @@
 {
-  "cesVersion": "2.11.22",
-  "projectName": "app",
+  "cesVersion": "2.11.24",
+  "projectName": "mobile",
   "packages": [
     {
       "name": "expo-router",
       "type": "navigation",
       "options": {
-        "type": "stack"
+        "type": "tabs"
       }
     },
     {
