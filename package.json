@@ -2,8 +2,8 @@
   "name": "selfmail",
   "devDependencies": {
     "prettier": "^3.3.3",
-    "turbo": "^2.1.1",
-    "typescript": "^5.5.4"
+    "turbo": "^2.1.2",
+    "typescript": "^5.6.2"
   },
   "engines": {
     "node": ">=18"
@@ -15,9 +15,7 @@
     "dev": "turbo dev --parallel",
     "lint": "turbo lint",
     "format": "npx biome --write \"**/*.{ts,tsx,md}\"",
-    "start": "turbo start",
-    "android": "expo run:android",
-    "ios": "expo run:ios"
+    "start": "turbo start"
   },
   "version": "1.0.0"
 }
