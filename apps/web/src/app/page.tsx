@@ -73,6 +73,11 @@ export default function HomePage() {
         </div>
       </FadeIn>
       <FadeIn variant={6}>
+        <div className="border border-[#d1d1d1] text-[#121212] bg-[#f4f4f4] p-2 rounded-lg">
+          <h2 className="text-lg">Pricing</h2>
+        </div>
+      </FadeIn>
+      <FadeIn variant={7}>
         <footer className="flex flex-col md:flex-row justify-between items-center ">
           <p className="text-[#121212] text-sm">© 2024 Selfmail. All rights reserved.</p>
           <div className="flex space-x-2">
