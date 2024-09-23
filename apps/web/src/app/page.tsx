@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { waitlist } from "./action";
 import Form from "./form";
+import Github from "./icons/github";
+import X from "./icons/x";
 import Logo from "./logo";
 
 const ScrollAnimation = dynamic(() => import("./animation"), {
@@ -74,7 +76,7 @@ export default function HomePage() {
       </FadeIn>
       <FadeIn variant={6}>
         <div className="border border-[#d1d1d1] text-[#121212] bg-[#f4f4f4] p-2 rounded-lg">
-          <span className="font-thin text-sm absolute -right-6 bg-yellow-300 p-1 rounded-md rotate-45 top-1">coming soon</span>
+          <span className="font-thin text-sm absolute -right-7 bg-yellow-300 p-1 rounded-md rotate-45 top-1">coming soon</span>
           <h2 className="text-lg">Pricing</h2>
           <div className="w-full flex space-x-2">
             <div className="w-full flex flex-col space-y-2">
@@ -86,7 +88,7 @@ export default function HomePage() {
             <div className="h-full w-[1px] bg-foreground mx-2" />
             <div className="w-full flex flex-col space-y-2">
               <h2 className="text-2xl font-medium">10€ <span className="font-normal text-base">/ user</span></h2>
-              <p>The paid plan gives you more features, for your team and your family. You will help us to improvde selfmail.</p>
+              <p>The paid plan gives you more features, for your team and your family. You will help us to improve selfmail.</p>
             </div>
           </div>
         </div>
@@ -98,6 +100,8 @@ export default function HomePage() {
             <Link href="/changelog" className="text-[#121212] text-sm">Changelog</Link>
             <Link href="/privacy" className="text-[#121212] text-sm">Privacy</Link>
             <Link href="/legal" className="text-[#121212] text-sm">Legal</Link>
+            <Link href="https://github.com/selfmail/selfmail" target="_blank" className="text-sm"><Github color="#121212" className="h-4 w-4 text-[#121212]" /></Link>
+            <Link href="https://x.com" target="_blank" className="text-sm"><X color="#121212" className="h-4 w-4 text-[#121212]" /></Link>
           </div>
         </footer>
       </FadeIn>
