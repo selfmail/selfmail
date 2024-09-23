@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "lib/cn";
+import { cn } from "@/lib/cn";
 import { useMailStore } from "./store";
 
 export default function HeaderInputs() {

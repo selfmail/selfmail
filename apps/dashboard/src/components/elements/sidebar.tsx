@@ -1,146 +1,96 @@
-"use client";
+"use client"
 
-import {
-  BarChart,
-  ChevronsUpDown,
-  Contact,
-  Download,
-  HandCoins,
-  HelpCircle,
-  Home,
-  Inbox,
-  Mailbox,
-  Plane,
-  Search,
-  Settings,
-  User,
-  Users
-} from "lucide-react";
+import { Compass, Grid, Home, HomeIcon, Music, Pen, Plus, School, User2, Users2 } from "lucide-react";
 import Link from "next/link";
-import { KBD } from "ui";
-import { useCommandStore } from "./command";
+import { useParams, usePathname } from "next/navigation";
+import { create } from "zustand";
+import { cn } from "../../../lib/cn";
+// store for the sidebar state (open/close)
+type State = {
+  isOpen: boolean;
+}
+type Action = {
+  toggleSidebar: () => void;
+}
+
+const useSidebarStore = create<State & Action>((set) => ({
+  isOpen: true,
+  toggleSidebar: () => set((state) => ({ isOpen: !state.isOpen })),
+}))
+
+const SidebarLink: React.FC<React.HTMLAttributes<HTMLAnchorElement> & { href: string, page: string }> = ({ href, children, page, ...props }) => {
+  const pathname = usePathname()
+
+  // get the second part of the pathname 
+  const path = pathname?.split('/')[2] || ''
+  return (
+    <Link  {...props} href={href} className={cn("flex px-2 py-1 rounded-lg hover:bg-white/60 items-center gap-2 cursor-pointer text-base text-foreground", page === path ? "bg-white" : "", props.className)}>
+      {children}
+    </Link>
+  )
+}
 
 export default function Sidebar({
-  adresses,
-}: {
-  adresses: { email: string }[];
-}) {
-  const { setOpen } = useCommandStore();
+  children
+}: Readonly<{ children: React.ReactNode }>) {
+  const { isOpen, toggleSidebar } = useSidebarStore();
+  const { team } = useParams() as { team: string } // get the team is from the url /[team]/etc
   return (
-    <div className="fixed bottom-0 left-0 top-0 hidden min-h-screen flex-col justify-between overflow-auto border-r-2 border-r-[#dddddddd] lg:flex lg:w-[200px] xl:w-[250px]">
-      <div className="space-y-3">
-        {/* The account switch */}
-        <div className="mx-3 mt-3 flex items-center justify-between rounded-xl border-2 border-[#cccccccc] bg-[#f4f4f4] p-2">
-          <User className="h-4 w-4" />
-          <p>henri</p>
-          <ChevronsUpDown className="h-4 w-4" />
-        </div>
-        <div className="mx-3 flex flex-col" onClick={() => setOpen(true)} onKeyDown={() => setOpen(true)}>
-          <div className="flex cursor-pointer items-center justify-between rounded-xl p-2 hover:bg-[#f4f4f4]">
-            <div className="flex">
-              <Search className="mr-3 h-4 w-4" />
-              <span className="text-sm">Search</span>
+    <div className="flex min-h-screen w-full">
+      <div className={cn("flex bg-background-secondary h-full xl:w-[350px] transition duration-100", isOpen ? "xl:w-[350px]" : "xl:w-[0px]")}>
+        <div className="flex flex-col items-center justify-between">
+          {/* team list */}
+          <div className="flex flex-col items-center justify-between h-full border-r border-r-border min-w-[60px] px-2 py-2">
+            <div className="w-full flex flex-col space-y-2">
+              <div className="cursor-pointer rounded-md flex items-center justify-center w-full aspect-square">
+                <HomeIcon className="h-4 w-4 text-foreground" />
+              </div>
+              <div className="cursor-pointer rounded-lg bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
+                <User2 className="h-4 w-4 text-black/70" />
+              </div>
+              <hr />
+              <div className="cursor-pointer rounded-lg bg-background-primary border-border flex items-center justify-center w-full aspect-square">
+                <School className="h-4 w-4 text-blue-700/70" />
+              </div>
+              <div className="cursor-pointer rounded-lg bg-background-primary border-border flex items-center justify-center w-full aspect-square">
+                <Compass className="h-5 w-5 text-yellow-700/70" />
+              </div>
+              <div className="cursor-pointer bg-background-primary rounded-lg border-border flex items-center justify-center w-full aspect-square">
+                <Music className="h-4 w-4 text-green-700/70" />
+              </div>
             </div>
-            <KBD>⌘ K</KBD>
+            <div className="rounded-lg border-border flex items-center justify-center w-full aspect-square">
+              New Project
+            </div>
           </div>
         </div>
-        {/* The platform located links */}
-        <div className="mx-3 flex flex-col">
-          <div className="flex items-center">
-            <span className="text-sm text-[#666666]">Platform</span>
-            <hr className="ml-2 w-full border-2 border-[#cccccccc]" />
+        {/* Sidebar for teams */}
+        <div className={cn("flex flex-col justify-between px-3 py-2 h-full", isOpen ? "flex" : "hidden")}>
+          <div className="w-full  space-y-2">
+            {/* <Input type="text" placeholder={<div className="flex gap-2 items-center"><Search className="text-foreground h-4 w-4" />Search...</div>} className="w-full" /> */}
+            <SidebarLink page="" href={`/${team}/`}><Home className="h-4 w-4 text-cyan-700" />Home</SidebarLink>
+            <SidebarLink page="team" href={`/${team}/team`}><Users2 className="h-4 w-4 text-yellow-700" />Members</SidebarLink>
+            <SidebarLink page="projects" href={`/${team}/team`}><Grid className="h-4 w-4 text-blue-700" />Projects</SidebarLink>
+            <SidebarLink page="settings" href={`/${team}/team`}><Pen className="h-4 w-4 text-green-700" />Settings</SidebarLink>
+            <div className="flex items-center space-x-1">
+              <p className="text-foreground text-sm">
+                Projects
+              </p>
+              <hr />
+            </div>
+            <SidebarLink page="home" href={`/${team}/jsdkjfdsj`}><HomeIcon className="h-4 w-4 text-red-700" />Geschichte</SidebarLink>
           </div>
-          <Link
-            href="/"
-            className="flex w-full items-center rounded-xl p-2 hover:bg-[#f4f4f4]"
-          >
-            <Home className="mr-3 h-4 w-4" />
-            <span className="text-sm">Home</span>
-          </Link>
-          <Link
-            href="/send"
-            className="flex w-full items-center rounded-xl p-2 hover:bg-[#f4f4f4]"
-          >
-            <Plane className="mr-3 h-4 w-4" />
-            <span className="text-sm">Send</span>
-          </Link>
-          <Link
-            href="/team"
-            className="flex w-full items-center rounded-xl p-2 hover:bg-[#f4f4f4]"
-          >
-            <Users className="mr-3 h-4 w-4" />
-            <span className="text-sm">Teams</span>
-          </Link>
-          <Link
-            href="/upgrade"
-            className="flex w-full items-center rounded-xl p-2 hover:bg-[#f4f4f4]"
-          >
-            <HandCoins className="mr-3 h-4 w-4" />
-            <span className="text-sm">Upgrade</span>
-          </Link>
-          <Link
-            href="/analytics"
-            className="flex w-full items-center rounded-xl p-2 hover:bg-[#f4f4f4]"
-          >
-            <BarChart className="mr-3 h-4 w-4" />
-            <span className="text-sm">Analytics</span>
-          </Link>
-          <Link
-            href="/adresse"
-            className="flex w-full items-center rounded-xl p-2 hover:bg-[#f4f4f4]"
-          >
-            <Mailbox className="mr-3 h-4 w-4" />
-            <span className="text-sm">Adresses</span>
-          </Link>
-          <Link
-            href="/settings"
-            className="flex w-full items-center rounded-xl p-2 hover:bg-[#f4f4f4]"
-          >
-            <Settings className="mr-3 h-4 w-4" />
-            <span className="text-sm">Settings</span>
-          </Link>
-        </div>
-        <div className="mx-3 flex flex-col">
-          <div className="flex items-center">
-            <span className="text-sm text-[#666666]">Aliases</span>
-            <hr className="ml-2 w-full border-2 border-[#cccccccc]" />
-          </div>
-          {adresses.map((adresse) => (
-            <Link
-              key={adresse.email}
-              href={`/adresse/${adresse.email}`}
-              className="flex w-full items-center rounded-xl p-2 hover:bg-[#f4f4f4]"
-            >
-              <Inbox className="mr-3 h-4 w-4" />
-              <span className="text-sm">{adresse.email}</span>
+          <div className="flex items-center w-full space-x-2">
+            <Link href={`/${team}/new`} className="flex px-2 py-1 w-full rounded-lg hover:bg-white/70 items-center gap-2 cursor-pointer text-base text-foreground">
+              <Plus className="h-4 w-4 text-orange-700" />
+              New Project
             </Link>
-          ))}
+          </div>
         </div>
       </div>
-      <div className="mx-3 pb-2">
-        <hr className="w-full border-t-2 border-t-[#cccccccc] p-1" />
-        <Link
-          href="/help"
-          className="flex w-full items-center rounded-xl p-1 text-sm"
-        >
-          <HelpCircle className="mr-3 h-4 w-4" />
-          <span>Help center</span>
-        </Link>
-        <Link
-          href="/contact"
-          className="flex w-full items-center rounded-xl p-1 text-sm"
-        >
-          <Contact className="mr-3 h-4 w-4" />
-          <span>Contact</span>
-        </Link>
-        <Link
-          href="/download"
-          className="mb-1 flex w-full items-center rounded-xl p-1 text-sm"
-        >
-          <Download className="mr-3 h-4 w-4" />
-          <span>Downloads</span>
-        </Link>
+      <div>
+        {children}
       </div>
     </div>
-  );
+  )
 }

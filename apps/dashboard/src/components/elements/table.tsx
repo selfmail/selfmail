@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "lib/cn";
+import { cn } from "@/lib/cn";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { Button, Checkbox, CheckboxIndicator } from "ui";

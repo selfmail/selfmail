@@ -1,8 +1,8 @@
 "use client"
 
 import { useMailStore } from "@/app/(dashboard)/send/store";
+import { cn } from "@/lib/cn";
 import { OnChangeHTML, Remirror, useRemirror } from '@remirror/react';
-import { cn } from "lib/cn";
 import { useCallback, useEffect, useState } from "react";
 import { BoldExtension, CodeExtension, HeadingExtension, ItalicExtension, LinkExtension, PlaceholderExtension, StrikeExtension } from 'remirror/extensions';
 import 'remirror/styles/all.css';

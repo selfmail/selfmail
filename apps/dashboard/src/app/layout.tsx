@@ -1,10 +1,15 @@
-import "@/styles/globals.css";
-// the ui style file, because without this, the styles won't working
 import CommandMenu from "@/components/elements/command";
 import { ThemeProvider } from "@/components/provider/theme-provider";
+
+// global styles
+import "@/styles/globals.css";
+
+// fonts and toaster
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
+
+// styles for the different components
 import "styles/styles.css";
 import "ui/styles.css";
 
@@ -23,9 +28,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
+        {/* Themes by next-themes */}
         <ThemeProvider attribute="class">
           {children}
+          {/* Sonner toaster */}
           <Toaster richColors />
+          {/* Command menu */}
           <CommandMenu />
         </ThemeProvider>
       </body>

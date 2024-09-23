@@ -1,0 +1,12 @@
+/* The lightmode colors */
+@import url("./lightmode.css");
+
+/* The darkmode colors */
+@import url("./darkmode.css");
+
+/* global styles */
+
+body::selection {
+    background-color: var(--highlight);
+    color: var(--foreground);
+}

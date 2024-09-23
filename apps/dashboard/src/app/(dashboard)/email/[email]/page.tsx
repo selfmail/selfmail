@@ -1,9 +1,7 @@
 import { db } from "database";
-import { cn } from "lib/cn";
 import { ChevronLeft, Trash } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Button, ButtonStyles } from "node_modules/ui/src/components/button";
 import {
   Dialog,
   DialogClose,
@@ -13,8 +11,8 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "ui";
-import DeleteButton from "./delete-button";
 import { DeleteMail } from "./action";
+import DeleteButton from "./delete-button";
 
 export default async function Email({
   params,

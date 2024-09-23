@@ -16,13 +16,7 @@ export default async function DashboardLayout({
   });
   return (
     <div className="flex min-h-screen bg-[#e8e8e8]">
-      {/* 
-        The sidebar is hidden on mobile, a header will be rendered on top of the sidebar if
-        you use a phone.
-            */}
-      <Sidebar adresses={adresses} />
-      {/* The main content with a padding of 200px on the left. */}
-      <div className="p-3lg:pl-[200px] flex-1 xl:pl-[250px]">{children}</div>
+      <Sidebar>{children}</Sidebar>
     </div>
   );
 }

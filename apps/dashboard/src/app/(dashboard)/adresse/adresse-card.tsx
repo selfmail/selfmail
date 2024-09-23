@@ -1,6 +1,8 @@
 "use client";
 
-import { cn } from "lib/cn";
+import { cn } from "@/lib/cn";
+import { Trash } from "lucide-react";
+import { useState } from "react";
 import {
   Button,
   Dialog,
@@ -12,9 +14,6 @@ import {
   DialogTrigger,
 } from "ui";
 import TrashButton from "./trash-button";
-import { Trash } from "lucide-react";
-import { DeleteAdresse } from "./action";
-import { useState } from "react";
 
 /**
  * The card for the adresses on the `/adresse` page.

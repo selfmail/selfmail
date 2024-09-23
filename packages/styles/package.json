@@ -8,7 +8,7 @@
   "keywords": [],
   "exports": {
     ".": "./src/index.ts",
-    "./styles": "./src/styles.css"
+    "./styles.css": "./src/styles.css"
   },
   "author": "",
   "license": "ISC",
