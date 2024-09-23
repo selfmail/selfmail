@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         {/* Themes by next-themes */}
-        <ThemeProvider attribute="class">
+        <ThemeProvider attribute="class" defaultTheme="light">
           {children}
           {/* Sonner toaster */}
           <Toaster richColors />

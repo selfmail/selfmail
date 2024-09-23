@@ -1,6 +1,6 @@
 "use client"
 
-import { useMailStore } from "@/app/(dashboard)/send/store";
+import { useMailStore } from "@/app/(dashboard)/[team]/send/store";
 import { cn } from "@/lib/cn";
 import { OnChangeHTML, Remirror, useRemirror } from '@remirror/react';
 import { useCallback, useEffect, useState } from "react";

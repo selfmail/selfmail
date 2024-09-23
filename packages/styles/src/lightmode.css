@@ -1,16 +1,16 @@
 :root {
-    --primary: #666666;
-    --secondary: #121212;
+    --primary: #296dff;
+    --secondary: #f79f79;
     
-    --background: #121212;
-    --background-secondary: #1e1e1e;
+    --background: #e1e1e1;
+    --background-secondary: #d1d1d1;
 
-    --foreground: #e8e8e8;
-    --foreground-secondary: #666666;
+    --foreground: #121212;
+    --foreground-secondary: #343434;
 
     --border: #666666;
-    --border-secondary: #e8e8e8;
+    --border-secondary: #999999;
 
     /* color for marking smthg */
-    --highlight: #26bd4b;
+    --highlight: #e3f09b;
 }
