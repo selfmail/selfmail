@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
+import "styles/styles.css";
 import "ui/styles.css";
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} flex w-full justify-center bg-[#e8e8e8]`}
+      className={`${GeistSans.variable} flex w-full justify-center  bg-background`}
     >
       <body>
         <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>

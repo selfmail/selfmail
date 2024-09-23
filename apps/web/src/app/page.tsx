@@ -74,7 +74,21 @@ export default function HomePage() {
       </FadeIn>
       <FadeIn variant={6}>
         <div className="border border-[#d1d1d1] text-[#121212] bg-[#f4f4f4] p-2 rounded-lg">
+          <span className="font-thin text-sm absolute -right-6 bg-yellow-300 p-1 rounded-md rotate-45 top-1">coming soon</span>
           <h2 className="text-lg">Pricing</h2>
+          <div className="w-full flex space-x-2">
+            <div className="w-full flex flex-col space-y-2">
+              <h2 className="text-2xl font-medium">
+                0€
+              </h2>
+              <p>The free plan gives you everything you need to get started. This plan will stay for free forever.</p>
+            </div>
+            <div className="h-full w-[1px] bg-foreground mx-2" />
+            <div className="w-full flex flex-col space-y-2">
+              <h2 className="text-2xl font-medium">10€ <span className="font-normal text-base">/ user</span></h2>
+              <p>The paid plan gives you more features, for your team and your family. You will help us to improvde selfmail.</p>
+            </div>
+          </div>
         </div>
       </FadeIn>
       <FadeIn variant={7}>

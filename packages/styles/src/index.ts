@@ -14,9 +14,26 @@ export default {
         container: {
         },
         extend: {
+            colors: {
+                background: {
+                    DEFAULT: "var(--background)",
+                    secondary: "var(--background-secondary)"
+                },
+                foreground: {
+                    DEFAULT: "var(--foreground)",
+                    secondary: "var(--foreground-secondary)"
+                },
+                border: {
+                    DEFAULT: "var(--border)",
+                    secondary: "var(--border-secondary)"
+                },
+                highlight: {
+                    DEFAULT: "var(--highlight)"
+                }
+            }
         },
+        plugins: [
+            require("tailwindcss-animate")
+        ],
     },
-    // plugins: [
-    //     await import("tailwindcss-animate")
-    // ],
 } satisfies Config

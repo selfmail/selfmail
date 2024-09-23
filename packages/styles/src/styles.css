@@ -2,10 +2,13 @@
 @import url("./lightmode.css");
 
 /* The darkmode colors */
-@import url("./darkmode.css");
+/* @import url("./darkmode.css"); */
 
 /* global styles */
 *::selection {
     background-color: var(--highlight);
     color: var(--foreground);
+}
+* {
+    color: var(--foreground)
 }
