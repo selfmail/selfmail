@@ -5,7 +5,9 @@ import { ThemeProvider } from "@/components/provider/theme-provider";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
+import "styles/styles.css";
 import "ui/styles.css";
+
 export const metadata: Metadata = {
   title: {
     default: "Selfmail | Dashboard",
