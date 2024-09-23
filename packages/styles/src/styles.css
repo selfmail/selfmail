@@ -5,8 +5,7 @@
 @import url("./darkmode.css");
 
 /* global styles */
-
-body::selection {
+*::selection {
     background-color: var(--highlight);
     color: var(--foreground);
 }

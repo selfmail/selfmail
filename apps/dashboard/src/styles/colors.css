@@ -45,7 +45,7 @@
   --danger: #ffffff;
 }
 
-@layer base {
+/* @layer base {
   p,
   span,
   svg {
@@ -56,4 +56,4 @@
   h3 {
     @apply text-text-primary;
   }
-}
+} */

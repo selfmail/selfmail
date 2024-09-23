@@ -16,7 +16,7 @@ export default {
         extend: {
         },
     },
-    plugins: [
-        await import("tailwindcss-animate")
-    ],
+    // plugins: [
+    //     await import("tailwindcss-animate")
+    // ],
 } satisfies Config
