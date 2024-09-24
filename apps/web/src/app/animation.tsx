@@ -20,6 +20,7 @@ type AnimationWithSign = {
         value: number
     }
 }
+
 type Animation = {
     x: number,
     y: number,
