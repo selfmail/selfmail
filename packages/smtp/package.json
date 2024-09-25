@@ -10,10 +10,14 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@types/node": "^22.6.1",
+    "consola": "^3.2.3",
     "hono": "^4.4.10",
     "nodemailer": "^6.9.14",
-    "smtp-server": "^3.13.5",
+    "smtp-server": "^3.13.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.6.1",
+    "@types/smtp-server": "^3.5.10",
     "typescript": "^5.6.2"
   }
 }
