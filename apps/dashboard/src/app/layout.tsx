@@ -1,11 +1,9 @@
 import CommandMenu from "@/components/elements/command";
 import { ThemeProvider } from "@/components/provider/theme-provider";
-
-// global styles
+import type { Metadata } from "next";
 
 // fonts and toaster
 import { GeistSans } from "geist/font/sans";
-import type { Metadata } from "next";
 import { Toaster } from "sonner";
 
 // styles for the different components

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { create } from "zustand";
 import { cn } from "../../../lib/cn";
+
 // store for the sidebar state (open/close)
 type State = {
   isOpen: boolean;
@@ -13,6 +14,7 @@ type Action = {
   toggleSidebar: () => void;
 }
 
+// TODO: integrate local storage
 const useSidebarStore = create<State & Action>((set) => ({
   isOpen: true,
   toggleSidebar: () => set((state) => ({ isOpen: !state.isOpen })),
@@ -34,37 +36,38 @@ export default function Sidebar({
   children
 }: Readonly<{ children: React.ReactNode }>) {
   const { isOpen, toggleSidebar } = useSidebarStore();
-  const { team } = useParams() as { team: string } // get the team is from the url /[team]/etc
+  const { team } = useParams() as { team: string } // get the team from the url /[team]/etc
   return (
-    <div className="flex min-h-screen w-full">
-      <div className={cn("flex bg-background-secondary h-full xl:w-[350px] transition duration-100", isOpen ? "xl:w-[350px]" : "xl:w-[0px]")}>
+    <div className="flex h-screen w-full">
+      {/* Sidebar for teams */}
+      <div className={cn("bg-background h-full hidden md:flex md:w-[250px] lg:w-[275px] xl:w-[300px] transition duration-100")}>
         <div className="flex flex-col items-center justify-between">
           {/* team list */}
-          <div className="flex flex-col items-center justify-between h-full border-r border-r-border min-w-[60px] px-2 py-2">
+          <div className="flex flex-col items-center justify-between h-full border-r border-r-border w-[60px] px-2 py-2">
             <div className="w-full flex flex-col space-y-2">
               <div className="cursor-pointer rounded-md flex items-center justify-center w-full aspect-square">
                 <HomeIcon className="h-4 w-4 text-foreground" />
               </div>
               <div className="cursor-pointer rounded-lg bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
-                <User2 className="h-4 w-4 text-black/70" />
+                <User2 className="h-4 w-4 text-primary" />
               </div>
               <hr />
               <div className="cursor-pointer rounded-lg bg-background-primary border-border flex items-center justify-center w-full aspect-square">
                 <School className="h-4 w-4 text-blue-700/70" />
               </div>
               <div className="cursor-pointer rounded-lg bg-background-primary border-border flex items-center justify-center w-full aspect-square">
-                <Compass className="h-5 w-5 text-yellow-700/70" />
+                <Compass className="h-5 w-5 text-yellow-700" />
               </div>
               <div className="cursor-pointer bg-background-primary rounded-lg border-border flex items-center justify-center w-full aspect-square">
                 <Music className="h-4 w-4 text-green-700/70" />
               </div>
             </div>
             <div className="rounded-lg border-border flex items-center justify-center w-full aspect-square">
-              New Project
+              <Plus className="h-4 w-4 text-orange-700" />
             </div>
           </div>
         </div>
-        {/* Sidebar for teams */}
+        {/* Sidebar for links */}
         <div className={cn("flex flex-col justify-between px-3 py-2 h-full", isOpen ? "flex" : "hidden")}>
           <div className="w-full  space-y-2">
             {/* <Input type="text" placeholder={<div className="flex gap-2 items-center"><Search className="text-foreground h-4 w-4" />Search...</div>} className="w-full" /> */}

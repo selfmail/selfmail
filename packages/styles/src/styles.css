@@ -9,6 +9,3 @@
     background-color: var(--highlight);
     color: var(--foreground);
 }
-* {
-    color: var(--foreground)
-}
