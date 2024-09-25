@@ -28,7 +28,7 @@ export const ButtonStyles = cva("checkbox", {
 });
 
 export const Checkbox: React.FC<RadixCheckBox.CheckboxProps> = (props) => {
-    return <RadixCheckBox.Root {...props} className={cn("border border-[#DBDBDB] hover:bg-violet3 flex h-[15px] w-[15px] appearance-none items-center justify-center rounded-[4px] bg-white shadow-[0_2px_10px] outline-none ", props.className)} />;
+    return <RadixCheckBox.Root {...props} className={cn("border border-[#DBDBDB] hover:bg-violet3 flex h-[15px] w-[15px] appearance-none items-center justify-center rounded-[4px] bg-white  outline-none ", props.className)} />;
 };
 export const CheckboxIndicator: React.FC<RadixCheckBox.CheckboxIndicatorProps> = (props) => {
     return (<RadixCheckBox.Indicator {...props} className="flex items-center justify-center h-[15px] border border-[#DBDBDB] w-[15px] rounded-[4px] bg-[#33c891]  text-white">

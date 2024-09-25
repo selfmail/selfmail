@@ -24,7 +24,7 @@ type action = {
 };
 
 /**A store for the ids of the checked emails*/
-export const useIds = create<state & action>((set) => ({
+const useIds = create<state & action>((set) => ({
   id: [],
   setId: async (state) => {
     set(() => ({ id: state }));

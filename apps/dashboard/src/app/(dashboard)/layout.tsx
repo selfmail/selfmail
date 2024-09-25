@@ -1,13 +1,12 @@
 import Sidebar from "@/components/elements/sidebar";
-import { checkRequest } from "@/server/checkRequest";
+import { getSidebarLinks } from "./action";
 
 export default async function DashboardLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const req = await checkRequest();
   return (
-    <div className="flex min-h-screen bg-[#e8e8e8]">
-      <Sidebar>{children}</Sidebar>
+    <div className="flex min-h-screen text-foreground">
+      <Sidebar getSidebarLinks={getSidebarLinks}>{children}</Sidebar>
     </div>
   );
 }

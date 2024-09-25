@@ -1,5 +1,6 @@
+"use client"
 // code from https://github.com/ibelick/motion-primitives/blob/main/hooks/useClickOutside.tsx
-import { RefObject, useEffect } from 'react';
+import { type RefObject, useEffect } from 'react';
 
 function useClickOutside<T extends HTMLElement>(
     ref: RefObject<T>,
