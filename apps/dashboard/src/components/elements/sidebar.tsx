@@ -1,8 +1,9 @@
 "use client"
 
-import { Compass, Grid, Home, HomeIcon, Music, Pen, Plus, School, User2, Users2 } from "lucide-react";
+import { Compass, Grid, Home, HomeIcon, Music, Pen, Plus, School, Search, User2, Users2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
+import { Input } from "ui";
 import { create } from "zustand";
 import { cn } from "../../../lib/cn";
 
@@ -40,7 +41,7 @@ export default function Sidebar({
   return (
     <div className="flex h-screen w-full">
       {/* Sidebar for teams */}
-      <div className={cn("bg-background h-full hidden md:flex md:w-[250px] lg:w-[275px] xl:w-[300px] transition duration-100")}>
+      <div className={cn("bg-background h-full  md:flex md:w-[225px] lg:w-[300px] border-r border-r-border xl:w-[325px] transition duration-100")}>
         <div className="flex flex-col items-center justify-between">
           {/* team list */}
           <div className="flex flex-col items-center justify-between h-full border-r border-r-border w-[60px] px-2 py-2">
@@ -68,9 +69,9 @@ export default function Sidebar({
           </div>
         </div>
         {/* Sidebar for links */}
-        <div className={cn("flex flex-col justify-between px-3 py-2 h-full", isOpen ? "flex" : "hidden")}>
-          <div className="w-full  space-y-2">
-            {/* <Input type="text" placeholder={<div className="flex gap-2 items-center"><Search className="text-foreground h-4 w-4" />Search...</div>} className="w-full" /> */}
+        <div className={cn("flex flex-col justify-between px-3 py-2 h-full w-full", isOpen ? "flex" : "hidden")}>
+          <div className="w-full space-y-2">
+            <Input type="text" placeholder={<div className="flex gap-2 items-center"><Search className="text-foreground h-4 w-4" />Search...</div>} className="w-full" />
             <SidebarLink page="" href={`/${team}/`}><Home className="h-4 w-4 text-cyan-700" />Home</SidebarLink>
             <SidebarLink page="team" href={`/${team}/team`}><Users2 className="h-4 w-4 text-yellow-700" />Members</SidebarLink>
             <SidebarLink page="projects" href={`/${team}/team`}><Grid className="h-4 w-4 text-blue-700" />Projects</SidebarLink>
@@ -91,7 +92,7 @@ export default function Sidebar({
           </div>
         </div>
       </div>
-      <div>
+      <div className="overflow-y-auto w-full bg-background">
         {children}
       </div>
     </div>

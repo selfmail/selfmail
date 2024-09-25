@@ -38,8 +38,6 @@ export {
 	DropdownMenuTrigger
 } from "./components/dropdown";
 export {
-	EmailInput,
-	FileInput,
 	Input,
 	InputStyles,
 	NumberInput,

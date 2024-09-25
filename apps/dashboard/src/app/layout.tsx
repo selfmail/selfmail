@@ -25,7 +25,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
+      <body className="text-text bg-background">
         {/* Themes by next-themes */}
         <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
           {children}
