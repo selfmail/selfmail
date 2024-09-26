@@ -1,4 +1,7 @@
 <p align="center">
+    <picture>
+      <img src="./images/compose-mail.png" >
+    </picture>
     <h2 align="center">
         📯 selfmail
     </h2>

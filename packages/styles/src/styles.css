@@ -1,10 +1,20 @@
-/* The lightmode colors */
-@import url("./lightmode.css");
+:root {
+    --primary: #296dff;
+    --secondary: #f79f79;
+    
+    --background: #e8e8e8;
+    --background-secondary: #d1d1d1;
+    --background-primary: #f0f0f0;
 
-/* The darkmode colors */
-/* @import url("./darkmode.css"); */
+    --foreground: #121212;
+    --foreground-secondary: #343434;
 
-/* global styles */
+    --border: #BCBCBC;
+    --border-secondary: #999999;
+
+    /* color for marking smthg */
+    --highlight: #e3f09b;
+}
 *::selection {
     background-color: var(--highlight);
     color: var(--foreground);

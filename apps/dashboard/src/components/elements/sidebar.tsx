@@ -17,11 +17,24 @@ type Action = {
   toggleSidebar: () => void;
 }
 
-const useSidebarStore = create<State & Action>((set) => ({
-  isOpen: localStorage.getItem("sidebar-open") !== "false",
+export const useSidebarStore = create<State & Action>((set) => ({
+  isOpen: true,
   toggleSidebar: () => set((state) => {
     return { isOpen: !state.isOpen }
   }),
+}))
+
+// state for the pages of the sidebar
+type PageState = {
+  page: string;
+}
+type PageAction = {
+  setPage: (state: PageState["page"]) => void;
+}
+
+export const usePageStore = create<PageState & PageAction>((set) => ({
+  page: "index",
+  setPage: (state) => set(() => ({ page: state })),
 }))
 
 const SidebarLink: React.FC<React.HTMLAttributes<HTMLAnchorElement> & { href: string, page: string }> = ({ href, children, page, ...props }) => {
@@ -30,7 +43,7 @@ const SidebarLink: React.FC<React.HTMLAttributes<HTMLAnchorElement> & { href: st
   // get the second part of the pathname 
   const path = pathname?.split('/')[2] || ''
   return (
-    <Link  {...props} href={href} className={cn("flex px-2 py-1 rounded-lg hover:bg-white/60 items-center gap-2 cursor-pointer text-base text-foreground", page === path ? "bg-white" : "", props.className)}>
+    <Link  {...props} href={href} className={cn("flex px-2 py-1 rounded-lg hover:bg-white/60 items-center gap-2 cursor-pointer text-base text-foreground", page === path ? "bg-white/80" : "", props.className)}>
       {children}
     </Link>
   )
@@ -42,13 +55,21 @@ export default function Sidebar({
 }: Readonly<{ children: React.ReactNode }> & {
   getSidebarLinks: (team: string) => Promise<TypeSidebarLink[]>
 }) {
+  const { page, setPage } = usePageStore()
   const [links, setLinks] = useState<TypeSidebarLink[]>([]);
   const { isOpen, toggleSidebar } = useSidebarStore();
   const { team } = useParams() as { team: string } // get the team from the url /[team]/etc
-  console.log(links)
+
+  // load the sidebar state from the local storage
+  useEffect(() => {
+    if (localStorage.getItem("sidebar-open") === "false") toggleSidebar()
+  }, [toggleSidebar])
+
+  // set the sidebar state in the local storage
   useEffect(() => {
     localStorage.setItem("sidebar-open", JSON.stringify(isOpen))
   }, [isOpen])
+
   useEffect(() => {
     // Asynchrone Funktion innerhalb von useEffect definieren
     const fetchLinks = async () => {
@@ -76,26 +97,26 @@ export default function Sidebar({
                   </div>
                 )
               }
-              <div className="cursor-pointer rounded-md flex items-center justify-center w-full aspect-square">
-                <HomeIcon className="h-4 w-4 text-foreground" />
+              <div className="cursor-pointer ring-2 ring-[#bcbcbc]/70 rounded-md flex items-center justify-center w-full border border-border aspect-square">
+                <HomeIcon className="h-4 w-4 text-foreground " />
               </div>
               <div className="cursor-pointer rounded-lg bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
                 <User2 className="h-4 w-4 text-primary" />
               </div>
-              <hr />
-              <div className="cursor-pointer rounded-lg bg-background-primary border-border flex items-center justify-center w-full aspect-square">
+              <hr className="border-border" />
+              <div className="cursor-pointer rounded-lg bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
                 <School className="h-4 w-4 text-blue-700/70" />
               </div>
-              <div className="cursor-pointer rounded-lg bg-background-primary border-border flex items-center justify-center w-full aspect-square">
+              <div className="cursor-pointer rounded-lg bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
                 <Compass className="h-5 w-5 text-yellow-700" />
               </div>
-              <div className="cursor-pointer bg-background-primary rounded-lg border-border flex items-center justify-center w-full aspect-square">
+              <div className="cursor-pointer bg-background-primary rounded-lg border border-border flex items-center justify-center w-full aspect-square">
                 <Music className="h-4 w-4 text-green-700/70" />
               </div>
             </div>
-            <div className="rounded-lg border-border flex items-center justify-center w-full aspect-square">
+            <Link href="/create-team" className="rounded-lg flex items-center border border-border justify-center w-full aspect-square">
               <Plus className="h-4 w-4 text-orange-700" />
-            </div>
+            </Link>
           </div>
         </div>
         {/* Sidebar for links */}
@@ -113,8 +134,8 @@ export default function Sidebar({
               </div>
             </div>
             <Input type="text" placeholder={<div className="flex gap-2 items-center"><Search className="text-foreground h-4 w-4" />Search...</div>} className="w-full" />
-            <SidebarLink page="/" href={`/${team}/`}><Home className="h-4 w-4 text-cyan-700" />Home</SidebarLink>
-            <SidebarLink page="team" href={`/${team}/members`}><Users2 className="h-4 w-4 text-yellow-700" />Members</SidebarLink>
+            <SidebarLink page="" href={`/${team}/`}><Home className="h-4 w-4 text-cyan-700" />Home</SidebarLink>
+            <SidebarLink page="members" href={`/${team}/members`}><Users2 className="h-4 w-4 text-yellow-700" />Members</SidebarLink>
             <SidebarLink page="send" href={`/${team}/send`}><Mail className="h-4 w-4 text-blue-700" />Compose</SidebarLink>
             <SidebarLink page="analytics" href={`/${team}/analytics`}><BarChart className="h-4 w-4 text-orange-700" />Analytics</SidebarLink>
             <SidebarLink page="settings" href={`/${team}/settings`}><Pen className="h-4 w-4 text-green-700" />Settings</SidebarLink>

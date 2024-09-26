@@ -11,8 +11,6 @@ export default {
     ],
     prefix: "",
     theme: {
-        container: {
-        },
         extend: {
             colors: {
                 background: {
@@ -33,7 +31,5 @@ export default {
                 }
             }
         },
-        plugins: [
-        ],
     },
 } satisfies Config
