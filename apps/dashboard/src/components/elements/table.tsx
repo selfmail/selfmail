@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/cn";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { Button, Checkbox, CheckboxIndicator } from "ui";
 import { create } from "zustand";
@@ -53,6 +53,7 @@ export default function DataTable({
   const { id, setId } = useIds();
   const emails = useMemo(() => data, [data]);
   const router = useRouter();
+  const { team } = useParams() as { team: string } // get the team from the url /[team]/etc
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -117,10 +118,10 @@ export default function DataTable({
               <div
                 className="absolute inset-0"
                 onClick={() => {
-                  router.push(`/email/${email.id}`);
+                  router.push(`${team}/email/${email.id}`);
                 }}
                 onKeyDown={() => {
-                  router.push(`/email/${email.id}`);
+                  router.push(`${team}/email/${email.id}`);
                 }}
               />
             </div>

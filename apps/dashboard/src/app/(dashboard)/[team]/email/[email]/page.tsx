@@ -19,6 +19,7 @@ export default async function Email({
 }: {
   params: {
     email: string;
+    team: string
   };
 }) {
   const email = await db.email.findUnique({
@@ -32,11 +33,11 @@ export default async function Email({
       <header className="flex items-center justify-between">
         <div className="items-cener flex space-x-2">
           <div className="flex items-center">
-            <Link href={"/"}>
+            <Link href={`/${params.team}/`}>
               <ChevronLeft className="h-4 w-4" />
             </Link>
           </div>
-          <Link href={`/contacts/${email.sender}`}>{email.sender}</Link>
+          <Link href={`${params.team}/contacts/${email.sender}`}>{email.sender}</Link>
         </div>
         <div className="flex items-center">
           <Dialog>

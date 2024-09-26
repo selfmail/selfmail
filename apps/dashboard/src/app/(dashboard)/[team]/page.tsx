@@ -40,15 +40,19 @@ async function checkPagniation(s: string): Promise<
  */
 export default async function Inbox({
     searchParams,
+    params: { team }
 }: {
     searchParams?: {
         [key: string]: string | string[] | undefined;
     };
+    params: {
+        team: string
+    }
 }): Promise<JSX.Element> {
 
     // getting the pagniation
     const s = searchParams?.s as string;
-    if (!s) redirect("/?s=0-10");
+    if (!s) redirect(`/${team}/?s=0-10`);
 
     // checking if the search param is a string an not array or undefined
     const pagniationSchema = await z.string().safeParseAsync(s);

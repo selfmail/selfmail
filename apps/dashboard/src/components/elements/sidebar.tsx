@@ -113,7 +113,7 @@ export default function Sidebar({
               </div>
             </div>
             <Input type="text" placeholder={<div className="flex gap-2 items-center"><Search className="text-foreground h-4 w-4" />Search...</div>} className="w-full" />
-            <SidebarLink page="" href={`/${team}/`}><Home className="h-4 w-4 text-cyan-700" />Home</SidebarLink>
+            <SidebarLink page="/" href={`/${team}/`}><Home className="h-4 w-4 text-cyan-700" />Home</SidebarLink>
             <SidebarLink page="team" href={`/${team}/members`}><Users2 className="h-4 w-4 text-yellow-700" />Members</SidebarLink>
             <SidebarLink page="send" href={`/${team}/send`}><Mail className="h-4 w-4 text-blue-700" />Compose</SidebarLink>
             <SidebarLink page="analytics" href={`/${team}/analytics`}><BarChart className="h-4 w-4 text-orange-700" />Analytics</SidebarLink>

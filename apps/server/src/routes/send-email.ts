@@ -1,5 +1,4 @@
 import { db } from "database";
-import type { SendMessage } from "postal-js";
 import { z } from "zod";
 import { app } from "..";
 import { handleErrorWithResponse } from "../actions/handleError";
@@ -15,7 +14,7 @@ export default function SendEmail() {
   app.post(
     "/email/send",
     async (c) => {
-      const body = await c.req.json() as SendMessage
+      const body = await c.req.json()
 
       // parse the provided fields
       const emailSchema = await z

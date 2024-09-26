@@ -1,4 +1,3 @@
-import { SendMessage } from "postal-js";
 import { z } from "zod";
 
 export async function SendMail(mail: {
@@ -9,7 +8,7 @@ export async function SendMail(mail: {
 }): Promise<undefined | string> {
 	"use server";
 
-	const req = await fetch("http://localhost:5000/v1/email/send",
+	const req = await fetch(`${process.env.BACKEND_URL}/send`,
 		{
 			method: "POST",
 			body: JSON.stringify({
@@ -17,7 +16,7 @@ export async function SendMail(mail: {
 				to: [mail.recipient],
 				subject: mail.subject,
 				html_body: mail.content,
-			} satisfies SendMessage),
+			}),
 		},
 	);
 	console.log(req.statusText)
