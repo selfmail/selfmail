@@ -1,8 +1,9 @@
-import DataTable from "@/components/elements/table";
 import { checkRequest } from "@/server/checkRequest";
 import { db } from "database";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { getEmail } from "./action";
+import Content from "./content";
 
 /**
  * This function gets a string and validate, if this is a valid pagniation search param.
@@ -101,17 +102,6 @@ export default async function Inbox({
     });
 
     return (
-        <main className="flex">
-            <div className="flex pt-3 flex-col lg:w-[50%] border-r border-r-border h-full min-h-screen overflow-y-auto">
-                <DataTable
-                    mailCounter={emailcount}
-                    pagniation={{ first, last, difference: dif }}
-                    data={emails}
-                />
-            </div>
-            <div className="w-[50%] h-screen flex items-center justify-center overflow-y-auto">
-                <h2 className="text-foreground-secondary text-3xl font-medium">No Email selected</h2>
-            </div>
-        </main>
+        <Content counter={emailcount} action={getEmail} />
     );
 }

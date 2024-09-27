@@ -1,5 +1,5 @@
 import CommandMenu from "@/components/elements/command";
-import { ThemeProvider } from "@/components/provider/theme-provider";
+import { ThemeProvider } from "@/components/provider/providers";
 import type { Metadata } from "next";
 
 // fonts and toaster

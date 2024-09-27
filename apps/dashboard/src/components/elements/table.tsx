@@ -1,12 +1,17 @@
 "use client";
 
 import { cn } from "@/lib/cn";
+import {
+  useInfiniteQuery
+} from '@tanstack/react-query';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import { useParams, useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { Button, Checkbox, CheckboxIndicator } from "ui";
 import { create } from "zustand";
 
-type email = {
+
+export type email = {
   id: string;
   sender: string;
   subject: string;
@@ -38,18 +43,42 @@ const useIds = create<state & action>((set) => ({
  * @returns {JSX.Element}
  */
 export default function DataTable({
-  data,
-  pagniation,
-  mailCounter,
+  counter,
+  action
 }: {
-  data: email[];
-  pagniation: /* Steps of the pagniation */ {
-    first: number;
-    last: number;
-    difference: number;
-  };
-  mailCounter: number;
-}): JSX.Element {
+  counter: number,
+  action: ({
+    from,
+    list
+  }: {
+    from: number,
+    list: number
+  }) => Promise<email[]>
+}) {
+
+  const {
+    status,
+    data,
+    error,
+    isFetching,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['emails'],
+    queryFn: (ctx) => action({
+      from: ctx.pageParam
+    })
+    getNextPageParam: (lastGroup) => lastGroup.nextOffset,
+    initialPageParam: 0,
+  })
+  const parentRef = useRef<HTMLDivElement>(null)
+  const rowVirtualizer = useVirtualizer({
+    count: hasNextPage ? counter + 1 : counter,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 100,
+    overscan: 5,
+  })
   const { id, setId } = useIds();
   const emails = useMemo(() => data, [data]);
   const router = useRouter();
@@ -60,7 +89,7 @@ export default function DataTable({
         <div className="flex items-center">
           <h2 className="mx-3 text-3xl font-medium">
             Your Inbox{" "}
-            <span className="ml-2 text-[#666666]">{mailCounter}</span>
+            <span className="ml-2 text-[#666666]">{counter}</span>
           </h2>
         </div>
         <div className="mr-2 flex items-center space-x-2">
@@ -132,34 +161,6 @@ export default function DataTable({
             </div>
           )}
       </div>
-      {emails.length > 0 && <hr className="border-t-2 border-[#cccccc]" />}
-      {
-        // row for the pagnation buttons
-        <div className="flex items-center space-x-2 p-4">
-          <Button
-            type="submit"
-            disabled={pagniation.first === 0}
-            onClick={() =>
-              router.push(
-                `/?s=${pagniation.first - pagniation.difference}-${pagniation.last - pagniation.difference}`,
-              )
-            }
-          >
-            before
-          </Button>
-          <Button
-            type="submit"
-            disabled={data.length < pagniation.difference || pagniation.last === mailCounter}
-            onClick={() =>
-              router.push(
-                `/?s=${pagniation.last}-${pagniation.last + pagniation.difference}`,
-              )
-            }
-          >
-            next
-          </Button>
-        </div>
-      }
     </div>
   );
 }
