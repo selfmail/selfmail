@@ -1,10 +1,12 @@
 "use client";
 
+import { useEmailStore } from "@/app/(dashboard)/[team]/inbox/content";
+import { cn } from "@/lib/cn";
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { Button } from "ui";
+import { Button, Checkbox, CheckboxIndicator } from "ui";
 import { create } from "zustand";
 
 export type email = {
@@ -27,7 +29,7 @@ type action = {
 /**A store for the ids of the checked emails*/
 const useIds = create<state & action>((set) => ({
   id: [],
-  setId: async (state) => {
+  setId: (state) => {
     set(() => ({ id: state }));
   },
 }));
@@ -65,9 +67,9 @@ export default function DataTable({
 
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["emails"],
-    queryFn: (ctx) => fetchEmails({ action, from: ctx.pageParam, list: 2, counter }),
+    queryFn: (ctx) => fetchEmails({ action, from: ctx.pageParam, list: 30, counter }),
     getNextPageParam: (lastPage, allPages) => {
-      if (allPages.length + 2 >= counter) {
+      if (allPages.length + 30 >= counter) {
         return undefined;
       }
       return allPages.flat().length;
@@ -86,6 +88,7 @@ export default function DataTable({
     threshold: 1
   })
 
+  const { email, setEmail } = useEmailStore()
 
   useEffect(() => {
     console.log(entry)
@@ -131,68 +134,108 @@ export default function DataTable({
 
       <div className="overflow-x-auto">
         {emails?.map((page, i) => {
-          console.log(emails.length, i)
+          if (emails.length === 0) return (
+            <div className="mx-3 flex items-center space-x-2 text-[#666666]">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-neutral-400" />
+              <p>We are listening on emails for you...</p>
+            </div>
+          )
           if (i === emails.length - 1) {
             console.log("last element")
             return (
-              <div ref={ref} key={page?.id}>
-                {page?.subject} {page?.sender}
+              <div
+                ref={ref}
+                key={page.id}
+                className={cn(
+                  "relative flex w-full cursor-pointer items-center justify-between border-t-2 border-t-[#cccccc] p-2 hover:bg-gray-100",
+                  id.includes(page.id) && "bg-gray-100",
+                )}
+              >
+
+                <Checkbox id={page.id} className="mr-3 z-20" onClick={() => {
+                  setId(
+                    id.includes(page.id)
+                      ? id.filter((id) => id !== page.id)
+                      : [...id, page.id],
+                  );
+                }}>
+                  <CheckboxIndicator />
+                </Checkbox>
+                <p
+                  onClick={() => router.push(`/contacts/${page.sender}`)}
+                  onKeyDown={() => router.push(`/contacts/${page.sender}`)}
+                >
+                  {page.sender}
+                </p>
+                <p>{page.subject}</p>
+                <p>{page.createdAt.toLocaleDateString()}</p>
+                <div
+                  className="absolute inset-0"
+                  onClick={() => {
+                    setEmail(page.id)
+                  }}
+                  onKeyDown={() => {
+                    setEmail(page.id)
+                  }}
+                />
               </div>
             )
           }
           return (
-            <div key={page?.id}>
-              {page?.subject} {page?.sender}
-            </div>
-          )
-        })}
-        {
-          !hasNextPage && "end"
-        }
-        {/* {(data?.pages?.length > 0 &&
-          emails.map((email) => (
             <div
-              key={email.id}
+              key={page.id}
               className={cn(
                 "relative flex w-full cursor-pointer items-center justify-between border-t-2 border-t-[#cccccc] p-2 hover:bg-gray-100",
-                id.includes(email.id) && "bg-gray-100",
+                id.includes(page.id) && "bg-gray-100",
               )}
             >
 
-              <Checkbox id={email.id} className="mr-3 z-20" onClick={() => {
+              <Checkbox id={page.id} className="mr-3 z-20" onClick={() => {
                 setId(
-                  id.includes(email.id)
-                    ? id.filter((id) => id !== email.id)
-                    : [...id, email.id],
+                  id.includes(page.id)
+                    ? id.filter((id) => id !== page.id)
+                    : [...id, page.id],
                 );
               }}>
                 <CheckboxIndicator />
               </Checkbox>
               <p
-                onClick={() => router.push(`/contacts/${email.sender}`)}
-                onKeyDown={() => router.push(`/contacts/${email.sender}`)}
+                onClick={() => router.push(`/contacts/${page.sender}`)}
+                onKeyDown={() => router.push(`/contacts/${page.sender}`)}
               >
-                {email.sender}
+                {page.sender}
               </p>
-              <p>{email.subject}</p>
-              <p>{email.createdAt.toLocaleDateString()}</p>
-              {/* The background div for going to the mail page */}
-        {/* <div
-          className="absolute inset-0"
-          onClick={() => {
-            router.push(`${team}/email/${email.id}`);
-          }}
-          onKeyDown={() => {
-            router.push(`${team}/email/${email.id}`);
-          }}
-        />
-      </div>
-      ))) || (
-      <div className="mx-3 flex items-center space-x-2 text-[#666666]">
-        <span className="h-2 w-2 animate-pulse rounded-full bg-neutral-400" />
-        <p>We are listening on emails for you...</p>
-      </div>
-          )} */}
+              <p>{page.subject}</p>
+              <p>{page.createdAt.toLocaleDateString()}</p>
+              <div
+                className="absolute inset-0"
+                onClick={() => {
+                  setEmail(page.id)
+                }}
+                onKeyDown={() => {
+                  setEmail(page.id)
+                }}
+              />
+            </div>
+          )
+        })}
+        {
+
+        }
+        {
+          (
+            !hasNextPage && !isFetchingNextPage &&
+            <div className="w-full flex border-t-2 border-t-[#cccccc] p-2 items-center space-x-2 text-[#666666]">
+              <h2>You have reached the end of your emails. Congratulations.</h2>
+            </div>
+          ) || (isFetchingNextPage) && (
+            <div className="w-full flex border-t-2 border-t-[#cccccc] p-2 items-center space-x-2 text-[#666666]">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
+              <h2>fetching more emails...</h2>
+            </div>
+          )
+        }
+
       </div>
     </div >
   );
