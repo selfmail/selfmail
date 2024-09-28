@@ -1,7 +1,7 @@
 "use client"
 
 import type { email } from "@/components/elements/table";
-import VirtualTable from "@/components/elements/virtual-table";
+import DataTable from "@/components/elements/table";
 
 export default function Content({ counter, action }: {
     counter: number,
@@ -16,13 +16,13 @@ export default function Content({ counter, action }: {
     return (
         <main className="flex">
             <div className="flex pt-3 flex-col lg:w-[50%] border-r border-r-border h-full min-h-screen overflow-y-auto">
-                {/* <DataTable
+                <DataTable
                     counter={counter}
                     action={action}
-                /> */}
-                <VirtualTable
-                    counter={counter}
                 />
+                {/* <VirtualTable
+                    counter={counter}
+                /> */}
             </div>
             <div className="w-[50%] h-screen flex items-center justify-center overflow-y-auto">
                 <h2 className="text-foreground-secondary text-3xl font-medium">No Email selected</h2>

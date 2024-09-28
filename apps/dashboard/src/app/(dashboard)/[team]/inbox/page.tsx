@@ -1,6 +1,5 @@
 import { checkRequest } from "@/server/checkRequest";
 import { db } from "database";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 import { getEmail } from "./action";
 import Content from "./content";
@@ -50,57 +49,13 @@ export default async function Inbox({
         team: string
     }
 }): Promise<JSX.Element> {
-
-    // getting the pagniation
-    const s = searchParams?.s as string;
-    if (!s) redirect(`/${team}/?s=0-10`);
-
-    // checking if the search param is a string an not array or undefined
-    const pagniationSchema = await z.string().safeParseAsync(s);
-    if (!pagniationSchema.success)
-        throw new Error("Seachparams have the wrong format.");
-
-    // validating the numbers in this string
-    const numbers = await checkPagniation(s);
-    if (!numbers) throw new Error("Pagniation failed.");
-    const { first, last } = numbers;
-    if (first >= last) throw new Error("First value can't be bigger than the last one.");
-
-    const dif = Math.abs(first - last);
-
-    if (dif > 30) throw new Error("You can see a maximum of 30 emails.");
-
-    // get the user
     const req = await checkRequest();
-    const user = await db.user.findUnique({
-        where: {
-            id: req.userId,
-        },
-    });
-    if (!user) redirect("/login");
-
-    // get the emails with the pagniation
-    const emails = await db.email.findMany({
-        where: {
-            userId: user.id,
-        },
-        select: {
-            id: true,
-            createdAt: true,
-            subject: true,
-            sender: true,
-            recipient: true,
-        },
-        take: dif,
-        skip: first,
-    });
 
     const emailcount = await db.email.count({
         where: {
             userId: req.userId,
         },
     });
-
     return (
         <Content counter={emailcount} action={getEmail} />
     );

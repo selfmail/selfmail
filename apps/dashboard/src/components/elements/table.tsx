@@ -1,15 +1,11 @@
 "use client";
 
-import { cn } from "@/lib/cn";
-import {
-  useInfiniteQuery
-} from '@tanstack/react-query';
-import { useVirtualizer } from '@tanstack/react-virtual';
+import { useIntersection } from "@mantine/hooks";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import { useMemo, useRef } from "react";
-import { Button, Checkbox, CheckboxIndicator } from "ui";
+import { useEffect, useRef } from "react";
+import { Button } from "ui";
 import { create } from "zustand";
-
 
 export type email = {
   id: string;
@@ -36,11 +32,22 @@ const useIds = create<state & action>((set) => ({
   },
 }));
 
+// function to fetch the emails from the server
+const fetchEmails = async ({ action, from, list, counter }: {
+  action: ({ from, list }: { from: number, list: number }) => Promise<email[]>,
+  from: number,
+  list: number,
+  counter: number
+}) => {
+  console.log(from, list)
+  const data = await action({ from, list });
+
+  return data
+};
+
 /**
  * The table component, here are all of your mails.
  * You can filter and sort the mails.
- * @param data - an array of mails
- * @returns {JSX.Element}
  */
 export default function DataTable({
   counter,
@@ -56,31 +63,38 @@ export default function DataTable({
   }) => Promise<email[]>
 }) {
 
-  const {
-    status,
-    data,
-    error,
-    isFetching,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage,
-  } = useInfiniteQuery({
-    queryKey: ['emails'],
-    queryFn: (ctx) => action({
-      from: ctx.pageParam
-    })
-    getNextPageParam: (lastGroup) => lastGroup.nextOffset,
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: ["emails"],
+    queryFn: (ctx) => fetchEmails({ action, from: ctx.pageParam, list: 2, counter }),
+    getNextPageParam: (lastPage, allPages) => {
+      if (allPages.length + 2 >= counter) {
+        return undefined;
+      }
+      return allPages.flat().length;
+    },
     initialPageParam: 0,
+  });
+
+
+  const emails = data?.pages?.flatMap((d, index) => d)
+
+  const lastPostRef = useRef<HTMLDivElement>(null);
+
+
+  const { ref, entry } = useIntersection({
+    root: lastPostRef.current,
+    threshold: 1
   })
-  const parentRef = useRef<HTMLDivElement>(null)
-  const rowVirtualizer = useVirtualizer({
-    count: hasNextPage ? counter + 1 : counter,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 100,
-    overscan: 5,
-  })
+
+
+  useEffect(() => {
+    console.log(entry)
+    if (entry?.isIntersecting) {
+      fetchNextPage()
+    }
+  }, [entry, fetchNextPage])
+
   const { id, setId } = useIds();
-  const emails = useMemo(() => data, [data]);
   const router = useRouter();
   const { team } = useParams() as { team: string } // get the team from the url /[team]/etc
   return (
@@ -116,7 +130,26 @@ export default function DataTable({
       </div>
 
       <div className="overflow-x-auto">
-        {(emails.length > 0 &&
+        {emails?.map((page, i) => {
+          console.log(emails.length, i)
+          if (i === emails.length - 1) {
+            console.log("last element")
+            return (
+              <div ref={ref} key={page?.id}>
+                {page?.subject} {page?.sender}
+              </div>
+            )
+          }
+          return (
+            <div key={page?.id}>
+              {page?.subject} {page?.sender}
+            </div>
+          )
+        })}
+        {
+          !hasNextPage && "end"
+        }
+        {/* {(data?.pages?.length > 0 &&
           emails.map((email) => (
             <div
               key={email.id}
@@ -144,23 +177,23 @@ export default function DataTable({
               <p>{email.subject}</p>
               <p>{email.createdAt.toLocaleDateString()}</p>
               {/* The background div for going to the mail page */}
-              <div
-                className="absolute inset-0"
-                onClick={() => {
-                  router.push(`${team}/email/${email.id}`);
-                }}
-                onKeyDown={() => {
-                  router.push(`${team}/email/${email.id}`);
-                }}
-              />
-            </div>
-          ))) || (
-            <div className="mx-3 flex items-center space-x-2 text-[#666666]">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-neutral-400" />
-              <p>We are listening on emails for you...</p>
-            </div>
-          )}
+        {/* <div
+          className="absolute inset-0"
+          onClick={() => {
+            router.push(`${team}/email/${email.id}`);
+          }}
+          onKeyDown={() => {
+            router.push(`${team}/email/${email.id}`);
+          }}
+        />
       </div>
-    </div>
+      ))) || (
+      <div className="mx-3 flex items-center space-x-2 text-[#666666]">
+        <span className="h-2 w-2 animate-pulse rounded-full bg-neutral-400" />
+        <p>We are listening on emails for you...</p>
+      </div>
+          )} */}
+      </div>
+    </div >
   );
 }

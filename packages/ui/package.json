@@ -41,6 +41,7 @@
     "vite": "^5.3.1"
   },
   "dependencies": {
+    "@mantine/hooks": "^7.13.0",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-context-menu": "^2.2.1",
     "@radix-ui/react-dialog": "^1.1.1",
