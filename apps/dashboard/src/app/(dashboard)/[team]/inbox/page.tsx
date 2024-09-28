@@ -4,6 +4,7 @@ import { getEmail } from "./action";
 import Content from "./content";
 
 
+import { getSingleEmail } from "./action";
 /**
  * The inbox page, here are all of your mails.
  * @returns {Promise<JSX.Element>}
@@ -27,6 +28,6 @@ export default async function Inbox({
         },
     });
     return (
-        <Content counter={emailcount} action={getEmail} />
+        <Content counter={emailcount} getSingleEmail={getSingleEmail} action={getEmail} />
     );
 }

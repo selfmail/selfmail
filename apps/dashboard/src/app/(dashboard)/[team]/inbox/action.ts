@@ -30,3 +30,27 @@ export async function getEmail({
 
     return emails as email[]
 }
+
+export async function getSingleEmail(id: string) {
+    "use server"
+
+    const req = await checkRequest();
+
+    const email = await db.email.findFirstOrThrow({
+        where: {
+            id,
+            userId: req.userId,
+        },
+        select: {
+            id: true,
+            createdAt: true,
+            subject: true,
+            sender: true,
+            recipient: true,
+        },
+    })
+
+    if (!email) throw new Error("Email not found")
+
+    return email as email
+}
