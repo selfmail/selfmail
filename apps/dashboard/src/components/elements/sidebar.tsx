@@ -3,7 +3,7 @@
 import { AtSign, BarChart, Circle, Compass, Home, HomeIcon, Mail, Music, Pen, Plus, School, Search, SidebarClose, SidebarOpen, User2, Users2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Input } from "ui";
 import { create } from "zustand";
 import { cn } from "../../../lib/cn";
@@ -49,11 +49,14 @@ const SidebarLink: React.FC<React.HTMLAttributes<HTMLAnchorElement> & { href: st
   )
 }
 
+type
+
 export default function Sidebar({
   children,
   getSidebarLinks
 }: Readonly<{ children: React.ReactNode }> & {
-  getSidebarLinks: (team: string) => Promise<TypeSidebarLink[]>
+  getSidebarLinks: (team: string) => Promise<TypeSidebarLink[]>,
+  getTeams: () => Promise<
 }) {
   const { page, setPage } = usePageStore()
   const [links, setLinks] = useState<TypeSidebarLink[]>([]);
@@ -71,16 +74,17 @@ export default function Sidebar({
   }, [isOpen])
 
   useEffect(() => {
-    // Asynchrone Funktion innerhalb von useEffect definieren
     const fetchLinks = async () => {
       const data = await getSidebarLinks(team);
-      setLinks(data); // State mit den gefetchten Links updaten
+      setLinks(data);
     };
 
     if (team) {
-      fetchLinks(); // Fetch nur, wenn team existiert
+      fetchLinks();
     }
   }, [team, getSidebarLinks])
+
+  const teams = useMemo(async () => await getTeams(), [getTeams])
 
   return (
     <div className="flex h-screen w-full">
