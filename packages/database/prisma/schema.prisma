@@ -15,5 +15,60 @@ datasource db {
 
 // a single user
 model User {
-  id String @id @unique
+  id       String @id @unique
+  name     String
+  handle   String // handle like @henri, or @johndoe
+  password String
+
+  // account information
+  createdAt DateTime     @default(now())
+  addresses Address[]
+  members   TeamMember[]
+  ownTeams  Team[]       @relation("owner")
+  teams     Team[]       @relation("members")
+}
+
+model Address {
+  id     String @id @unique
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  email  String
+}
+
+// personal accounts are also counting as teams
+model Team {
+  id          String       @id @unique
+  owner       User         @relation("owner", fields: [ownerId], references: [id])
+  ownerId     String
+  members     User[]       @relation("members")
+  name        String
+  description String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  teamMembers TeamMember[]
+  teamRoles   TeamRoles[]
+}
+
+model TeamMember {
+  id     String      @id @unique
+  user   User        @relation(fields: [userId], references: [id])
+  userId String
+  team   Team        @relation(fields: [teamId], references: [id])
+  teamId String
+  role   Role
+  roles  TeamRoles[]
+}
+
+// there are two types of roles, one if this is the owner or a normal member and as the owner, you can create own roles with different rights
+enum Role {
+  OWNER
+  MEMBER
+}
+
+model TeamRoles {
+  id          String       @id @unique
+  team        Team         @relation(fields: [teamId], references: [id])
+  teamId      String
+  role        String
+  teamMembers TeamMember[]
 }
