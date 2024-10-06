@@ -41,6 +41,7 @@ export async function getTeams() {
     })
     return teams
 }
+
 export async function getSidebarTeam(teamId: string) {
     const req = await checkRequest()
     // get the sidebar which belongs to the user 

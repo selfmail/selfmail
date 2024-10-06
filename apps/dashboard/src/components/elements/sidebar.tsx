@@ -60,7 +60,7 @@ export default function Sidebar({
   getTeams
 }: Readonly<{ children: React.ReactNode }> & {
   getSidebarLinks: (team: string) => Promise<TypeSidebarLink[]>,
-  getTeams: (team: string) => Promise<address>
+  getTeams: (team: string) => Promise<any>
 }) {
   const { page, setPage } = usePageStore()
   const [links, setLinks] = useState<TypeSidebarLink[]>([]);

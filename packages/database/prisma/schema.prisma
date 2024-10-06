@@ -52,6 +52,7 @@ model Team {
   teamMembers TeamMember[]
   teamRoles   TeamRoles[]
   addresses   Address[]
+  Contact     Contact[]
 }
 
 model TeamMember {
@@ -93,4 +94,15 @@ model Email {
 
   deleted   Boolean  @default(false)
   deletedAt DateTime
+}
+
+model Contact {
+  id      String  @id @unique
+  email   String
+  name    String
+  phone   String?
+  picture String?
+  // the team, where he is the contact
+  team    Team    @relation(fields: [teamId], references: [id])
+  teamId  String
 }
