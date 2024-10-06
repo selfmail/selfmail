@@ -6,7 +6,7 @@ export default async function DashboardLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="flex min-h-screen text-foreground">
-      <Sidebar getSidebarLinks={getSidebarLinks}>{children}</Sidebar>
+      <Sidebar getTeams={getSidebarLinks} getSidebarLinks={getSidebarLinks}>{children}</Sidebar>
     </div>
   );
 }

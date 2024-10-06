@@ -26,13 +26,17 @@ model User {
   members   TeamMember[]
   ownTeams  Team[]       @relation("owner")
   teams     Team[]       @relation("members")
+  emails    Email[]
 }
 
 model Address {
-  id     String @id @unique
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-  email  String
+  id        String @id @unique
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team      Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId    String
+  userId    String
+  addressId String
+  email     String
 }
 
 // personal accounts are also counting as teams
@@ -47,13 +51,14 @@ model Team {
   updatedAt   DateTime     @updatedAt
   teamMembers TeamMember[]
   teamRoles   TeamRoles[]
+  addresses   Address[]
 }
 
 model TeamMember {
   id     String      @id @unique
   user   User        @relation(fields: [userId], references: [id])
   userId String
-  team   Team        @relation(fields: [teamId], references: [id])
+  team   Team        @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId String
   role   Role
   roles  TeamRoles[]
@@ -65,10 +70,27 @@ enum Role {
   MEMBER
 }
 
+// team role, which can be used to give a user a role in a team
 model TeamRoles {
   id          String       @id @unique
-  team        Team         @relation(fields: [teamId], references: [id])
+  team        Team         @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId      String
   role        String
   teamMembers TeamMember[]
+}
+
+// email
+model Email {
+  id    String @id @unique
+  email String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  createdAt DateTime @default(now())
+
+  summarized String?
+
+  deleted   Boolean  @default(false)
+  deletedAt DateTime
 }

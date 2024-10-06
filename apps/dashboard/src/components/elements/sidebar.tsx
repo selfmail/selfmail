@@ -49,14 +49,18 @@ const SidebarLink: React.FC<React.HTMLAttributes<HTMLAnchorElement> & { href: st
   )
 }
 
-type
+type address = {
+  addressId: string;
+  email: string;
+}[]
 
 export default function Sidebar({
   children,
-  getSidebarLinks
+  getSidebarLinks,
+  getTeams
 }: Readonly<{ children: React.ReactNode }> & {
   getSidebarLinks: (team: string) => Promise<TypeSidebarLink[]>,
-  getTeams: () => Promise<
+  getTeams: (team: string) => Promise<address>
 }) {
   const { page, setPage } = usePageStore()
   const [links, setLinks] = useState<TypeSidebarLink[]>([]);
@@ -84,7 +88,7 @@ export default function Sidebar({
     }
   }, [team, getSidebarLinks])
 
-  const teams = useMemo(async () => await getTeams(), [getTeams])
+  const teams = useMemo(async () => await getTeams(team), [getTeams])
 
   return (
     <div className="flex h-screen w-full">

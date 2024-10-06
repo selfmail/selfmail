@@ -42,10 +42,17 @@ export async function getTeams() {
     return teams
 }
 export async function getSidebarTeam(teamId: string) {
+    const req = await checkRequest()
     // get the sidebar which belongs to the user 
-    const addresses = await db.teamAddress.findMany({
+    const addresses = await db.address.findMany({
         where: {
-
+            teamId,
+            userId: req.userId
+        },
+        select: {
+            addressId: true,
+            email: true
         }
     })
+    return addresses
 }
