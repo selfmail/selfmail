@@ -37,6 +37,7 @@
     "@types/bcrypt": "^5.0.2",
     "@uidotdev/usehooks": "^2.4.1",
     "bcrypt": "^5.1.1",
+    "better-auth": "0.3.3-beta.12",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "database": "workspace:*",

@@ -13,20 +13,61 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// a single user
 model User {
-  id       String @id @unique
-  name     String
-  handle   String // handle like @henri, or @johndoe
-  password String
+  id            String   @id
+  name          String
+  handle        String   @unique
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
 
-  // account information
-  createdAt DateTime     @default(now())
-  addresses Address[]
-  members   TeamMember[]
-  ownTeams  Team[]       @relation("owner")
-  teams     Team[]       @relation("members")
-  emails    Email[]
+  adresses   Address[]
+  mainAdress Address?
+  Session    Session[]
+  Account    Account[]
+  Team       Team[]
+  Team       Team?        @relation(fields: [teamId], references: [id])
+  teamId     String?
+  TeamMember TeamMember[]
+  Email      Email[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  users     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id           String    @id
+  accountId    String
+  providerId   String
+  userId       String
+  users        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
+  expiresAt    DateTime?
+  password     String?
+
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+
+  @@map("verification")
 }
 
 model Address {
