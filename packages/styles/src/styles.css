@@ -15,7 +15,24 @@
     /* color for marking smthg */
     --highlight: #e3f09b;
 }
+
 *::selection {
     background-color: var(--highlight);
     color: var(--foreground);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--foreground);
+}
+
+p, a, * {
+    color: var(--foreground-secondary);
+}
+
+body {
+    background-color: var(--background);
+}
+
+a {
+    text-decoration: underline;
 }

@@ -47,6 +47,7 @@
     "lucia": "^3.2.0",
     "lucide-react": "^0.408.0",
     "next": "^14.2.5",
+    "next-safe-action": "^7.9.6",
     "next-themes": "^0.3.0",
     "oslo": "^1.2.1",
     "postal-js": "^1.0.4",

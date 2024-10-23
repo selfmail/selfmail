@@ -11,21 +11,21 @@ datasource db {
 }
 
 model User {
-  id            String     @id
+  id            String   @id
   name          String
-  handle        String     @unique
+  handle        String   @unique
   emailVerified Boolean
   image         String?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  addresses     Address[]
-  mainAddress   Address?   @relation("MainAddress")
-  sessions      Session[]
-  accounts      Account[]
-  teams         Team[]     @relation("UserTeams")
-  teamMembers   TeamMember[]
-  emails        Email[]
+  addresses   Address[]
+  sessions    Session[]
+  accounts    Account[]
+  teams       Team[]       @relation("UserTeams")
+  teamMembers TeamMember[]
+  emails      Email[]
+  Team        Team[]
 
   @@map("user")
 }
@@ -66,9 +66,9 @@ model Verification {
 }
 
 model Address {
-  id        String   @id @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  id        String @id @unique
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team      Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId    String
   userId    String
   addressId String
@@ -77,7 +77,6 @@ model Address {
 
 model Team {
   id          String       @id @unique
-  owner       User         @relation("Owner", fields: [ownerId], references: [id])
   ownerId     String
   members     User[]       @relation("UserTeams")
   name        String
@@ -87,17 +86,20 @@ model Team {
   teamMembers TeamMember[]
   teamRoles   TeamRoles[]
   addresses   Address[]
-  contacts     Contact[]
+  contacts    Contact[]
+  User        User?        @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
 model TeamMember {
-  id     String      @id @unique
-  user   User        @relation(fields: [userId], references: [id])
-  userId String
-  team   Team        @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId String
-  role   Role
-  roles  TeamRoles[]
+  id      String      @id @unique
+  user    User        @relation(fields: [userId], references: [id])
+  userId  String
+  team    Team        @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId  String
+  role    Role
+  roles   TeamRoles[]
+  Contact Contact[]
 
   @@unique([userId, teamId])
 }
@@ -118,26 +120,35 @@ model TeamRoles {
 }
 
 model Email {
-  id         String   @id @unique
+  id         String    @id @unique
   email      String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
-  createdAt  DateTime @default(now())
+  createdAt  DateTime  @default(now())
   summarized String?
-  deleted     Boolean  @default(false)
-  deletedAt   DateTime?
+  deleted    Boolean   @default(false)
+  deletedAt  DateTime?
 
   @@map("email")
 }
 
 model Contact {
-  id      String   @id @unique
-  email   String
-  name    String
-  phone   String?
-  picture String?
-  team    Team     @relation(fields: [teamId], references: [id])
-  teamId  String
+  id           String     @id @unique
+  email        String
+  name         String
+  phone        String?
+  picture      String?
+  team         Team       @relation(fields: [teamId], references: [id])
+  teamId       String
+  addedBy      TeamMember @relation(fields: [teamMemberId], references: [id])
+  teamMemberId String
 
   @@map("contact")
+}
+
+model Waitlist {
+  id       String   @id @unique
+  email    String   @unique
+  // date when the user got into the waitlist
+  signedUp DateTime @default(now())
 }
