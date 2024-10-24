@@ -8,7 +8,7 @@ export default function BackButton() {
   return (
     <>
       {
-        window && window.history.length > 1 && (
+        typeof window !== "undefined" && window.history.length > 1 && (
           <ChevronLeft
             onClick={() => {
               router.back();

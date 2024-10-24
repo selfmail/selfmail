@@ -10,7 +10,7 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
-    BACKEND_URL: z.string().url(),
+    SECRET_KEY: z.string().min(32)
   },
 
   /**
@@ -28,7 +28,7 @@ export const env = createEnv({
    */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-    BACKEND_URL: process.env.NODE_ENV === "production" ? process.env.BACKEND_URL : "localhost:5000",
+    SECRET_KEY: process.env.SECRET_KEY
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
