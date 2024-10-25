@@ -1,12 +1,12 @@
 "use client"
 
+import { cn } from "@/lib/cn";
 import { AtSign, BarChart, Circle, Compass, Home, HomeIcon, Mail, Music, Pen, Plus, School, Search, SidebarClose, SidebarOpen, User2, Users2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Input } from "ui";
 import { create } from "zustand";
-import { cn } from "../../../lib/cn";
 import type { SidebarLink as TypeSidebarLink } from "./types";
 
 // store for the sidebar state (open/close)

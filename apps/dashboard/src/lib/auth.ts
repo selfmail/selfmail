@@ -1,6 +1,5 @@
 import { getIronSession, type SessionOptions } from "iron-session"
 import { cookies } from "next/headers"
-import { redirect } from "next/navigation"
 
 interface Session {
     userId: string,
@@ -10,10 +9,24 @@ interface Session {
 export const getSession = async () => {
     // get the session from the cookies
     const session = await getIronSession<Session>(cookies(), sessionOptions)
-
-    if (!session) redirect("/login?redirectTo=")
-
     return session
+}
+
+export const changeSession = async ({
+    userId,
+    username
+}: {
+    userId: string,
+    username: string,
+}) => {
+    // set the session in the cookies
+    const session = await getSession()
+
+    session.userId = userId
+    session.username = username
+
+    await session.save()
+
 }
 
 export const sessionOptions: SessionOptions = {

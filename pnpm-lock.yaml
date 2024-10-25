@@ -41,6 +41,9 @@ importers:
       '@mantine/hooks':
         specifier: ^7.13.0
         version: 7.13.0(react@18.3.1)
+      '@paralleldrive/cuid2':
+        specifier: ^2.2.2
+        version: 2.2.2
       '@prosekit/extensions':
         specifier: ^0.7.9
         version: 0.7.9(@types/hast@3.0.4)(prosemirror-model@1.22.3)(prosemirror-state@1.4.3)(prosemirror-transform@1.9.0)(prosemirror-view@1.33.9)

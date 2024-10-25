@@ -1,11 +1,12 @@
 "use server";
-import { lucia } from "@/server/lucia";
+import { getSession } from "@/lib/auth";
+import { createId } from '@paralleldrive/cuid2';
 import bcrypt from "bcrypt";
 import { db } from "database";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import type { TSignUpSchema } from "./form";
+
 const formDataSchema = z.object({
 	username: z.string().min(3),
 	email: z.string().email(),
@@ -26,7 +27,8 @@ export async function register(e: TSignUpSchema): Promise<string | undefined> {
 		return "Validation error. Check your email or your password.";
 	}
 	if (!email.endsWith("@selfmail.app"))
-		return "Invalid email. Your email must end with @selfmail.app.";
+		return "Invalid email. Your first email must end with @selfmail.app. You can add later own domains.";
+
 	// checks if the user is already registered
 	const checkUser = await db.user.findUnique({
 		where: {
@@ -34,29 +36,36 @@ export async function register(e: TSignUpSchema): Promise<string | undefined> {
 		},
 	});
 
-	if (checkUser) return "User already registered. Please login.";
+	if (checkUser) return "Username already registered.";
 
 	// create the user
 	const user = await db.user.create({
 		data: {
 			username,
 			password: await bcrypt.hash(password, 10),
+			id: createId()
 		},
 	});
+
+	// create a new personal team for the user
 	// create the main adresse
-	const adresse = await db.adresse.create({
+	const personalTeam = await db.team.create({
 		data: {
-			email,
-			type: "main",
-			userId: user.id,
-		},
-	});
+			name: `${username}'s personal team`,
+			teamType: "personal",
+			ownerId: user.id,
+			id: createId()
+		}
+	})
 
-	// all checks done, now the authentication logic
-	const session = await lucia.createSession(user.id, {});
-	const sessionCookie = lucia.createSessionCookie(session.id);
+	// created the personal adress for the user, now log the user in
+	const session = await getSession()
 
-	cookies().set("Set-Cookie", sessionCookie.serialize());
+	session.userId = user.id
+	session.username = user.username
 
-	redirect("/");
+	await session.save()
+
+
+	redirect(`/team/${personalTeam.id}`);
 }

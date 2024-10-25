@@ -11,49 +11,20 @@ datasource db {
 }
 
 model User {
-  id            String   @id
-  name          String
-  handle        String   @unique
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id        String   @id
+  username  String   @unique
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  password  String
 
   addresses   Address[]
-  sessions    Session[]
-  accounts    Account[]
   teams       Team[]       @relation("UserTeams")
   teamMembers TeamMember[]
   emails      Email[]
-  Team        Team[]
+  ownedTeams  Team[]       @relation("TeamOwner")
 
   @@map("user")
-}
-
-model Session {
-  id        String   @id
-  expiresAt DateTime
-  ipAddress String?
-  userAgent String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("session")
-}
-
-model Account {
-  id           String    @id
-  accountId    String
-  providerId   String
-  userId       String
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken  String?
-  refreshToken String?
-  idToken      String?
-  expiresAt    DateTime?
-  password     String?
-
-  @@map("account")
 }
 
 model Verification {
@@ -75,20 +46,25 @@ model Address {
   email     String
 }
 
+enum TeamType {
+  personal
+  business
+}
+
 model Team {
   id          String       @id @unique
   ownerId     String
+  owner       User         @relation("TeamOwner", fields: [ownerId], references: [id])
+  teamType    TeamType
   members     User[]       @relation("UserTeams")
   name        String
-  description String
+  description String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   teamMembers TeamMember[]
   teamRoles   TeamRoles[]
   addresses   Address[]
   contacts    Contact[]
-  User        User?        @relation(fields: [userId], references: [id])
-  userId      String?
 }
 
 model TeamMember {

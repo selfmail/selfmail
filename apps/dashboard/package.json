@@ -17,6 +17,7 @@
     "@iconify-json/lucide": "^1.1.202",
     "@lucia-auth/adapter-prisma": "^4.0.1",
     "@mantine/hooks": "^7.13.0",
+    "@paralleldrive/cuid2": "^2.2.2",
     "@prosekit/extensions": "^0.7.9",
     "@radix-ui/react-context-menu": "^2.2.1",
     "@radix-ui/react-dialog": "^1.1.1",
