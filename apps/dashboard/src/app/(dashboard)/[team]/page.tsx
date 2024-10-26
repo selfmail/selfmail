@@ -1,6 +1,7 @@
-import DataTable, { email } from "@/components/elements/table";
+import DataTable from "@/components/elements/table";
 import { getUser } from "@/lib/auth";
 import { db } from "database";
+import { getEmails } from "./action";
 /**
  * The inbox page, here are all of your mails.
  * @returns {Promise<JSX.Element>}
@@ -28,22 +29,7 @@ export default async function Inbox({
             <div className="flex pt-3 flex-col lg:w-[50%] border-r border-r-border h-full min-h-screen overflow-y-auto">
                 <DataTable
                     counter={emailcount}
-                    action={async ({ from, list }: { from: number, list: number }) => {
-                        "use server"
-                        const emails = await db.email.findMany({
-                            where: {
-                                userId: user.id,
-                            },
-                            select: {
-                                id: true,
-                                createdAt: true,
-
-                            },
-                            take: list,
-                            skip: from,
-                        }) as email[]
-                        return emails
-                    }}
+                    action={getEmails}
                 />
             </div>
             <div className="w-[50%] h-screen flex items-center justify-center overflow-y-auto">

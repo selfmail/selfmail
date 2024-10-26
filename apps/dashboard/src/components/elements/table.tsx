@@ -11,9 +11,13 @@ import { create } from "zustand";
 
 export type email = {
   id: string;
-  sender: string;
+  sender: {
+    email: string
+  };
   subject: string;
-  recipient: string;
+  recipient: {
+    email: string
+  };
   createdAt: Date;
 };
 
@@ -35,14 +39,14 @@ const useIds = create<state & action>((set) => ({
 }));
 
 // function to fetch the emails from the server
-const fetchEmails = async ({ action, from, list, counter }: {
-  action: ({ from, list }: { from: number, list: number }) => Promise<email[]>,
-  from: number,
-  list: number,
+const fetchEmails = async ({ action, skip, take, counter }: {
+  action: ({ skip, take }: { skip: number, take: number }) => Promise<email[]>,
+  skip: number,
+  take: number,
   counter: number
 }) => {
-  console.log(from, list)
-  const data = await action({ from, list });
+  console.log(skip, take)
+  const data = await action({ skip, take });
 
   return data
 };
@@ -57,17 +61,17 @@ export default function DataTable({
 }: {
   counter: number,
   action: ({
-    from,
-    list
+    take,
+    skip
   }: {
-    from: number,
-    list: number
+    take: number,
+    skip: number
   }) => Promise<email[]>
 }) {
 
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["emails"],
-    queryFn: (ctx) => fetchEmails({ action, from: ctx.pageParam, list: 30, counter }),
+    queryFn: (ctx) => fetchEmails({ action, take: ctx.pageParam, skip: 30, counter }),
     getNextPageParam: (lastPage, allPages) => {
       if (allPages.length + 30 >= counter) {
         return undefined;
@@ -162,10 +166,10 @@ export default function DataTable({
                   <CheckboxIndicator />
                 </Checkbox>
                 <p
-                  onClick={() => router.push(`/contacts/${page.sender}`)}
-                  onKeyDown={() => router.push(`/contacts/${page.sender}`)}
+                  onClick={() => router.push(`/contacts/${page.sender.email}`)}
+                  onKeyDown={() => router.push(`/contacts/${page.sender.email}`)}
                 >
-                  {page.sender}
+                  {page.sender.email}
                 </p>
                 <p>{page.subject}</p>
                 <p>{page.createdAt.toLocaleDateString()}</p>
@@ -203,7 +207,7 @@ export default function DataTable({
                 onClick={() => router.push(`/contacts/${page.sender}`)}
                 onKeyDown={() => router.push(`/contacts/${page.sender}`)}
               >
-                {page.sender}
+                {page.sender.email}
               </p>
               <p>{page.subject}</p>
               <p>{page.createdAt.toLocaleDateString()}</p>

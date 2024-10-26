@@ -118,6 +118,9 @@ model Email {
   recipient   Address @relation(fields: [recipientId], references: [id], onDelete: Cascade)
   recipientId String
 
+  sender   Sender @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  senderId String
+
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   createdAt  DateTime  @default(now())
@@ -129,8 +132,9 @@ model Email {
 }
 
 model Sender {
-  id    String @id @unique
+  id    String  @id @unique
   email String
+  Email Email[]
 }
 
 model Contact {

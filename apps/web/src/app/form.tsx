@@ -3,8 +3,10 @@
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Button, InputStyles } from "ui";
+import { Button } from "ui";
 import { z } from "zod";
+
+
 export default function Form({ action }: { action: (email: string) => Promise<undefined | string> }) {
     const [error, setError] = useState<string | undefined>(undefined);
     return (
@@ -25,7 +27,7 @@ export default function Form({ action }: { action: (email: string) => Promise<un
                 }
                 toast.success("You are now on the waitlist");
             }}>
-                <input required type="email" placeholder="Your email" name="email" className={cn(InputStyles, "w-full")} />
+                <input required type="email" placeholder="Your email" name="email" className={cn("w-full px-4 py-2 rounded-xl bg-white border")} />
                 <Button type="submit" className="absolute right-2">
                     Send
                 </Button>
