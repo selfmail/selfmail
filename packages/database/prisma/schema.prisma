@@ -50,13 +50,14 @@ model Verification {
 }
 
 model Address {
-  id        String @id @unique
-  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  team      Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  id        String  @id @unique
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team      Team    @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId    String
   userId    String
   addressId String
   email     String
+  Email     Email[]
 }
 
 enum TeamType {
@@ -109,8 +110,14 @@ model TeamRoles {
 }
 
 model Email {
-  id         String    @id @unique
-  email      String
+  id String @id @unique
+
+  body    String
+  subject String
+
+  recipient   Address @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  recipientId String
+
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   createdAt  DateTime  @default(now())
@@ -119,6 +126,11 @@ model Email {
   deletedAt  DateTime?
 
   @@map("email")
+}
+
+model Sender {
+  id    String @id @unique
+  email String
 }
 
 model Contact {

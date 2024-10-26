@@ -49,10 +49,6 @@ const SidebarLink: React.FC<React.HTMLAttributes<HTMLAnchorElement> & { href: st
   )
 }
 
-type address = {
-  addressId: string;
-  email: string;
-}[]
 
 export default function Sidebar({
   children,

@@ -9,3 +9,7 @@ const globalForPrisma = globalThis as unknown as {
 export const db = globalForPrisma.prisma ?? createPrismaClient();
 
 globalForPrisma.prisma = db;
+
+
+export type { Address, Contact, Email, Session, Team, TeamMember, TeamRoles, User, Verification, Waitlist } from "@prisma/client";
+

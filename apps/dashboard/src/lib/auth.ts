@@ -43,6 +43,20 @@ export const getSession = async (options?: { redirect?: boolean, returnUser?: bo
     return session
 }
 
+export const getUser = async () => {
+    const session = await getIronSession<Session>(cookies(), sessionOptions)
+
+    const user = await db.user.findUnique({
+        where: {
+            id: session.userId
+        }
+    })
+
+    if (!user) redirectNext("/login")
+
+    return user
+}
+
 export type IronSessionType = IronSession<Session>
 
 export const changeSession = async ({
