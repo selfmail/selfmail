@@ -1,5 +1,4 @@
-import { checkRequest } from "@/server/checkRequest"
-import { db } from "database"
+
 import { Home, Users2 } from "lucide-react"
 import type { SidebarLink } from "../../components/elements/types"
 export async function getSidebarLinks(team: string) {
@@ -18,42 +17,9 @@ export async function getSidebarLinks(team: string) {
 export async function getTeams() {
     "use server"
 
-    const req = await checkRequest()
-    const user = await db.user.findUnique({
-        where: {
-            id: req.userId
-        }
-    })
-    if (!user) {
-        throw new Error("User not defined. Please delete your cookies and try to login another time.")
-    }
-    const teams = await db.team.findMany({
-        where: {
-            OR: [
-                { ownerId: user.id },
-                { members: { some: { id: user.id } } },
-            ]
-        },
-        include: {
-            owner: true,
-            members: true
-        }
-    })
-    return teams
+
 }
 
 export async function getSidebarTeam(teamId: string) {
-    const req = await checkRequest()
-    // get the sidebar which belongs to the user 
-    const addresses = await db.address.findMany({
-        where: {
-            teamId,
-            userId: req.userId
-        },
-        select: {
-            addressId: true,
-            email: true
-        }
-    })
-    return addresses
+    "use server"
 }

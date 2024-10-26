@@ -20,7 +20,7 @@ export const signUpSchema = z
   })
 
 export type TSignUpSchema = z.infer<typeof signUpSchema>;
-export default function FormWithReactHookFormAndZodAndServer() {
+export default function Register() {
 
   const {
     register,

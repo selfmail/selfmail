@@ -1,5 +1,6 @@
 "use server";
-import { getSession } from "@/lib/auth";
+
+import { changeSession } from "@/lib/auth";
 import { createId } from '@paralleldrive/cuid2';
 import bcrypt from "bcrypt";
 import { db } from "database";
@@ -59,12 +60,10 @@ export async function register(e: TSignUpSchema): Promise<string | undefined> {
 	})
 
 	// created the personal adress for the user, now log the user in
-	const session = await getSession()
-
-	session.userId = user.id
-	session.username = user.username
-
-	await session.save()
+	await changeSession({
+		userId: user.id,
+		username: user.username
+	})
 
 
 	redirect(`/team/${personalTeam.id}`);

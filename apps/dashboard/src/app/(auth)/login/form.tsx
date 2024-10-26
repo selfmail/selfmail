@@ -1,22 +1,26 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 import { InputStyles } from "node_modules/ui/src/components/input";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { Button } from "ui";
 import { z } from "zod";
-import { login } from "./action";
+import { loginUser } from "./action";
 
-export const signUpSchema = z
+export const signInSchema = z
   .object({
     email: z.string().email().endsWith("@selfmail.app", "Only selfmail adresses are allowed"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     username: z.string().min(3, "Username must be at least 3 characters").max(20, "Username must be at most 20 characters"),
   })
 
-export type TSignUpSchema = z.infer<typeof signUpSchema>;
-export default function FormWithReactHookFormAndZodAndServer() {
+export type SignInSchema = z.infer<typeof signInSchema>;
+
+
+export default function Login() {
+
+  const { execute, result } = useAction(loginUser);
 
   const {
     register,
@@ -24,21 +28,14 @@ export default function FormWithReactHookFormAndZodAndServer() {
     formState: { errors, isSubmitting },
     reset,
     setError,
-  } = useForm<TSignUpSchema>({
-    resolver: zodResolver(signUpSchema),
+  } = useForm<SignInSchema>({
+    resolver: zodResolver(signInSchema),
   });
 
-  const onSubmit = async (data: TSignUpSchema) => {
-    const msg = await login(data)
-    if (msg) {
-      setError("root", {
-        type: "server",
-        message: msg,
-      });
-      toast.error(msg);
-      return
-    }
-    reset();
+  const onSubmit = async (data: SignInSchema) => {
+    execute(data);
+
+    console.log(result)
   };
 
   return (

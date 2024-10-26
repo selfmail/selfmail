@@ -21,8 +21,11 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+  searchParams,
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: Readonly<{ children: React.ReactNode }> & {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className="text-text bg-background">
