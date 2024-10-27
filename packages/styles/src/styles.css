@@ -2,18 +2,18 @@
     --primary: #296dff;
     --secondary: #f79f79;
     
-    --background: #e8e8e8;
-    --background-secondary: #d1d1d1;
-    --background-primary: #f0f0f0;
+    --background: #f9f9f9;
+    --background-secondary: #e9eaec;
+    --background-primary: #ffffff;
 
-    --foreground: #121212;
-    --foreground-secondary: #343434;
+    --foreground: #3b3c3e;
+    --foreground-secondary: #6c6c74;
 
-    --border: #BCBCBC;
-    --border-secondary: #999999;
+    --border: #e0e0e0;
+    --border-secondary: #c9c8cd;
 
     /* color for marking smthg */
-    --highlight: #e3f09b;
+    --highlight: #d5cdfe;
 }
 
 *::selection {

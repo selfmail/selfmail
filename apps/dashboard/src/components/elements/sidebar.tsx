@@ -101,24 +101,24 @@ export default function Sidebar({
                   </div>
                 )
               }
-              <div className="cursor-pointer ring-2 ring-[#bcbcbc]/70 rounded-md flex items-center justify-center w-full border border-border aspect-square">
+              <div className="cursor-pointer ring-2 ring-[#bcbcbc]/70 ring-offset-2 scale-90 rounded-xl flex items-center justify-center w-full border border-border aspect-square">
                 <HomeIcon className="h-4 w-4 text-foreground " />
               </div>
-              <div className="cursor-pointer rounded-lg bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
+              <div className="cursor-pointer rounded-xl bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
                 <User2 className="h-4 w-4 text-primary" />
               </div>
               <hr className="border-border" />
-              <div className="cursor-pointer rounded-lg bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
+              <div className="cursor-pointer rounded-xl bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
                 <School className="h-4 w-4 text-blue-700/70" />
               </div>
-              <div className="cursor-pointer rounded-lg bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
+              <div className="cursor-pointer rounded-xl bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
                 <Compass className="h-5 w-5 text-yellow-700" />
               </div>
-              <div className="cursor-pointer bg-background-primary rounded-lg border border-border flex items-center justify-center w-full aspect-square">
+              <div className="cursor-pointer bg-background-primary rounded-xl border border-border flex items-center justify-center w-full aspect-square">
                 <Music className="h-4 w-4 text-green-700/70" />
               </div>
             </div>
-            <Link href="/create-team" className="rounded-lg flex items-center border border-border justify-center w-full aspect-square">
+            <Link href="/create-team" className="rounded-xl flex items-center border border-border justify-center w-full aspect-square">
               <Plus className="h-4 w-4 text-orange-700" />
             </Link>
           </div>
@@ -159,7 +159,7 @@ export default function Sidebar({
           </div>
         </div>
       </div>
-      <div className="overflow-y-auto w-full bg-background">
+      <div className="overflow-y-auto w-full bg-background-primary">
         {children}
       </div>
     </div>
