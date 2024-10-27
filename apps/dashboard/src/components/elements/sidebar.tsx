@@ -1,11 +1,10 @@
 "use client"
 
 import { cn } from "@/lib/cn";
-import { AtSign, BarChart, Circle, Compass, Home, HomeIcon, Mail, Music, Pen, Plus, School, Search, SidebarClose, SidebarOpen, User2, Users2 } from "lucide-react";
+import { AtSign, BarChart, Compass, Home, Mail, Music, Pen, Plus, School, SidebarClose, SidebarOpen, User2, Users2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { Input } from "ui";
 import { create } from "zustand";
 import type { SidebarLink as TypeSidebarLink } from "./types";
 
@@ -43,7 +42,7 @@ const SidebarLink: React.FC<React.HTMLAttributes<HTMLAnchorElement> & { href: st
   // get the second part of the pathname 
   const path = pathname?.split('/')[2] || ''
   return (
-    <Link  {...props} href={href} className={cn("flex px-2 py-1 rounded-lg hover:bg-white/60 items-center gap-2 cursor-pointer text-base text-foreground", page === path ? "bg-white/80" : "", props.className)}>
+    <Link  {...props} href={href} className={cn("flex px-2 py-1 rounded-lg hover:bg-background-secondary items-center gap-2 cursor-pointer text-base text-foreground", page === path ? "bg-background-secondary" : "", props.className)}>
       {children}
     </Link>
   )
@@ -84,6 +83,12 @@ export default function Sidebar({
     }
   }, [team, getSidebarLinks])
 
+  const storage = {
+    usedStorage: 5,
+    totalStorage: 15,
+    usedStoragePercentage: 33.33,
+  }
+
   const teams = useMemo(async () => await getTeams(team), [getTeams])
 
   return (
@@ -102,10 +107,7 @@ export default function Sidebar({
                 )
               }
               <div className="cursor-pointer ring-2 ring-[#bcbcbc]/70 ring-offset-2 scale-90 rounded-xl flex items-center justify-center w-full border border-border aspect-square">
-                <HomeIcon className="h-4 w-4 text-foreground " />
-              </div>
-              <div className="cursor-pointer rounded-xl bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
-                <User2 className="h-4 w-4 text-primary" />
+                <User2 className="h-4 w-4 text-foreground " />
               </div>
               <hr className="border-border" />
               <div className="cursor-pointer rounded-xl bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
@@ -125,33 +127,44 @@ export default function Sidebar({
         </div>
         {/* Sidebar for links */}
         <div className={cn("flex flex-col justify-between px-3 py-2 h-full w-full", isOpen ? "flex" : "hidden")}>
-          <div className="w-full space-y-2">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-2">
-                <div className="flex items-center justify-center rounded-full bg-green-500">
-                  <Circle className="h-4 w-4 text-green-700" />
+          <div className="w-full space-y-4">
+            <div className="space-y-1">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center space-x-2">
+                  <h2 className="text-lg font-medium">Personal Space</h2>
                 </div>
-                <h2 className="text-lg font-medium">Personal Space</h2>
+                <div>
+                  <SidebarClose className="h-4 w-4 text-foreground cursor-pointer" onClick={() => toggleSidebar()} />
+                </div>
               </div>
-              <div>
-                <SidebarClose className="h-4 w-4 text-foreground cursor-pointer" onClick={() => toggleSidebar()} />
-              </div>
+              <SidebarLink page="" href={`/${team}/`}><Home className="h-4 w-4 text-cyan-700" />Home</SidebarLink>
+              <SidebarLink page="members" href={`/${team}/members`}><Users2 className="h-4 w-4 text-yellow-700" />Members</SidebarLink>
+              <SidebarLink page="send" href={`/${team}/send`}><Mail className="h-4 w-4 text-blue-700" />Compose</SidebarLink>
+              <SidebarLink page="analytics" href={`/${team}/analytics`}><BarChart className="h-4 w-4 text-orange-700" />Analytics</SidebarLink>
+              <SidebarLink page="settings" href={`/${team}/settings`}><Pen className="h-4 w-4 text-green-700" />Settings</SidebarLink>
             </div>
-            <Input type="text" placeholder={<div className="flex gap-2 items-center"><Search className="text-foreground h-4 w-4" />Search...</div>} className="w-full" />
-            <SidebarLink page="" href={`/${team}/`}><Home className="h-4 w-4 text-cyan-700" />Home</SidebarLink>
-            <SidebarLink page="members" href={`/${team}/members`}><Users2 className="h-4 w-4 text-yellow-700" />Members</SidebarLink>
-            <SidebarLink page="send" href={`/${team}/send`}><Mail className="h-4 w-4 text-blue-700" />Compose</SidebarLink>
-            <SidebarLink page="analytics" href={`/${team}/analytics`}><BarChart className="h-4 w-4 text-orange-700" />Analytics</SidebarLink>
-            <SidebarLink page="settings" href={`/${team}/settings`}><Pen className="h-4 w-4 text-green-700" />Settings</SidebarLink>
-            <div className="flex items-center space-x-1">
-              <p className="text-foreground text-sm">
+            <div className="flex flex-col space-x-1">
+              <p className="text-foreground text-sm px-2">
                 Your adresses
               </p>
-              <hr />
+              <SidebarLink page="home" href={`/${team}/jsdkjfdsj`}><AtSign className="h-4 w-4 text-red-700" />henri@selfmail.app</SidebarLink>
             </div>
-            <SidebarLink page="home" href={`/${team}/jsdkjfdsj`}><AtSign className="h-4 w-4 text-red-700" />henri@selfmail.app</SidebarLink>
           </div>
-          <div className="flex items-center w-full space-x-2">
+          <div className="space-y-1">
+            <div className="bg-background-secondary rounded-xl p-4">
+              <h3 className="text-sm font-medium mb-2">Storage</h3>
+              <div className="flex items-center justify-between">
+                <span className="text-lg font-semibold">{storage.usedStorage} / {storage.totalStorage}</span>
+                <span className="text-sm text-foreground/70">{storage.usedStoragePercentage}%</span>
+              </div>
+              <div className="mt-2 h-2 bg-background-primary rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-[#d5cdfe]"
+                  style={{ width: `${storage.usedStoragePercentage}%` }}
+                />
+              </div>
+            </div>
+
             <Link href={`/${team}/new`} className="flex px-2 py-1 w-full rounded-lg hover:bg-white/70 items-center gap-2 cursor-pointer text-base text-foreground">
               <Plus className="h-4 w-4 text-cyan-700" />
               New Project
