@@ -20,7 +20,6 @@ type AnimationWithSign = {
         value: number
     }
 }
-
 type Animation = {
     x: number,
     y: number,
@@ -59,7 +58,7 @@ const Motion: React.FC<{
 
 export default function ScrollAnimation() {
     return (
-        <div id="svg-container" className="space-x-2 hidden md:flex">
+        <div id="svg-container" className="flex space-x-2">
             <Motion
                 height={300}
                 initial={{
