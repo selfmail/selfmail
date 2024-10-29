@@ -1,12 +1,10 @@
 "use client"
 
 import { cn } from "@/lib/cn";
-import { AtSign, BarChart, Compass, Home, Mail, Music, Pen, Plus, School, SidebarClose, SidebarOpen, User2, Users2 } from "lucide-react";
+import { AtSign, BadgeDollarSign, BarChart, Compass, Home, Mail, Music, Pen, Plus, School, Settings, SidebarClose, SidebarOpen, User2, Users2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
 import { create } from "zustand";
-import type { SidebarLink as TypeSidebarLink } from "./types";
 
 // store for the sidebar state (open/close)
 type State = {
@@ -25,14 +23,14 @@ export const useSidebarStore = create<State & Action>((set) => ({
 
 // state for the pages of the sidebar
 type PageState = {
-  page: string;
+  page: "user" | "teams";
 }
 type PageAction = {
   setPage: (state: PageState["page"]) => void;
 }
 
 export const usePageStore = create<PageState & PageAction>((set) => ({
-  page: "index",
+  page: "user",
   setPage: (state) => set(() => ({ page: state })),
 }))
 
@@ -48,48 +46,159 @@ const SidebarLink: React.FC<React.HTMLAttributes<HTMLAnchorElement> & { href: st
   )
 }
 
+function getNameValue(name: name, params: { teamId: string, teamName: string, userName: string }): string {
+  // Prüft, ob `name` ein String ist
+  if (typeof name === "string") {
+    return name;
+  }
+  // Falls `name` eine Funktion ist, ruft die Funktion auf
+  else if (typeof name === "function") {
+    return name(params!); // hier `params` sicherstellen, da es notwendig ist für die Funktion
+  }
+  throw new Error("Invalid type for name");
+}
+
+export type name = string | ((params: {
+  teamId: string,
+  teamName: string,
+  userName: string
+}) => string)
+
+// sidebar types
+export type SidebarLink = {
+  name: name,
+  href: string | ((params: {
+    teamId: string
+  }) => string),
+  icon: any
+}
+
+export type SidebarGroup = {
+  name: name,
+  links: SidebarLink[]
+}
+
+export type SidebarPage = {
+  name: name,
+  icon?: any,
+  groups?: SidebarGroup[]
+}
+
+
+// links of the Sidebar (hardcoded)
+const links: Record<"user" | "teams", SidebarPage> = {
+  teams: {
+    name: (params) => {
+      return `${params.teamName}`
+    },
+    groups: [
+      {
+        name: "Informations",
+        links: [
+          {
+            name: "Members",
+            href: (params) => `/${params.teamId}/members`,
+            icon: Users2,
+          },
+          {
+            name: "Settings",
+            href: (params) => `/${params.teamId}/settings`,
+            icon: Settings
+          },
+          {
+            name: "Analytics",
+            href: (params) => `/${params.teamId}/analytics`,
+            icon: BarChart
+          },
+        ]
+      }
+    ]
+  },
+  user: {
+    name: `Personal Informations`,
+    icon: User2,
+    groups: [
+      {
+        name: "Platform",
+        links: [
+          {
+            name: "Changelog",
+            href: "/platform/changelog",
+            icon: Pen
+          },
+          {
+            name: "Billing",
+            href: "/platform/billing",
+            icon: BadgeDollarSign
+          },
+          {
+            name: "Settings",
+            href: "/platform/settings",
+            icon: Settings
+          }
+        ]
+      },
+      {
+        name: "Account",
+        links: [
+          {
+            name: "Profile",
+            href: "/account/profile",
+            icon: User2
+          },
+          {
+            name: "Analytics",
+            href: "/account/analytics",
+            icon: BarChart
+          }
+        ]
+      },
+      {
+        name: "Teams",
+        links: [
+          {
+            name: "Teams",
+            href: "/user/teams/",
+            icon: Users2
+          },
+          {
+            name: "Create new team",
+            href: "/user/teams/create",
+            icon: Plus
+          }
+        ]
+      }
+    ]
+  }
+}
 
 export default function Sidebar({
   children,
-  getSidebarLinks,
-  getTeams
+  team,
+  username
 }: Readonly<{ children: React.ReactNode }> & {
-  getSidebarLinks: (team: string) => Promise<TypeSidebarLink[]>,
-  getTeams: (team: string) => Promise<any>
+  team: string | undefined,
+  username: string,
 }) {
-  const { page, setPage } = usePageStore()
-  const [links, setLinks] = useState<TypeSidebarLink[]>([]);
+
+  // get the sidebar state from the local storage
   const { isOpen, toggleSidebar } = useSidebarStore();
-  const { team } = useParams() as { team: string } // get the team from the url /[team]/etc
 
-  // load the sidebar state from the local storage
-  useEffect(() => {
-    if (localStorage.getItem("sidebar-open") === "false") toggleSidebar()
-  }, [toggleSidebar])
+  const { page, setPage } = usePageStore()
 
-  // set the sidebar state in the local storage
-  useEffect(() => {
-    localStorage.setItem("sidebar-open", JSON.stringify(isOpen))
-  }, [isOpen])
+  const teamId = useParams() as { team: string }
 
-  useEffect(() => {
-    const fetchLinks = async () => {
-      const data = await getSidebarLinks(team);
-      setLinks(data);
-    };
 
-    if (team) {
-      fetchLinks();
-    }
-  }, [team, getSidebarLinks])
+
+  const teamName = getNameValue(links[page].name, {
+    teamId: teamId.team, userName: username, teamName: team || username
+  })
 
   const storage = {
-    usedStorage: 5,
+    usedStorage: 6,
+    usedStoragePercentage: 70,
     totalStorage: 15,
-    usedStoragePercentage: 33.33,
   }
-
-  const teams = useMemo(async () => await getTeams(team), [getTeams])
 
   return (
     <div className="flex h-screen w-full">
@@ -131,7 +240,9 @@ export default function Sidebar({
             <div className="space-y-1">
               <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-2">
-                  <h2 className="text-lg font-medium">Personal Space</h2>
+                  <h2 className="text-lg font-medium">{
+                    teamName
+                  }</h2>
                 </div>
                 <div>
                   <SidebarClose className="h-4 w-4 text-foreground cursor-pointer" onClick={() => toggleSidebar()} />
