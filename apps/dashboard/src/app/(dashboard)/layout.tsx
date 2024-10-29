@@ -10,7 +10,7 @@ export default async function DashboardLayout({
 }) {
   return (
     <div className="flex min-h-screen text-foreground">
-      <Sidebar team={params.team} >{children}</Sidebar>
+      <Sidebar team={params.team} username="henri">{children}</Sidebar>
     </div>
   );
 }

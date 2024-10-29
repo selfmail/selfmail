@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/cn";
-import { AtSign, BadgeDollarSign, BarChart, Compass, Home, Mail, Music, Pen, Plus, School, Settings, SidebarClose, SidebarOpen, User2, Users2 } from "lucide-react";
+import { AtSign, BadgeDollarSign, BarChart, Compass, Music, Pen, Plus, School, Settings, SidebarClose, SidebarOpen, User2, Users2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { create } from "zustand";
@@ -58,18 +58,32 @@ function getNameValue(name: name, params: { teamId: string, teamName: string, us
   throw new Error("Invalid type for name");
 }
 
+function getHrefValue(name: SidebarHref, params: { teamId: string }): string {
+  // Prüft, ob `name` ein String ist
+  if (typeof name === "string") {
+    return name;
+  }
+  // Falls `name` eine Funktion ist, ruft die Funktion auf
+  else if (typeof name === "function") {
+    return name(params!); // hier `params` sicherstellen, da es notwendig ist für die Funktion
+  }
+  throw new Error("Invalid type for name");
+}
+
 export type name = string | ((params: {
   teamId: string,
   teamName: string,
   userName: string
 }) => string)
 
+export type SidebarHref = string | ((params: {
+  teamId: string
+}) => string)
+
 // sidebar types
 export type SidebarLink = {
   name: name,
-  href: string | ((params: {
-    teamId: string
-  }) => string),
+  href: SidebarHref,
   icon: any
 }
 
@@ -248,12 +262,38 @@ export default function Sidebar({
                   <SidebarClose className="h-4 w-4 text-foreground cursor-pointer" onClick={() => toggleSidebar()} />
                 </div>
               </div>
-              <SidebarLink page="" href={`/${team}/`}><Home className="h-4 w-4 text-cyan-700" />Home</SidebarLink>
-              <SidebarLink page="members" href={`/${team}/members`}><Users2 className="h-4 w-4 text-yellow-700" />Members</SidebarLink>
-              <SidebarLink page="send" href={`/${team}/send`}><Mail className="h-4 w-4 text-blue-700" />Compose</SidebarLink>
-              <SidebarLink page="analytics" href={`/${team}/analytics`}><BarChart className="h-4 w-4 text-orange-700" />Analytics</SidebarLink>
-              <SidebarLink page="settings" href={`/${team}/settings`}><Pen className="h-4 w-4 text-green-700" />Settings</SidebarLink>
             </div>
+            {
+              links[page].groups?.map((group) => (
+                <div className="flex flex-col space-y-1" key={getNameValue(group.name, {
+                  teamId: teamId.team,
+                  teamName,
+                  userName: username
+                })}>
+                  <p className="mx-2 text-foreground text-sm">{getNameValue(group.name, {
+                    teamId: teamId.team,
+                    teamName,
+                    userName: username
+                  })}</p>
+                  {
+                    group.links.map((link) => (
+                      <SidebarLink page="" href={
+                        getHrefValue(link.href, {
+                          teamId: teamId.team
+                        })
+                      }>
+                        <link.icon className="h-4 w-4" />
+                        {getNameValue(link.name, {
+                          teamId: teamId.team,
+                          teamName,
+                          userName: username
+                        })}
+                      </SidebarLink>
+                    ))
+                  }
+                </div>
+              ))
+            }
             <div className="flex flex-col space-x-1">
               <p className="text-foreground text-sm px-2">
                 Your adresses
