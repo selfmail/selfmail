@@ -202,8 +202,6 @@ export default function Sidebar({
 
   const teamId = useParams() as { team: string }
 
-
-
   const teamName = getNameValue(links[page].name, {
     teamId: teamId.team, userName: username, teamName: team || username
   })
