@@ -194,7 +194,6 @@ export default function Sidebar({
   team: string | undefined,
   username: string,
 }) {
-
   // get the sidebar state from the local storage
   const { isOpen, toggleSidebar } = useSidebarStore();
 
