@@ -2,6 +2,4 @@
 @tailwind components;
 @tailwind utilities;
 
-/* For a better experience, we are splitting this file into the important parts and the rest */
-@import url("./remirror.css");
 

@@ -6,6 +6,8 @@ import AdressCard from "./adresse-card";
 import Link from "next/link";
 import { DeleteAdresse } from "./action";
 
+import type { JSX } from "react";
+
 /**
  * Manage you adresses on this page.
  * @returns {JSX.Element}

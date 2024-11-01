@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { useFormState } from "react-dom";
+import { useState, type JSX } from "react";
 import { Button, Input } from "ui";
 import { z } from "zod";
 import { createComment } from "./action";
@@ -19,7 +18,7 @@ export const initialState = {
 
 export default function CreateCommentForm(): JSX.Element {
   const [error, setError] = useState<string | undefined>(undefined);
-  const [state, formAction] = useFormState(createComment, initialState);
+  const [state, formAction] = useActionState(createComment, initialState);
   const [description, setDescription] = useState<number>(0);
   const [content, setContent] = useState<number>(0);
   const formDataSchema = z.object({

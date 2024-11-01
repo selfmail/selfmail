@@ -2,17 +2,23 @@ import DataTable from "@/components/elements/table";
 import { getUser } from "@/lib/auth";
 import { db } from "database";
 import { getEmails } from "./action";
+import type { JSX } from "react";
 /**
  * The inbox page, here are all of your mails.
  * @returns {Promise<JSX.Element>}
  */
-export default async function Inbox({
-    params: { team }
-}: {
-    params: {
-        team: string
+export default async function Inbox(
+    props: {
+        params: Promise<{
+            team: string
+        }>
     }
-}): Promise<JSX.Element> {
+): Promise<JSX.Element> {
+    const params = await props.params;
+
+    const {
+        team
+    } = params;
 
     const user = await getUser()
 

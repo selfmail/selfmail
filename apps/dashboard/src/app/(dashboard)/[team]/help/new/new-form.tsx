@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/cn";
 import { useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import { Button, Input } from "ui";
 import { z } from "zod";
 import { createPost } from "./action";
@@ -13,7 +13,7 @@ export const initialState = {
 
 export default function NewForm() {
   const [error, setError] = useState<string | undefined>(undefined);
-  const [state, formAction] = useFormState(createPost, initialState);
+  const [state, formAction] = useActionState(createPost, initialState);
   const [description, setDescription] = useState<number>(0);
   const [content, setContent] = useState<number>(0);
   const formDataSchema = z.object({

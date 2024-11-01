@@ -14,14 +14,15 @@ import {
 import { DeleteMail } from "./action";
 import DeleteButton from "./delete-button";
 
-export default async function Email({
-  params,
-}: {
-  params: {
-    email: string;
-    team: string
-  };
-}) {
+export default async function Email(
+  props: {
+    params: Promise<{
+      email: string;
+      team: string
+    }>;
+  }
+) {
+  const params = await props.params;
   const email = await db.email.findUnique({
     where: {
       id: params.email,

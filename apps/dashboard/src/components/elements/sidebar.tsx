@@ -1,7 +1,8 @@
 "use client"
 
+import { getTeams } from "@/app/(dashboard)/action";
 import { cn } from "@/lib/cn";
-import { BadgeDollarSign, BarChart, Compass, Music, Pen, Plus, School, Settings, SidebarClose, SidebarOpen, User2, Users2 } from "lucide-react";
+import { BadgeDollarSign, BarChart, Pen, Plus, Settings, SidebarClose, SidebarOpen, User2, Users2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { useEffect } from "react";
@@ -35,13 +36,18 @@ export const usePageStore = create<PageState & PageAction>((set) => ({
   setPage: (state) => set(() => ({ page: state })),
 }))
 
-const SidebarLink: React.FC<React.HTMLAttributes<HTMLAnchorElement> & { href: string, page: string }> = ({ href, children, page, ...props }) => {
+const SidebarLink: React.FC<React.HTMLAttributes<HTMLAnchorElement> & { href: string, page?: string }> = ({ href, children, page, ...props }) => {
   const pathname = usePathname()
 
-  // get the second part of the pathname 
-  const path = pathname?.split('/')[2] || ''
+  // Normalisiere beide Pfade für den Vergleich
+  const isActive = href === pathname || (href !== '/' && pathname?.startsWith(href))
+
   return (
-    <Link  {...props} href={href} className={cn("flex px-2 py-1 rounded-lg hover:bg-background-secondary items-center gap-2 cursor-pointer text-base text-foreground", page === path ? "bg-background-" : "", props.className)}>
+    <Link {...props} href={href} className={cn(
+      "flex px-2 py-1 rounded-lg hover:bg-background-secondary items-center gap-2 cursor-pointer text-base text-foreground",
+      isActive ? "bg-background-secondary" : "",
+      props.className
+    )}>
       {children}
     </Link>
   )
@@ -187,52 +193,38 @@ const links: Record<"user" | "teams", SidebarPage> = {
   }
 }
 
-const teams: {
-  slug: string,
-  icon: any,
-}[] = [
-    {
-      slug: "team-1",
-      icon: School
-    },
-    {
-      slug: "team-2",
-      icon: Compass
-    },
-    {
-      slug: "team-3",
-      icon: Music
-    }
-  ]
-
-export default function Sidebar({
+export default async function Sidebar({
   children,
   team,
   username,
-}: Readonly<{ children: React.ReactNode }> & {
-  team: string | undefined,
+}: Readonly<{
+  children: React.ReactNode,
+  team?: string,
   username: string,
-}) {
+}>) {
   // get the sidebar state from the local storage
   const { isOpen, toggleSidebar } = useSidebarStore();
 
   const { page, setPage } = usePageStore()
 
-  const teamId = useParams() as { team: string } | undefined
+  // Fetch teams from database
+  const userTeams = await getTeams()
+
+  const teamId = useParams() as { team?: string }
   const path = usePathname()
-  console.log(path)
 
   useEffect(() => {
-    if (teamId) {
+    if (teamId?.team) {
       setPage("teams")
     } else {
       setPage("user")
     }
-    console.log(teamId)
-  }, [teamId])
+  }, [teamId, setPage])
 
   const teamName = getNameValue(links[page].name, {
-    teamId: teamId?.team, userName: username, teamName: team || username
+    teamId: teamId?.team || '',
+    userName: username,
+    teamName: team || username
   })
 
   const storage = {
@@ -261,10 +253,16 @@ export default function Sidebar({
               </Link>
               <hr className="border-border" />
               {
-                teams.map((team) => (
-                  <Link href={`/${team.slug}`} key={team.slug} onClick={() => {
-                    setPage("teams")
-                  }} className={cn("cursor-pointer rounded-xl bg-background-primary border border-border flex items-center justify-center w-full aspect-square transition", team.slug === teamId?.team && "ring-2 ring-[#bcbcbc]/70 ring-offset-2 scale-90")}>
+                userTeams.map((team) => (
+                  <Link
+                    href={`/${team.slug}`}
+                    key={team.slug}
+                    onClick={() => setPage("teams")}
+                    className={cn(
+                      "cursor-pointer rounded-xl bg-background-primary border border-border flex items-center justify-center w-full aspect-square transition",
+                      team.slug === teamId?.team && "ring-2 ring-[#bcbcbc]/70 ring-offset-2 scale-90"
+                    )}
+                  >
                     <team.icon className="h-4 w-4" />
                   </Link>
                 ))
@@ -305,14 +303,16 @@ export default function Sidebar({
                     })}</p>
                     {
                       group.links.map((link) => (
-                        <SidebarLink page="" href={
-                          getHrefValue(link.href, {
-                            teamId: teamId.team
-                          })
-                        }>
+                        <SidebarLink
+                          key={link.name.toString()}
+                          page={path?.split('/')[2]}
+                          href={getHrefValue(link.href, {
+                            teamId: teamId?.team || ''
+                          })}
+                        >
                           <link.icon className="h-4 w-4" />
                           {getNameValue(link.name, {
-                            teamId: teamId.team,
+                            teamId: teamId?.team || '',
                             teamName,
                             userName: username
                           })}

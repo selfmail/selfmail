@@ -18,7 +18,7 @@ export const getSession = async (options?: { redirect?: boolean, returnUser?: bo
     }
 
     // get the session from the cookies
-    const session = await getIronSession<Session>(cookies(), sessionOptions)
+    const session = await getIronSession<Session>(await cookies(), sessionOptions)
 
     if (checkDB) {
         const user = await db.user.findUnique({
@@ -44,7 +44,7 @@ export const getSession = async (options?: { redirect?: boolean, returnUser?: bo
 }
 
 export const getUser = async () => {
-    const session = await getIronSession<Session>(cookies(), sessionOptions)
+    const session = await getIronSession<Session>(await cookies(), sessionOptions)
 
     const user = await db.user.findUnique({
         where: {

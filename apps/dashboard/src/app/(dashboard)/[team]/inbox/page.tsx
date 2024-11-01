@@ -5,21 +5,27 @@ import Content from "./content";
 
 
 import { getSingleEmail } from "./action";
+import type { JSX } from "react";
 /**
  * The inbox page, here are all of your mails.
  * @returns {Promise<JSX.Element>}
  */
-export default async function Inbox({
-    searchParams,
-    params: { team }
-}: {
-    searchParams?: {
-        [key: string]: string | string[] | undefined;
-    };
-    params: {
-        team: string
+export default async function Inbox(
+    props: {
+        searchParams?: Promise<{
+            [key: string]: string | string[] | undefined;
+        }>;
+        params: Promise<{
+            team: string
+        }>
     }
-}): Promise<JSX.Element> {
+): Promise<JSX.Element> {
+    const params = await props.params;
+
+    const {
+        team
+    } = params;
+
     const req = await checkRequest();
 
     const emailcount = await db.email.count({

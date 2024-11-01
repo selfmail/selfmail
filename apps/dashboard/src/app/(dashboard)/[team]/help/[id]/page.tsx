@@ -13,13 +13,14 @@ import CreateCommandForm from "./create-command";
 /**
  * View a community article or guide.
  */
-export default async function Help({
-  params,
-}: {
-  params: {
-    id: string;
-  };
-}) {
+export default async function Help(
+  props: {
+    params: Promise<{
+      id: string;
+    }>;
+  }
+) {
+  const params = await props.params;
   if (!params.id) notFound();
   // the user from the session
   const req = await checkRequest();

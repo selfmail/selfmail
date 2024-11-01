@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useFormState } from "react-dom";
 import { Button, EmailInput, Input } from "ui";
 import { CreateAdresse } from "./action";
 import { z } from "zod";
@@ -13,7 +12,7 @@ const initialState = {
 
 export default function NewAdresseForm() {
   const [error, setError] = useState<string | undefined>(undefined);
-  const [state, formAction] = useFormState(CreateAdresse, initialState);
+  const [state, formAction] = useActionState(CreateAdresse, initialState);
   const adresseSchema = z.object({
     email: z.string().email().endsWith("@selfmail.app"),
     type: z.enum(["second", "spam"]),

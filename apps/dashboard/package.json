@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "next build",
-    "dev": "next dev --port=4000",
+    "dev": "next dev --turbopack --port=4000",
     "lint": "next lint",
     "start": "next start"
   },
@@ -48,14 +48,14 @@
     "iron-session": "^8.0.3",
     "lucia": "^3.2.0",
     "lucide-react": "^0.408.0",
-    "next": "^14.2.5",
+    "next": "15.0.2",
     "next-safe-action": "^7.9.6",
     "next-themes": "^0.3.0",
     "oslo": "^1.2.1",
     "postal-js": "^1.0.4",
     "prosekit": "^0.9.8",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "19.0.0-rc-02c0e824-20241028",
+    "react-dom": "19.0.0-rc-02c0e824-20241028",
     "react-hook-form": "^7.52.2",
     "react-hotkeys-hook": "^4.5.0",
     "react-textarea-autosize": "^8.5.3",
@@ -72,12 +72,12 @@
     "@biomejs/biome": "1.8.3",
     "@types/eslint": "^8.56.10",
     "@types/node": "^20.14.10",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "@typescript-eslint/eslint-plugin": "^7.16.1",
     "@typescript-eslint/parser": "^7.16.1",
     "eslint": "^8.57.0",
-    "eslint-config-next": "^14.2.5",
+    "eslint-config-next": "15.0.2",
     "postcss": "^8.4.39",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.5",
@@ -87,5 +87,11 @@
   "ct3aMetadata": {
     "initVersion": "7.36.1"
   },
-  "packageManager": "pnpm@9.4.0"
+  "packageManager": "pnpm@9.4.0",
+  "pnpm": {
+    "overrides": {
+      "@types/react": "npm:types-react@19.0.0-rc.1",
+      "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+    }
+  }
 }
