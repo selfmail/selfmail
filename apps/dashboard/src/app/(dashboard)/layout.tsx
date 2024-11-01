@@ -2,15 +2,10 @@ import Sidebar from "@/components/elements/sidebar";
 
 export default async function DashboardLayout({
   children,
-  params
-}: Readonly<{ children: React.ReactNode }> & {
-  params: {
-    team: string | undefined
-  }
-}) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="flex min-h-screen text-foreground">
-      <Sidebar team={params.team} username="henri">{children}</Sidebar>
+      <Sidebar team={"params.team"} username="henri">{children}</Sidebar>
     </div>
   );
 }

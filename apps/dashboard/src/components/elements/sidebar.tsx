@@ -1,9 +1,10 @@
 "use client"
 
 import { cn } from "@/lib/cn";
-import { AtSign, BadgeDollarSign, BarChart, Compass, Music, Pen, Plus, School, Settings, SidebarClose, SidebarOpen, User2, Users2 } from "lucide-react";
+import { BadgeDollarSign, BarChart, Compass, Music, Pen, Plus, School, Settings, SidebarClose, SidebarOpen, User2, Users2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
+import { useEffect } from "react";
 import { create } from "zustand";
 
 // store for the sidebar state (open/close)
@@ -40,7 +41,7 @@ const SidebarLink: React.FC<React.HTMLAttributes<HTMLAnchorElement> & { href: st
   // get the second part of the pathname 
   const path = pathname?.split('/')[2] || ''
   return (
-    <Link  {...props} href={href} className={cn("flex px-2 py-1 rounded-lg hover:bg-background-secondary items-center gap-2 cursor-pointer text-base text-foreground", page === path ? "bg-background-secondary" : "", props.className)}>
+    <Link  {...props} href={href} className={cn("flex px-2 py-1 rounded-lg hover:bg-background-secondary items-center gap-2 cursor-pointer text-base text-foreground", page === path ? "bg-background-" : "", props.className)}>
       {children}
     </Link>
   )
@@ -129,7 +130,7 @@ const links: Record<"user" | "teams", SidebarPage> = {
     ]
   },
   user: {
-    name: `Personal Informations`,
+    name: `Personal`,
     icon: User2,
     groups: [
       {
@@ -186,10 +187,28 @@ const links: Record<"user" | "teams", SidebarPage> = {
   }
 }
 
+const teams: {
+  slug: string,
+  icon: any,
+}[] = [
+    {
+      slug: "team-1",
+      icon: School
+    },
+    {
+      slug: "team-2",
+      icon: Compass
+    },
+    {
+      slug: "team-3",
+      icon: Music
+    }
+  ]
+
 export default function Sidebar({
   children,
   team,
-  username
+  username,
 }: Readonly<{ children: React.ReactNode }> & {
   team: string | undefined,
   username: string,
@@ -199,10 +218,21 @@ export default function Sidebar({
 
   const { page, setPage } = usePageStore()
 
-  const teamId = useParams() as { team: string }
+  const teamId = useParams() as { team: string } | undefined
+  const path = usePathname()
+  console.log(path)
+
+  useEffect(() => {
+    if (teamId) {
+      setPage("teams")
+    } else {
+      setPage("user")
+    }
+    console.log(teamId)
+  }, [teamId])
 
   const teamName = getNameValue(links[page].name, {
-    teamId: teamId.team, userName: username, teamName: team || username
+    teamId: teamId?.team, userName: username, teamName: team || username
   })
 
   const storage = {
@@ -226,19 +256,19 @@ export default function Sidebar({
                   </div>
                 )
               }
-              <div className="cursor-pointer ring-2 ring-[#bcbcbc]/70 ring-offset-2 scale-90 rounded-xl flex items-center justify-center w-full border border-border aspect-square">
+              <Link href={"/"} onClick={() => setPage("user")} className={cn("cursor-pointer rounded-xl bg-background-primary border border-border flex items-center justify-center w-full aspect-square transition", (path === ("/" || undefined)) && "ring-2 ring-[#bcbcbc]/70 ring-offset-2 scale-90")}>
                 <User2 className="h-4 w-4 text-foreground " />
-              </div>
+              </Link>
               <hr className="border-border" />
-              <div className="cursor-pointer rounded-xl bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
-                <School className="h-4 w-4 text-blue-700/70" />
-              </div>
-              <div className="cursor-pointer rounded-xl bg-background-primary border border-border flex items-center justify-center w-full aspect-square">
-                <Compass className="h-5 w-5 text-yellow-700" />
-              </div>
-              <div className="cursor-pointer bg-background-primary rounded-xl border border-border flex items-center justify-center w-full aspect-square">
-                <Music className="h-4 w-4 text-green-700/70" />
-              </div>
+              {
+                teams.map((team) => (
+                  <Link href={`/${team.slug}`} key={team.slug} onClick={() => {
+                    setPage("teams")
+                  }} className={cn("cursor-pointer rounded-xl bg-background-primary border border-border flex items-center justify-center w-full aspect-square transition", team.slug === teamId?.team && "ring-2 ring-[#bcbcbc]/70 ring-offset-2 scale-90")}>
+                    <team.icon className="h-4 w-4" />
+                  </Link>
+                ))
+              }
             </div>
             <Link href="/create-team" className="rounded-xl flex items-center border border-border justify-center w-full aspect-square">
               <Plus className="h-4 w-4 text-orange-700" />
@@ -247,8 +277,8 @@ export default function Sidebar({
         </div>
         {/* Sidebar for links */}
         <div className={cn("flex flex-col justify-between px-3 py-2 h-full w-full", isOpen ? "flex" : "hidden")}>
-          <div className="w-full space-y-4">
-            <div className="space-y-1">
+          <div>
+            <div className="space-y-1 px-2 mb-2">
               <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-2">
                   <h2 className="text-lg font-medium">{
@@ -260,42 +290,38 @@ export default function Sidebar({
                 </div>
               </div>
             </div>
-            {
-              links[page].groups?.map((group) => (
-                <div className="flex flex-col space-y-1" key={getNameValue(group.name, {
-                  teamId: teamId.team,
-                  teamName,
-                  userName: username
-                })}>
-                  <p className="mx-2 text-foreground text-sm">{getNameValue(group.name, {
+            <div className="w-full space-y-4">
+              {
+                links[page].groups?.map((group) => (
+                  <div className="flex flex-col space-y-1" key={getNameValue(group.name, {
                     teamId: teamId.team,
                     teamName,
                     userName: username
-                  })}</p>
-                  {
-                    group.links.map((link) => (
-                      <SidebarLink page="" href={
-                        getHrefValue(link.href, {
-                          teamId: teamId.team
-                        })
-                      }>
-                        <link.icon className="h-4 w-4" />
-                        {getNameValue(link.name, {
-                          teamId: teamId.team,
-                          teamName,
-                          userName: username
-                        })}
-                      </SidebarLink>
-                    ))
-                  }
-                </div>
-              ))
-            }
-            <div className="flex flex-col space-x-1">
-              <p className="text-foreground text-sm px-2">
-                Your adresses
-              </p>
-              <SidebarLink page="home" href={`/${team}/jsdkjfdsj`}><AtSign className="h-4 w-4 text-red-700" />henri@selfmail.app</SidebarLink>
+                  })}>
+                    <p className="mx-2 text-foreground text-sm">{getNameValue(group.name, {
+                      teamId: teamId.team,
+                      teamName,
+                      userName: username
+                    })}</p>
+                    {
+                      group.links.map((link) => (
+                        <SidebarLink page="" href={
+                          getHrefValue(link.href, {
+                            teamId: teamId.team
+                          })
+                        }>
+                          <link.icon className="h-4 w-4" />
+                          {getNameValue(link.name, {
+                            teamId: teamId.team,
+                            teamName,
+                            userName: username
+                          })}
+                        </SidebarLink>
+                      ))
+                    }
+                  </div>
+                ))
+              }
             </div>
           </div>
           <div className="space-y-1">
