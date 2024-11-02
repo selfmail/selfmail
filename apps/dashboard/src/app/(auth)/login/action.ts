@@ -26,10 +26,10 @@ export const loginUser = userNotLoggedIn.schema(signInSchema).action(async ({ pa
         return { error: "User not found" };
     }
 
-
-
     // create a new session
     const sessionToken = generateRandomSessionToken()
     const session = await createSession(sessionToken, user.id);
+
+
 
 })
