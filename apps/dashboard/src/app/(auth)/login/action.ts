@@ -2,6 +2,7 @@
 
 import { ActionError } from "@/actions/action";
 import { userNotLoggedIn } from "@/actions/user-not-logged-in";
+import { setSessionCookie } from "@/auth/cookie";
 import { verifyPasswordHash } from "@/auth/password";
 import { createSession, generateRandomSessionToken } from "@/auth/session";
 import { db } from "database";
@@ -16,6 +17,7 @@ const signInSchema = z
     })
 
 export const loginUser = userNotLoggedIn.schema(signInSchema).action(async ({ parsedInput: { email, password, username } }) => {
+    console.log("Login")
     // get the user
     const user = await db.user.findFirst({
         where: {
@@ -27,7 +29,9 @@ export const loginUser = userNotLoggedIn.schema(signInSchema).action(async ({ pa
         throw new ActionError("User not found.")
     }
 
-    if (await verifyPasswordHash(password, user.password) !== true) {
+    console.log(password, user.password)
+
+    if (!await verifyPasswordHash(user.password, password)) {
         throw new ActionError("Incorrect password.")
     }
 
@@ -52,8 +56,10 @@ export const loginUser = userNotLoggedIn.schema(signInSchema).action(async ({ pa
     // create a new session
     const sessionToken = generateRandomSessionToken()
     const session = await createSession(sessionToken, user.id);
+    if (!session.userId) throw new ActionError("Error creating the session.")
+    await setSessionCookie(sessionToken, session.expiresAt)
 
-    if (!session) throw new ActionError("Error creating the session.")
+    console.log("Set everything, redirect now")
 
     redirect("/")
 })

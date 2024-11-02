@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { validateSession } from "./session";
 
-export const SESSION_COOKIE_NAME = "selfmail-session";
+export const SESSION_COOKIE_NAME = "selfmail-dashboard-session";
 
 export const setSessionCookie = async (sessionToken: string, expiresAt: Date) => {
     const cookie = {
@@ -17,6 +17,10 @@ export const setSessionCookie = async (sessionToken: string, expiresAt: Date) =>
             expires: expiresAt,
         },
     };
+
+    console.log(cookie)
+
+    console.log("Setting cookie");
 
     (await cookies()).set(cookie.name, cookie.value, cookie.attributes);
 };
@@ -40,11 +44,13 @@ export const deleteSessionCookie = async () => {
 
 export const getAuth = async () => {
     const sessionToken =
-        (await cookies()).get(SESSION_COOKIE_NAME)?.value ?? null;
+        (await cookies()).get(SESSION_COOKIE_NAME)?.value;
+
+    console.log(`Session Token: ${sessionToken}`)
 
     if (!sessionToken) {
         return { session: null, user: null };
     }
 
-    return await validateSession(sessionToken);
+    return validateSession(sessionToken);
 }

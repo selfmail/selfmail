@@ -15,12 +15,14 @@ export const generateRandomSessionToken = () => {
     return encodeBase32LowerCaseNoPadding(bytes);
 };
 
+
 const SESSION_REFRESH_INTERVAL_MS = 1000 * 60 * 60 * 24 * 15; // 15 days
 const SESSION_MAX_DURATION_MS = SESSION_REFRESH_INTERVAL_MS * 2;  // 30 days
 
 const fromSessionTokenToSessionId = (sessionToken: string) => {
     return encodeHexLowerCase(sha256(new TextEncoder().encode(sessionToken)));
 };
+
 
 export const createSession = async (sessionToken: string, userId: string) => {
     const sessionId = fromSessionTokenToSessionId(sessionToken);
@@ -31,17 +33,20 @@ export const createSession = async (sessionToken: string, userId: string) => {
         expiresAt: new Date(Date.now() + SESSION_MAX_DURATION_MS),
     };
 
-    // or your ORM of choice
+
     await db.session.create({
         data: session,
     });
 
     return session;
 };
+
+
 export const validateSession = async (sessionToken: string) => {
     const sessionId = fromSessionTokenToSessionId(sessionToken);
 
-    // or your ORM of choice
+    console.log(`session id: ${sessionId}`)
+
     const result = await db.session.findUnique({
         where: {
             id: sessionId,
@@ -50,6 +55,10 @@ export const validateSession = async (sessionToken: string) => {
             user: true,
         },
     });
+
+    console.log(`Result of fetch: ${result}`)
+
+
 
     // if there is no session, return null
     if (!result) {

@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
-import { redirect } from "next/navigation";
 import { InputStyles } from "node_modules/ui/src/components/input";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -34,14 +33,11 @@ export default function Login() {
 
     const onSubmit = (data: SignInSchema) => {
         execute(data);
-        reset()
 
         if (result.serverError) {
             console.log(result.serverError)
             toast.error(result.serverError)
         }
-
-        redirect("/")
     };
 
     return (
