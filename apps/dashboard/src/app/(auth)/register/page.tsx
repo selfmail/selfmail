@@ -39,15 +39,16 @@ export default function Register() {
         reset()
 
         if (result.serverError) {
-            console.log(result.serverError)
+            console.error(result.serverError)
             toast.error(result.serverError)
         }
+
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-2 lg:w-[400px]">
 
-            <h2 className="text-xl">Register</h2>
+            <h2 className="text-xl font-medium">Register</h2>
 
             <input
                 {...register("username")}

@@ -1,9 +1,11 @@
 "use server"
+import { ActionError } from "@/actions/action";
 import { userNotLoggedIn } from "@/actions/user-not-logged-in";
 import { hashPassword } from "@/auth/password";
 import { createSession, generateRandomSessionToken } from "@/auth/session";
 import { createId } from "@paralleldrive/cuid2";
 import { db } from "database";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 const signUpSchema = z
@@ -17,11 +19,7 @@ const signUpSchema = z
         path: ["confirmPassword"],
     })
 
-export const registerUser = userNotLoggedIn.schema(signUpSchema).action(async ({ parsedInput: { email, password, username, confirmPassword }, ctx }) => {
-    if (password !== confirmPassword) {
-        return "Passwords don't match"
-    }
-
+export const registerUser = userNotLoggedIn.schema(signUpSchema).action(async ({ parsedInput: { email, password, username }, ctx }) => {
     // register user
     const user = await db.user.create({
         data: {
@@ -31,9 +29,7 @@ export const registerUser = userNotLoggedIn.schema(signUpSchema).action(async ({
         },
     })
 
-    if (!user) return {
-        error: "Error creating the user."
-    }
+    if (!user) throw new ActionError("Error creating the user.")
 
     // Create a new personal team
     const team = await db.team.create({
@@ -45,7 +41,7 @@ export const registerUser = userNotLoggedIn.schema(signUpSchema).action(async ({
         },
     })
 
-    if (!team) return "Error creating the personal team."
+    if (!team) throw new ActionError("Error creating the personal team.")
 
     // Create a new address
     const address = await db.address.create({
@@ -58,12 +54,12 @@ export const registerUser = userNotLoggedIn.schema(signUpSchema).action(async ({
         },
     })
 
-    if (!address) return "Error creating main the address."
+    if (!address) throw new ActionError("Error creating main the address.")
 
     // create the session
     const session = await createSession(generateRandomSessionToken(), user.id)
 
-    if (!session) return "Error creating the session."
+    if (!session) throw new ActionError("Error creating the session.")
 
-    return
+    redirect("/")
 })

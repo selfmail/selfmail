@@ -1,7 +1,6 @@
 // post by https://www.robinwieruch.de/how-to-roll-your-own-auth/
 
 import { cookies } from "next/headers";
-import { cache } from "react";
 import { validateSession } from "./session";
 
 export const SESSION_COOKIE_NAME = "selfmail-session";
@@ -39,7 +38,7 @@ export const deleteSessionCookie = async () => {
 };
 
 
-export const getAuth = cache(async () => {
+export const getAuth = async () => {
     const sessionToken =
         (await cookies()).get(SESSION_COOKIE_NAME)?.value ?? null;
 
@@ -47,5 +46,5 @@ export const getAuth = cache(async () => {
         return { session: null, user: null };
     }
 
-    return validateSession(sessionToken);
-});
+    return await validateSession(sessionToken);
+}

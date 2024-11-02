@@ -36,9 +36,9 @@ export default function Login() {
         execute(data);
         reset()
 
-        if (result.data?.error) {
-            console.log(result.data.error)
-            toast.error(result.data.error)
+        if (result.serverError) {
+            console.log(result.serverError)
+            toast.error(result.serverError)
         }
 
         redirect("/")
@@ -46,7 +46,7 @@ export default function Login() {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-2 lg:w-[400px]">
-            <h2 className="text-xl">Login</h2>
+            <h2 className="text-xl font-medium">Login</h2>
             <input
                 {...register("username")}
                 type="text"
