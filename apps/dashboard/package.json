@@ -16,9 +16,11 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
     "@node-rs/argon2": "^2.0.0",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
+    "@paralleldrive/cuid2": "^2.2.2",
     "@prisma/client": "^5.21.1",
     "@t3-oss/env-nextjs": "^0.10.1",
     "clsx": "^2.1.1",
@@ -28,9 +30,11 @@
     "next-safe-action": "^7.9.9",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-motion": "0.3.0-beta",
     "ui": "workspace:*",
+    "styles": "workspace:*",
     "zod": "^3.23.8"
   },
   "devDependencies": {

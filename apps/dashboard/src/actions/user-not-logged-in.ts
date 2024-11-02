@@ -1,4 +1,4 @@
-"use server"
+
 
 import { getAuth } from "@/auth/cookie";
 import { actionClient } from "./action";
@@ -11,5 +11,5 @@ export const userNotLoggedIn = actionClient.use(async ({ next }) => {
         throw new Error('You are not allowed to perform this action. You must be logged out.');
     }
 
-    return next({ ctx: { session } });
+    return next();
 });
