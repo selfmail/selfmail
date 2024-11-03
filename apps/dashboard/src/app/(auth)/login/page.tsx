@@ -85,7 +85,6 @@ export default function Login() {
                         <p className="text-red-500">{serverError}</p>
                     )
                 }
-
                 <div>
                     <Button
                         disabled={isSubmitting}

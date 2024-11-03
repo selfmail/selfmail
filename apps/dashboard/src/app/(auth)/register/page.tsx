@@ -49,7 +49,7 @@ export default function Register() {
 
     return (
         <div className="w-full h-screen flex items-center justify-center">
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-2 lg:w-[400px]">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-2 w-full mx-5 sm:max-w-[350px] sm:mx-0  lg:max-w-[400px]">
                 <h2 className="text-xl font-medium">Register</h2>
 
                 <input
