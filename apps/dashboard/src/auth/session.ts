@@ -45,7 +45,6 @@ export const createSession = async (sessionToken: string, userId: string) => {
 export const validateSession = async (sessionToken: string) => {
     const sessionId = fromSessionTokenToSessionId(sessionToken);
 
-    console.log(`session id: ${sessionId}`)
 
     const result = await db.session.findUnique({
         where: {
@@ -55,10 +54,6 @@ export const validateSession = async (sessionToken: string) => {
             user: true,
         },
     });
-
-    console.log(`Result of fetch: ${result}`)
-
-
 
     // if there is no session, return null
     if (!result) {

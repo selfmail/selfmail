@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
 import { InputStyles } from "node_modules/ui/src/components/input";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { Button } from "ui";
 import { z } from "zod";
 import { loginUser } from "./action";
@@ -33,11 +32,7 @@ export default function Login() {
 
     const onSubmit = (data: SignInSchema) => {
         execute(data);
-
-        if (result.serverError) {
-            console.log(result.serverError)
-            toast.error(result.serverError)
-        }
+        reset()
     };
 
     return (

@@ -17,7 +17,6 @@ const signInSchema = z
     })
 
 export const loginUser = userNotLoggedIn.schema(signInSchema).action(async ({ parsedInput: { email, password, username } }) => {
-    console.log("Login")
     // get the user
     const user = await db.user.findFirst({
         where: {
@@ -29,7 +28,6 @@ export const loginUser = userNotLoggedIn.schema(signInSchema).action(async ({ pa
         throw new ActionError("User not found.")
     }
 
-    console.log(password, user.password)
 
     if (!await verifyPasswordHash(user.password, password)) {
         throw new ActionError("Incorrect password.")
@@ -59,7 +57,6 @@ export const loginUser = userNotLoggedIn.schema(signInSchema).action(async ({ pa
     if (!session.userId) throw new ActionError("Error creating the session.")
     await setSessionCookie(sessionToken, session.expiresAt)
 
-    console.log("Set everything, redirect now")
 
     redirect("/")
 })

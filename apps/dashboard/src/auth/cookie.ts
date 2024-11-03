@@ -18,9 +18,6 @@ export const setSessionCookie = async (sessionToken: string, expiresAt: Date) =>
         },
     };
 
-    console.log(cookie)
-
-    console.log("Setting cookie");
 
     (await cookies()).set(cookie.name, cookie.value, cookie.attributes);
 };
