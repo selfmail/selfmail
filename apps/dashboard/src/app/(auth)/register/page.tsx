@@ -3,8 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
 import { InputStyles } from "node_modules/ui/src/components/input";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { Button } from "ui";
 import { z } from "zod";
 import { registerUser } from "./action";
@@ -23,7 +23,16 @@ export const signUpSchema = z
 export type TSignUpSchema = z.infer<typeof signUpSchema>;
 
 export default function Register() {
+    const [serverError, setServerError] = useState<string | undefined>(undefined)
     const { execute, result } = useAction(registerUser);
+
+    useEffect(() => {
+        console.log(result)
+        if (result.serverError) {
+            setServerError(result.serverError)
+            console.log("Server Error!")
+        }
+    }, [result])
 
     const {
         register,
@@ -36,12 +45,6 @@ export default function Register() {
 
     const onSubmit = async (data: TSignUpSchema) => {
         execute(data);
-        reset()
-
-        if (result.serverError) {
-            console.error(result.serverError)
-            toast.error(result.serverError)
-        }
 
     };
 
@@ -89,9 +92,10 @@ export default function Register() {
             {errors.confirmPassword && (
                 <p className="text-red-500">{`${errors.confirmPassword.message}`}</p>
             )}
+
             {
-                errors.root?.type === "server" && (
-                    <p className="text-red-500">{`${errors.root.message}`}</p>
+                serverError && (
+                    <p className="text-red-500">{serverError}</p>
                 )
             }
 

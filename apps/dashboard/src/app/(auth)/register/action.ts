@@ -1,6 +1,7 @@
 "use server"
 import { ActionError } from "@/actions/action";
 import { userNotLoggedIn } from "@/actions/user-not-logged-in";
+import { setSessionCookie } from "@/auth/cookie";
 import { hashPassword } from "@/auth/password";
 import { createSession, generateRandomSessionToken } from "@/auth/session";
 import { createId } from "@paralleldrive/cuid2";
@@ -57,7 +58,10 @@ export const registerUser = userNotLoggedIn.schema(signUpSchema).action(async ({
     if (!address) throw new ActionError("Error creating main the address.")
 
     // create the session
-    const session = await createSession(generateRandomSessionToken(), user.id)
+    const sessionToken = generateRandomSessionToken()
+    const session = await createSession(sessionToken, user.id)
+    if (!session.userId) throw new ActionError("Error creating the session.")
+    await setSessionCookie(sessionToken, session.expiresAt)
 
     if (!session) throw new ActionError("Error creating the session.")
 
