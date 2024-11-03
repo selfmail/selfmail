@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
+import Link from "next/link";
 import { InputStyles } from "node_modules/ui/src/components/input";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -27,10 +28,8 @@ export default function Register() {
     const { execute, result } = useAction(registerUser);
 
     useEffect(() => {
-        console.log(result)
         if (result.serverError) {
             setServerError(result.serverError)
-            console.log("Server Error!")
         }
     }, [result])
 
@@ -49,64 +48,64 @@ export default function Register() {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-2 lg:w-[400px]">
+        <div className="w-full h-screen flex items-center justify-center">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-2 lg:w-[400px]">
+                <h2 className="text-xl font-medium">Register</h2>
 
-            <h2 className="text-xl font-medium">Register</h2>
+                <input
+                    {...register("username")}
+                    type="text"
+                    placeholder="Username"
+                    className={InputStyles}
+                />
+                {errors.username && (
+                    <p className="text-red-500">{`${errors.username.message}`}</p>
+                )}
 
-            <input
-                {...register("username")}
-                type="text"
-                placeholder="Username"
-                className={InputStyles}
-            />
-            {errors.username && (
-                <p className="text-red-500">{`${errors.username.message}`}</p>
-            )}
+                <input
+                    {...register("email")}
+                    type="email"
+                    placeholder="Email"
+                    className={InputStyles}
+                />
+                {errors.email && (
+                    <p className="text-red-500">{`${errors.email.message}`}</p>
+                )}
 
-            <input
-                {...register("email")}
-                type="email"
-                placeholder="Email"
-                className={InputStyles}
-            />
-            {errors.email && (
-                <p className="text-red-500">{`${errors.email.message}`}</p>
-            )}
+                <input
+                    {...register("password")}
+                    type="password"
+                    placeholder="Password"
+                    className={InputStyles}
+                />
+                {errors.password && (
+                    <p className="text-red-500">{`${errors.password.message}`}</p>
+                )}
 
-            <input
-                {...register("password")}
-                type="password"
-                placeholder="Password"
-                className={InputStyles}
-            />
-            {errors.password && (
-                <p className="text-red-500">{`${errors.password.message}`}</p>
-            )}
-
-            <input
-                {...register("confirmPassword")}
-                type="password"
-                placeholder="Repeat Password"
-                className={InputStyles}
-            />
-            {errors.confirmPassword && (
-                <p className="text-red-500">{`${errors.confirmPassword.message}`}</p>
-            )}
-
-            {
-                serverError && (
-                    <p className="text-red-500">{serverError}</p>
-                )
-            }
-
-            <div>
-                <Button
-                    disabled={isSubmitting}
-                    type="submit"
-                >
-                    Submit
-                </Button>
-            </div>
-        </form >
+                <input
+                    {...register("confirmPassword")}
+                    type="password"
+                    placeholder="Repeat Password"
+                    className={InputStyles}
+                />
+                {errors.confirmPassword && (
+                    <p className="text-red-500">{`${errors.confirmPassword.message}`}</p>
+                )}
+                <Link href={"/login"} className="underline">Already have an account?</Link>
+                {
+                    serverError && (
+                        <p className="text-red-500">{serverError}</p>
+                    )
+                }
+                <div>
+                    <Button
+                        disabled={isSubmitting}
+                        type="submit"
+                    >
+                        Submit
+                    </Button>
+                </div>
+            </form>
+        </div>
     );
 }
