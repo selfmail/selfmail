@@ -19,7 +19,6 @@ export const signInSchema = z
 
 export type SignInSchema = z.infer<typeof signInSchema>;
 
-
 export default function Login() {
     const [serverError, setServerError] = useState<string | undefined>(undefined)
 
@@ -50,6 +49,7 @@ export default function Login() {
         <div className="w-full h-screen flex items-center justify-center">
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-2 w-full mx-5 sm:max-w-[350px] sm:mx-0  lg:max-w-[400px]">
                 <h2 className="text-xl font-medium">Login</h2>
+
                 <input
                     {...register("username")}
                     type="text"
@@ -85,6 +85,7 @@ export default function Login() {
                         <p className="text-red-500">{serverError}</p>
                     )
                 }
+
                 <div>
                     <Button
                         disabled={isSubmitting}
@@ -93,7 +94,7 @@ export default function Login() {
                         Submit
                     </Button>
                 </div>
-            </form >
+            </form>
         </div>
     );
 }
