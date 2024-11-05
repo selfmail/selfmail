@@ -1,9 +1,9 @@
 import Providers from "@/components/provider";
+import Sidebar from "@/components/provider/sidebar";
+import TeamSidebar from "@/components/provider/team-sidebar";
 import "@/styles/globals.css";
-
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-
 import "styles/styles.css";
 import "ui/styles.css";
 
@@ -17,10 +17,14 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={GeistSans.variable}>
         <Providers>
-          {children}
+          <div className="flex h-screen w-full bg-[#111111]">
+            <TeamSidebar />
+            <Sidebar />
+            {children}
+          </div>
         </Providers>
       </body>
     </html>
