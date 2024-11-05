@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={GeistSans.variable}>
         <Providers>
-          <div className="flex h-screen w-full bg-[#111111]">
+          <div className="flex h-screen w-full bg-[var(--bg-main)] transition-colors">
             <TeamSidebar />
             <Sidebar />
             {children}

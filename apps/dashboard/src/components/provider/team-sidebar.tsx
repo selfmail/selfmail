@@ -1,3 +1,5 @@
+import { PlusIcon } from "@heroicons/react/24/outline";
+
 interface TeamItem {
     id: string;
     name: string;
@@ -41,7 +43,7 @@ const teamItems: TeamItem[] = [
 
 const TeamSidebar = () => {
     return (
-        <div className="flex h-screen flex-col  w-[68px] bg-[#111111] border-r border-neutral-800">
+        <div className="flex h-screen flex-col w-[68px] bg-[var(--bg-secondary)] border-r border-[var(--border-color)]">
             <div className="flex flex-col h-full justify-between items-center pt-3 px-2.5">
                 <div>
                     {teamItems.map((team) => (
@@ -49,31 +51,18 @@ const TeamSidebar = () => {
                     ))}
                 </div>
 
-                <div className="">
+                <div>
                     <div className="w-full pt-2 pb-3">
-                        <div className="w-full h-[1px] bg-neutral-800" />
+                        <div className="w-full h-[1px] bg-[var(--border-color)]" />
                     </div>
 
-                    {/* Add Team Button */}
-                    <button className="w-10 h-10 mb-2 rounded-xl border border-neutral-800 
-                    flex items-center justify-center text-neutral-500
-                    hover:text-neutral-400
-                    hover:border-neutral-700
-                    hover:bg-neutral-900
-                    transition-colors">
-                        <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={1.5}
-                                d="M12 4v16m8-8H4"
-                            />
-                        </svg>
+                    <button className="w-10 h-10 mb-2 rounded-xl border border-[var(--border-color)]
+                        flex items-center justify-center text-[var(--text-tertiary)]
+                        hover:text-[var(--text-secondary)]
+                        hover:border-[var(--border-secondary)]
+                        hover:bg-[var(--hover-bg)]
+                        transition-colors">
+                        <PlusIcon className="w-4 h-4" />
                     </button>
                 </div>
             </div>
@@ -90,15 +79,15 @@ const TeamIcon = ({ team }: TeamIconProps) => {
         <div className="relative w-full flex justify-center mb-2">
             {team.isActive && (
                 <div className="absolute -left-2.5 top-1/2 -translate-y-1/2">
-                    <div className="w-1 h-5 bg-white rounded-r-full" />
+                    <div className="w-1 h-5 bg-[var(--text-primary)] rounded-r-full" />
                 </div>
             )}
             <button
                 className={`
-                    w-10 h-10 rounded-xl flex items-center justify-center 
+                    w-10 h-10 rounded-lg flex items-center justify-center 
                     text-white font-medium text-sm transition-transform 
-                    focus:outline-none
-                    ${team.isActive ? 'ring-[2.5px] ring-neutral-700' : ''}
+                    hover:scale-105 focus:outline-none
+                    ${team.isActive ? 'ring-2 ring-[var(--border-color)]' : ''}
                 `}
                 style={{ backgroundColor: team.color }}
                 title={team.name}
