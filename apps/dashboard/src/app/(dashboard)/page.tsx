@@ -1,3 +1,6 @@
+"use client"
+import { CategoryMenu } from "@/components/ui/category-menu";
+
 export default function DashboardPage() {
   return (
     <main className="flex-1 bg-[var(--bg-main)]">
@@ -5,7 +8,6 @@ export default function DashboardPage() {
       <div className="border-b border-[var(--border-color)]">
         <div className="px-6 py-4">
           <h1 className="text-xl font-semibold text-[var(--text-primary)]">Dashboard</h1>
-          <p className="text-sm text-[var(--text-secondary)]">Overview of your workspace</p>
         </div>
       </div>
 
@@ -43,6 +45,7 @@ export default function DashboardPage() {
             <p className="text-3xl font-semibold text-[var(--text-primary)] mt-2">12</p>
           </div>
         </div>
+        <CategoryMenu />
 
         {/* Recent Activity */}
         <div className="bg-[var(--bg-secondary)] rounded-lg border border-[var(--border-color)]">

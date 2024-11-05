@@ -79,14 +79,14 @@ const TeamIcon = ({ team }: TeamIconProps) => {
         <div className="relative w-full flex justify-center mb-2">
             {team.isActive && (
                 <div className="absolute -left-2.5 top-1/2 -translate-y-1/2">
-                    <div className="w-1 h-5 bg-[var(--text-primary)] rounded-r-full" />
+                    <div className="w-1 h-5 bg-[var(--text-secondary)] rounded-r-full" />
                 </div>
             )}
             <button
                 className={`
-                    w-10 h-10 rounded-lg flex items-center justify-center 
+                    w-10 h-10 rounded-xl flex items-center justify-center 
                     text-white font-medium text-sm transition-transform 
-                    hover:scale-105 focus:outline-none
+                    focus:outline-none
                     ${team.isActive ? 'ring-2 ring-[var(--border-color)]' : ''}
                 `}
                 style={{ backgroundColor: team.color }}
