@@ -9,22 +9,26 @@ export default {
         "./app/**/*.{ts,tsx}",
         "./src/**/*.{ts,tsx}",
     ],
-    prefix: "",
     theme: {
         extend: {
             colors: {
                 background: {
-                    DEFAULT: "var(--background)",
-                    secondary: "var(--background-secondary)",
-                    primary: "var(--background-primary)"
+                    DEFAULT: "var(--bg-main)",
+                    secondary: "var(--bg-secondary)",
+                    tertiary: "var(--bg-tertiary)"
                 },
-                foreground: {
-                    DEFAULT: "var(--foreground)",
-                    secondary: "var(--foreground-secondary)"
+                text: {
+                    DEFAULT: "var(--text-primary)",
+                    secondary: "var(--text-secondary)",
+                    tertiary: "var(--text-tertiary)"
                 },
                 border: {
                     DEFAULT: "var(--border)",
                     secondary: "var(--border-secondary)"
+                },
+                hover: {
+                    bg: "var(--hover-bg)",
+                    text: "var(--hover-text)"
                 },
                 highlight: {
                     DEFAULT: "var(--highlight)"

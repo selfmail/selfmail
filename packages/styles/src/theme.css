@@ -1,21 +1,25 @@
 :root {
   /* Light Theme */
+  --highlight: #d5cdfe;
+
   --bg-main: #ffffff;
   --bg-secondary: #f9fafb;
   --bg-tertiary: #f3f4f6;
   
-  --text-primary: #111827;
-  --text-secondary: #4b5563;
-  --text-tertiary: #6b7280;
+  --text-primary: #111111;
+  --text-secondary: #1a1a1a;
+  --text-tertiary: #262626;
   
-  --border-color: #e5e7eb;
+  --border: #e5e7eb;
   --border-secondary: #d1d5db;
   
   --hover-bg: #f3f4f6;
-  --hover-text: #374151;
+  --hover-text: #292929;
 }
 
-[data-theme="dark"] {
+html.dark {
+  --highlight: #0d2c0a;
+  
   --bg-main: #111111;
   --bg-secondary: #1a1a1a;
   --bg-tertiary: #262626;
@@ -24,9 +28,9 @@
   --text-secondary: #d1d5db;
   --text-tertiary: #9ca3af;
   
-  --border-color: #262626;
+  --border: #262626;
   --border-secondary: #404040;
   
   --hover-bg: #262626;
   --hover-text: #e5e7eb;
-} 
+}

@@ -19,7 +19,7 @@ const teamItems: TeamItem[] = [
         id: '2',
         name: 'Mintify',
         color: '#10b981',
-        isActive: true
+        isActive: false
     },
     {
         id: '3',
@@ -43,30 +43,39 @@ const teamItems: TeamItem[] = [
 
 const TeamSidebar = () => {
     return (
-        <div className="flex h-screen flex-col w-[68px] bg-[var(--bg-secondary)] border-r border-[var(--border-color)]">
-            <div className="flex flex-col h-full justify-between items-center pt-3 px-2.5">
+        <aside className="flex md:sticky top-0 lg:flex h-screen flex-col w-[68px] bg-background border-r border-r-border justify-between items-center pt-3 px-2.5">
+            <div>
                 <div>
-                    {teamItems.map((team) => (
-                        <TeamIcon key={team.id} team={team} />
-                    ))}
-                </div>
-
-                <div>
+                    <TeamIcon team={{
+                        id: '1',
+                        name: 'Selfmail',
+                        color: '#22c55e',
+                        isActive: true
+                    }} />
                     <div className="w-full pt-2 pb-3">
-                        <div className="w-full h-[1px] bg-[var(--border-color)]" />
+                        <div className="w-full h-[1px] bg-border" />
                     </div>
-
-                    <button className="w-10 h-10 mb-2 rounded-xl border border-[var(--border-color)]
-                        flex items-center justify-center text-[var(--text-tertiary)]
-                        hover:text-[var(--text-secondary)]
-                        hover:border-[var(--border-secondary)]
-                        hover:bg-[var(--hover-bg)]
-                        transition-colors">
-                        <PlusIcon className="w-4 h-4" />
-                    </button>
                 </div>
+                {teamItems.map((team) => (
+                    <TeamIcon key={team.id} team={team} />
+                ))}
             </div>
-        </div>
+
+            <div>
+                <div className="w-full pt-2 pb-3">
+                    <div className="w-full h-[1px] bg-border" />
+                </div>
+
+                <button className="w-10 h-10 mb-2 rounded-xl border border-border
+                        flex items-center justify-center text-text-tertiary
+                        hover:text-text-secondary
+                        hover:border-border-secondary
+                        hover:bg-hover-bg
+                        transition-colors">
+                    <PlusIcon className="w-4 h-4" />
+                </button>
+            </div>
+        </aside>
     );
 };
 
@@ -77,17 +86,12 @@ interface TeamIconProps {
 const TeamIcon = ({ team }: TeamIconProps) => {
     return (
         <div className="relative w-full flex justify-center mb-2">
-            {team.isActive && (
-                <div className="absolute -left-2.5 top-1/2 -translate-y-1/2">
-                    <div className="w-1 h-5 bg-[var(--text-secondary)] rounded-r-full" />
-                </div>
-            )}
             <button
                 className={`
                     w-10 h-10 rounded-xl flex items-center justify-center 
                     text-white font-medium text-sm transition-transform 
                     focus:outline-none
-                    ${team.isActive ? 'ring-2 ring-[var(--border-color)]' : ''}
+                    ${team.isActive ? 'ring-2 ring-border' : ''}
                 `}
                 style={{ backgroundColor: team.color }}
                 title={team.name}

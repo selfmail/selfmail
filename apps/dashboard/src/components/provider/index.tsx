@@ -12,11 +12,7 @@ export default function Providers({
     children: React.ReactNode;
 }>) {
     return (
-        <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange>
+        <ThemeProvider attribute="class" forcedTheme="system">
             <QueryClientProvider client={queryClient}>
                 {children}
                 <Toaster />

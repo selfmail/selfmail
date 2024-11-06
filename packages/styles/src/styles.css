@@ -1,9 +1,5 @@
 @import url("./theme.css");
 
-:root {
-    /* color for marking smthg */
-    --highlight: #d5cdfe;
-}
 
 *::selection {
     background-color: var(--highlight);
@@ -11,15 +7,15 @@
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: var(--foreground);
+    color: var(--text-primary);
 }
 
 p, a, * {
-    color: var(--foreground-secondary);
+    color: var(--text-secondary);
 }
 
 body {
-    background-color: var(--background);
+    background-color: var(--bg-main);
 }
 
 a {

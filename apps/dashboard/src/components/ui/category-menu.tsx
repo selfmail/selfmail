@@ -40,7 +40,6 @@ export function CategoryMenu() {
             rounded-md border border-[var(--border-color)] bg-[var(--bg-main)]
             text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] outline-none">
                         <div className="flex items-center gap-2">
-                            <selectedCategory.icon className="w-4 h-4" />
                             <span>{selectedCategory?.label}</span>
                         </div>
                         <ChevronUpDownIcon className="w-4 h-4 text-[var(--text-tertiary)]" />

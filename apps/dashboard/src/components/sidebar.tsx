@@ -49,17 +49,17 @@ const bottomItems: SidebarItem[] = [
     { name: 'Settings', icon: CogIcon },
 ];
 
-const Sidebar = () => {
+export default function Sidebar() {
     return (
-        <div className="flex flex-col h-screen w-[280px] bg-[var(--bg-main)] border-r border-[var(--border-color)]">
+        <aside className="sticky top-0 flex flex-col h-screen w-[280px] bg-background border-r border-border">
             {/* Header */}
-            <div className="px-4 py-3 border-b border-[var(--border-color)]">
+            <div className="px-4 py-3 border-b border-border">
                 <div className="flex items-center gap-3">
                     <div className="w-6 h-6 bg-emerald-500 rounded-lg flex items-center justify-center">
                         {/* Logo */}
                     </div>
                     <div>
-                        <h2 className="text-[15px] font-medium text-[var(--text-primary)]">Mintify Bytes</h2>
+                        <h2 className="text-[15px] font-medium text-text-primary">Mintify Bytes</h2>
                     </div>
                 </div>
             </div>
@@ -96,7 +96,7 @@ const Sidebar = () => {
             </nav>
 
             {/* Bottom Items */}
-            <div className="border-t border-t-[var(--border-color)]">
+            <div className="border-t border-t-border">
                 <div className="px-3 py-4">
                     {bottomItems.map((item) => (
                         <SidebarLink key={item.name} item={item} />
@@ -104,9 +104,9 @@ const Sidebar = () => {
                 </div>
 
                 {/* User Profile */}
-                <div className="p-4 border-t border-[var(--border-color)]">
+                <div className="p-4 border-t border-border">
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-[var(--bg-tertiary)] ring-1 ring-[var(--border-color)]">
+                        <div className="w-8 h-8 rounded-full bg-background-tertiary ring-1 ring-border">
                             {/* User profile icon */}
                         </div>
                         <div>
@@ -116,7 +116,7 @@ const Sidebar = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </aside>
     );
 };
 
@@ -131,10 +131,10 @@ const SidebarLink = ({ item, showStar }: SidebarLinkProps) => {
     return (
         <a
             href="#"
-            className="flex items-center gap-3 px-3 py-1.5 text-[14px] text-[var(--text-secondary)]
-                rounded-md hover:bg-[var(--hover-bg)] hover:text-[var(--hover-text)] group"
+            className="flex items-center gap-3 px-3 py-1.5 text-[14px] text-text-secondary
+                rounded-md hover:bg-hover-bg hover:text-hover-text group"
         >
-            <Icon className="w-[18px] h-[18px] text-[var(--text-tertiary)] group-hover:text-[var(--hover-text)]" />
+            <Icon className="w-[18px] h-[18px] text-[var(--text-tertiary)] group-hover:text-hover-text" />
             <span className="flex-1">{item.name}</span>
             {item.count && (
                 <span className="text-xs text-[var(--text-tertiary)]">{item.count}</span>
@@ -142,5 +142,3 @@ const SidebarLink = ({ item, showStar }: SidebarLinkProps) => {
         </a>
     );
 };
-
-export default Sidebar;
