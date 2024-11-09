@@ -8,13 +8,11 @@ import {
     flexRender,
     getCoreRowModel,
     getSortedRowModel,
-    OnChangeFn,
     Row,
-    SortingState,
     useReactTable
 } from '@tanstack/react-table'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef } from "react"
 import { TEmailData } from "./types"
 
 export default function Table({
@@ -36,7 +34,6 @@ export default function Table({
     }>
 }) {
     const tableContainerRef = useRef<HTMLDivElement>(null)
-    const [sorting, setSorting] = useState<SortingState>([])
 
     const columns = useMemo<ColumnDef<TEmailData>[]>(
         () => [
@@ -80,7 +77,6 @@ export default function Table({
         }>({
             queryKey: [
                 'emails',
-                sorting, //refetch when sorting changes
             ],
             queryFn: async ({ pageParam = 0 }) => {
                 const start = (pageParam as number) * fetchSize
@@ -137,7 +133,6 @@ export default function Table({
         data: flatData,
         columns,
         state: {
-            sorting,
         },
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -145,18 +140,10 @@ export default function Table({
         debugTable: true,
     })
 
-    //scroll to top of table when sorting changes
-    const handleSortingChange: OnChangeFn<SortingState> = updater => {
-        setSorting(updater)
-        if (!!table.getRowModel().rows.length) {
-            rowVirtualizer.scrollToIndex?.(0)
-        }
-    }
 
     //since this table option is derived from table row model state, we're using the table.setOptions utility
     table.setOptions(prev => ({
         ...prev,
-        onSortingChange: handleSortingChange,
     }))
 
     const { rows } = table.getRowModel()
@@ -187,91 +174,41 @@ export default function Table({
             className="overflow-y-auto relative"
         >
             ({flatData.length} of {totalRowCount} rows fetched)
-            <table className="w-full grid">
-                {/* Table header */}
-                <thead
-                    className="sticky grid top-0 z-10 bg-background-tertiary"
-                >
-                    {table.getHeaderGroups().map(headerGroup => (
-                        <tr
-                            key={headerGroup.id}
-                            style={{ display: 'flex', width: '100%' }}
+            <div className="flex flex-col divide-y divide-border">
+                {rowVirtualizer.getVirtualItems().map(virtualRow => {
+                    const row = rows[virtualRow.index] as Row<TEmailData>
+                    return (
+                        <div
+                            data-index={virtualRow.index} //needed for dynamic row height measurement
+                            ref={node => rowVirtualizer.measureElement(node)} //measure dynamic row height
+                            key={row.id}
+                            style={{
+                                display: 'flex',
+                                position: 'absolute',
+                                transform: `translateY(${virtualRow.start}px)`, //this should always be a `style` as it changes on scroll
+                                width: '100%',
+                            }}
                         >
-                            {headerGroup.headers.map(header => {
+                            {row.getVisibleCells().map(cell => {
                                 return (
-                                    <th
-                                        key={header.id}
+                                    <div
+                                        key={cell.id}
                                         style={{
                                             display: 'flex',
-                                            width: header.getSize(),
+                                            width: cell.column.getSize(),
                                         }}
                                     >
-                                        <div
-                                            {...{
-                                                className: header.column.getCanSort()
-                                                    ? 'cursor-pointer select-none'
-                                                    : '',
-                                                onClick: header.column.getToggleSortingHandler(),
-                                            }}
-                                        >
-                                            {flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            )}
-                                            {{
-                                                asc: ' 🔼',
-                                                desc: ' 🔽',
-                                            }[header.column.getIsSorted() as string] ?? null}
-                                        </div>
-                                    </th>
+                                        {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
+                                        )}
+                                    </div>
                                 )
                             })}
-                        </tr>
-                    ))}
-                </thead>
-                {/* Table body */}
-                <tbody
-                    style={{
-                        display: 'grid',
-                        height: `${rowVirtualizer.getTotalSize()}px`, //tells scrollbar how big the table is
-                        position: 'relative', //needed for absolute positioning of rows
-                    }}
-                >
-                    {rowVirtualizer.getVirtualItems().map(virtualRow => {
-                        const row = rows[virtualRow.index] as Row<TEmailData>
-                        return (
-                            <tr
-                                data-index={virtualRow.index} //needed for dynamic row height measurement
-                                ref={node => rowVirtualizer.measureElement(node)} //measure dynamic row height
-                                key={row.id}
-                                style={{
-                                    display: 'flex',
-                                    position: 'absolute',
-                                    transform: `translateY(${virtualRow.start}px)`, //this should always be a `style` as it changes on scroll
-                                    width: '100%',
-                                }}
-                            >
-                                {row.getVisibleCells().map(cell => {
-                                    return (
-                                        <td
-                                            key={cell.id}
-                                            style={{
-                                                display: 'flex',
-                                                width: cell.column.getSize(),
-                                            }}
-                                        >
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
-                                        </td>
-                                    )
-                                })}
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+                        </div>
+                    )
+                })}
+            </div>
         </div>
     )
 }
