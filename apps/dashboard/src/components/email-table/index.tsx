@@ -174,41 +174,91 @@ export default function Table({
             className="overflow-y-auto relative"
         >
             ({flatData.length} of {totalRowCount} rows fetched)
-            <div className="flex flex-col divide-y divide-border">
-                {rowVirtualizer.getVirtualItems().map(virtualRow => {
-                    const row = rows[virtualRow.index] as Row<TEmailData>
-                    return (
-                        <div
-                            data-index={virtualRow.index} //needed for dynamic row height measurement
-                            ref={node => rowVirtualizer.measureElement(node)} //measure dynamic row height
-                            key={row.id}
-                            style={{
-                                display: 'flex',
-                                position: 'absolute',
-                                transform: `translateY(${virtualRow.start}px)`, //this should always be a `style` as it changes on scroll
-                                width: '100%',
-                            }}
+            <table className="w-full grid">
+                {/* Table header */}
+                <thead
+                    className="sticky grid top-0 z-10 bg-background-tertiary"
+                >
+                    {table.getHeaderGroups().map(headerGroup => (
+                        <tr
+                            key={headerGroup.id}
+                            style={{ display: 'flex', width: '100%' }}
                         >
-                            {row.getVisibleCells().map(cell => {
+                            {headerGroup.headers.map(header => {
                                 return (
-                                    <div
-                                        key={cell.id}
+                                    <th
+                                        key={header.id}
                                         style={{
                                             display: 'flex',
-                                            width: cell.column.getSize(),
+                                            width: header.getSize(),
                                         }}
                                     >
-                                        {flexRender(
-                                            cell.column.columnDef.cell,
-                                            cell.getContext()
-                                        )}
-                                    </div>
+                                        <div
+                                            {...{
+                                                className: header.column.getCanSort()
+                                                    ? 'cursor-pointer select-none'
+                                                    : '',
+                                                onClick: header.column.getToggleSortingHandler(),
+                                            }}
+                                        >
+                                            {flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                            {{
+                                                asc: ' 🔼',
+                                                desc: ' 🔽',
+                                            }[header.column.getIsSorted() as string] ?? null}
+                                        </div>
+                                    </th>
                                 )
                             })}
-                        </div>
-                    )
-                })}
-            </div>
+                        </tr>
+                    ))}
+                </thead>
+                {/* Table body */}
+                <tbody
+                    style={{
+                        display: 'grid',
+                        height: `${rowVirtualizer.getTotalSize()}px`, //tells scrollbar how big the table is
+                        position: 'relative', //needed for absolute positioning of rows
+                    }}
+                >
+                    {rowVirtualizer.getVirtualItems().map(virtualRow => {
+                        const row = rows[virtualRow.index] as Row<TEmailData>
+                        return (
+                            <tr
+                                data-index={virtualRow.index} //needed for dynamic row height measurement
+                                ref={node => rowVirtualizer.measureElement(node)} //measure dynamic row height
+                                key={row.id}
+                                style={{
+                                    display: 'flex',
+                                    position: 'absolute',
+                                    transform: `translateY(${virtualRow.start}px)`, //this should always be a `style` as it changes on scroll
+                                    width: '100%',
+                                }}
+                            >
+                                {row.getVisibleCells().map(cell => {
+                                    return (
+                                        <td
+                                            key={cell.id}
+                                            style={{
+                                                display: 'flex',
+                                                width: cell.column.getSize(),
+                                            }}
+                                        >
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                            )}
+                                        </td>
+                                    )
+                                })}
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
         </div>
     )
 }
