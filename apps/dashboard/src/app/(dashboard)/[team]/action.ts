@@ -1,5 +1,5 @@
 import { getAuth } from "@/auth/cookie"
-import { TEmailData } from "@/components/email-table/types"
+import { TEmailData } from "@/components/cards/types"
 import { db } from "database"
 
 export async function fetchData({ from, to, size }: { from: number, to: number, size: number }) {

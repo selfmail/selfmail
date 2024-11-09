@@ -2,9 +2,8 @@
 
 import { useIntersection } from "@mantine/hooks"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { useMemo, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { create } from 'zustand'
-import Card from "./card"
 import { TEmailData } from "./types"
 
 type State = {
@@ -61,17 +60,14 @@ export default function EmailCards({
                     size: fetchSize,
                     to: start + fetchSize
                 })
-                return {
-                    data: fetchedData.data,
-                    meta: {
-                        totalRowCount: fetchedData.data.length
-                    }
-                }
+                return fetchedData
             },
             initialPageParam: 0,
             getNextPageParam: (_lastGroup, groups) => groups.length,
             refetchOnWindowFocus: false,
         })
+
+    const totalRowCount = data?.pages?.[0]?.meta?.totalRowCount ?? 0
 
 
     // infinity scroll
@@ -82,7 +78,12 @@ export default function EmailCards({
         threshold: 1
     })
 
-    if (entry?.isIntersecting) fetchNextPage()
+    useEffect(() => {
+        if (entry?.isIntersecting) {
+            console.log("intersecting")
+            fetchNextPage()
+        }
+    })
 
     const emails = useMemo(
         () => data?.pages?.flatMap(page => page.data) ?? [],
@@ -102,11 +103,22 @@ export default function EmailCards({
                 {
                     emails.map((email, i) => {
 
-                        if (i === emails.length) {
-                            return <Card key={email.subject} ref={lastEmailRef} subject={email.subject} />
+                        if (i === emails.length - 1 && i !== totalRowCount - 1) {
+                            console.log("last email")
+                            return <div key={email.id} ref={ref} className="flex flex-col gap-2 p-4 border border-border rounded-xl">
+                                <div className="flex">
+                                    <input type="checkbox" className="w-4 h-4 border-border rounded-full" />
+                                    <h2>{email.subject}</h2>
+                                </div>
+                            </div>
                         }
                         return (
-                            <Card key={email.subject} subject={email.subject} />
+                            <div key={email.id} className="flex flex-col gap-2 p-4 border border-border rounded-xl">
+                                <div className="flex">
+                                    <input type="checkbox" className="w-4 h-4 border-border rounded-full" />
+                                    <h2>{email.subject}</h2>
+                                </div>
+                            </div>
                         )
                     })
                 }
