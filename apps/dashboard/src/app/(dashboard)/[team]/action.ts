@@ -1,24 +1,11 @@
 import { getAuth } from "@/auth/cookie"
 import { TEmailData } from "@/components/cards/types"
-import { db } from "database"
+import { db, Email } from "database"
 
-export async function fetchData({ from, to, size }: { from: number, to: number, size: number }) {
+export async function fetchEmails({ from, size, to }: { from: number, to: number, size: number }) {
     "use server"
-
-    if (from > to) {
-        throw new Error("From must be less than to.")
-    }
-
-    if (size > 100) {
-        throw new Error("Size must be less than 100.")
-    }
-
     const { session } = await getAuth()
-
-    if (!session) {
-        throw new Error("No session found.")
-    }
-
+    if (!session) throw new Error("You are not allowed to perform this action. You must be logged in.")
     const emails = await db.email.findMany({
         where: {
             user: {
@@ -58,4 +45,22 @@ export async function fetchData({ from, to, size }: { from: number, to: number, 
         },
         data: emailArray
     }
+}
+
+export async function fetchSingleEmail({ id }: { id: string }) {
+    "use server"
+    const { session } = await getAuth()
+    if (!session) throw new Error("You are not allowed to perform this action. You must be logged in.")
+    const email = await db.email.findUnique({
+        where: {
+            id,
+            user: {
+                id: session.userId
+            }
+        }
+    })
+
+    if (!email) throw new Error("Email not found.")
+
+    return email as Email
 }

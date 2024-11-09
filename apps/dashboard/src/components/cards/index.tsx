@@ -4,6 +4,7 @@ import { useIntersection } from "@mantine/hooks"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { useEffect, useMemo, useRef } from "react"
 import { create } from 'zustand'
+import Card from "./card"
 import { TEmailData } from "./types"
 
 type State = {
@@ -23,20 +24,7 @@ const useCardSelectionStore = create<State & Action>((set) => ({
 export default function EmailCards({
     fetchEmails
 }: {
-    fetchEmails: ({
-        from,
-        to,
-        size
-    }: {
-        from: number,
-        to: number,
-        size: number
-    }) => Promise<{
-        data: TEmailData[],
-        meta: {
-            totalRowCount: number
-        }
-    }>
+    fetchEmails: ({ from, size, to }: { from: number, to: number, size: number }) => Promise<{ data: TEmailData[], meta: { totalRowCount: number } }>
 }) {
 
     const { ids, setIds } = useCardSelectionStore()
@@ -55,12 +43,13 @@ export default function EmailCards({
             ],
             queryFn: async ({ pageParam = 0 }) => {
                 const start = (pageParam as number) * fetchSize
-                const fetchedData = await fetchEmails({
+                const result = await fetchEmails({
                     from: start,
                     size: fetchSize,
                     to: start + fetchSize
                 })
-                return fetchedData
+
+                return result
             },
             initialPageParam: 0,
             getNextPageParam: (_lastGroup, groups) => groups.length,
@@ -90,16 +79,12 @@ export default function EmailCards({
         [data]
     )
 
-
-
-
     // number of the fetched emails
     const totalFetched = emails.length
 
     return (
-        <div>
-            <p>You see {totalFetched} emails of {data?.pages?.[0]?.meta?.totalRowCount} emails</p>
-            <div className="flex flex-col">
+        <div className="w-[50%] border-r border-r-border overflow-auto">
+            <div className="flex flex-col divide-y divide-border border-b border-b-border">
                 {
                     emails.map((email, i) => {
 
@@ -113,16 +98,12 @@ export default function EmailCards({
                             </div>
                         }
                         return (
-                            <div key={email.id} className="flex flex-col gap-2 p-4 border border-border rounded-xl">
-                                <div className="flex">
-                                    <input type="checkbox" className="w-4 h-4 border-border rounded-full" />
-                                    <h2>{email.subject}</h2>
-                                </div>
-                            </div>
+                            <Card id={email.id} subject={email.subject} sender={email.sender} date={email.date} key={email.id} />
                         )
                     })
                 }
             </div>
+            <p className="py-2 px-4 text-sm text-text-secondary">You see {totalFetched} emails of {data?.pages?.[0]?.meta?.totalRowCount} emails</p>
         </div>
     )
 }

@@ -1,10 +1,12 @@
+import ActiveEmailView from "@/components/active-email";
 import EmailCards from "@/components/cards";
-import { fetchData } from "./action";
+import { fetchEmails, fetchSingleEmail } from "./action";
 
 export default function TeamInbox() {
     return (
-        <div>
-            <EmailCards fetchEmails={fetchData} />
+        <div className="flex min-h-screen">
+            <EmailCards fetchEmails={fetchEmails} />
+            <ActiveEmailView fetchSingleEmail={fetchSingleEmail} />
         </div>
     )
 }

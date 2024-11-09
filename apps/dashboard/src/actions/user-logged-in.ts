@@ -1,5 +1,3 @@
-"use server"
-
 import { getAuth } from "@/auth/cookie";
 import { actionClient, ActionError } from "./action";
 
