@@ -1,10 +1,10 @@
-import EmailTable from "@/components/email-table";
+import EmailCards from "@/components/cards";
 import { fetchData } from "./action";
 
 export default function TeamInbox() {
     return (
         <div>
-            <EmailTable fetchData={fetchData} />
+            <EmailCards fetchEmails={fetchData} />
         </div>
     )
 }
