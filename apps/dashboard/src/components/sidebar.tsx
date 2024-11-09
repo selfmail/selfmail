@@ -10,11 +10,10 @@ import {
     QuestionMarkCircleIcon,
     UserGroupIcon,
 } from '@heroicons/react/24/outline';
-import React from 'react';
 
 interface SidebarItem {
     name: string;
-    icon: React.ElementType;
+    icon: any;
     count?: number;
     external?: boolean;
 }
