@@ -30,12 +30,14 @@ const main = defineCommand({
     }
   },
   async run({ args }) {
+
     // no args defined, an error will be thrown
     if (!args.init && !args.update && !args.remove) {
       consola.error("Please specify a command to run.")
       consola.info("Usage: selfmail --[init|update|remove]")
       space()
     }
+
     // parsing the args, only one arg can be defined
     const schema = await z.object({
       remove: z.boolean().optional(),

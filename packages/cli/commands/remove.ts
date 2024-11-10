@@ -37,7 +37,4 @@ export const remove = async () => {
     space()
 
     consola.info("Removing your selfmail installation...")
-
-
-
 }
