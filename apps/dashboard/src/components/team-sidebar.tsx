@@ -1,6 +1,5 @@
 "use client"
-import { PlusIcon } from "@heroicons/react/24/outline";
-import { Settings, SidebarOpen } from "lucide-react";
+import { ChevronRightIcon, Cog6ToothIcon, PlusIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useSidebarStore } from "./sidebar";
 import { useUserPageTrackingStore } from "./user-page-tracking";
@@ -71,8 +70,8 @@ const TeamSidebar = () => {
                 {
                     !state && (
                         <div className="w-full items-center flex justify-between">
-                            <Settings className="cursor-pointer w-4 h-4 text-text-secondary" />
-                            <SidebarOpen className="cursor-pointer w-4 h-4 text-text-secondary" onClick={() => setState(true)} />
+                            <Cog6ToothIcon className="cursor-pointer w-4 h-4 text-text-secondary" />
+                            <ChevronRightIcon className="cursor-pointer w-4 h-4 text-text-secondary" onClick={() => setState(true)} />
                         </div>
                     )
                 }

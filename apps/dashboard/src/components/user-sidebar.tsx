@@ -35,7 +35,7 @@ export default function UserSidebar() {
                         icon: CurrencyDollarIcon,
                         name: "Plan",
                     }} />
-                    <SidebarLink href="/user-settings" item={{
+                    <SidebarLink href="/settings" item={{
                         icon: Cog8ToothIcon,
                         name: "Settings",
                     }} />
