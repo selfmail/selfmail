@@ -1,42 +1,36 @@
-import CommandMenu from "@/components/elements/command";
-import { ThemeProvider } from "@/components/provider/providers";
-import type { Metadata } from "next";
-
-// fonts and toaster
-import { GeistSans } from "geist/font/sans";
-import { Toaster } from "sonner";
-
-// styles for the different components
+import Providers from "@/components/provider";
+import Sidebar from "@/components/sidebar";
+import TeamSidebar from "@/components/team-sidebar";
+import { cn } from "@/lib/cn";
 import "@/styles/globals.css";
+import { GeistSans } from "geist/font/sans";
+import { type Metadata } from "next";
 import "styles/styles.css";
 import "ui/styles.css";
 
+
+
 export const metadata: Metadata = {
-  title: {
-    default: "Selfmail | Dashboard",
-    template: "%s | Selfmail",
-  },
-  description: "The dashboard of selfmail.",
+  title: "Home | Dashboard",
+  description: "Selfmail Dashboard to view, create and manage your and the emails from your team.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
 export default function RootLayout({
-  searchParams,
   children,
-}: Readonly<{ children: React.ReactNode }> & {
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="text-text bg-background">
-        {/* Themes by next-themes */}
-        <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
-          {children}
-          {/* Sonner toaster */}
-          <Toaster richColors />
-          {/* Command menu */}
-          <CommandMenu />
-        </ThemeProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn(GeistSans.variable, "antialiased")}>
+        <Providers>
+          <div className="flex min-h-screen w-full">
+            <TeamSidebar />
+            <Sidebar />
+            <div className="flex-1 min-w-0">
+              {children}
+            </div>
+          </div>
+        </Providers>
       </body>
     </html>
   );

@@ -1,21 +1,19 @@
-import Sidebar from "@/components/elements/sidebar";
+import "@/styles/globals.css";
 
-export default async function DashboardLayout(
-  props: Readonly<{ children: React.ReactNode }> & {
-    params: {
-      team: string | undefined
-    }
-  }
-) {
-  const params = props.params;
+import { type Metadata } from "next";
 
-  const {
-    children
-  } = props;
+export const metadata: Metadata = {
+    title: "Dashboard",
+    description: "Dashboard of selfmail.",
+    icons: [{ rel: "icon", url: "/favicon.ico" }],
+};
 
-  return (
-    <div className="flex min-h-screen text-foreground">
-      <Sidebar team={params.team} username="henri">{children}</Sidebar>
-    </div>
-  );
+export default function Layout({
+    children,
+}: Readonly<{ children: React.ReactNode }>) {
+    return (
+        <div className="min-h-screen flex flex-col">
+            {children}
+        </div>
+    );
 }

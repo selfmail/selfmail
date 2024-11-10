@@ -1,46 +1,12 @@
-import DataTable from "@/components/elements/table";
-import { getUser } from "@/lib/auth";
-import { db } from "database";
-import { getEmails } from "./action";
-import type { JSX } from "react";
-/**
- * The inbox page, here are all of your mails.
- * @returns {Promise<JSX.Element>}
- */
-export default async function Inbox(
-    props: {
-        params: Promise<{
-            team: string
-        }>
-    }
-): Promise<JSX.Element> {
-    const params = await props.params;
+import ActiveEmailView from "@/components/active-email";
+import EmailCards from "@/components/cards";
+import { fetchEmails, fetchSingleEmail } from "./action";
 
-    const {
-        team
-    } = params;
-
-    const user = await getUser()
-
-
-
-    const emailcount = await db.email.count({
-        where: {
-            userId: user.id,
-        },
-    });
-
+export default function TeamInbox() {
     return (
-        <main className="flex">
-            <div className="flex pt-3 flex-col lg:w-[50%] border-r border-r-border h-full min-h-screen overflow-y-auto">
-                <DataTable
-                    counter={emailcount}
-                    action={getEmails}
-                />
-            </div>
-            <div className="w-[50%] h-screen flex items-center justify-center overflow-y-auto">
-                <h2 className="text-foreground-secondary text-3xl font-medium">No Email selected</h2>
-            </div>
-        </main>
-    );
+        <div className="flex min-h-screen">
+            <EmailCards fetchEmails={fetchEmails} />
+            <ActiveEmailView fetchSingleEmail={fetchSingleEmail} />
+        </div>
+    )
 }

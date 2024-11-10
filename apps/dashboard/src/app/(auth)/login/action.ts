@@ -1,44 +1,63 @@
-"use server";
-import { notAuthenticatedClient } from "@/lib/actions/auth.action";
-import { changeSession } from "@/lib/auth";
-import bcrypt from "bcrypt";
+
+"use server"
+
+import { ActionError } from "@/actions/action";
+import { userNotLoggedIn } from "@/actions/user-not-logged-in";
+import { setSessionCookie } from "@/auth/cookie";
+import { verifyPasswordHash } from "@/auth/password";
+import { createSession, generateRandomSessionToken } from "@/auth/session";
 import { db } from "database";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-const loginScheme = z.object({
-	username: z.string().min(3),
-	email: z.string().email(),
-	password: z.string().min(8).max(24),
-});
+const signInSchema = z
+    .object({
+        email: z.string().email().endsWith("@selfmail.app", "Only @selfmail.app adresses are allowed"),
+        password: z.string().min(8, "Password must be at least 8 characters"),
+        username: z.string().min(3, "Username must be at least 3 characters").max(20, "Username must be at most 20 characters"),
+    })
 
-type Inputs = {
-	email: string;
-	password: string;
-	username: string;
-};
+export const loginUser = userNotLoggedIn.schema(signInSchema).action(async ({ parsedInput: { email, password, username } }) => {
+    // get the user
+    const user = await db.user.findFirst({
+        where: {
+            username,
+        },
+    });
 
-export const loginUser = notAuthenticatedClient.schema(loginScheme).action(async ({ parsedInput: { username, password, email } }) => {
-	// checks if the user exists in the db
-	const user = await db.user.findUnique({
-		where: {
-			username,
-		},
-	});
+    if (!user) {
+        throw new ActionError("User not found.")
+    }
 
-	if (!user)
-		return "User not found. Please check your email and your username.";
 
-	const compare = await bcrypt.compare(password, user.password);
-	if (!compare) return "Password is wrong!";
+    if (!await verifyPasswordHash(user.password, password)) {
+        throw new ActionError("Incorrect password.")
+    }
 
-	// edit the session
+    // check the email
+    const address = await db.address.findFirst({
+        where: {
+            email,
+        },
+        include: {
+            user: true,
+        },
+    });
 
-	await changeSession({
-		userId: user.id,
-		username: user.username
-	})
+    if (!address) {
+        throw new ActionError("Email not found.")
+    }
 
-	redirect("/");
-});
+    if (address.userId !== user.id) {
+        throw new ActionError("Email not found.")
+    }
 
+    // create a new session
+    const sessionToken = generateRandomSessionToken()
+    const session = await createSession(sessionToken, user.id);
+    if (!session.userId) throw new ActionError("Error creating the session.")
+    await setSessionCookie(sessionToken, session.expiresAt)
+
+
+    redirect("/")
+})

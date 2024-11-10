@@ -1,70 +1,69 @@
-"use server";
-
-import { changeSession } from "@/lib/auth";
-import { createId } from '@paralleldrive/cuid2';
-import bcrypt from "bcrypt";
+"use server"
+import { ActionError } from "@/actions/action";
+import { userNotLoggedIn } from "@/actions/user-not-logged-in";
+import { setSessionCookie } from "@/auth/cookie";
+import { hashPassword } from "@/auth/password";
+import { createSession, generateRandomSessionToken } from "@/auth/session";
+import { createId } from "@paralleldrive/cuid2";
 import { db } from "database";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import type { TSignUpSchema } from "./form";
 
-const formDataSchema = z.object({
-	username: z.string().min(3),
-	email: z.string().email(),
-	password: z.string().min(8).max(24),
-});
+const signUpSchema = z
+    .object({
+        email: z.string().email().endsWith("@selfmail.app", "Only selfmail adresses are allowed"),
+        password: z.string().min(8, "Password must be at least 8 characters"),
+        username: z.string().min(3, "Username must be at least 3 characters").max(20, "Username must be at most 20 characters"),
+        confirmPassword: z.string().min(8, "Password must be at least 8 characters"),
+    }).refine((data) => data.password === data.confirmPassword, {
+        message: "Passwords don't match",
+        path: ["confirmPassword"],
+    })
 
-export async function register(e: TSignUpSchema): Promise<string | undefined> {
-	const email = e.email;
-	const password = e.password;
-	const username = e.username;
+export const registerUser = userNotLoggedIn.schema(signUpSchema).action(async ({ parsedInput: { email, password, username }, ctx }) => {
+    // register user
+    const user = await db.user.create({
+        data: {
+            username,
+            id: createId(),
+            password: await hashPassword(password),
+        },
+    })
 
-	const parse = formDataSchema.safeParse({
-		email,
-		password,
-		username,
-	});
-	if (!parse.success) {
-		return "Validation error. Check your email or your password.";
-	}
-	if (!email.endsWith("@selfmail.app"))
-		return "Invalid email. Your first email must end with @selfmail.app. You can add later own domains.";
+    if (!user) throw new ActionError("Error creating the user.")
 
-	// checks if the user is already registered
-	const checkUser = await db.user.findUnique({
-		where: {
-			username,
-		},
-	});
+    // Create a new personal team
+    const team = await db.team.create({
+        data: {
+            id: createId(),
+            name: username,
+            ownerId: user.id,
+            teamType: "personal",
+        },
+    })
 
-	if (checkUser) return "Username already registered.";
+    if (!team) throw new ActionError("Error creating the personal team.")
 
-	// create the user
-	const user = await db.user.create({
-		data: {
-			username,
-			password: await bcrypt.hash(password, 10),
-			id: createId()
-		},
-	});
+    // Create a new address
+    const address = await db.address.create({
+        data: {
+            id: createId(),
+            userId: user.id,
+            teamId: team.id,
+            addressId: createId(),
+            email,
+        },
+    })
 
-	// create a new personal team for the user
-	// create the main adresse
-	const personalTeam = await db.team.create({
-		data: {
-			name: `${username}'s personal team`,
-			teamType: "personal",
-			ownerId: user.id,
-			id: createId()
-		}
-	})
+    if (!address) throw new ActionError("Error creating main the address.")
 
-	// created the personal adress for the user, now log the user in
-	await changeSession({
-		userId: user.id,
-		username: user.username
-	})
+    // create the session
+    const sessionToken = generateRandomSessionToken()
+    const session = await createSession(sessionToken, user.id)
+    if (!session.userId) throw new ActionError("Error creating the session.")
+    await setSessionCookie(sessionToken, session.expiresAt)
 
+    if (!session) throw new ActionError("Error creating the session.")
 
-	redirect(`/team/${personalTeam.id}`);
-}
+    redirect("/")
+})

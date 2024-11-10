@@ -1,7 +1,7 @@
-export default function Dashboard() {
-    return (
-        <div>
-            <h1>Welcome back to selfmail!</h1>
-        </div>
-    )
+export default function UserPage() {
+  return (
+    <div>
+      <h1>User Dashboard</h1>
+    </div>
+  )
 }
