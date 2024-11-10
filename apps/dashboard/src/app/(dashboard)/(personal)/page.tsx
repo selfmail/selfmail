@@ -1,3 +1,4 @@
+// Reports, Actions, etc. for the user
 export default function UserPage() {
   return (
     <div>

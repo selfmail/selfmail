@@ -2,7 +2,7 @@ import { getAuth } from "@/auth/cookie"
 import { TEmailData } from "@/components/cards/types"
 import { db, Email } from "database"
 
-export async function fetchEmails({ from, size, to }: { from: number, to: number, size: number }) {
+export async function fetchEmails({ from, size }: { from: number, to: number, size: number }) {
     "use server"
     const { session } = await getAuth()
     if (!session) throw new Error("You are not allowed to perform this action. You must be logged in.")

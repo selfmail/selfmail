@@ -1,3 +1,5 @@
+"use client"
+import { cn } from "@/lib/cn";
 import {
     BellIcon,
     ChartBarIcon,
@@ -8,8 +10,31 @@ import {
     EnvelopeIcon,
     HomeIcon,
     QuestionMarkCircleIcon,
-    UserGroupIcon,
+    UserGroupIcon
 } from '@heroicons/react/24/outline';
+import { SidebarClose } from "lucide-react";
+import { create } from "zustand";
+import { persist, PersistOptions } from 'zustand/middleware';
+
+type State = {
+    state: boolean
+}
+
+type Action = {
+    setState: (state: State['state']) => void
+}
+
+export const useSidebarStore = create<State & Action>()(
+    persist<State & Action>(
+        (set) => ({
+            state: true,
+            setState: (state) => set(() => ({ state })),
+        }),
+        {
+            name: 'sidebar-store',
+        } as PersistOptions<State & Action>
+    )
+);
 
 interface SidebarItem {
     name: string;
@@ -49,10 +74,12 @@ const bottomItems: SidebarItem[] = [
 ];
 
 export default function Sidebar() {
+    const { state, setState } = useSidebarStore();
+
     return (
-        <aside className="sticky top-0 flex flex-col h-screen w-[280px] bg-background border-r border-border">
+        <aside className={cn("sticky top-0 flex flex-col h-screen w-[280px] bg-background border-r border-border", state ? "" : "hidden")}>
             {/* Header */}
-            <div className="px-4 py-3 border-b border-border">
+            <div className="px-4 py-3 border-b border-border flex justify-between items-center">
                 <div className="flex items-center gap-3">
                     <div className="w-6 h-6 bg-emerald-500 rounded-lg flex items-center justify-center">
                         {/* Logo */}
@@ -61,6 +88,9 @@ export default function Sidebar() {
                         <h2 className="text-[15px] font-medium text-text-primary">Mintify Bytes</h2>
                     </div>
                 </div>
+                <button onClick={() => setState(false)} aria-label="Close Sidebar">
+                    <SidebarClose className="w-4 h-4 text-text-secondary" />
+                </button>
             </div>
 
             {/* Navigation */}

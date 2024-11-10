@@ -1,4 +1,7 @@
+"use client"
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { Settings, SidebarOpen } from "lucide-react";
+import { useSidebarStore } from "./sidebar";
 
 interface TeamItem {
     id: string;
@@ -42,6 +45,7 @@ const teamItems: TeamItem[] = [
 ];
 
 const TeamSidebar = () => {
+    const { state, setState } = useSidebarStore();
     return (
         <aside className="flex md:sticky top-0 lg:flex h-screen flex-col w-[68px] bg-background border-r border-r-border justify-between items-center pt-3 px-2.5">
             <div>
@@ -62,6 +66,14 @@ const TeamSidebar = () => {
             </div>
 
             <div>
+                {
+                    !state && (
+                        <div className="w-full items-center flex justify-between">
+                            <Settings className="cursor-pointer w-4 h-4 text-text-secondary" />
+                            <SidebarOpen className="cursor-pointer w-4 h-4 text-text-secondary" onClick={() => setState(true)} />
+                        </div>
+                    )
+                }
                 <div className="w-full pt-2 pb-3">
                     <div className="w-full h-[1px] bg-border" />
                 </div>
