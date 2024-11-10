@@ -1,8 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/cn"
-import { DocumentChartBarIcon } from "@heroicons/react/24/outline"
-import { BarChart, DollarSign, Heart, Inbox, LucideSpeech, Settings, SidebarClose, Users } from "lucide-react"
+import { ChartBarIcon, ChevronLeftIcon, Cog8ToothIcon, CurrencyDollarIcon, DocumentCheckIcon, HeartIcon, InboxIcon, UserCircleIcon, UsersIcon } from "@heroicons/react/24/outline"
 import { SidebarLink, useSidebarStore } from "./sidebar"
 
 export default function UserSidebar() {
@@ -20,28 +19,28 @@ export default function UserSidebar() {
                     </div>
                 </div>
                 <button onClick={() => setState(false)} aria-label="Close Sidebar">
-                    <SidebarClose className="w-4 h-4 text-text-secondary" />
+                    <ChevronLeftIcon className="w-4 h-4 text-text-secondary" />
                 </button>
             </div>
 
             {/* Navigation */}
             <nav className="flex-1 overflow-y-auto px-3">
                 <div className="space-y-0.5 py-2">
-                    <SidebarLink item={{
-                        icon: Inbox,
+                    <SidebarLink href="/" item={{
+                        icon: InboxIcon,
                         name: "Inbox",
                         count: 120
                     }} />
-                    <SidebarLink item={{
-                        icon: DollarSign,
+                    <SidebarLink href="/plan" item={{
+                        icon: CurrencyDollarIcon,
                         name: "Plan",
                     }} />
-                    <SidebarLink item={{
-                        icon: Settings,
+                    <SidebarLink href="/user-settings" item={{
+                        icon: Cog8ToothIcon,
                         name: "Settings",
                     }} />
-                    <SidebarLink item={{
-                        icon: Users,
+                    <SidebarLink href="/teams" item={{
+                        icon: UsersIcon,
                         name: "Teams",
                     }} />
                 </div>
@@ -51,12 +50,12 @@ export default function UserSidebar() {
                         Analytics
                     </div>
                     <div className="mt-1 space-y-0.5">
-                        <SidebarLink item={{
-                            icon: BarChart,
+                        <SidebarLink href="/analytics" item={{
+                            icon: ChartBarIcon,
                             name: "User Analytics",
                         }} />
-                        <SidebarLink item={{
-                            icon: DocumentChartBarIcon,
+                        <SidebarLink href="/analytics/emails" item={{
+                            icon: DocumentCheckIcon,
                             name: "Emails",
                         }} />
                     </div>
@@ -67,12 +66,12 @@ export default function UserSidebar() {
                         Platform
                     </div>
                     <div className="mt-1 space-y-0.5">
-                        <SidebarLink item={{
-                            icon: LucideSpeech,
+                        <SidebarLink href="/platform/feedback" item={{
+                            icon: UserCircleIcon,
                             name: "Feedback",
                         }} />
-                        <SidebarLink item={{
-                            icon: Heart,
+                        <SidebarLink href="/platform/donate" item={{
+                            icon: HeartIcon,
                             name: "Donate",
                         }} />
                     </div>

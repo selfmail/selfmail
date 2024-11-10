@@ -98,7 +98,7 @@ export default function Sidebar() {
             <nav className="flex-1 overflow-y-auto px-3">
                 <div className="space-y-0.5 py-2">
                     {mainNavItems.map((item) => (
-                        <SidebarLink key={item.name} item={item} />
+                        <SidebarLink href="/t" key={item.name} item={item} />
                     ))}
                 </div>
 
@@ -108,7 +108,7 @@ export default function Sidebar() {
                     </div>
                     <div className="mt-1 space-y-0.5">
                         {favoriteItems.map((item) => (
-                            <SidebarLink key={item.name} item={item} showStar />
+                            <SidebarLink href="/t" key={item.name} item={item} />
                         ))}
                     </div>
                 </div>
@@ -119,7 +119,7 @@ export default function Sidebar() {
                     </div>
                     <div className="mt-1 space-y-0.5">
                         {recordItems.map((item) => (
-                            <SidebarLink key={item.name} item={{
+                            <SidebarLink key={item.name} href="/t" item={{
                                 icon: AtSign,
                                 name: item.name
                             }} />
@@ -132,18 +132,18 @@ export default function Sidebar() {
             <div className="border-t border-t-border">
                 <div className="px-3 py-4">
                     {bottomItems.map((item) => (
-                        <SidebarLink key={item.name} item={item} />
+                        <SidebarLink href="/t" key={item.name} item={item} />
                     ))}
                 </div>
 
                 {/* User Profile */}
                 <div className="p-4 border-t border-border">
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-background-tertiary ring-1 ring-border">
+                        <div className="w-8 h-8 rounded-full bg-red-400">
                             {/* User profile icon */}
                         </div>
                         <div>
-                            <div className="font-medium text-[var(--text-primary)]">Julia Chang</div>
+                            <div className="font-medium text-text">Julia Chang</div>
                             <div className="text-sm text-neutral-400">juliachang@gmail.com</div>
                         </div>
                     </div>
@@ -155,15 +155,15 @@ export default function Sidebar() {
 
 interface SidebarLinkProps {
     item: SidebarItem;
-    showStar?: boolean;
+    href: string
 }
 
-export const SidebarLink = ({ item, showStar }: SidebarLinkProps) => {
+export const SidebarLink = ({ item, href }: SidebarLinkProps) => {
     const Icon = item.icon;
 
     return (
         <Link
-            href="#"
+            href={href}
             className="flex items-center gap-3 px-3 py-1.5 text-[14px] text-text-secondary
                 rounded-md hover:bg-hover-bg hover:text-hover-text group"
         >
