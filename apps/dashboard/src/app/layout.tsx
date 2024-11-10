@@ -1,6 +1,4 @@
 import Providers from "@/components/provider";
-import Sidebar from "@/components/sidebar";
-import TeamSidebar from "@/components/team-sidebar";
 import { cn } from "@/lib/cn";
 import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
@@ -23,13 +21,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={cn(GeistSans.variable, "antialiased")}>
         <Providers>
-          <div className="flex min-h-screen w-full">
-            <TeamSidebar />
-            <Sidebar />
-            <div className="flex-1 min-w-0">
-              {children}
-            </div>
-          </div>
+          {children}
         </Providers>
       </body>
     </html>

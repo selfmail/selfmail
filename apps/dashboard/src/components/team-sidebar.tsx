@@ -1,7 +1,9 @@
 "use client"
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { Settings, SidebarOpen } from "lucide-react";
+import Link from "next/link";
 import { useSidebarStore } from "./sidebar";
+import { useUserPageTrackingStore } from "./user-page-tracking";
 
 interface TeamItem {
     id: string;
@@ -50,7 +52,7 @@ const TeamSidebar = () => {
         <aside className="flex md:sticky top-0 lg:flex h-screen flex-col w-[68px] bg-background border-r border-r-border justify-between items-center pt-3 px-2.5">
             <div>
                 <div>
-                    <TeamIcon team={{
+                    <TeamIcon user team={{
                         id: '1',
                         name: 'Selfmail',
                         color: '#22c55e',
@@ -93,27 +95,52 @@ const TeamSidebar = () => {
 
 interface TeamIconProps {
     team: TeamItem;
+    user?: boolean
 }
 
-const TeamIcon = ({ team }: TeamIconProps) => {
+const TeamIcon = ({ team, user }: TeamIconProps) => {
+    const { href } = useUserPageTrackingStore()
     return (
         <div className="relative w-full flex justify-center mb-2">
-            <button
-                className={`
-                    w-10 h-10 rounded-xl flex items-center justify-center 
-                    text-white font-medium text-sm transition-transform 
-                    focus:outline-none
-                    ${team.isActive ? 'ring-2 ring-border' : ''}
-                `}
-                style={{ backgroundColor: team.color }}
-                title={team.name}
-            >
-                {team.logo ? (
-                    <img src={team.logo} alt={team.name} className="w-5 h-5" />
-                ) : (
-                    team.name.substring(0, 1)
+            {user && (
+                <Link href={href ? href : "/"}>
+                    <button
+                        className={`
+                            w-10 h-10 rounded-xl flex items-center justify-center 
+                            text-white font-medium text-sm transition-transform 
+                            focus:outline-none
+                            ${team.isActive ? 'ring-2 ring-border' : ''}
+                        `}
+                        style={{ backgroundColor: team.color }}
+                        title={team.name}
+                    >
+                        {team.logo ? (
+                            <img src={team.logo} alt={team.name} className="w-5 h-5" />
+                        ) : (
+                            team.name.substring(0, 1)
+                        )}
+                    </button>
+                </Link>
+            ) || (
+                    <Link href="/t">
+                        <button
+                            className={`
+                                w-10 h-10 rounded-xl flex items-center justify-center 
+                                text-white font-medium text-sm transition-transform 
+                                focus:outline-none
+                                ${team.isActive ? 'ring-2 ring-border' : ''}
+                            `}
+                            style={{ backgroundColor: team.color }}
+                            title={team.name}
+                        >
+                            {team.logo ? (
+                                <img src={team.logo} alt={team.name} className="w-5 h-5" />
+                            ) : (
+                                team.name.substring(0, 1)
+                            )}
+                        </button>
+                    </Link>
                 )}
-            </button>
         </div>
     );
 };

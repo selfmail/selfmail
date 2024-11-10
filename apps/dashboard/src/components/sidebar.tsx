@@ -12,7 +12,8 @@ import {
     QuestionMarkCircleIcon,
     UserGroupIcon
 } from '@heroicons/react/24/outline';
-import { SidebarClose } from "lucide-react";
+import { AtSign, SidebarClose } from "lucide-react";
+import Link from "next/link";
 import { create } from "zustand";
 import { persist, PersistOptions } from 'zustand/middleware';
 
@@ -114,11 +115,14 @@ export default function Sidebar() {
 
                 <div className="mt-6">
                     <div className="px-3 py-1.5 text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                        Records
+                        Adresses
                     </div>
                     <div className="mt-1 space-y-0.5">
                         {recordItems.map((item) => (
-                            <SidebarLink key={item.name} item={item} />
+                            <SidebarLink key={item.name} item={{
+                                icon: AtSign,
+                                name: item.name
+                            }} />
                         ))}
                     </div>
                 </div>
@@ -154,11 +158,11 @@ interface SidebarLinkProps {
     showStar?: boolean;
 }
 
-const SidebarLink = ({ item, showStar }: SidebarLinkProps) => {
+export const SidebarLink = ({ item, showStar }: SidebarLinkProps) => {
     const Icon = item.icon;
 
     return (
-        <a
+        <Link
             href="#"
             className="flex items-center gap-3 px-3 py-1.5 text-[14px] text-text-secondary
                 rounded-md hover:bg-hover-bg hover:text-hover-text group"
@@ -168,6 +172,6 @@ const SidebarLink = ({ item, showStar }: SidebarLinkProps) => {
             {item.count && (
                 <span className="text-xs text-[var(--text-tertiary)]">{item.count}</span>
             )}
-        </a>
+        </Link>
     );
 };
