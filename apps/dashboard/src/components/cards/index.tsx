@@ -16,7 +16,7 @@ type Action = {
 }
 
 // Create your store, which includes both state and (optionally) actions
-const useCardSelectionStore = create<State & Action>((set) => ({
+export const useCardSelectionStore = create<State & Action>((set) => ({
     ids: [],
     setIds: (ids) => set(() => ({ ids: ids })),
 }))
@@ -85,17 +85,23 @@ export default function EmailCards({
     return (
         <div className="w-[50%] border-r border-r-border overflow-auto">
             <div className="flex flex-col divide-y divide-border border-b border-b-border">
+                <div className="flex justify-between items-center px-4 py-2 h-12">
+                    <div className="items-center space-x-2 flex">
+                        <p className="text-sm text-text-secondary">Selected</p>
+                        <p className="text-sm text-text-secondary">{ids.length}</p>
+                    </div>
+                    {
+                        ids.length > 0 && (
+                            <button className="bg-primary text-white px-4 py-2 rounded-md" onClick={() => setIds([])}>Clear</button>
+                        )
+                    }
+                </div>
                 {
                     emails.map((email, i) => {
 
                         if (i === emails.length - 1 && i !== totalRowCount - 1) {
                             console.log("last email")
-                            return <div key={email.id} ref={ref} className="flex flex-col gap-2 p-4 border border-border rounded-xl">
-                                <div className="flex">
-                                    <input type="checkbox" className="w-4 h-4 border-border rounded-full" />
-                                    <h2>{email.subject}</h2>
-                                </div>
-                            </div>
+                            return <Card ref={ref} subject={email.subject} sender={email.sender} date={email.date} id={email.id} />
                         }
                         return (
                             <Card id={email.id} subject={email.subject} sender={email.sender} date={email.date} key={email.id} />

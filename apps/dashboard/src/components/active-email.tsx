@@ -38,9 +38,25 @@ export default function ActiveEmailView({
     }, [emailId])
 
     return (
-        <div className="flex items-center justify-center w-[50%]">
-            {!email && <p className="text-sm text-text-secondary">No email selected.</p>}
-        </div>
+        <>
+            {email && (
+                <div className="flex flex-col w-[50%] divide-y divide-border">
+                    <div className="h-12 flex justify-between items-center px-4 py-2">
+                        <p>{email.subject}</p>
+                        <p>{email.createdAt.toLocaleDateString()}</p>
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+            )}
+
+            {email?.id !== emailId || emailId && !email && (
+                <div className="flex items-center justify-center w-[50%]">
+                    <p>hey</p>
+                </div>
+            )}
+        </>
     )
 }
 
