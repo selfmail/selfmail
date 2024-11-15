@@ -79,14 +79,14 @@ const TeamSidebar = () => {
                     <div className="w-full h-[1px] bg-border" />
                 </div>
 
-                <button className="w-10 h-10 mb-2 rounded-xl border border-border
+                <Link href="/create-team" className="w-10 h-10 mb-2 rounded-xl border border-border
                         flex items-center justify-center text-text-tertiary
                         hover:text-text-secondary
                         hover:border-border-secondary
                         hover:bg-hover-bg
                         transition-colors">
                     <PlusIcon className="w-4 h-4" />
-                </button>
+                </Link>
             </div>
         </aside>
     );

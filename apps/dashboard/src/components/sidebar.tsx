@@ -1,9 +1,11 @@
 "use client"
 import { cn } from "@/lib/cn";
 import {
+    AtSymbolIcon,
     BellIcon,
     ChartBarIcon,
     CheckIcon,
+    ChevronLeftIcon,
     CogIcon,
     CreditCardIcon,
     DocumentTextIcon,
@@ -12,7 +14,6 @@ import {
     QuestionMarkCircleIcon,
     UserGroupIcon
 } from '@heroicons/react/24/outline';
-import { AtSign, SidebarClose } from "lucide-react";
 import Link from "next/link";
 import { create } from "zustand";
 import { persist, PersistOptions } from 'zustand/middleware';
@@ -90,7 +91,7 @@ export default function Sidebar() {
                     </div>
                 </div>
                 <button onClick={() => setState(false)} aria-label="Close Sidebar">
-                    <SidebarClose className="w-4 h-4 text-text-secondary" />
+                    <ChevronLeftIcon className="w-4 h-4 text-text-secondary" />
                 </button>
             </div>
 
@@ -120,7 +121,7 @@ export default function Sidebar() {
                     <div className="mt-1 space-y-0.5">
                         {recordItems.map((item) => (
                             <SidebarLink key={item.name} href="/t" item={{
-                                icon: AtSign,
+                                icon: AtSymbolIcon,
                                 name: item.name
                             }} />
                         ))}
@@ -143,8 +144,8 @@ export default function Sidebar() {
                             {/* User profile icon */}
                         </div>
                         <div>
-                            <div className="font-medium text-text">Julia Chang</div>
-                            <div className="text-sm text-neutral-400">juliachang@gmail.com</div>
+                            <div className="font-medium  flex space-x-2"><p className="text-text">Henri</p><p className="text-[#696969]">Hen9</p></div>
+                            <div className="text-sm text-neutral-400">support@selfmail.app</div>
                         </div>
                     </div>
                 </div>
@@ -167,10 +168,10 @@ export const SidebarLink = ({ item, href }: SidebarLinkProps) => {
             className="flex items-center gap-3 px-3 py-1.5 text-[14px] text-text-secondary
                 rounded-md hover:bg-hover-bg hover:text-hover-text group"
         >
-            <Icon className="w-[18px] h-[18px] text-[var(--text-tertiary)] group-hover:text-hover-text" />
+            <Icon className="w-[18px] h-[18px] text-text-tertiary group-hover:text-hover-text" />
             <span className="flex-1">{item.name}</span>
             {item.count && (
-                <span className="text-xs text-[var(--text-tertiary)]">{item.count}</span>
+                <span className="text-xs text-text-tertiary">{item.count}</span>
             )}
         </Link>
     );
