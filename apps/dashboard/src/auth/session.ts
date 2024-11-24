@@ -1,5 +1,5 @@
 // https://www.robinwieruch.de/how-to-roll-your-own-auth/
-
+"use server"
 import { sha256 } from "@oslojs/crypto/sha2";
 import {
     encodeBase32LowerCaseNoPadding,
@@ -9,7 +9,7 @@ import {
 import { db } from "database";
 
 
-export const generateRandomSessionToken = () => {
+export const generateRandomSessionToken = async () => {
     const bytes = new Uint8Array(20);
     crypto.getRandomValues(bytes);
     return encodeBase32LowerCaseNoPadding(bytes);

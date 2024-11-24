@@ -3,9 +3,10 @@
 import { cookies } from "next/headers";
 import { validateSession } from "./session";
 
-export const SESSION_COOKIE_NAME = "selfmail-dashboard-session";
+const SESSION_COOKIE_NAME = "selfmail-dashboard-session";
 
 export const setSessionCookie = async (sessionToken: string, expiresAt: Date) => {
+    "use server"
     const cookie = {
         name: SESSION_COOKIE_NAME,
         value: sessionToken,
