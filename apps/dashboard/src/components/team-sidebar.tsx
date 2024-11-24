@@ -13,39 +13,6 @@ interface TeamItem {
     isActive?: boolean;
 }
 
-const teamItems: TeamItem[] = [
-    {
-        id: '1',
-        name: 'Linear',
-        color: '#2563eb',
-        isActive: false
-    },
-    {
-        id: '2',
-        name: 'Mintify',
-        color: '#10b981',
-        isActive: false
-    },
-    {
-        id: '3',
-        name: 'Skype',
-        color: '#0ea5e9',
-        isActive: false
-    },
-    {
-        id: '4',
-        name: 'Euro',
-        color: '#f59e0b',
-        isActive: false
-    },
-    {
-        id: '5',
-        name: 'Spotify',
-        color: '#22c55e',
-        isActive: false
-    },
-];
-
 type team = {
     name: string,
     logo?: string,
@@ -59,10 +26,7 @@ type user = {
     color?: string,
 }
 
-const TeamSidebar = ({ teams, user }: { teams: team[], user: user }) => {
-    // get the active team
-    const pathname = usePathname()
-    const activeTeam = teams.find((team) => team.slug === pathname[0]);
+export default function TeamSidebar({ teams, user }: { teams: team[], user: user }) {
     const { state, setState } = useSidebarStore();
     return (
         <aside className="flex md:sticky top-0 lg:flex h-screen flex-col w-[68px] bg-background border-r border-r-border justify-between items-center pt-3 px-2.5">
@@ -154,4 +118,3 @@ const TeamIcon = ({ team, user }: { team?: team, user?: user }) => {
     );
 };
 
-export default TeamSidebar;

@@ -64,3 +64,4 @@ export async function fetchSingleEmail({ id }: { id: string }) {
 
     return email as Email
 }
+

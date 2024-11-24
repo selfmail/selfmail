@@ -45,8 +45,6 @@ interface SidebarItem {
     external?: boolean;
 }
 
-
-
 interface Adresses {
     name?: string,
     catchAll?: boolean,
@@ -70,15 +68,23 @@ const bottomItems: SidebarItem[] = [
     { name: 'Settings', icon: CogIcon },
 ];
 
+type user = {
+    name: string,
+    mainName?: string,
+    color?: string,
+    email?: string,
+}
+
 export default function Sidebar({
     activeTeam,
     userDetails,
     adresses
 }: {
     activeTeam: any,
-    userDetails: any,
+    userDetails: user,
     adresses: Adresses[]
 }) {
+
     const { state, setState } = useSidebarStore();
 
     return (
@@ -106,17 +112,6 @@ export default function Sidebar({
                     ))}
                 </div>
 
-                {/* <div className="mt-6">
-                    <div className="px-3 py-1.5 text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                        Favorites
-                    </div>
-                    <div className="mt-1 space-y-0.5">
-                        {favoriteItems.map((item) => (
-                            <SidebarLink href="/t" key={item.name} item={item} />
-                        ))}
-                    </div>
-                </div> */}
-
                 <div className="mt-6">
                     <div className="px-3 py-1.5 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                         Adresses
@@ -141,8 +136,9 @@ export default function Sidebar({
                             {/* User profile icon */}
                         </div>
                         <div>
-                            <div className="font-medium  flex space-x-2"><p className="text-text">Henri</p><p className="text-[#696969]">Hen9</p></div>
-                            <div className="text-sm text-neutral-400">support@selfmail.app</div>
+                            {userDetails.mainName && (<div className="font-medium  flex space-x-2"><p className="text-text">{userDetails.mainName}</p><p className="text-[#696969]">{userDetails.name}</p></div>)}
+                            {!userDetails.mainName && (<div className="font-medium  flex space-x-2"><p className="text-text">{userDetails.name}</p></div>)}
+                            {userDetails.email && (<div className="text-sm text-neutral-400">{userDetails.email}</div>)}
                         </div>
                     </div>
                 </div>
