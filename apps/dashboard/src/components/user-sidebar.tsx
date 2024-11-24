@@ -1,9 +1,38 @@
 "use client"
 
-import { cn } from "@/lib/cn"
-import { ChartBarIcon, ChevronLeftIcon, Cog8ToothIcon, CurrencyDollarIcon, DocumentCheckIcon, HeartIcon, InboxIcon, UserCircleIcon, UsersIcon } from "@heroicons/react/24/outline"
-import { SidebarLink, useSidebarStore } from "./sidebar"
+import { cn } from "@/lib/cn";
+import { ChartBarIcon, ChevronLeftIcon, Cog8ToothIcon, CurrencyDollarIcon, DocumentCheckIcon, HeartIcon, InboxIcon, UserCircleIcon, UsersIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import { useSidebarStore } from "./sidebar";
+interface SidebarItem {
+    name: string;
+    icon: any;
+    count?: number;
+    external?: boolean;
+}
 
+interface SidebarLinkProps {
+    item: SidebarItem;
+    href: string
+}
+
+const SidebarLink = ({ item, href }: SidebarLinkProps) => {
+    const Icon = item.icon;
+
+    return (
+        <Link
+            href={href}
+            className="flex items-center gap-3 px-3 py-1.5 text-[14px] text-text-secondary
+                rounded-md hover:bg-hover-bg hover:text-hover-text group"
+        >
+            <Icon className="w-[18px] h-[18px] text-text-tertiary group-hover:text-hover-text" />
+            <span className="flex-1">{item.name}</span>
+            {item.count && (
+                <span className="text-xs text-text-tertiary">{item.count}</span>
+            )}
+        </Link>
+    );
+};
 export default function UserSidebar() {
     const { state, setState } = useSidebarStore()
     return (

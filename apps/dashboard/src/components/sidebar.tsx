@@ -1,20 +1,27 @@
 "use client"
 import { cn } from "@/lib/cn";
 import {
+    BanknotesIcon,
     BookmarkIcon,
+    BookOpenIcon,
+    BugAntIcon,
     ChevronLeftIcon,
+    ClockIcon,
     CogIcon,
     CreditCardIcon,
     ExclamationCircleIcon,
+    ExclamationTriangleIcon,
     HomeIcon,
     InboxIcon,
     PaperAirplaneIcon,
     PencilIcon,
     QuestionMarkCircleIcon,
+    SquaresPlusIcon,
     TrashIcon,
     UserGroupIcon
 } from '@heroicons/react/24/outline';
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { create } from "zustand";
 import { persist, PersistOptions } from 'zustand/middleware';
 
@@ -42,6 +49,7 @@ interface SidebarItem {
     name: string;
     icon: any;
     count?: number;
+    href: string;
     external?: boolean;
 }
 
@@ -52,20 +60,29 @@ interface Adresses {
 }
 
 const mainNavItems: SidebarItem[] = [
-    { name: "Overview", icon: HomeIcon },
-    { name: "Inbox", icon: InboxIcon, count: 12 },
-    { name: "Drafts", icon: PencilIcon, count: 1 },
-    { name: "Sent", icon: PaperAirplaneIcon },
-    { name: "Trash", icon: TrashIcon },
-    { name: "Spam", icon: ExclamationCircleIcon },
-    { name: "Members", icon: UserGroupIcon },
-    { name: "Groups & Bookmarks", icon: BookmarkIcon },
+    { name: "Overview", icon: HomeIcon, href: "/overview" },
+    { name: "Inbox", icon: InboxIcon, count: 12, href: "/inbox" },
+    { name: "Drafts", icon: PencilIcon, count: 1, href: "/drafts" },
+    { name: "Sent", icon: PaperAirplaneIcon, href: "/sent" },
+    { name: "Trash", icon: TrashIcon, href: "/trash" },
+    { name: "Spam", icon: ExclamationCircleIcon, href: "/spam" },
+    { name: "Members", icon: UserGroupIcon, href: "/members" },
+    { name: "Groups & Bookmarks", icon: BookmarkIcon, href: "/groups-bookmarks" },
 ];
 
 const bottomItems: SidebarItem[] = [
-    { name: 'Support', icon: QuestionMarkCircleIcon, external: true },
-    { name: 'Plans', icon: CreditCardIcon },
-    { name: 'Settings', icon: CogIcon },
+    { name: 'Support', icon: QuestionMarkCircleIcon, external: true, href: "/support" },
+    { name: 'Plans', icon: CreditCardIcon, href: "/plans" },
+    { name: 'Settings', icon: CogIcon, href: "/settings" },
+];
+
+const automations: SidebarItem[] = [
+    { name: 'Automations', icon: CogIcon, href: "/automations" },
+    { name: 'Scheduler', icon: ClockIcon, href: "/automations/scheduler" },
+    { name: 'Rules', icon: BookOpenIcon, href: "/automations/rules" },
+    { name: 'Templates', icon: SquaresPlusIcon, href: "/automations/templates" },
+    { name: 'Errors', icon: BugAntIcon, href: "/automations/errors" },
+    { name: 'Pricing', icon: BanknotesIcon, href: "/automations/pricing" },
 ];
 
 type user = {
@@ -117,6 +134,18 @@ export default function Sidebar({
                         Adresses
                     </div>
                     <div className="mt-1 space-y-0.5">
+                        {adresses.length === 0 && (<div className="px-3 flex space-x-1 items-center"><ExclamationTriangleIcon style={{ color: "#eab308" }} color="green" className="h-4 w-4" /> <p className="text-neutral-500">No adresses belongs to you.</p></div>)}
+                    </div>
+                </div>
+
+                <div className="mt-6">
+                    <div className="px-3 py-1.5 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                        Automations
+                    </div>
+                    <div className="mt-1 space-y-0.5">
+                        {automations.map((item) => (
+                            <SidebarLink href="/t" key={item.name} item={item} />
+                        ))}
                     </div>
                 </div>
             </nav>
@@ -154,10 +183,10 @@ interface SidebarLinkProps {
 
 export const SidebarLink = ({ item, href }: SidebarLinkProps) => {
     const Icon = item.icon;
-
+    const team = usePathname().split("/")[1]
     return (
         <Link
-            href={href}
+            href={`/${team}/${href}`}
             className="flex items-center gap-3 px-3 py-1.5 text-[14px] text-text-secondary
                 rounded-md hover:bg-hover-bg hover:text-hover-text group"
         >
