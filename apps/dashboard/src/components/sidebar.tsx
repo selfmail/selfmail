@@ -1,17 +1,17 @@
 "use client"
 import { cn } from "@/lib/cn";
 import {
-    AtSymbolIcon,
-    BellIcon,
-    ChartBarIcon,
-    CheckIcon,
+    BookmarkIcon,
     ChevronLeftIcon,
     CogIcon,
     CreditCardIcon,
-    DocumentTextIcon,
-    EnvelopeIcon,
+    ExclamationCircleIcon,
     HomeIcon,
+    InboxIcon,
+    PaperAirplaneIcon,
+    PencilIcon,
     QuestionMarkCircleIcon,
+    TrashIcon,
     UserGroupIcon
 } from '@heroicons/react/24/outline';
 import Link from "next/link";
@@ -45,37 +45,40 @@ interface SidebarItem {
     external?: boolean;
 }
 
+
+
+interface Adresses {
+    name?: string,
+    catchAll?: boolean,
+    email?: string,
+}
+
 const mainNavItems: SidebarItem[] = [
-    { name: 'Dashboard', icon: HomeIcon },
-    { name: 'Notifications', icon: BellIcon, count: 12 },
-    { name: 'Tasks', icon: CheckIcon },
-    { name: 'Notes', icon: DocumentTextIcon },
-    { name: 'Emails', icon: EnvelopeIcon },
-    { name: 'Reports', icon: ChartBarIcon },
-    { name: 'Automations', icon: CogIcon },
-    { name: 'Workflows', icon: CogIcon },
-];
-
-const favoriteItems: SidebarItem[] = [
-    { name: 'UK & EU Companies', icon: UserGroupIcon },
-    { name: 'B2B Relationship Building', icon: UserGroupIcon },
-    { name: 'Potential Partnership', icon: UserGroupIcon },
-    { name: 'CRM Meeting Template', icon: DocumentTextIcon },
-];
-
-const recordItems: SidebarItem[] = [
-    { name: 'Companies', icon: UserGroupIcon },
-    { name: 'People', icon: UserGroupIcon },
+    { name: "Overview", icon: HomeIcon },
+    { name: "Inbox", icon: InboxIcon, count: 12 },
+    { name: "Drafts", icon: PencilIcon, count: 1 },
+    { name: "Sent", icon: PaperAirplaneIcon },
+    { name: "Trash", icon: TrashIcon },
+    { name: "Spam", icon: ExclamationCircleIcon },
+    { name: "Members", icon: UserGroupIcon },
+    { name: "Groups & Bookmarks", icon: BookmarkIcon },
 ];
 
 const bottomItems: SidebarItem[] = [
-    { name: 'Affiliate program', icon: CreditCardIcon, external: true },
-    { name: 'Help center', icon: QuestionMarkCircleIcon, external: true },
+    { name: 'Support', icon: QuestionMarkCircleIcon, external: true },
     { name: 'Plans', icon: CreditCardIcon },
     { name: 'Settings', icon: CogIcon },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({
+    activeTeam,
+    userDetails,
+    adresses
+}: {
+    activeTeam: any,
+    userDetails: any,
+    adresses: Adresses[]
+}) {
     const { state, setState } = useSidebarStore();
 
     return (
@@ -103,7 +106,7 @@ export default function Sidebar() {
                     ))}
                 </div>
 
-                <div className="mt-6">
+                {/* <div className="mt-6">
                     <div className="px-3 py-1.5 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                         Favorites
                     </div>
@@ -112,19 +115,13 @@ export default function Sidebar() {
                             <SidebarLink href="/t" key={item.name} item={item} />
                         ))}
                     </div>
-                </div>
+                </div> */}
 
                 <div className="mt-6">
                     <div className="px-3 py-1.5 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                         Adresses
                     </div>
                     <div className="mt-1 space-y-0.5">
-                        {recordItems.map((item) => (
-                            <SidebarLink key={item.name} href="/t" item={{
-                                icon: AtSymbolIcon,
-                                name: item.name
-                            }} />
-                        ))}
                     </div>
                 </div>
             </nav>
