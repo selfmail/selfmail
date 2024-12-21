@@ -1,0 +1,17 @@
+{
+  "name": "auth",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "better-auth": "^1.1.1"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./auth-client": "./src/auth-client.ts"
+  }
+}
