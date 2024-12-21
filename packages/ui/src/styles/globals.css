@@ -1,0 +1,51 @@
+/**
+    Global CSS file for the project. This is the main file for every app which uses TailwindCss and is in the selfmail workspace.
+*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer base {
+  :root {
+
+    /* Border Colors */
+    --border: #f3f3f3;
+
+    /* Input Colors */
+    --input: #f3f3f3;
+
+    /* Button Colors */
+    --primary: #2c2c2c;
+    --primary-foreground: #f3f3f3;
+
+    --secondary: #3a3a3a;
+    --secondary-foreground: #f3f3f3;
+
+    /* Accent Colors for hover states */
+    --accent: #fffff;
+    --accent-foreground: #2c2c2c;
+
+    --destructive: #f3f3f3;
+    --destructive-foreground: #2c2c2c;
+
+    --ring: #f3f3f3;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {}
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    @apply bg-background text-foreground;
+  }
+}
