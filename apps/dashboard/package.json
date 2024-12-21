@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.10.1",
-    "css": "workspace:*",
     "geist": "^1.3.0",
     "next": "^15.0.1",
     "next-themes": "^0.4.4",
@@ -39,8 +38,7 @@
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "tailwindcss": "^3.4.3",
-    "typescript": "^5.5.3",
-    "tailwind": "workspace:*"
+    "typescript": "^5.5.3"
   },
   "ct3aMetadata": {
     "initVersion": "7.38.1"
