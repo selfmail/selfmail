@@ -1,3 +1,4 @@
+import Header from "@/components/header";
 import DashboardSidebar from "@/components/sidebar";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
@@ -26,10 +27,13 @@ export default function RootLayout({
 				<ThemeProvider attribute="class" disableTransitionOnChange enableSystem>
 					<TooltipProvider>
 						<SidebarProvider>
-							<main className="flex">
+							<main className="flex w-full">
 								{/* Creating the sidebar */}
 								<DashboardSidebar />
-								{children}
+								<div className="flex flex-col w-full">
+									{/* TODO: passing the right parameters to show the breadcrumbs */}
+									<Header>{children}</Header>
+								</div>
 							</main>
 						</SidebarProvider>
 						<Toaster />

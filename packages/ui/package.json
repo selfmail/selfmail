@@ -47,7 +47,10 @@
     "./label": "./src/components/label.tsx",
     "./textarea": "./src/components/textarea.tsx",
     "./tooltip": "./src/components/tooltip.tsx",
-    "./avatar": "./src/components/avatar.tsx"
+    "./avatar": "./src/components/avatar.tsx",
+    "./scroll-area": "./src/components/scroll-area.tsx",
+    "./use-is-mobile": "./src/hooks/use-mobile.tsx",
+    "./cn": "./src/utils/cn.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.1"
