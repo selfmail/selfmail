@@ -1,7 +1,15 @@
 "use client";
 
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
+import {
+	BellIcon,
+	BookmarkIcon,
+	CheckIcon,
+	ChevronUpDownIcon,
+	Cog6ToothIcon,
+	HomeIcon,
+} from "@heroicons/react/24/outline";
 import { Avatar, AvatarFallback, AvatarImage } from "ui/avatar";
+import { Button } from "ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -12,6 +20,9 @@ import {
 import {
 	Sidebar,
 	SidebarContent,
+	SidebarGroup,
+	SidebarGroupContent,
+	SidebarGroupLabel,
 	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
@@ -20,7 +31,7 @@ import {
 
 export default function DashboardSidebar() {
 	return (
-		<Sidebar className="w-64 bg-background ">
+		<Sidebar className="bg-background ">
 			{/* Sidebar Header */}
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
@@ -38,29 +49,59 @@ export default function DashboardSidebar() {
 						<ChevronUpDownIcon className="w-4 h-4" />
 					</SidebarHeader>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent className="w-64 ml-2 rounded-lg">
+				<DropdownMenuContent className="w-80 ml-2 rounded-lg">
 					<PersonItem checked={true} />
 					<PersonItem checked={false} />
 					<PersonItem checked={false} />
 					<DropdownMenuSeparator />
-					<DropdownMenuItem>Settings</DropdownMenuItem>
+					<DropdownMenuItem>
+						<Cog6ToothIcon className="w-4 h-4" />
+						<span>Settings</span>
+					</DropdownMenuItem>
+					<DropdownMenuItem>
+						<BookmarkIcon className="w-4 h-4" />
+						<span>Bookmarks</span>
+					</DropdownMenuItem>
+					<DropdownMenuItem>
+						<BellIcon className="w-4 h-4" />
+						<span>Updates</span>
+					</DropdownMenuItem>
+					<DropdownMenuSeparator />
+					<div className="flex flex-row items-center justify-between  rounded-lg px-2 py-1.5">
+						<div className="flex flex-col">
+							<h2>Free Plan</h2>
+							<p className="text-sm text-muted-foreground">
+								You are using the free plan
+							</p>
+						</div>
+						<Button size={"sm"}>Upgrade</Button>
+					</div>
+					<DropdownMenuSeparator />
+					<DropdownMenuItem className="cursor-pointer text-red-500 hover:bg-red-200 hover:text-red-500">
+						Logout
+					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
 			<SidebarContent>
-				<SidebarMenu>
-					<SidebarMenuItem>
-						<SidebarMenuButton>Settings</SidebarMenuButton>
-					</SidebarMenuItem>
-					<SidebarMenuItem>
-						<SidebarMenuButton>Bookmarks</SidebarMenuButton>
-					</SidebarMenuItem>
-					<SidebarMenuItem>
-						<SidebarMenuButton>Updates</SidebarMenuButton>
-					</SidebarMenuItem>
-					<SidebarMenuItem>
-						<SidebarMenuButton>Upgrade</SidebarMenuButton>
-					</SidebarMenuItem>
-				</SidebarMenu>
+				<SidebarGroup>
+					<SidebarGroupLabel>Platform</SidebarGroupLabel>
+					<SidebarGroupContent>
+						<SidebarMenu>
+							<SidebarMenuItem>
+								<SidebarMenuButton>
+									<HomeIcon className="w-4 h-4" />
+									<span>Home</span>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+							<SidebarMenuItem>
+								<SidebarMenuButton>
+									<Cog6ToothIcon className="w-4 h-4" />
+									<span>Settings</span>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+						</SidebarMenu>
+					</SidebarGroupContent>
+				</SidebarGroup>
 			</SidebarContent>
 		</Sidebar>
 	);

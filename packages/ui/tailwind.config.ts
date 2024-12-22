@@ -3,7 +3,8 @@ import type { Config } from "tailwindcss";
 export default {
     content: ["./src/**/*.tsx", "./apps/**/*.tsx", "./components/**/*.tsx"],
     theme: {
-        colors: {
+        extend: {
+            colors: {
             fontFamily: {
                 sans: "var(--font-geist-sans)",
                 mono: "var(--font-geist-mono)",
@@ -52,6 +53,11 @@ export default {
                 ring: "hsl(var(--sidebar-ring))",
             },
         },
+        borderRadius: {
+            "sm": "var(--radius-sm)",
+
+        },
+        }
     },
     plugins: [],
 } satisfies Config;
