@@ -1,13 +1,17 @@
 "use client";
 
 import {
+	AtSymbolIcon,
 	BellIcon,
 	BookmarkIcon,
 	CheckIcon,
 	ChevronUpDownIcon,
 	Cog6ToothIcon,
+	CreditCardIcon,
 	HomeIcon,
-} from "@heroicons/react/24/outline";
+	InboxIcon,
+	PencilIcon,
+} from "@heroicons/react/24/solid";
 import { Avatar, AvatarFallback, AvatarImage } from "ui/avatar";
 import { Button } from "ui/button";
 import {
@@ -20,6 +24,7 @@ import {
 import {
 	Sidebar,
 	SidebarContent,
+	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarGroupLabel,
@@ -99,10 +104,51 @@ export default function DashboardSidebar() {
 									<span>Settings</span>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
+							<SidebarMenuItem>
+								<SidebarMenuButton>
+									<BellIcon className="w-4 h-4" />
+									<span>Updates</span>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+						</SidebarMenu>
+					</SidebarGroupContent>
+				</SidebarGroup>
+				<SidebarGroup>
+					<SidebarGroupLabel>Emails</SidebarGroupLabel>
+					<SidebarGroupContent>
+						<SidebarMenu>
+							<SidebarMenuItem>
+								<SidebarMenuButton>
+									<InboxIcon className="w-4 h-4" />
+									<span>Inbox</span>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+							<SidebarMenuItem>
+								<SidebarMenuButton>
+									<AtSymbolIcon className="w-4 h-4" />
+									<span>Adresses</span>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+							<SidebarMenuItem>
+								<SidebarMenuButton>
+									<PencilIcon className="w-4 h-4" />
+									<span>Editor</span>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
+			<SidebarFooter className="p-5 flex flex-row items-center border-t border-border justify-between">
+				<div className="flex flex-col">
+					<div className="flex items-center  space-x-1">
+						<CreditCardIcon className="w-4 h-4" />
+						<h2>Free Plan</h2>
+					</div>
+					<p className="text-sm text-muted-foreground">0€ / month</p>
+				</div>
+				<Button size={"sm"}>Upgrade</Button>
+			</SidebarFooter>
 		</Sidebar>
 	);
 }
