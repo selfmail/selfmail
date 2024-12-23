@@ -50,9 +50,12 @@
     "./avatar": "./src/components/avatar.tsx",
     "./scroll-area": "./src/components/scroll-area.tsx",
     "./use-is-mobile": "./src/hooks/use-mobile.tsx",
-    "./cn": "./src/utils/cn.ts"
+    "./cn": "./src/utils/cn.ts",
+    "./form": "./src/components/form.tsx"
   },
   "dependencies": {
-    "@radix-ui/react-slot": "^1.1.1"
+    "@radix-ui/react-slot": "^1.1.1",
+    "class-variance-authority": "^0.7.1",
+    "tailwind-merge": "^2.6.0"
   }
 }

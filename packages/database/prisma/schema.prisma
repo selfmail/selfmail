@@ -8,6 +8,7 @@ datasource db {
 }
 
 // auth models
+
 model User {
   id            String       @id
   name          String
@@ -25,8 +26,12 @@ model User {
   members       Member[]
   invitations   Invitation[]
   Sender        Sender[]
+  Email         Email[]
+
+  username String?
 
   @@unique([email])
+  @@unique([username])
   @@map("user")
 }
 
@@ -118,12 +123,16 @@ model Invitation {
 }
 
 // Platform speicif models
+
 model Email {
   id        String   @id
   content   String
   createdAt DateTime
   updatedAt DateTime
   tags      Tag[]
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
   adress   Adress @relation(fields: [adressId], references: [id])
   adressId String

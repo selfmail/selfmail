@@ -1,11 +1,16 @@
 import { ChartEmailsSentMonth } from "@/components/charts/emails-sent/month";
 import { SetHeader } from "@/components/header";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
+import { db } from "database";
 import Image from "next/image";
 import { Avatar, AvatarFallback } from "ui/avatar";
 import { Button } from "ui/button";
 
-export default function HomePage() {
+export default async function HomePage() {
+	const lastEmails = await db.email.findMany({
+		where: {},
+	});
+
 	return (
 		<div className="grid lg:grid-cols-2">
 			<SetHeader breadcumbs={[{ title: "Inbox", href: "/" }]} />
