@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// auth models
 model User {
   id            String       @id
   name          String
@@ -23,6 +24,7 @@ model User {
   accounts      Account[]
   members       Member[]
   invitations   Invitation[]
+  Sender        Sender[]
 
   @@unique([email])
   @@map("user")
@@ -113,4 +115,54 @@ model Invitation {
   user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
 
   @@map("invitation")
+}
+
+// Platform speicif models
+model Email {
+  id        String   @id
+  content   String
+  createdAt DateTime
+  updatedAt DateTime
+  tags      Tag[]
+
+  adress   Adress @relation(fields: [adressId], references: [id])
+  adressId String
+
+  sender   Sender @relation(fields: [senderId], references: [id])
+  senderId String
+}
+
+model Sender {
+  id     String  @id
+  name   String?
+  email  String
+  emails Email[]
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model Tag {
+  id        String   @id
+  name      String
+  createdAt DateTime
+  updatedAt DateTime
+  emails    Email[]
+}
+
+model Adress {
+  id       String  @id
+  email    String  @unique
+  domainId String?
+  domain   Domain? @relation(fields: [domainId], references: [id])
+  Email    Email[]
+}
+
+model Domain {
+  id        String   @id
+  domain    String
+  verified  Boolean
+  createdAt DateTime
+  updatedAt DateTime
+  Adress    Adress[]
 }
