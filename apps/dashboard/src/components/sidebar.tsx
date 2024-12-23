@@ -4,6 +4,7 @@ import {
 	AtSymbolIcon,
 	BellIcon,
 	BookmarkIcon,
+	ChartBarIcon,
 	CheckIcon,
 	ChevronUpDownIcon,
 	Cog6ToothIcon,
@@ -66,6 +67,10 @@ export default function DashboardSidebar() {
 					<DropdownMenuItem>
 						<BookmarkIcon className="w-4 h-4" />
 						<span>Bookmarks</span>
+					</DropdownMenuItem>
+					<DropdownMenuItem>
+						<ChartBarIcon className="w-4 h-4" />
+						<span>Analytics</span>
 					</DropdownMenuItem>
 					<DropdownMenuItem>
 						<BellIcon className="w-4 h-4" />

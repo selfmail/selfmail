@@ -6,14 +6,53 @@ export default function HomePage() {
 	return (
 		<div className="grid lg:grid-cols-2">
 			<SetHeader breadcumbs={[{ title: "Inbox", href: "/" }]} />
-			<div className="flex flex-col p-5 border-b border-r border-border">
+			<div className="flex flex-col gap-4 p-5 border-b border-r border-border">
 				<h2 className="text-lg font-medium">Recent Emails</h2>
-				<div className="grid lg:grid-cols-2">
-					<div className="bg-red-200 p-5">
-						<h2>Made by henri </h2>
+				<div className="flex flex-col divide-y *:py-1.5 border-y mb-1.5 border-border divide-border">
+					<div className="flex items-center justify-between">
+						<p>
+							Aquisation of business{" "}
+							<span className="text-muted-foreground text-sm">
+								henri@selfmail.app
+							</span>
+						</p>
+						<p className="text-sm text-muted-foreground">2024-12-22</p>
 					</div>
-					<div className="bg-blue-200 p-5">
-						<h2>Made by henri </h2>
+					<div className="flex items-center justify-between">
+						<p>
+							Table of contents{" "}
+							<span className="text-muted-foreground text-sm">
+								henri@selfmail.app
+							</span>
+						</p>
+						<p className="text-sm text-muted-foreground">2024-12-22</p>
+					</div>
+					<div className="flex items-center justify-between">
+						<p>
+							How are you?{" "}
+							<span className="text-muted-foreground text-sm">
+								henri@selfmail.app
+							</span>
+						</p>
+						<p className="text-sm text-muted-foreground">2024-12-22</p>
+					</div>
+					<div className="flex items-center justify-between">
+						<p>
+							I want to say thank you{" "}
+							<span className="text-muted-foreground text-sm">
+								henri@selfmail.app
+							</span>
+						</p>
+						<p className="text-sm text-muted-foreground">2024-12-22</p>
+					</div>
+					<div className="flex items-center justify-between">
+						<p>
+							hallo{" "}
+							<span className="text-muted-foreground text-sm">
+								henri@selfmail.app
+							</span>
+						</p>
+						<p className="text-sm text-muted-foreground">2024-12-22</p>
 					</div>
 				</div>
 			</div>
