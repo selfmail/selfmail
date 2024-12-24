@@ -3,8 +3,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "auth/auth-client";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "ui/button";
 import {
 	Form,
@@ -16,38 +18,7 @@ import {
 } from "ui/form";
 import { Input } from "ui/input";
 import { z } from "zod";
-import { create } from "zustand";
-
-type State = {
-	username: string;
-	password: string;
-	email: string;
-	organization: string;
-	name: string;
-};
-
-type Action = {
-	updateUsername: (username: State["username"]) => void;
-	updatePassword: (password: State["password"]) => void;
-	updateEmail: (email: State["email"]) => void;
-	updateOrganization: (organization: State["organization"]) => void;
-	updateName: (name: State["name"]) => void;
-};
-
-// Create your store, which includes both state and (optionally) actions
-const usePersonStore = create<State & Action>((set) => ({
-	username: "",
-	password: "",
-	email: "",
-	organization: "",
-	name: "",
-	updateUsername: (username) => set(() => ({ username: username })),
-	updatePassword: (password) => set(() => ({ password: password })),
-	updateEmail: (email) => set(() => ({ email: email })),
-	updateOrganization: (organization) =>
-		set(() => ({ organization: organization })),
-	updateName: (name) => set(() => ({ name: name })),
-}));
+import { FileUpload } from "../file-upload";
 
 const formSchema = z.object({
 	username: z
@@ -76,28 +47,73 @@ const formSchema = z.object({
 		}),
 });
 
+interface RegisterPageProps {
+	nextPage: () => void;
+	setUsername: (username: string) => void;
+	setPassword: (password: string) => void;
+	setName: (name: string) => void;
+}
+
+interface SetAddressPageProps {
+	nextPage: () => void;
+	setEmail: (email: string) => void;
+}
+
+interface CreateOrganizationPageProps {
+	username: string;
+	password: string;
+	name: string;
+	email: string;
+	setOrganization: (organization: string) => void;
+	organization: string;
+}
+
 export function RegisterForm() {
-	// current page
 	const [page, setPage] = useState<
 		"register" | "set-adress" | "create-organization"
 	>("register");
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [email, setEmail] = useState("");
+	const [organization, setOrganization] = useState("");
+	const [name, setName] = useState("");
 
 	return (
 		<>
 			{page === "register" && (
-				<RegisterPage nextPage={() => setPage("set-adress")} />
+				<RegisterPage
+					nextPage={() => setPage("set-adress")}
+					setUsername={setUsername}
+					setPassword={setPassword}
+					setName={setName}
+				/>
 			)}
 			{page === "set-adress" && (
-				<SetAddressPage nextPage={() => setPage("create-organization")} />
+				<SetAddressPage
+					nextPage={() => setPage("create-organization")}
+					setEmail={setEmail}
+				/>
 			)}
-			{page === "create-organization" && <CreateOrganizationPage />}
+			{page === "create-organization" && (
+				<CreateOrganizationPage
+					username={username}
+					password={password}
+					name={name}
+					email={email}
+					setOrganization={setOrganization}
+					organization={organization}
+				/>
+			)}
 		</>
 	);
 }
 
-const RegisterPage = ({ nextPage }: { nextPage: () => void }) => {
-	const { updateUsername, updatePassword, updateName } = usePersonStore();
-
+const RegisterPage = ({
+	nextPage,
+	setUsername,
+	setPassword,
+	setName,
+}: RegisterPageProps) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -108,9 +124,9 @@ const RegisterPage = ({ nextPage }: { nextPage: () => void }) => {
 	});
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		updateUsername(values.username);
-		updatePassword(values.password);
-		updateName(values.name);
+		setUsername(values.username);
+		setPassword(values.password);
+		setName(values.name);
 		nextPage();
 	}
 
@@ -199,9 +215,8 @@ const adressSchema = z.object({
 		.email()
 		.endsWith("@selfmail.app"),
 });
-const SetAddressPage = ({ nextPage }: { nextPage: () => void }) => {
-	const { updateEmail } = usePersonStore();
 
+const SetAddressPage = ({ nextPage, setEmail }: SetAddressPageProps) => {
 	const form = useForm<z.infer<typeof adressSchema>>({
 		resolver: zodResolver(adressSchema),
 		defaultValues: {
@@ -210,7 +225,7 @@ const SetAddressPage = ({ nextPage }: { nextPage: () => void }) => {
 	});
 
 	async function onSubmit(values: z.infer<typeof adressSchema>) {
-		updateEmail(values.email);
+		setEmail(values.email);
 		nextPage();
 	}
 
@@ -272,10 +287,15 @@ const organizationSchema = z.object({
 			message: "Organization must be at most 100 characters.",
 		}),
 });
-const CreateOrganizationPage = () => {
-	const { updateOrganization, username, password, name, email, organization } =
-		usePersonStore();
 
+const CreateOrganizationPage = ({
+	username,
+	password,
+	name,
+	email,
+	setOrganization,
+	organization,
+}: CreateOrganizationPageProps) => {
 	const form = useForm<z.infer<typeof organizationSchema>>({
 		resolver: zodResolver(organizationSchema),
 		defaultValues: {
@@ -284,7 +304,8 @@ const CreateOrganizationPage = () => {
 	});
 
 	async function onSubmit(values: z.infer<typeof organizationSchema>) {
-		updateOrganization(values.organization);
+		setOrganization(values.organization);
+		console.log(email, password, name, username);
 		// creating the new user
 		const user = await authClient.signUp.email({
 			email,
@@ -293,10 +314,17 @@ const CreateOrganizationPage = () => {
 			username,
 		});
 
+		if (user.error?.status) {
+			toast.error(`${user.error.status}: ${user.error.statusText}`);
+			return;
+		}
+
 		await authClient.organization.create({
 			name: organization,
 			slug: organization.toLowerCase().replace(/ /g, "-"),
 		});
+
+		redirect(`/${organization.toLowerCase().replace(/ /g, "-")}`);
 	}
 
 	return (
@@ -313,6 +341,12 @@ const CreateOrganizationPage = () => {
 					</p>
 				</div>
 				<div className="grid gap-6">
+					<FileUpload
+						form={form}
+						onFileSelect={() => {
+							console.log("file selected");
+						}}
+					/>
 					<div className="grid gap-2">
 						<FormField
 							control={form.control}
