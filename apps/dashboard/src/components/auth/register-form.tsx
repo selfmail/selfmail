@@ -37,7 +37,7 @@ const formSchema = z.object({
 		}),
 });
 
-export function LoginForm() {
+export function RegisterForm() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -48,9 +48,11 @@ export function LoginForm() {
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		// handle login with better-auth
-		const user = await authClient.signIn.username({
-			username: values.username,
+		const user = await authClient.signUp.email({
+			email: values.username,
 			password: values.password,
+			name: values.username,
+			username: values.username,
 		});
 
 		if (user.error?.status) {

@@ -4,20 +4,13 @@ import { admin, organization, username } from "better-auth/plugins";
 import { db } from "database";
 
 export const auth = betterAuth({
-    database: prismaAdapter(db, {
-        provider: "postgresql",
-    }),
-    advanced: {
-        cookiePrefix: "selfmail",
-        useSecureCookies: true
-    },
-    emailAndPassword: {
-        enabled: true,
-    },
-    appName: "selfmail",
-    plugins: [
-        admin(),
-        organization(),
-        username()
-    ]
+	database: prismaAdapter(db, {
+		provider: "postgresql",
+	}),
+	advanced: {
+		cookiePrefix: "selfmail",
+		useSecureCookies: true,
+	},
+	appName: "selfmail",
+	plugins: [admin(), organization(), username()],
 });
