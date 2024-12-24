@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { type UseFormReturn } from "react-hook-form";
+import { useRef, useState } from "react";
+import type { UseFormReturn } from "react-hook-form";
+import { toast } from "sonner";
 import {
 	FormControl,
 	FormDescription,
@@ -23,10 +24,18 @@ export function FileUpload({ onFileSelect, form }: FileUploadProps) {
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 		if (file) {
+			console.log(file.size, fileRef.current);
+			if (file.size > 100 && fileRef.current) {
+				toast.error("File size is too large.");
+				fileRef.current.value = "";
+				return;
+			}
 			setSelectedFile(file);
 			onFileSelect(file);
 		}
 	};
+
+	const fileRef = useRef<HTMLInputElement>(null);
 
 	return (
 		<div className="grid gap-2">
@@ -38,16 +47,19 @@ export function FileUpload({ onFileSelect, form }: FileUploadProps) {
 						<FormLabel>Upload File</FormLabel>
 						<FormControl>
 							<input
-								multiple
 								type="file"
+								accept="image/png, image/jpeg"
 								tabIndex={-1}
 								className="hidden"
 								{...field}
 								onChange={handleFileChange}
+								ref={fileRef}
 							/>
 						</FormControl>
 						<FormDescription>
-							Upload a new file to import your emails.
+							{!selectedFile
+								? "Upload a new file to import your emails."
+								: `File uploaded successfully. ${selectedFile.name}`}
 						</FormDescription>
 						<FormMessage />
 					</FormItem>
