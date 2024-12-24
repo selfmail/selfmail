@@ -68,15 +68,21 @@ export default function Header({
 // Component to set the breadcrumbs
 export const SetHeader = ({
 	breadcumbs,
+	children,
 }: {
 	breadcumbs: {
 		title: string;
 		href: string;
 	}[];
+	children?: React.ReactNode;
 }) => {
-	const { updateBreadcrumbs } = usePersonStore();
+	const { updateBreadcrumbs, updateCustomHeader } = usePersonStore();
 	useEffect(() => {
 		updateBreadcrumbs(breadcumbs);
 	}, [breadcumbs, updateBreadcrumbs]);
+
+	if (children) {
+		updateCustomHeader(children);
+	}
 	return <></>;
 };
