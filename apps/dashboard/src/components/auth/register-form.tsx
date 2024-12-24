@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { authClient } from "auth/auth-client";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -22,6 +23,7 @@ type State = {
 	password: string;
 	email: string;
 	organization: string;
+	name: string;
 };
 
 type Action = {
@@ -29,6 +31,7 @@ type Action = {
 	updatePassword: (password: State["password"]) => void;
 	updateEmail: (email: State["email"]) => void;
 	updateOrganization: (organization: State["organization"]) => void;
+	updateName: (name: State["name"]) => void;
 };
 
 // Create your store, which includes both state and (optionally) actions
@@ -37,11 +40,13 @@ const usePersonStore = create<State & Action>((set) => ({
 	password: "",
 	email: "",
 	organization: "",
+	name: "",
 	updateUsername: (username) => set(() => ({ username: username })),
 	updatePassword: (password) => set(() => ({ password: password })),
 	updateEmail: (email) => set(() => ({ email: email })),
 	updateOrganization: (organization) =>
 		set(() => ({ organization: organization })),
+	updateName: (name) => set(() => ({ name: name })),
 }));
 
 const formSchema = z.object({
@@ -60,6 +65,14 @@ const formSchema = z.object({
 		})
 		.max(100, {
 			message: "Password must be at most 100 characters.",
+		}),
+	name: z
+		.string()
+		.min(2, {
+			message: "Name must be at least 2 characters.",
+		})
+		.max(100, {
+			message: "Name must be at most 100 characters.",
 		}),
 });
 
@@ -83,19 +96,21 @@ export function RegisterForm() {
 }
 
 const RegisterPage = ({ nextPage }: { nextPage: () => void }) => {
-	const { updateUsername, updatePassword } = usePersonStore();
+	const { updateUsername, updatePassword, updateName } = usePersonStore();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			username: "",
 			password: "",
+			name: "",
 		},
 	});
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		updateUsername(values.username);
 		updatePassword(values.password);
+		updateName(values.name);
 		nextPage();
 	}
 
@@ -112,6 +127,21 @@ const RegisterPage = ({ nextPage }: { nextPage: () => void }) => {
 					</p>
 				</div>
 				<div className="grid gap-6">
+					<div className="grid gap-2">
+						<FormField
+							control={form.control}
+							name="name"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Name</FormLabel>
+									<FormControl>
+										<Input placeholder="Name" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 					<div className="grid gap-2">
 						<FormField
 							control={form.control}
@@ -243,7 +273,8 @@ const organizationSchema = z.object({
 		}),
 });
 const CreateOrganizationPage = () => {
-	const { updateOrganization } = usePersonStore();
+	const { updateOrganization, username, password, name, email, organization } =
+		usePersonStore();
 
 	const form = useForm<z.infer<typeof organizationSchema>>({
 		resolver: zodResolver(organizationSchema),
@@ -254,6 +285,18 @@ const CreateOrganizationPage = () => {
 
 	async function onSubmit(values: z.infer<typeof organizationSchema>) {
 		updateOrganization(values.organization);
+		// creating the new user
+		const user = await authClient.signUp.email({
+			email,
+			password,
+			name,
+			username,
+		});
+
+		await authClient.organization.create({
+			name: organization,
+			slug: organization.toLowerCase().replace(/ /g, "-"),
+		});
 	}
 
 	return (
