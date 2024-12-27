@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(
 	req: Request,
-	{ params }: { params: { organization: string } },
+	{ params }: { params: Promise<{ organization: string }> },
 ) {
 	const organization = (await params).organization;
 

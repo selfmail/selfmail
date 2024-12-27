@@ -2,6 +2,7 @@
 
 import { betterFetch } from "@better-fetch/fetch";
 import type { MiddlewareFunctionProps } from "@rescale/nemo";
+import { auth } from "auth";
 import type { Session } from "better-auth";
 import { NextResponse } from "next/server";
 
@@ -28,6 +29,7 @@ export const dashboardMiddleware = async ({
 	response,
 	context,
 	event,
+	params,
 }: MiddlewareFunctionProps) => {
 	let user: undefined | string = undefined;
 
@@ -49,8 +51,6 @@ export const dashboardMiddleware = async ({
 		user = context.get("user") as string | undefined;
 	}
 
-	console.log(user);
-
 	if (!user) {
 		return NextResponse.redirect(
 			new URL(
@@ -59,4 +59,19 @@ export const dashboardMiddleware = async ({
 			),
 		);
 	}
+
+	// checking the current org
+
+	const orgId = params().organization;
+
+	if (!orgId)
+		return NextResponse.redirect(
+			new URL(
+				"/auth/login?message=You%20must%20be%20logged%20in%20to%20access%20this%20page",
+				request.url,
+			),
+		);
+
+	// checking if the user is part of this org
+	await auth.api.getActiveMember();
 };

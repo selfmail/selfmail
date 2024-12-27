@@ -36,11 +36,7 @@ type Email = {
 	};
 };
 
-export default function InboxList({
-	activeOrgId,
-}: {
-	activeOrgId: string;
-}) {
+export default function InboxList() {
 	const countEmailsAction = useAction(countEmails);
 
 	const fetchSize = 20;
