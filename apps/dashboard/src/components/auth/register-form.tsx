@@ -52,6 +52,7 @@ interface RegisterPageProps {
 	setUsername: (username: string) => void;
 	setPassword: (password: string) => void;
 	setName: (name: string) => void;
+	alreadyLoggedIn: boolean;
 }
 
 interface SetAddressPageProps {
@@ -68,7 +69,11 @@ interface CreateOrganizationPageProps {
 	organization: string;
 }
 
-export function RegisterForm() {
+export function RegisterForm({
+	alreadyLoggedIn,
+}: {
+	alreadyLoggedIn: boolean;
+}) {
 	const [page, setPage] = useState<
 		"register" | "set-adress" | "create-organization"
 	>("register");
@@ -86,6 +91,7 @@ export function RegisterForm() {
 					setUsername={setUsername}
 					setPassword={setPassword}
 					setName={setName}
+					alreadyLoggedIn={alreadyLoggedIn}
 				/>
 			)}
 			{page === "set-adress" && (
@@ -112,6 +118,7 @@ const RegisterPage = ({
 	nextPage,
 	setUsername,
 	setPassword,
+	alreadyLoggedIn,
 	setName,
 }: RegisterPageProps) => {
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -192,12 +199,21 @@ const RegisterPage = ({
 						Register
 					</Button>
 				</div>
-				<div className="text-center text-sm border-t pt-4">
-					Already have an account?{" "}
-					<Link href="/auth/login" className="underline underline-offset-4">
-						Login
-					</Link>
-				</div>
+				{(alreadyLoggedIn && (
+					<div className="text-center text-sm border-t pt-4">
+						You are already logged in.{" "}
+						<Link href="/dashboard" className="underline underline-offset-4">
+							Go to dashboard
+						</Link>
+					</div>
+				)) || (
+					<div className="text-center text-sm border-t pt-4">
+						Already have an account?{" "}
+						<Link href="/auth/login" className="underline underline-offset-4">
+							Login
+						</Link>
+					</div>
+				)}
 			</form>
 		</Form>
 	);

@@ -1,6 +1,8 @@
 import { LoginForm } from "@/components/auth/login-form";
 import AuthToast from "@/components/notification/auth-toast";
 import { InboxStackIcon } from "@heroicons/react/24/solid";
+import { auth } from "auth";
+import { headers } from "next/headers";
 import Link from "next/link";
 
 export default async function LoginPage({
@@ -9,6 +11,9 @@ export default async function LoginPage({
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
 	const message = (await searchParams).message;
+	const alreadyLoggedIn = await auth.api.getSession({
+		headers: await headers(),
+	});
 	return (
 		<div className="grid min-h-svh lg:grid-cols-2">
 			<AuthToast message={message as string} />
@@ -26,7 +31,7 @@ export default async function LoginPage({
 				</div>
 				<div className="flex flex-1 items-center justify-center">
 					<div className="w-full max-w-xs">
-						<LoginForm />
+						<LoginForm alreadyLoggedIn={!!alreadyLoggedIn?.session} />
 					</div>
 				</div>
 			</div>

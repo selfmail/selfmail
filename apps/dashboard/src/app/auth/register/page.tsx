@@ -1,8 +1,13 @@
 import { RegisterForm } from "@/components/auth/register-form";
 import { InboxStackIcon } from "@heroicons/react/24/solid";
+import { auth } from "auth";
+import { headers } from "next/headers";
 import Link from "next/link";
 
-export default function RegisterPage() {
+export default async function RegisterPage() {
+	const alreadyLoggedIn = await auth.api.getSession({
+		headers: await headers(),
+	});
 	return (
 		<div className="grid min-h-svh lg:grid-cols-2">
 			<div className="flex flex-col gap-4 p-6 md:p-10">
@@ -19,7 +24,7 @@ export default function RegisterPage() {
 				</div>
 				<div className="flex flex-1 items-center justify-center">
 					<div className="w-full max-w-xs">
-						<RegisterForm />
+						<RegisterForm alreadyLoggedIn={!!alreadyLoggedIn?.session} />
 					</div>
 				</div>
 			</div>

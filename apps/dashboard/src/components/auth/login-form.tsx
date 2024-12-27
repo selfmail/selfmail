@@ -37,7 +37,11 @@ const formSchema = z.object({
 		}),
 });
 
-export function LoginForm() {
+export function LoginForm({
+	alreadyLoggedIn,
+}: {
+	alreadyLoggedIn: boolean;
+}) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -116,12 +120,24 @@ export function LoginForm() {
 						Login
 					</Button>
 				</div>
-				<div className="text-center text-sm border-t pt-4">
-					Don&apos;t have an account?{" "}
-					<Link href="/auth/register" className="underline underline-offset-4">
-						Sign up
-					</Link>
-				</div>
+				{(!alreadyLoggedIn && (
+					<div className="text-center text-sm border-t pt-4">
+						Don&apos;t have an account?{" "}
+						<Link
+							href="/auth/register"
+							className="underline underline-offset-4"
+						>
+							Sign up
+						</Link>
+					</div>
+				)) || (
+					<div className="text-center text-sm border-t pt-4">
+						You are already logged in.{" "}
+						<Link href="/dashboard" className="underline underline-offset-4">
+							Go to dashboard
+						</Link>
+					</div>
+				)}
 			</form>
 		</Form>
 	);

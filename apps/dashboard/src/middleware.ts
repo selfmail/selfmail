@@ -1,5 +1,5 @@
 import { createMiddleware } from "@rescale/nemo";
-import { dashboardMiddleware } from "./app/dashboard/[organization]/middleware";
+import { dashboardMiddleware } from "./app/dashboard/[organization]/_middleware";
 
 const middlewares = {
 	"/dashboard{/*team}": dashboardMiddleware,
