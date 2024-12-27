@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "prettier": "^3.2.5",
+    "prettier": "^3.4.2",
     "turbo": "^2.3.3",
     "typescript": "5.5.4"
   },
@@ -38,7 +38,7 @@
     "@radix-ui/react-switch": "^1.1.2",
     "@radix-ui/react-toggle": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.6",
-    "better-auth": "^1.1.1",
+    "better-auth": "^1.1.4",
     "cmdk": "^1.0.4",
     "react-hook-form": "^7.54.2",
     "recharts": "^2.15.0",

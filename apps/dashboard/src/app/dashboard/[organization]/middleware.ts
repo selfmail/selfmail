@@ -5,16 +5,34 @@ import type { MiddlewareFunctionProps } from "@rescale/nemo";
 import type { Session } from "better-auth";
 import { NextResponse } from "next/server";
 
+type SessionData = {
+	session: Session;
+	user: {
+		id: string;
+		name: string;
+		email: string;
+		emailVerified: boolean;
+		image: string | null;
+		createdAt: string;
+		updatedAt: string;
+		role: string;
+		banned: boolean;
+		banReason: string | null;
+		banExpires: string | null;
+		username: string;
+	};
+};
+
 export const dashboardMiddleware = async ({
 	request,
 	response,
 	context,
 	event,
 }: MiddlewareFunctionProps) => {
-	let user = undefined;
+	let user: undefined | string = undefined;
 
 	if (!context.has("user")) {
-		const { data: session } = await betterFetch<Session>(
+		const { data: session } = await betterFetch<SessionData>(
 			"/api/auth/get-session",
 			{
 				baseURL: request.nextUrl.origin,
@@ -23,10 +41,15 @@ export const dashboardMiddleware = async ({
 				},
 			},
 		);
-		context.set("user", user);
+		if (session?.session?.userId) {
+			context.set("user", session.session.userId);
+			user = session.session.userId;
+		}
 	} else {
-		user = context.get("user");
+		user = context.get("user") as string | undefined;
 	}
+
+	console.log(user);
 
 	if (!user) {
 		return NextResponse.redirect(

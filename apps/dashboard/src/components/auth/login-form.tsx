@@ -59,15 +59,14 @@ export function LoginForm() {
 		}
 
 		// get the active organization
-		const organization = authClient.useActiveOrganization();
+		const organization = await authClient.organization.list();
 
-		if (!organization.data) {
-			toast.error("No active organization found. Please try to contact us.");
+		if (!organization.data?.[0]?.id) {
+			toast.error("No organization found. Please try to contact us.");
 			return;
 		}
 
-		// redirect to the organization
-		redirect(`/${organization.data.id}`);
+		redirect(`/dashboard/${organization.data[0].id}`);
 	}
 
 	return (
