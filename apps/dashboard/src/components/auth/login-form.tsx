@@ -70,6 +70,11 @@ export function LoginForm({
 			return;
 		}
 
+		// set this as the active organization
+		await authClient.organization.setActive({
+			organizationId: organization.data[0].id,
+		});
+
 		redirect(`/dashboard/${organization.data[0].id}`);
 	}
 

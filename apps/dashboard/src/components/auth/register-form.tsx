@@ -335,9 +335,21 @@ const CreateOrganizationPage = ({
 			return;
 		}
 
-		await authClient.organization.create({
+		const org = await authClient.organization.create({
 			name: organization,
 			slug: organization.toLowerCase().replace(/ /g, "-"),
+		});
+
+		if (org.error || !org.data) {
+			toast.error(
+				`We got an error when creating your org: ${org.error.statusText}`,
+			);
+			return;
+		}
+
+		// set this as the active organization
+		await authClient.organization.setActive({
+			organizationId: org.data.id,
 		});
 
 		redirect(`/${organization.toLowerCase().replace(/ /g, "-")}`);

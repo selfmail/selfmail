@@ -8,13 +8,13 @@ const orgMiddleware = createMiddleware().define(async ({ next }) => {
 		headers: await headers(),
 	});
 
-	if (!org) {
+	if (!org?.id || !org) {
 		throw new Error("No org is used");
 	}
 
 	return next({
 		ctx: {
-			organizationId: org.id,
+			organization: org,
 		},
 	});
 });
