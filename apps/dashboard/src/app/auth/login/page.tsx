@@ -1,10 +1,17 @@
 import { LoginForm } from "@/components/auth/login-form";
+import AuthToast from "@/components/notification/auth-toast";
 import { InboxStackIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default async function LoginPage({
+	searchParams,
+}: {
+	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+	const message = (await searchParams).message;
 	return (
 		<div className="grid min-h-svh lg:grid-cols-2">
+			<AuthToast message={message as string} />
 			<div className="flex flex-col gap-4 p-6 md:p-10">
 				<div className="flex justify-center gap-2 md:justify-start">
 					<Link

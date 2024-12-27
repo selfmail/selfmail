@@ -16,6 +16,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
   },
   "dependencies": {
+    "@rescale/nemo": "^1.4.0",
     "@t3-oss/env-nextjs": "^0.10.1",
     "auth": "workspace:*",
     "database": "workspace:*",
