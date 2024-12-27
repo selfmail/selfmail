@@ -3,22 +3,44 @@
 "use client";
 
 import { countEmails } from "@/actions/inbox/count-emails";
+import { getNextMails } from "@/actions/inbox/get-next-mails";
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAction } from "next-safe-action/hooks";
 import { useEffect, useMemo, useRef } from "react";
+import { toast } from "sonner";
 
 type Email = {
 	id: string;
-	subject: string;
-	from: string;
-	date: string;
-	adress: string;
-	tags: string[];
-	preview: string;
+	content: string;
+	subject: string | null;
+	preview: string | null;
+	plainText: string | null;
+	createdAt: Date;
+	tags: {
+		id: string;
+		name: string;
+	}[];
+	adress: {
+		email: string;
+		id: string;
+	};
+	sender: {
+		email: string;
+		id: string;
+		name: string;
+	};
+	organization: {
+		name: string;
+		id: string;
+	};
 };
 
-export default function InboxList() {
+export default function InboxList({
+	activeOrgId,
+}: {
+	activeOrgId: string;
+}) {
 	const countEmailsAction = useAction(countEmails);
 
 	const fetchSize = 20;
@@ -27,21 +49,33 @@ export default function InboxList() {
 		data: Email[];
 	}>({
 		queryKey: ["emails"],
-		queryFn: async ({ pageParam = 0 }) => {
+		queryFn: async ({ pageParam = 0, signal }) => {
 			const start = (pageParam as number) * fetchSize;
 
+			const emails = await getNextMails({
+				from: start,
+				take: fetchSize,
+			});
+
+			console.log(emails);
+
+			if (emails?.serverError) {
+				toast.error(
+					`Error fetching emails: ${emails?.serverError.errorMessage}`,
+				);
+			}
+
+			if (emails?.validationErrors) {
+				toast.error(
+					`Error fetching emails: ${emails?.validationErrors._errors?.join(", ")}`,
+				);
+				signal.reason("Error fetching emails");
+			}
+
+			console.log(emails?.data);
+
 			return {
-				data: [
-					{
-						adress: "henri@me.com",
-						subject: "Hello",
-						from: "henri@me.com",
-						date: "2024-01-01",
-						tags: ["tag1", "tag2"],
-						preview: "Hello, how are you?",
-						id: "123",
-					},
-				],
+				data: emails?.data as Email[],
 			};
 		},
 		initialPageParam: 0,
@@ -62,7 +96,7 @@ export default function InboxList() {
 			console.log("intersecting");
 			fetchNextPage();
 		}
-	});
+	}, [entry, fetchNextPage]);
 
 	const emails = useMemo(
 		() => data?.pages?.flatMap((page) => page.data) ?? [],
@@ -73,13 +107,15 @@ export default function InboxList() {
 	const totalFetched = emails.length;
 	return (
 		<div className="flex flex-col">
-			{emails.map((email) => (
-				<div key={email.id}>{email.subject}</div>
-			))}
 			{isFetching && <div>Loading...</div>}
-			<p>
-				{totalFetched} / {emailCount} Emails
-			</p>
+			<p>{totalFetched} Emails</p>
+			<div>
+				{emails.map((email) => (
+					<div key={email.id} ref={ref}>
+						<p>{email.content}</p>
+					</div>
+				))}
+			</div>
 		</div>
 	);
 }

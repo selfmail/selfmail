@@ -1,11 +1,8 @@
 import { auth } from "auth";
 import { createMiddleware, createSafeActionClient } from "next-safe-action";
 import { headers } from "next/headers";
-import { z } from "zod";
 
-export const authMiddleware = createMiddleware<{
-	metadata: { actionName: string };
-}>().define(async ({ next }) => {
+export const authMiddleware = createMiddleware().define(async ({ next }) => {
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});
@@ -23,11 +20,6 @@ export const authMiddleware = createMiddleware<{
 });
 
 export const authActionClient = createSafeActionClient({
-	defineMetadataSchema: () => {
-		return z.object({
-			actionName: z.string(),
-		});
-	},
 	handleServerError: (e) => {
 		console.error("Action error:", e.message);
 		return {
