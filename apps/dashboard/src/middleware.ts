@@ -2,7 +2,7 @@ import { createMiddleware } from "@rescale/nemo";
 import { dashboardMiddleware } from "./app/dashboard/[organization]/_middleware";
 
 const middlewares = {
-	"/dashboard{/*team}": dashboardMiddleware,
+	"/dashboard/*organization": dashboardMiddleware,
 };
 
 export const middleware = createMiddleware(middlewares);
