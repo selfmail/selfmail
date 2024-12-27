@@ -1,3 +1,4 @@
+import { QueryProvider } from "@/components/provider/query";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
@@ -21,12 +22,18 @@ export default function RootLayout({
 			className={`${GeistSans.variable}`}
 		>
 			<body>
-				<ThemeProvider attribute="class" disableTransitionOnChange enableSystem>
-					<TooltipProvider>
-						{children}
-						<Toaster />
-					</TooltipProvider>
-				</ThemeProvider>
+				<QueryProvider>
+					<ThemeProvider
+						attribute="class"
+						disableTransitionOnChange
+						enableSystem
+					>
+						<TooltipProvider>
+							{children}
+							<Toaster />
+						</TooltipProvider>
+					</ThemeProvider>
+				</QueryProvider>
 			</body>
 		</html>
 	);
