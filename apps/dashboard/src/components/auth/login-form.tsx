@@ -2,8 +2,10 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "auth/auth-client";
+import { useActiveOrganization } from "auth/hooks";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "ui/button";
@@ -42,6 +44,8 @@ export function LoginForm({
 }: {
 	alreadyLoggedIn: boolean;
 }) {
+	const [dashboardLink, setDashboardLink] = useState<string>("/dashboard");
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -49,6 +53,16 @@ export function LoginForm({
 			password: "",
 		},
 	});
+
+	const { data: activeOrg } = useActiveOrganization();
+
+	console.log(activeOrg);
+
+	useEffect(() => {
+		if (alreadyLoggedIn && activeOrg) {
+			setDashboardLink(`/dashboard/${activeOrg.id}`);
+		}
+	}, [alreadyLoggedIn, activeOrg]);
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		// handle login with better-auth
@@ -138,7 +152,7 @@ export function LoginForm({
 				)) || (
 					<div className="text-center text-sm border-t pt-4">
 						You are already logged in.{" "}
-						<Link href="/dashboard" className="underline underline-offset-4">
+						<Link href={dashboardLink} className="underline underline-offset-4">
 							Go to dashboard
 						</Link>
 					</div>
