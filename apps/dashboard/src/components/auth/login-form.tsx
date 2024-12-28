@@ -59,8 +59,27 @@ export function LoginForm({
 	console.log(activeOrg);
 
 	useEffect(() => {
+		async function getOrg() {
+			const org = await authClient.organization.list();
+
+			if (!org.data || org.data.length === 0 || !org.data[0]) {
+				toast.error(
+					"Error at fetching the organizations. Please try it again later. You have propably no active organization at the time!",
+				);
+				return;
+			}
+
+			return org.data[0].id;
+		}
 		if (alreadyLoggedIn && activeOrg) {
 			setDashboardLink(`/dashboard/${activeOrg.id}`);
+		} else {
+			const org = getOrg();
+			if (!org) {
+				toast.error("You have no active organizations. Please contact us!");
+				return;
+			}
+			setDashboardLink(`/dashboard/${org}`);
 		}
 	}, [alreadyLoggedIn, activeOrg]);
 
