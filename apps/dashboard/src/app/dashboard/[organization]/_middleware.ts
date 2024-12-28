@@ -63,5 +63,18 @@ export const dashboardMiddleware = async ({
 
 	const orgId: string = params().organization?.[0] as string;
 
-	console.log(orgId);
+	const { data: organization, error } = await betterFetch<{
+		isMember?: boolean;
+		error?: string;
+	}>(`/api/user/organization/${orgId}`, {
+		baseURL: request.nextUrl.origin,
+	});
+
+	if (organization?.error || error?.statusText)
+		console.log(`
+status: ${error?.status}
+statusText: ${error?.statusText}
+
+response: ${organization}
+		`);
 };

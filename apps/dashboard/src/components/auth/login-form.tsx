@@ -44,7 +44,7 @@ export function LoginForm({
 }: {
 	alreadyLoggedIn: boolean;
 }) {
-	const [dashboardLink, setDashboardLink] = useState<string>("/dashboard");
+	const [organization, setOrganization] = useState<string>("/dashboard");
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -55,8 +55,6 @@ export function LoginForm({
 	});
 
 	const { data: activeOrg } = useActiveOrganization();
-
-	console.log(activeOrg);
 
 	useEffect(() => {
 		async function getOrg() {
@@ -72,17 +70,18 @@ export function LoginForm({
 			return org.data[0].id;
 		}
 		if (alreadyLoggedIn && activeOrg) {
-			setDashboardLink(`/dashboard/${activeOrg.id}`);
+			setOrganization(`${activeOrg.id}`);
 		} else {
 			const org = getOrg();
 			if (!org) {
 				toast.error("You have no active organizations. Please contact us!");
 				return;
 			}
-			setDashboardLink(`/dashboard/${org}`);
+			setOrganization(`${org}`);
 		}
 	}, [alreadyLoggedIn, activeOrg]);
 
+	// login the user
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		// handle login with better-auth
 		const user = await authClient.signIn.username({
@@ -171,7 +170,13 @@ export function LoginForm({
 				)) || (
 					<div className="text-center text-sm border-t pt-4">
 						You are already logged in.{" "}
-						<Link href={dashboardLink} className="underline underline-offset-4">
+						<Link
+							href={{
+								pathname: "/dashboard/[slug]",
+								query: { slug: organization },
+							}}
+							className="underline underline-offset-4"
+						>
 							Go to dashboard
 						</Link>
 					</div>
