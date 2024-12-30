@@ -1,6 +1,6 @@
 # Selfmail
 
-Selfmail is a self-hosted email service. This is the offical repository for the project. It's including the backend, frontend, auth and more. You can find the documentation [here](https://selfmail.dev/).
+Selfmail is a self-hosted email service. This is the offical repository for the project. It's including the backend, frontend, auth and more. You can find the developer documentation [here](https://selfmail.dev/).
 
 ## Environment Variables
 
