@@ -4,7 +4,7 @@ import View from "@/components/inbox/view";
 export default async function OrganizationPage() {
 	// get the inbox
 	return (
-		<div className="flex">
+		<div className="flex h-full">
 			<InboxList />
 			<View />
 		</div>

@@ -101,6 +101,13 @@ export default function InboxList() {
 
 	// number of the fetched emails
 	const totalFetched = emails.length;
+	if (isFetching) {
+		return (
+			<div className="w-full flex h-screen items-center justify-center">
+				<Spinner />
+			</div>
+		)
+	}
 	return (
 		<div className="flex flex-col w-full">
 			<div className="w-full flex flex-col">
@@ -110,7 +117,6 @@ export default function InboxList() {
 					)
 				})}
 			</div>
-			{isFetching && <Spinner />}
 			<p>{totalFetched} Emails</p>
 		</div>
 	);
