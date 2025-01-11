@@ -41,7 +41,7 @@ export async function GET(
 			},
 		},
 	);
-	console.log(`This is the user: ${session?.user}`);
+	console.log(`This is the user: ${session?.user}`); 
 
 	if (!session) {
 		return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

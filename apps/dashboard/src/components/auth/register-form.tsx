@@ -207,13 +207,13 @@ const RegisterPage = ({
 						</Link>
 					</div>
 				)) || (
-					<div className="text-center text-sm border-t pt-4">
-						Already have an account?{" "}
-						<Link href="/auth/login" className="underline underline-offset-4">
-							Login
-						</Link>
-					</div>
-				)}
+						<div className="text-center text-sm border-t pt-4">
+							Already have an account?{" "}
+							<Link href="/auth/login" className="underline underline-offset-4">
+								Login
+							</Link>
+						</div>
+					)}
 			</form>
 		</Form>
 	);
@@ -352,7 +352,7 @@ const CreateOrganizationPage = ({
 			organizationId: org.data.id,
 		});
 
-		redirect(`/${organization.toLowerCase().replace(/ /g, "-")}`);
+		redirect(`/dashboard/${organization.toLowerCase().replace(/ /g, "-")}`);
 	}
 
 	return (

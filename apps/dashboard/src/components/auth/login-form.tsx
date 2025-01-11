@@ -168,19 +168,21 @@ export function LoginForm({
 						</Link>
 					</div>
 				)) || (
-					<div className="text-center text-sm border-t pt-4">
-						You are already logged in.{" "}
-						<Link
-							href={{
-								pathname: "/dashboard/[slug]",
-								query: { slug: organization },
-							}}
-							className="underline underline-offset-4"
-						>
-							Go to dashboard
-						</Link>
-					</div>
-				)}
+						<div className="text-center text-sm border-t pt-4">
+							You are already logged in.{" "}
+							<p
+								onClick={() => {
+									redirect(`/dashboard/${organization}`)
+								}}
+								onKeyDown={() => {
+									redirect(`/dashboard/${organization}`)
+								}}
+								className="underline underline-offset-4 cursor-pointer"
+							>
+								Go to dashboard
+							</p>
+						</div>
+					)}
 			</form>
 		</Form>
 	);
