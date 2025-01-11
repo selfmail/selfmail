@@ -9,6 +9,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAction } from "next-safe-action/hooks";
 import { useEffect, useMemo, useRef } from "react";
 import { toast } from "sonner";
+import { Spinner } from "ui/spinner";
+import EmailCard from "./card";
 
 type Email = {
 	id: string;
@@ -53,7 +55,6 @@ export default function InboxList() {
 				take: fetchSize,
 			});
 
-			console.log(emails);
 
 			if (emails?.serverError) {
 				toast.error(
@@ -68,7 +69,6 @@ export default function InboxList() {
 				signal.reason("Error fetching emails");
 			}
 
-			console.log(emails?.data);
 
 			return {
 				data: emails?.data as Email[],
@@ -102,16 +102,17 @@ export default function InboxList() {
 	// number of the fetched emails
 	const totalFetched = emails.length;
 	return (
-		<div className="flex flex-col">
-			{isFetching && <div>Loading...</div>}
-			<p>{totalFetched} Emails</p>
-			<div>
-				{emails.map((email) => (
-					<div key={email.id} ref={ref}>
-						<p>{email.content}</p>
-					</div>
-				))}
+		<div className="flex flex-col w-full">
+			<div className="w-full flex flex-col">
+				{emails.map((email) => {
+					return (
+						<EmailCard {...email} key={email.id} ref={ref} />
+					)
+				})}
 			</div>
+			{isFetching && <Spinner />}
+			<p>{totalFetched} Emails</p>
 		</div>
 	);
 }
+
