@@ -1,6 +1,8 @@
 import { createMiddleware } from "@rescale/nemo";
 import { dashboardMiddleware } from "./app/dashboard/[organization]/_middleware";
 
+export const dynamic = "force-dynamic"
+
 const middlewares = {
 	"/dashboard/*organization": dashboardMiddleware,
 };

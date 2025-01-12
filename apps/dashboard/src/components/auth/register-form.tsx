@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { createId } from '@paralleldrive/cuid2';
 import { authClient } from "auth/auth-client";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -299,10 +300,25 @@ const organizationSchema = z.object({
 		.min(2, {
 			message: "Organization must be at least 2 characters.",
 		})
-		.max(100, {
-			message: "Organization must be at most 100 characters.",
+		.max(15, {
+			message: "Organization must be at most 15 characters.",
 		}),
 });
+
+const signUpSchema = z.object({
+	username: z.string().min(3, {
+		message: "Username must be at least 3 character long."
+	}).max(15, {
+		message: "Username must be at most 15 characters long."
+	}),
+	password: z.string().min(8, {
+		message: "Password must be at least 8 characters long.",
+	}).max(100, {
+		message: "Password must be at most 100 characters long."
+	}),
+	email: z.string().email().endsWith("@selfmail.app"),
+	name: z.string().min(5).max(20)
+})
 
 const CreateOrganizationPage = ({
 	username,
@@ -312,6 +328,7 @@ const CreateOrganizationPage = ({
 	setOrganization,
 	organization,
 }: CreateOrganizationPageProps) => {
+
 	const form = useForm<z.infer<typeof organizationSchema>>({
 		resolver: zodResolver(organizationSchema),
 		defaultValues: {
@@ -320,8 +337,28 @@ const CreateOrganizationPage = ({
 	});
 
 	async function onSubmit(values: z.infer<typeof organizationSchema>) {
+		const orgParse = await organizationSchema.safeParseAsync({
+			organization: values.organization
+		})
+
+		if (!orgParse.success) {
+			toast.error("Invalid input for organization. The organization name must be at least 2 characters long.")
+			return
+		}
+
+		const signUpParse = await signUpSchema.safeParseAsync({
+			username,
+			name,
+			email,
+			password
+		})
+
+		if (!signUpParse.success) {
+			toast.error(`Invalid Input: ${signUpParse.error.message}`)
+		}
+
 		setOrganization(values.organization);
-		console.log(email, password, name, username);
+
 		// creating the new user
 		const user = await authClient.signUp.email({
 			email,
@@ -331,18 +368,23 @@ const CreateOrganizationPage = ({
 		});
 
 		if (user.error?.status) {
-			toast.error(`${user.error.status}: ${user.error.statusText}`);
+			console.log(user.error.message)
+			toast.error(`${user.error.status}: ${user.error.message || user.error.statusText}`);
 			return;
 		}
 
+		toast.success("Created User successfuly...")
+
+
+
 		const org = await authClient.organization.create({
-			name: organization,
-			slug: organization.toLowerCase().replace(/ /g, "-"),
+			name: values.organization,
+			slug: createId(),
 		});
 
 		if (org.error || !org.data) {
 			toast.error(
-				`We got an error when creating your org: ${org.error.statusText}`,
+				`We got an error when creating your org: ${org.error.message || org.error.statusText}`,
 			);
 			return;
 		}
@@ -352,7 +394,9 @@ const CreateOrganizationPage = ({
 			organizationId: org.data.id,
 		});
 
-		redirect(`/dashboard/${organization.toLowerCase().replace(/ /g, "-")}`);
+		toast.success("Created User successfuly... Redirecting to the dashboard.")
+
+		redirect(`/dashboard/${org.data.slug}`);
 	}
 
 	return (

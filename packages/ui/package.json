@@ -48,7 +48,8 @@
 		"./use-is-mobile": "./src/hooks/use-mobile.tsx",
 		"./cn": "./src/utils/cn.ts",
 		"./form": "./src/components/form.tsx",
-		"./spinner": "./src/components/spinner.tsx"
+		"./spinner": "./src/components/spinner.tsx",
+		"./checkbox": "./src/components/checkbox.tsx"
 	},
 	"dependencies": {
 		"@radix-ui/react-slot": "^1.1.1",

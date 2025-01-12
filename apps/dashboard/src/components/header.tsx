@@ -16,7 +16,7 @@ type Breadcrumb = {
 
 type State = {
 	breadcrumbs: Breadcrumb[];
-	customHeader: React.ReactNode;
+	customHeader: () => React.ReactNode;
 };
 
 type Action = {
@@ -25,9 +25,9 @@ type Action = {
 };
 
 // Create your store, which includes both state and (optionally) actions
-const usePersonStore = create<State & Action>((set) => ({
+export const useHeaderStore = create<State & Action>((set) => ({
 	breadcrumbs: [],
-	customHeader: null,
+	customHeader: () => null,
 	updateBreadcrumbs: (breadcrumbs) => set(() => ({ breadcrumbs: breadcrumbs })),
 	updateCustomHeader: (customHeader) =>
 		set(() => ({ customHeader: customHeader })),
@@ -39,7 +39,7 @@ export default function Header({
 	children: React.ReactNode;
 }) {
 	const isMobile = useIsMobile();
-	const { breadcrumbs, customHeader } = usePersonStore();
+	const { breadcrumbs, customHeader } = useHeaderStore();
 	return (
 		<div
 			className={cn(
@@ -48,7 +48,7 @@ export default function Header({
 			)}
 		>
 			<div className="lg:h-14 flex items-center justify-between w-full border-b border-border p-5">
-				{(customHeader && <>{customHeader}</>) || (
+				{(customHeader && <>{customHeader()}</>) || (
 					<div>
 						{breadcrumbs.map((breadcrumb) => (
 							<Link key={breadcrumb.href} href={breadcrumb.href}>
@@ -70,19 +70,21 @@ export const SetHeader = ({
 	breadcumbs,
 	children,
 }: {
-	breadcumbs: {
+	breadcumbs?: {
 		title: string;
 		href: string;
 	}[];
 	children?: React.ReactNode;
 }) => {
-	const { updateBreadcrumbs, updateCustomHeader } = usePersonStore();
-	useEffect(() => {
-		updateBreadcrumbs(breadcumbs);
-	}, [breadcumbs, updateBreadcrumbs]);
+	const { updateBreadcrumbs, updateCustomHeader } = useHeaderStore();
+	if (breadcumbs) {
+		useEffect(() => {
+			updateBreadcrumbs(breadcumbs);
+		}, [breadcumbs, updateBreadcrumbs]);
+	}
 
 	if (children) {
-		updateCustomHeader(children);
+		updateCustomHeader(() => children);
 	}
 	return <></>;
 };

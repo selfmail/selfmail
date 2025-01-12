@@ -4,6 +4,7 @@
 
 import { countEmails } from "@/actions/inbox/count-emails";
 import { getNextMails } from "@/actions/inbox/get-next-mails";
+import { useIdStore } from "@/stores/email-list.store";
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAction } from "next-safe-action/hooks";
@@ -39,7 +40,10 @@ type Email = {
 };
 
 export default function InboxList() {
+	const { ids } = useIdStore()
+
 	const countEmailsAction = useAction(countEmails);
+
 
 	const fetchSize = 20;
 
@@ -111,9 +115,9 @@ export default function InboxList() {
 	return (
 		<div className="flex flex-col w-full">
 			<div className="w-full flex flex-col">
-				{emails.map((email) => {
+				{emails.map((email, i) => {
 					return (
-						<EmailCard {...email} key={email.id} ref={ref} />
+						<EmailCard index={i} {...email} key={email.id} ref={ref} />
 					)
 				})}
 			</div>
