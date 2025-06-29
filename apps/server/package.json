@@ -4,10 +4,11 @@
 	"type": "module",
 	"scripts": {
 		"build": "tsc && tsc-alias",
+		"deploy": "vercel",
+		"start": "vercel dev",
 		"check-types": "tsc --noEmit",
 		"compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
 		"dev": "bun run --hot src/index.ts",
-		"start": "bun run dist/src/index.js",
 		"db:push": "drizzle-kit push",
 		"db:studio": "drizzle-kit studio",
 		"db:generate": "drizzle-kit generate",
@@ -27,10 +28,11 @@
 		"zod": "^3.25.16"
 	},
 	"devDependencies": {
+		"@types/bun": "^1.2.6",
+		"@types/pg": "^8.11.11",
+		"drizzle-kit": "^0.31.2",
 		"tsc-alias": "^1.8.11",
 		"typescript": "^5.8.2",
-		"@types/bun": "^1.2.6",
-		"drizzle-kit": "^0.31.2",
-		"@types/pg": "^8.11.11"
+		"vercel": "^44.2.7"
 	}
 }
