@@ -1,6 +1,31 @@
 {
 	"$schema": "https://turbo.build/schema.json",
 	"ui": "tui",
+	"globalDependencies": [".env"],
+	"globalEnv": [
+		"NODE_ENV",
+		"DATABASE_URL",
+		"PORT",
+		"HOST",
+		"CORS_ORIGIN",
+		"UNKEY_API_ID",
+		"UNKEY_ROOT_KEY",
+		"RATE_LIMIT_REQUESTS",
+		"RATE_LIMIT_WINDOW",
+		"JWT_SECRET",
+		"JWT_EXPIRES_IN",
+		"SMTP_HOST",
+		"SMTP_PORT",
+		"SMTP_USER",
+		"SMTP_PASS",
+		"VITE_SERVER_URL",
+		"VITE_APP_NAME",
+		"VITE_APP_VERSION",
+		"VITE_API_TIMEOUT",
+		"VITE_ENABLE_DEV_TOOLS",
+		"VITE_ENABLE_ANALYTICS",
+		"VITE_NODE_ENV"
+	],
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],

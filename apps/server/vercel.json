@@ -1,9 +1,19 @@
 {
-	"rewrites": [
+	"builds": [
 		{
-			"source": "/api/(.*)",
-			"destination": "/api"
+			"src": "api/index.ts",
+			"use": "@vercel/node"
 		}
 	],
-	"redirects": [{ "source": "/", "destination": "/api", "permanent": false }]
+	"functions": {
+		"api/index.ts": {
+			"includeFiles": "**"
+		}
+	},
+	"rewrites": [
+		{
+			"source": "/(.*)",
+			"destination": "/api"
+		}
+	]
 }

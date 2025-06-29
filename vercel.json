@@ -1,0 +1,32 @@
+{
+	"version": 2,
+	"builds": [
+		{
+			"src": "package.json",
+			"use": "@vercel/static-build",
+			"config": {
+				"buildCommand": "npm run build",
+				"outputDirectory": "apps/web/dist"
+			}
+		},
+		{
+			"src": "apps/server/api/index.ts",
+			"use": "@vercel/node"
+		}
+	],
+	"routes": [
+		{
+			"src": "/api/(.*)?",
+			"dest": "apps/server/api/index.ts"
+		},
+		{
+			"src": "/(.*)",
+			"dest": "apps/web/dist/$1"
+		}
+	],
+	"functions": {
+		"apps/server/api/index.ts": {
+			"includeFiles": "apps/server/src/**"
+		}
+	}
+}

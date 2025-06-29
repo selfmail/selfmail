@@ -1,8 +1,15 @@
 import { handle } from "hono/vercel";
-// @ts-expect-error
-import app from "./dist/src/app.js";
+import { app } from "../src/app";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
+
+// Add a simple test route
+app.get("/", (c) => {
+	return c.json({
+		message: "API is working!",
+		timestamp: new Date().toISOString(),
+	});
+});
 
 export const GET = handle(app);
 export const POST = handle(app);

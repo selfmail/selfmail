@@ -3,6 +3,7 @@ import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { toast } from "sonner";
 import type { AppRouter } from "../../../server/src/routers/index";
+import { config } from "../lib/config";
 
 export const queryClient = new QueryClient({
 	queryCache: new QueryCache({
@@ -17,17 +18,31 @@ export const queryClient = new QueryClient({
 			});
 		},
 	}),
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false,
+			retry: 1,
+			staleTime: 5 * 60 * 1000, // 5 minutes
+		},
+	},
 });
 
 export const trpcClient = createTRPCClient<AppRouter>({
 	links: [
 		httpBatchLink({
-			url: `${import.meta.env.VITE_SERVER_URL || "http://localhost:3000"}/trpc`,
+			url: `${config.serverUrl}/trpc`,
 			fetch(url, options) {
+				const controller = new AbortController();
+				const timeoutId = setTimeout(
+					() => controller.abort(),
+					config.apiTimeout,
+				);
+
 				return fetch(url, {
 					...options,
 					credentials: "include",
-				});
+					signal: controller.signal,
+				}).finally(() => clearTimeout(timeoutId));
 			},
 		}),
 	],
