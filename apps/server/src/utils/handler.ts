@@ -1,8 +1,13 @@
-export async function handler() {
-	const files = new Bun.Glob("**/*.ts");
+import { glob } from "glob";
+import { join } from "path";
 
-	for await (const file of files.scan(`${process.cwd()}/src/routes`)) {
-		const imp = (await import(`${process.cwd()}/src/routes/${file}`)) as {
+export async function handler() {
+	const routesDir = join(process.cwd(), "src/routes");
+	const files = await glob("**/*.ts", { cwd: routesDir });
+
+	for (const file of files) {
+		const filePath = join(routesDir, file);
+		const imp = (await import(filePath)) as {
 			default: () => void | Promise<void>;
 		};
 		const defaultFunc = imp.default;

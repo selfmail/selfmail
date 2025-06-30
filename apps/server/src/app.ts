@@ -5,15 +5,17 @@ import { type UnkeyContext, unkey } from "@unkey/hono";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import { createContext } from "./lib/context";
-import { env } from "./lib/env";
-import { appRouter } from "./routers/index";
-import { handler } from "./utils/handler";
+import { createContext } from "./lib/context.js";
+import { env } from "./lib/env.js";
+import { appRouter } from "./routers/index.js";
+import { handler } from "./utils/handler.js";
+
+export const runtime = "edge";
 
 export const app = new Hono<{ Variables: { unkey: UnkeyContext } }>();
 
-// Only apply Unkey middleware if API ID is configured
 if (env.UNKEY_API_ID) {
+	// Only apply Unkey middleware if API ID is configured
 	app.use(
 		"/v1/*",
 		unkey({
@@ -35,9 +37,7 @@ app.use(logger());
 app.use(
 	"/*",
 	cors({
-		origin:
-			env.CORS_ORIGIN ||
-			(env.NODE_ENV === "production" ? "*" : "http://localhost:3001"),
+		origin: env.NODE_ENV === "production" ? "*" : "http://localhost:3001",
 		allowMethods: ["GET", "POST", "OPTIONS"],
 		credentials: true, // Allow cookies to be sent
 	}),
@@ -57,7 +57,18 @@ app.post("/v1/wow", (c) => {
 	return c.text("OK");
 });
 
-// Handling all routes in `/src/routes` directory
-await handler();
+// Add a simple test route
+app.get("/", (c) => {
+	return c.json({
+		message: "API is working!",
+		timestamp: new Date().toISOString(),
+	});
+});
 
-export default app;
+// Initialize routes
+async function initializeRoutes() {
+	await handler();
+}
+
+// Initialize routes immediately
+initializeRoutes().catch(console.error);

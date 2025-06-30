@@ -1,5 +1,11 @@
 import { and, eq, gt } from "drizzle-orm";
-import { db, type PublicUser, type Session, sessions, users } from "../db";
+import {
+	db,
+	type PublicUser,
+	type Session,
+	sessions,
+	users,
+} from "../db/index.js";
 import {
 	generateSessionToken,
 	hashPassword,
@@ -7,7 +13,7 @@ import {
 	type RegisterInput,
 	SESSION_CONFIG,
 	verifyPassword,
-} from "./auth";
+} from "./auth.js";
 
 /**
  * Authentication service functions

@@ -1,19 +1,11 @@
 {
-	"builds": [
-		{
-			"src": "api/index.ts",
-			"use": "@vercel/node"
-		}
-	],
+	"$schema": "https://openapi.vercel.sh/vercel.json",
 	"functions": {
 		"api/index.ts": {
-			"includeFiles": "**"
+			"memory": 1024,
+			"maxDuration": 30,
+			"includeFiles": "src/**"
 		}
 	},
-	"rewrites": [
-		{
-			"source": "/(.*)",
-			"destination": "/api"
-		}
-	]
+	"rewrites": [{ "source": "/(.*)", "destination": "/api" }]
 }

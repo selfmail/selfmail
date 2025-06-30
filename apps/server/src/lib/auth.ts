@@ -1,7 +1,8 @@
+import bcrypt from "bcrypt";
 import { z } from "zod";
 
 /**
- * Authentication utilities using Bun's built-in password hashing
+ * Authentication utilities using bcrypt for password hashing
  */
 
 // Validation schemas
@@ -20,23 +21,21 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 
 /**
- * Hash a password using Bun's built-in password hashing
+ * Hash a password using bcrypt
  */
 export async function hashPassword(password: string): Promise<string> {
-	return await Bun.password.hash(password, {
-		algorithm: "bcrypt",
-		cost: 12, // Higher cost = more secure but slower
-	});
+	const saltRounds = 12; // Higher cost = more secure but slower
+	return await bcrypt.hash(password, saltRounds);
 }
 
 /**
- * Verify a password against a hash using Bun's built-in verification
+ * Verify a password against a hash using bcrypt
  */
 export async function verifyPassword(
 	password: string,
 	hash: string,
 ): Promise<boolean> {
-	return await Bun.password.verify(password, hash);
+	return await bcrypt.compare(password, hash);
 }
 
 /**

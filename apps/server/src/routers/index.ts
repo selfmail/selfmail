@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../lib/trpc";
-import { authRouter } from "./auth";
+import { publicProcedure, router } from "../lib/trpc.js";
+import { authRouter } from "./auth.js";
 
 export const appRouter = router({
 	healthCheck: publicProcedure.query(() => {

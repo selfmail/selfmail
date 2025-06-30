@@ -4,14 +4,14 @@ import {
 	loginSchema,
 	registerSchema,
 	SESSION_CONFIG,
-} from "../lib/auth";
+} from "../lib/auth.js";
 import {
 	AuthError,
 	loginUser,
 	logoutUser,
 	registerUser,
-} from "../lib/auth-service";
-import { protectedProcedure, publicProcedure, router } from "../lib/trpc";
+} from "../lib/auth-service.js";
+import { protectedProcedure, publicProcedure, router } from "../lib/trpc.js";
 
 export const authRouter = router({
 	// Register new user

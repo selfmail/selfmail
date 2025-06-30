@@ -1,6 +1,6 @@
 import type { Context } from "hono";
-import type { PublicUser } from "../db";
-import { createLogoutCookie, createSessionCookie } from "./auth";
+import type { PublicUser } from "../db/index.js";
+import { createLogoutCookie, createSessionCookie } from "./auth.js";
 
 /**
  * Middleware helpers for handling authentication cookies
