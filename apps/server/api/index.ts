@@ -1,6 +1,5 @@
 import { handle } from "hono/vercel";
 import { app } from "../src/app.js";
-import { posthog } from "../src/lib/posthog.js";
 
 export const runtime = "edge";
 

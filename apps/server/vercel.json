@@ -5,7 +5,6 @@
 	"installCommand": "cd ../.. && bun install",
 	"functions": {
 		"api/index.ts": {
-			"memory": 1024,
 			"maxDuration": 30,
 			"includeFiles": "src/**"
 		}
