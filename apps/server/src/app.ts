@@ -34,14 +34,14 @@ if (env.UNKEY_API_ID) {
 
 app.use(logger());
 
-app.use(
-	"/*",
-	cors({
-		origin: env.NODE_ENV === "production" ? "*" : "http://localhost:3001",
-		allowMethods: ["GET", "POST", "OPTIONS"],
-		credentials: true, // Allow cookies to be sent
-	}),
-);
+// app.use(
+// 	"/*",
+// 	cors({
+// 		origin: env.NODE_ENV === "production" ? "*" : "http://localhost:3001",
+// 		allowMethods: ["GET", "POST", "OPTIONS"],
+// 		credentials: true, // Allow cookies to be sent
+// 	}),
+// );
 
 app.use(
 	"/trpc/*",
