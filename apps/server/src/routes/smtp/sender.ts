@@ -1,6 +1,9 @@
 import { z } from "zod/v4";
-import { handlePermissionsError, handleValidationError } from "@/utils/error";
 import { app } from "../../app.js";
+import {
+	handlePermissionsError,
+	handleValidationError,
+} from "../../utils/error.js";
 
 export default async function SMTPSenderHandler() {
 	app.post("/v1/smtp/check-sender", async (c) => {

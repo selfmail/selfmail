@@ -7,9 +7,6 @@
 		"strict": true,
 		"skipLibCheck": true,
 		"baseUrl": "./",
-		"paths": {
-			"@/*": ["./src/*"]
-		},
 		"outDir": "./dist",
 		"types": ["node"],
 		"composite": true,
