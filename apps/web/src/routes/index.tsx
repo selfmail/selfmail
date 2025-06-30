@@ -11,6 +11,8 @@ export const Route = createFileRoute("/")({
 });
 
 function HomeComponent() {
+	console.log(import.meta.env.VITE_SERVER_URL);
+	// Fetch health check status from the server
 	const healthCheck = useQuery(trpc.healthCheck.queryOptions());
 	const { user, isAuthenticated, logout, isLoading } = useAuth();
 

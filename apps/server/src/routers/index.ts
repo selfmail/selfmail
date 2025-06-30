@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { publicProcedure, router } from "../lib/trpc.js";
 import { authRouter } from "./auth.js";
 

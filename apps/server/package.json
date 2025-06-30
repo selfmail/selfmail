@@ -15,17 +15,17 @@
 		"@hono/node-server": "^1.13.1",
 		"@hono/trpc-server": "^0.4.0",
 		"@trpc/client": "^11.4.2",
-		"@trpc/server": "^11.4.2",
+		"@trpc/server": "^11.4.3",
 		"@unkey/api": "^0.36.0",
 		"@unkey/hono": "^1.5.0",
 		"@unkey/ratelimit": "^2.0.0",
 		"bcrypt": "^5.1.1",
 		"dotenv": "^16.4.7",
 		"drizzle-orm": "^0.44.2",
+		"glob": "^11.0.0",
 		"hono": "^4.8.2",
 		"pg": "^8.14.1",
-		"zod": "^3.25.16",
-		"glob": "^11.0.0"
+		"zod": "^3.25.16"
 	},
 	"devDependencies": {
 		"@types/bcrypt": "^5.0.2",

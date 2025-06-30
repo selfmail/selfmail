@@ -2,7 +2,14 @@
 	"$schema": "https://turbo.build/schema.json",
 	"ui": "tui",
 	"globalDependencies": [".env"],
-	"globalEnv": ["NODE_ENV"],
+	"globalEnv": [
+		"NODE_ENV",
+		"CORS_ORIGIN",
+		"UNKEY_ROOT_KEY",
+		"UNKEY_API_ID",
+		"PORT",
+		"VITE_SERVER_URL"
+	],
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
