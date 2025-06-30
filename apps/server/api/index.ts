@@ -5,68 +5,20 @@ import { posthog } from "../src/lib/posthog.js";
 export const runtime = "edge";
 
 export const POST = async () => {
-	handle(app);
-
-	if (posthog) {
-		try {
-			await posthog.shutdown();
-		} catch (error) {
-			console.error("Error shutting down PostHog:", error);
-		}
-	}
+	return handle(app);
 };
 export const OPTIONS = async () => {
-	handle(app);
-
-	if (posthog) {
-		try {
-			await posthog.shutdown();
-		} catch (error) {
-			console.error("Error shutting down PostHog:", error);
-		}
-	}
+	return handle(app);
 };
 export const PUT = async () => {
-	handle(app);
-
-	if (posthog) {
-		try {
-			await posthog.shutdown();
-		} catch (error) {
-			console.error("Error shutting down PostHog:", error);
-		}
-	}
+	return handle(app);
 };
 export const DELETE = async () => {
-	handle(app);
-
-	if (posthog) {
-		try {
-			await posthog.shutdown();
-		} catch (error) {
-			console.error("Error shutting down PostHog:", error);
-		}
-	}
+	return handle(app);
 };
 export const PATCH = async () => {
-	handle(app);
-
-	if (posthog) {
-		try {
-			await posthog.shutdown();
-		} catch (error) {
-			console.error("Error shutting down PostHog:", error);
-		}
-	}
+	return handle(app);
 };
 export const HEAD = async () => {
-	handle(app);
-
-	if (posthog) {
-		try {
-			await posthog.shutdown();
-		} catch (error) {
-			console.error("Error shutting down PostHog:", error);
-		}
-	}
+	return handle(app);
 };
