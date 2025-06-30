@@ -30,15 +30,15 @@ export const queryClient = new QueryClient({
 export const trpcClient = createTRPCClient<AppRouter>({
 	links: [
 		httpBatchLink({
-			url: `${config.serverUrl}/trpc`,
-			fetch(url, options) {
+			url: `${import.meta.env.VITE_SERVER_URL}/trpc`,
+			async fetch(url, options) {
 				const controller = new AbortController();
 				const timeoutId = setTimeout(
 					() => controller.abort(),
 					config.apiTimeout,
 				);
 
-				return fetch(url, {
+				return await fetch(url, {
 					...options,
 					credentials: "include",
 					signal: controller.signal,
