@@ -10,8 +10,6 @@ import { env } from "./lib/env.js";
 import { appRouter } from "./routers/index.js";
 import { handler } from "./utils/handler.js";
 
-export const runtime = "edge";
-
 export const app = new Hono<{ Variables: { unkey: UnkeyContext } }>();
 
 if (env.UNKEY_API_ID) {

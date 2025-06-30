@@ -4,6 +4,7 @@ import { app } from "../src/app.js";
 export const runtime = "edge";
 
 export const POST = handle(app);
+export const GET = handle(app);
 export const OPTIONS = handle(app);
 export const PUT = handle(app);
 export const DELETE = handle(app);
