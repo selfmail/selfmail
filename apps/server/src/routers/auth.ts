@@ -11,6 +11,7 @@ import {
 	logoutUser,
 	registerUser,
 } from "../lib/auth-service.js";
+import { posthog } from "../lib/posthog.js";
 import { protectedProcedure, publicProcedure, router } from "../lib/trpc.js";
 
 export const authRouter = router({
@@ -30,6 +31,11 @@ export const authRouter = router({
 				// Set session cookie
 				const cookieString = createSessionCookie(sessionToken);
 				ctx.honoContext.header("Set-Cookie", cookieString);
+
+				posthog.capture({
+					distinctId: user.id,
+					event: "user_registered",
+				});
 
 				return {
 					success: true,
@@ -58,6 +64,11 @@ export const authRouter = router({
 			// Set session cookie via Hono context
 			const cookieString = createSessionCookie(sessionToken);
 			ctx.honoContext.header("Set-Cookie", cookieString);
+
+			posthog.capture({
+				distinctId: user.id,
+				event: "user_logged_in",
+			});
 
 			return {
 				success: true,
@@ -89,6 +100,10 @@ export const authRouter = router({
 			"Set-Cookie",
 			`${SESSION_CONFIG.cookieName}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=lax`,
 		);
+		posthog.capture({
+			distinctId: ctx.user.id,
+			event: "user_logged_out",
+		});
 
 		return {
 			success: true,

@@ -1,5 +1,6 @@
 import { z } from "zod/v4";
 import { app } from "../../app.js";
+import { posthog } from "../../lib/posthog.js";
 import {
 	handlePermissionsError,
 	handleValidationError,
@@ -25,6 +26,11 @@ export default async function SMTPSenderHandler() {
 
 		// request body is valid, checking if the sender is blocked by the system
 		const { sender, recipient } = parse.data;
+
+		await posthog.capture({
+			distinctId: recipient,
+			event: "email.check-sender",
+		});
 
 		return c.text("Emails route is working!");
 	});

@@ -36,8 +36,11 @@ app.use(
 	"/*",
 	cors({
 		origin:
-			env.CORS_ORIGIN ||
-			(env.NODE_ENV === "production" ? "*" : "http://localhost:3001"),
+			env.NODE_ENV === "development"
+				? "http://localhost:3000"
+				: env.CORS_ORIGIN?.includes(",")
+					? env.CORS_ORIGIN.split(",")
+					: env.CORS_ORIGIN || "*",
 		allowMethods: ["GET", "POST", "OPTIONS"],
 		credentials: true, // Allow cookies to be sent
 		allowHeaders: ["Content-Type", "Authorization"],
