@@ -31,13 +31,12 @@ if (env.UNKEY_API_ID) {
 }
 
 app.use(logger());
-
 app.use(
 	"/*",
 	cors({
 		origin:
 			env.NODE_ENV === "development"
-				? "http://localhost:3000"
+				? "http://localhost:3001"
 				: env.CORS_ORIGIN?.includes(",")
 					? env.CORS_ORIGIN.split(",")
 					: env.CORS_ORIGIN || "*",

@@ -26,6 +26,7 @@ export const authRouter = router({
 				const { sessionToken } = await loginUser({
 					email: input.email,
 					password: input.password,
+					emailLoop: false,
 				});
 
 				// Set session cookie

@@ -20,6 +20,8 @@ export type RegisterData = {
 export type LoginData = {
 	email: string;
 	password: string;
+	username: string;
+	emailLoop?: boolean; // Optional, defaults to false
 };
 
 /**
@@ -57,7 +59,7 @@ export function useAuth() {
 	// Login mutation
 	const loginMutation = useMutation({
 		mutationFn: async (data: LoginData) => {
-			return trpcClient.auth.login.mutate(data);
+			return await trpcClient.auth.login.mutate(data);
 		},
 		onSuccess: (data) => {
 			toast.success(data.message);

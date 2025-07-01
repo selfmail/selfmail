@@ -46,17 +46,6 @@ export const members = pgTable("members", {
 	description: text("description"),
 });
 
-export const membersRelations = relations(members, ({ one }) => ({
-	user: one(users, {
-		fields: [members.userId],
-		references: [users.id],
-	}),
-	workspace: one(workspace, {
-		fields: [members.workspaceId],
-		references: [workspace.id],
-	}),
-}));
-
 // Addresses & Emails
 
 export const address = pgTable("address", {
@@ -82,6 +71,33 @@ export const domain = pgTable("domain", {
 	verificationKey: text("verification_key").notNull(),
 });
 
+export const mail = pgTable("mail", {
+	id: uuid("id").primaryKey().defaultRandom(),
+	from: text("from").notNull(),
+	to: text("to").notNull(),
+	subject: text("subject").notNull(),
+	body: text("body").notNull(),
+	preview: text("preview"),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+	updatedAt: timestamp("updated_at").defaultNow().notNull(),
+	attachements: text("attachements").array().default([]),
+
+	workspaceId: uuid("workspace_id")
+		.notNull()
+		.references(() => workspace.id, { onDelete: "cascade" }),
+});
+
+export const outgoingMail = pgTable("outgoing_mail", {
+	id: uuid("id").primaryKey().defaultRandom(),
+	mailId: uuid("mail_id")
+		.notNull()
+		.references(() => mail.id, { onDelete: "cascade" }),
+	domainId: uuid("domain_id")
+		.notNull()
+		.references(() => domain.id, { onDelete: "cascade" }),
+	sendedAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
 	sessions: many(sessions),
@@ -95,9 +111,25 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 	}),
 }));
 
+export const membersRelations = relations(members, ({ one }) => ({
+	user: one(users, {
+		fields: [members.userId],
+		references: [users.id],
+	}),
+	workspace: one(workspace, {
+		fields: [members.workspaceId],
+		references: [workspace.id],
+	}),
+}));
+
 export const workspaceRelations = relations(workspace, ({ many }) => ({
 	members: many(members),
 	domains: many(domain),
+}));
+
+export const addressRelations = relations(address, ({ many }) => ({
+	users: many(users),
+	workspace: many(workspace),
 }));
 
 // Types
