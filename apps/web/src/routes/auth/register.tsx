@@ -1,17 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { InputGroup, InputGroupItem } from "@/components/ui/input-group";
 import { useAuth } from "@/hooks/useAuth";
-import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute("/auth/register")({
 	component: RouteComponent,
 });
-
 // Login form validation schema
 const loginSchema = z.object({
 	username: z
@@ -27,7 +25,8 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 function RouteComponent() {
-	const [emailLoop, setEmailLoop] = useState(false);
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [password, setPassword] = useState("");
 	const {
 		register,
 		handleSubmit,
@@ -36,15 +35,16 @@ function RouteComponent() {
 		resolver: zodResolver(loginSchema),
 	});
 
-	const { login } = useAuth();
+	const registerUser = useAuth();
 
 	const onSubmit = async (data: LoginFormData) => {
+		setPassword(data.password);
+		if (data.password !== confirmPassword) return;
 		try {
-			login({
+			registerUser.register({
 				email: data.email,
 				password: data.password,
-				emailLoop,
-				username: data.username,
+				name: data.username,
 			});
 		} catch (error) {
 			console.error("Login failed:", error);
@@ -55,26 +55,7 @@ function RouteComponent() {
 		<div className="flex h-screen items-center justify-center bg-neutral-100">
 			<div className="flex flex-col gap-2 lg:w-[400px]">
 				<form onSubmit={handleSubmit(onSubmit)}>
-					<button
-						type="button"
-						onClick={() => setEmailLoop(!emailLoop)}
-						onKeyDown={(e) => {
-							if (e.key === "Enter") {
-								setEmailLoop(!emailLoop);
-							}
-						}}
-						className={cn(
-							"cusror-pointer mb-2 flex w-full flex-col items-center justify-start gap-0.5 rounded-xl border border-[#eee] bg-white p-4 text-start shadow-sm ring-0 active:scale-[99.5%]",
-							emailLoop && " ring-2 ring-blue-500",
-						)}
-					>
-						<h3 className="font-medium text-base">
-							We are launching mails soon!
-						</h3>
-						<p className="text-start text-[#555] text-sm">
-							Click to keep me in the loop!
-						</p>
-					</button>
+					<h2 className="mb-4 font-medium text-2xl">Register</h2>
 					<InputGroup className="">
 						<InputGroupItem
 							type="text"
@@ -93,9 +74,16 @@ function RouteComponent() {
 						<InputGroupItem
 							type="password"
 							placeholder="Password"
-							place="bottom"
+							place="middle"
 							{...register("password")}
 							aria-invalid={errors.password ? "true" : "false"}
+						/>
+						<InputGroupItem
+							type="password"
+							value={confirmPassword}
+							onChange={(e) => setConfirmPassword(e.target.value)}
+							placeholder="Confirm Password"
+							place="bottom"
 						/>
 					</InputGroup>
 
@@ -118,23 +106,31 @@ function RouteComponent() {
 							{errors.password.message}
 						</p>
 					)}
+					{confirmPassword && password !== confirmPassword && (
+						<p className="mt-1 text-red-600 text-sm">
+							<span className="text-neutral-500">Confirm Password:</span>{" "}
+							Passwords do not match
+						</p>
+					)}
 
 					<div className="mt-4 flex w-full flex-row items-center justify-between">
-						<Button
-							variant={"ghost"}
-							size={"sm"}
-							className="w-min text-start"
-							type="button"
-						>
-							Register
-						</Button>
+						<Link to="/auth/login">
+							<Button
+								variant={"ghost"}
+								size={"sm"}
+								className="w-min text-start"
+								type="button"
+							>
+								Login
+							</Button>
+						</Link>
 						<Button
 							size={"sm"}
 							className="w-min text-end"
 							type="submit"
 							disabled={isSubmitting}
 						>
-							{isSubmitting ? "Logging in..." : "Login"}
+							{isSubmitting ? "Registering..." : "Register"}
 						</Button>
 					</div>
 				</form>

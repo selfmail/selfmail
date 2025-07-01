@@ -27,6 +27,7 @@ export const authRouter = router({
 					email: input.email,
 					password: input.password,
 					emailLoop: false,
+					username: user.name,
 				});
 
 				// Set session cookie
