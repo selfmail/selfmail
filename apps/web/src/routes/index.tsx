@@ -48,7 +48,7 @@ function HomeComponent() {
 										asChild
 										className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
 									>
-										<Link to="/auth">Get Started</Link>
+										<Link to="/auth/login">Get Started</Link>
 									</Button>
 									<Button variant="outline" size="lg">
 										Learn More
@@ -196,7 +196,7 @@ function HomeComponent() {
 												Create your account today
 											</p>
 											<Button asChild size="sm" className="mt-3">
-												<Link to="/auth">Sign In / Register</Link>
+												<Link to="/auth/login">Sign In / Register</Link>
 											</Button>
 										</div>
 										<div className="rounded-lg bg-blue-500/10 p-3">

@@ -1,56 +1,20 @@
 {
-	"name": "haraka_local",
-	"description": "An SMTP Server",
-	"version": "0.0.1",
-	"repository": "",
-	"license": "MIT",
-	"type": "module",
-	"scripts": {
-		"build:smtp": "tsx ./scripts/compile.ts",
-		"start:smtp": "sudo env \"PATH=$PATH\" bun run build && sudo env \"PATH=$PATH\" haraka -c .",
-		"watch:smtp": "nodemon",
-		"dev:server": "nodemon"
-	},
-	"nodemonConfig": {
-		"watch": [
-			"src/**/*",
-			"types/**/*",
-			"config/**/*"
-		],
-		"ignore": [
-			"node_modules/**/*",
-			"plugins/**/*",
-			"logs/**/*",
-			"*.log",
-			"dist/**/*",
-			"build/**/*",
-			".git/**/*"
-		],
-		"ext": "ts,js,json,cfg,yaml",
-		"exec": "bun run start",
-		"delay": 2000,
-		"verbose": false,
-		"restartable": "rs",
-		"env": {
-			"NODE_ENV": "development"
-		}
-	},
-	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
-		"@types/consola": "^1.0.0",
-		"@types/node": "^22.7.6",
-		"@types/node-fetch": "^2.6.12",
-		"minimatch": "^10.0.1",
-		"nodemon": "^3.1.10",
-		"tsx": "^4.19.1",
-		"typescript": "^5.6.3"
-	},
-	"dependencies": {
-		"address-rfc2822": "^2.2.3",
-		"axios": "^1.9.0",
-		"consola": "^3.4.2",
-		"esbuild": "^0.24.0",
-		"node-fetch": "2",
-		"zod": "^3.25.28"
-	}
+  "name": "smtp",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/mailparser": "^3.4.6",
+    "@types/nodemailer": "^6.4.17",
+    "@types/smtp-server": "^3.5.10"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "mailparser": "^3.7.4",
+    "nodemailer": "^7.0.4",
+    "smtp-server": "^3.14.0"
+  }
 }

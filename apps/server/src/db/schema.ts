@@ -1,5 +1,13 @@
 import { relations } from "drizzle-orm";
-import { boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+	boolean,
+	json,
+	pgTable,
+	text,
+	timestamp,
+	unique,
+	uuid,
+} from "drizzle-orm/pg-core";
 
 // Authentication
 export const users = pgTable("users", {
@@ -53,6 +61,11 @@ export const address = pgTable("address", {
 	userId: uuid("user_id")
 		.notNull()
 		.references(() => users.id, { onDelete: "cascade" }),
+	workspaceId: uuid("workspace_id")
+		.notNull()
+		.references(() => workspace.id, {
+			onDelete: "cascade",
+		}),
 	email: text("email").notNull(),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -98,10 +111,36 @@ export const outgoingMail = pgTable("outgoing_mail", {
 	sendedAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const contacts = pgTable(
+	"contacts",
+	{
+		id: uuid("id").primaryKey().defaultRandom(),
+		image: text("image").notNull(),
+		name: text("name"),
+		email: text("email").notNull(),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
+		blocked: boolean("blocked").default(false),
+		workspaceId: uuid("workspace_id")
+			.notNull()
+			.references(() => workspace.id, { onDelete: "cascade" }),
+		description: text("description"),
+		// the user can provide additional information about the contact
+		// this can be used to store custom fields or metadata
+		informations: json("informations")
+			.$type<Record<string, string | number>>()
+			.default({}),
+	},
+	(table) => ({
+		uniqueEmailPerWorkspace: unique().on(table.email, table.workspaceId),
+	}),
+);
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
 	sessions: many(sessions),
-	workspace: many(workspace),
+	addresses: many(address),
+	members: many(members),
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -125,11 +164,53 @@ export const membersRelations = relations(members, ({ one }) => ({
 export const workspaceRelations = relations(workspace, ({ many }) => ({
 	members: many(members),
 	domains: many(domain),
+	mails: many(mail),
+	contacts: many(contacts),
 }));
 
-export const addressRelations = relations(address, ({ many }) => ({
-	users: many(users),
-	workspace: many(workspace),
+export const addressRelations = relations(address, ({ one }) => ({
+	user: one(users, {
+		fields: [address.userId],
+		references: [users.id],
+	}),
+	workspace: one(workspace, {
+		fields: [address.workspaceId],
+		references: [workspace.id],
+	}),
+}));
+
+export const domainRelations = relations(domain, ({ one, many }) => ({
+	workspace: one(workspace, {
+		fields: [domain.workspaceId],
+		references: [workspace.id],
+	}),
+	outgoingMails: many(outgoingMail),
+}));
+
+export const mailRelations = relations(mail, ({ one, many }) => ({
+	workspace: one(workspace, {
+		fields: [mail.workspaceId],
+		references: [workspace.id],
+	}),
+	outgoingMails: many(outgoingMail),
+}));
+
+export const outgoingMailRelations = relations(outgoingMail, ({ one }) => ({
+	mail: one(mail, {
+		fields: [outgoingMail.mailId],
+		references: [mail.id],
+	}),
+	domain: one(domain, {
+		fields: [outgoingMail.domainId],
+		references: [domain.id],
+	}),
+}));
+
+export const contactsRelations = relations(contacts, ({ one }) => ({
+	workspace: one(workspace, {
+		fields: [contacts.workspaceId],
+		references: [workspace.id],
+	}),
 }));
 
 // Types

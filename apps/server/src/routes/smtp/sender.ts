@@ -1,3 +1,5 @@
+import { eq } from "drizzle-orm";
+import { address, contacts, db, workspace } from "src/db/index.js";
 import { z } from "zod/v4";
 import { app } from "../../app.js";
 import { posthog } from "../../lib/posthog.js";
@@ -17,7 +19,6 @@ export default async function SMTPSenderHandler() {
 		const parse = await z
 			.object({
 				sender: z.email().optional(),
-				recipient: z.email(),
 			})
 			.safeParseAsync(body);
 
@@ -25,13 +26,6 @@ export default async function SMTPSenderHandler() {
 			return handleValidationError(c, z.prettifyError(parse.error));
 
 		// request body is valid, checking if the sender is blocked by the system
-		const { sender, recipient } = parse.data;
-
-		await posthog.capture({
-			distinctId: recipient,
-			event: "email.check-sender",
-		});
-
-		return c.text("Emails route is working!");
+		const { sender } = parse.data;
 	});
 }
