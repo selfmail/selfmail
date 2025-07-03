@@ -34,12 +34,31 @@ app.use(logger());
 app.use(
 	"/*",
 	cors({
-		origin:
-			env.NODE_ENV === "development"
-				? "http://localhost:3001"
-				: env.CORS_ORIGIN?.includes(",")
-					? env.CORS_ORIGIN.split(",")
-					: env.CORS_ORIGIN || "*",
+		origin: (origin, c) => {
+			if (env.NODE_ENV === "development") {
+				// Allow localhost in development without CORS origin
+				return "http://localhost:3001";
+			}
+			if (origin.endsWith(".selfmail.app")) {
+				// Allow all subdomains of selfmail.app in production
+				return origin;
+			}
+
+			// for other options we use the env variable CORS_ORIGIN
+			if (!env.CORS_ORIGIN) {
+				// If no CORS_ORIGIN is set, allow all origins
+				return "*";
+			}
+
+			// If CORS_ORIGIN is set, split by comma and return the first match
+			if (env.CORS_ORIGIN.includes(",")) {
+				const origins = env.CORS_ORIGIN.split(",");
+				if (origins.includes(origin)) {
+					return origin;
+				}
+				return "*"; // If the origin is not in the list, return *
+			}
+		},
 		allowMethods: ["GET", "POST", "OPTIONS"],
 		credentials: true, // Allow cookies to be sent
 		allowHeaders: ["Content-Type", "Authorization"],
@@ -55,10 +74,6 @@ app.use(
 		},
 	}),
 );
-
-app.post("/v1/wow", (c) => {
-	return c.text("OK");
-});
 
 // Add a simple test route
 app.get("/", (c) => {
