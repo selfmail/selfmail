@@ -1,28 +1,29 @@
 {
-  "name": "smtp",
-  "module": "index.ts",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "clean": "rm -rf dist",
-    "dev": "tsc --watch",
-    "start": "node dist/index.js",
-    "start:dev": "bun run src/index.ts"
-  },
-  "devDependencies": {
-    "@types/bun": "latest",
-    "@types/mailparser": "^3.4.6",
-    "@types/nodemailer": "^6.4.17",
-    "@types/smtp-server": "^3.5.10"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  },
-  "dependencies": {
-    "mailparser": "^3.7.4",
-    "nodemailer": "^7.0.4",
-    "smtp-server": "^3.14.0"
-  }
+	"name": "smtp",
+	"module": "index.ts",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"build": "bun build --target=node  src/index.ts --outdir dist ",
+		"start": "node dist/index.js",
+		"dev": "sudo env \"PATH=$PATH\" bun run --watch scripts/dev && sudo env \"PATH=$PATH\"  node dist/index.js"
+	},
+	"devDependencies": {
+		"@types/bun": "latest",
+		"@types/mailparser": "^3.4.6",
+		"@types/nodemailer": "^6.4.17",
+		"@types/smtp-server": "^3.5.10"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"consola": "^3.4.2",
+		"dotenv": "^17.0.1",
+		"mailparser": "^3.7.4",
+		"nodemailer": "^7.0.4",
+		"posthog-node": "^5.1.1",
+		"smtp-server": "^3.14.0",
+		"zod": "^3.25.74"
+	}
 }
