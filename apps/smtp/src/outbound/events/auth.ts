@@ -3,6 +3,10 @@ import type {
 	SMTPServerAuthenticationResponse,
 	SMTPServerSession,
 } from "smtp-server";
+import { request } from "undici";
+import { createOutboundLog } from "../../utils/logs";
+
+const authLog = createOutboundLog("auth");
 
 export async function auth(
 	auth: SMTPServerAuthentication,
@@ -11,32 +15,28 @@ export async function auth(
 		err: Error | null | undefined,
 		response?: SMTPServerAuthenticationResponse,
 	) => void,
-): Promise<void> {}
+): Promise<void> {
+	if (auth.method === "XOAUTH2") {
+		authLog("XOAUTH2 used as login method. Error was triggered.");
+		return callback(
+			new Error(
+				"XOAUTH2 method is not allowed, expecting LOGIN authentication",
+			),
+		);
+	}
 
-// {
-//         if (auth.method === "XOAUTH2") {
-//             return callback(
-//                 new Error(
-//                     "XOAUTH2 method is not allowed,Expecting LOGIN authentication",
-//                 ),
-//             );
-//         }
-//         console.log(
-//             `[OUTBOUND] Authentication attempt from ${session.remoteAddress}: ${auth.username}`,
-//         );
+	authLog(
+		`Authentication attempt from ${session.remoteAddress}: ${auth.username}`,
+	);
 
-//         // Simplified authentication - no STARTTLS requirement for now
-//         if (!auth.username || !auth.password) {
-//             return callback(new Error("Username and password required"));
-//         }
+	const { body, statusCode } = await request("");
 
-//         // Basic password validation
-//         if (auth.password !== "selfmail_password") {
-//             return callback(new Error("Invalid password"));
-//         }
+	if (statusCode !== 200) {
+		authLog(
+			`Authentication failed for ${auth.username} with status code ${statusCode}`,
+		);
+		return callback(new Error("Authentication failed"));
+	}
 
-//         console.log(`[OUTBOUND] Authentication successful for ${auth.username}`);
-//         return callback(undefined, {
-//             user: auth.username, // Store the email address as the user
-//         });
-//     },
+	const data = await body.json();
+}
