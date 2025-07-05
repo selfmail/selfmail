@@ -4,9 +4,9 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"build": "bun build --target=node  src/index.ts --outdir dist ",
-		"start": "node dist/index.js",
-		"dev": "sudo env \"PATH=$PATH\" bun run --watch scripts/dev && sudo env \"PATH=$PATH\"  node dist/index.js"
+		"build": "bun build --target=node src/index.ts --outdir dist",
+		"start": "sudo env \"PATH=$PATH\" node dist/index.js",
+		"dev": "nodemon --ignore dist --exec \"sudo env \"PATH=$PATH\" bun run build && sudo env \"PATH=$PATH\" node dist/index.js\""
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
@@ -18,10 +18,12 @@
 		"typescript": "^5"
 	},
 	"dependencies": {
+		"chalk": "^5.4.1",
 		"consola": "^3.4.2",
 		"dotenv": "^17.0.1",
 		"mailparser": "^3.7.4",
 		"nodemailer": "^7.0.4",
+		"nodemon": "^3.1.10",
 		"posthog-node": "^5.1.1",
 		"smtp-server": "^3.14.0",
 		"zod": "^3.25.74"

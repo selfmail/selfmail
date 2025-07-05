@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import chalk from "chalk";
 import { SMTPServer } from "smtp-server";
 import { connection } from "./events/connection";
 
@@ -11,6 +12,8 @@ const options = {
 
 export const outboundServer = new SMTPServer({
 	name: "Selfmail Outbound SMTP Server",
+	banner: "Welcome to Selfmail Outbound SMTP Server",
+	secure: false, // false, because we use STARTTLS
 
 	cert: options.cert,
 	key: options.key,
@@ -24,12 +27,8 @@ export const outboundServer = new SMTPServer({
 	hidePIPELINING: true,
 	needsUpgrade: false,
 	useProxy: false,
-	handshakeTimeout: 60000,
-	socketTimeout: 60000, // Increase socket timeout to 60 seconds
-	closeTimeout: 60000, // Increase connection timeout to 60 seconds
 	maxClients: 1000,
 	enableTrace: true,
-	logger: true,
 
 	onAuth(auth, session, callback) {
 		if (auth.method === "XOAUTH2") {
