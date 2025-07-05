@@ -21,7 +21,7 @@ export async function connection(
 
 	// do not accept connections from localhost to prevent spam, only in prod mode
 	if (
-		globalThis.devmode &&
+		process.env.NODE_ENV === "production" &&
 		(session.remoteAddress === "127.0.0.1" || session.remoteAddress === "::1")
 	) {
 		connectionLog("Connection from localhost is not allowed.");
@@ -41,7 +41,7 @@ export async function connection(
 				"IP not listed in DNSBL (Spamhaus), proceeding with connection.",
 			);
 		} else {
-			console.error("[OUTBOUND] Error checking DNSBL (Spamhaus):", e);
+			connectionLog(`Error checking DNSBL (Spamhaus): ${e}`);
 			return callback(new Error("Error checking DNSBL (Spamhaus)"));
 		}
 	}

@@ -1,7 +1,11 @@
 import { readFile } from "node:fs/promises";
-import chalk from "chalk";
 import { SMTPServer } from "smtp-server";
+import { auth } from "./events/auth";
+import { close } from "./events/close";
 import { connection } from "./events/connection";
+import { data } from "./events/data";
+import { mailFrom } from "./events/mail-from";
+import { recipient } from "./events/recipient";
 
 const options = {
 	key: await readFile(
@@ -30,75 +34,23 @@ export const outboundServer = new SMTPServer({
 	maxClients: 1000,
 	enableTrace: true,
 
-	onAuth(auth, session, callback) {
-		if (auth.method === "XOAUTH2") {
-			return callback(
-				new Error(
-					"XOAUTH2 method is not allowed,Expecting LOGIN authentication",
-				),
-			);
-		}
-		console.log(
-			`[OUTBOUND] Authentication attempt from ${session.remoteAddress}: ${auth.username}`,
-		);
-
-		// Simplified authentication - no STARTTLS requirement for now
-		if (!auth.username || !auth.password) {
-			return callback(new Error("Username and password required"));
-		}
-
-		// Basic password validation
-		if (auth.password !== "selfmail_password") {
-			return callback(new Error("Invalid password"));
-		}
-
-		console.log(`[OUTBOUND] Authentication successful for ${auth.username}`);
-		return callback(undefined, {
-			user: auth.username, // Store the email address as the user
-		});
-	},
-
+	/*
+	 * Handlers for the SMTP Server. On each event, the handler in the `./events/` folder gets called.
+	 * Each handler should return a Promise<void> and call the callback when done.
+	 *
+	 * Flow:
+	 * 1. onConnect: Checks the connection, DNSBL, and logs the connection
+	 * 2. onAuth: Handles authentication, checks credentials, and logs the user
+	 * 3. onMailFrom: Validates the sender's email address
+	 * 4. onRcptTo: Validates the recipient's email address
+	 * 5. onData: Processes the email data, saves it to the database,
+	 *    and sends it to the recipient
+	 * 6. onClose: Cleans up the session and logs the closure
+	 */
+	onAuth: auth,
 	onConnect: connection,
-
-	onMailFrom(address, session, callback) {
-		console.log(
-			`[OUTBOUND] MAIL FROM: ${address.address} from ${session.remoteAddress}`,
-		);
-
-		// Ensure authenticated user can only send from their own email
-		if (session.user && session.user !== address.address) {
-			console.log(
-				`[OUTBOUND] User ${session.user} tried to send from ${address.address}`,
-			);
-			return callback(
-				new Error("You can only send emails from your own email address"),
-			);
-		}
-
-		return callback();
-	},
-
-	onRcptTo(address, session, callback) {
-		console.log(
-			`[OUTBOUND] RCPT TO: ${address.address} from ${session.remoteAddress}`,
-		);
-		return callback();
-	},
-
-	onData(stream, session, callback) {
-		console.log("[OUTBOUND] Receiving data from " + session.remoteAddress);
-		let emailContent = "";
-		stream.on("data", (chunk) => (emailContent += chunk.toString()));
-		stream.on("end", () => {
-			console.log("[OUTBOUND] Email content received:");
-			console.log(emailContent);
-			// Here you would typically forward the email to an external SMTP server
-			// For example, using nodemailer or another SMTP client library
-			return callback(); // Signal that the email has been processed
-		});
-	},
-
-	onClose(session) {
-		console.log(`[OUTBOUND] Connection closed from ${session.remoteAddress}`);
-	},
+	onMailFrom: mailFrom,
+	onRcptTo: recipient,
+	onData: data,
+	onClose: close,
 });
