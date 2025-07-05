@@ -1,8 +1,5 @@
-import { eq } from "drizzle-orm";
-import { address, contacts, db, workspace } from "src/db/index.js";
 import { z } from "zod/v4";
 import { app } from "../../app.js";
-import { posthog } from "../../lib/posthog.js";
 import {
 	handlePermissionsError,
 	handleValidationError,

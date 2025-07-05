@@ -29,7 +29,20 @@ export async function auth(
 		`Authentication attempt from ${session.remoteAddress}: ${auth.username}`,
 	);
 
-	const { body, statusCode } = await request("");
+	const { body, statusCode } = await request(
+		`${process.env.BACKEND_URL}/v1/smtp/check-credentials`,
+		{
+			method: "POST",
+			body: JSON.stringify({
+				user: auth.username,
+				pass: auth.password,
+			}),
+			headers: {
+				"Content-Type": "application/json",
+				"User-Agent": "SelfMail SMTP Server",
+			},
+		},
+	);
 
 	if (statusCode !== 200) {
 		authLog(
