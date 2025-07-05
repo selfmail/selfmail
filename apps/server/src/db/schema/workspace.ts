@@ -54,7 +54,38 @@ export const domain = pgTable("domain", {
 	verificationTokenId: uuid("verification_token_id").notNull(),
 });
 
+export const smtpCrendetials = pgTable("smtp_credentials", {
+	id: uuid("id").primaryKey().defaultRandom(),
+	user: text("user").notNull(),
+	password: text("password").notNull(),
+
+	workspaceId: uuid("workspace_id")
+		.notNull()
+		.references(() => workspace.id, { onDelete: "cascade" }),
+
+	addressId: uuid("address_id")
+		.notNull()
+		.references(() => address.id, { onDelete: "cascade" }),
+
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+	updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // Relations
+
+export const smtpCrendetialsRelations = relations(
+	smtpCrendetials,
+	({ one }) => ({
+		workspace: one(workspace, {
+			fields: [smtpCrendetials.workspaceId],
+			references: [workspace.id],
+		}),
+		address: one(address, {
+			fields: [smtpCrendetials.addressId],
+			references: [address.id],
+		}),
+	}),
+);
 
 export const workspaceRelations = relations(workspace, ({ many }) => ({
 	members: many(member),
