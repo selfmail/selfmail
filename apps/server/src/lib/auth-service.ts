@@ -1,11 +1,6 @@
-import { and, eq, gt } from "drizzle-orm";
-import {
-	db,
-	type PublicUser,
-	type Session,
-	sessions,
-	users,
-} from "../db/index.js";
+import { and, eq, gt, lt } from "drizzle-orm";
+import { db } from "src/db/index.js";
+import { sessions, users } from "src/db/schema/user.js";
 import {
 	generateSessionToken,
 	hashPassword,
@@ -18,6 +13,22 @@ import {
 /**
  * Authentication service functions
  */
+
+// Add missing type definitions
+export interface PublicUser {
+	id: string;
+	email: string;
+	name: string;
+	createdAt: Date;
+	updatedAt: Date;
+}
+
+export interface Session {
+	id: string;
+	userId: string;
+	expiresAt: Date;
+	createdAt: Date;
+}
 
 export class AuthError extends Error {
 	constructor(
@@ -51,12 +62,12 @@ export async function registerUser(input: RegisterInput): Promise<PublicUser> {
 		.values({
 			email: input.email,
 			name: input.name,
-			passwordHash,
+			password: passwordHash, // Fixed: should be passwordHash, not password
 		})
 		.returning();
 
 	// Return user without password hash
-	const { passwordHash: _, ...publicUser } = newUser;
+	const { password: _, ...publicUser } = newUser;
 	return publicUser;
 }
 
@@ -76,10 +87,7 @@ export async function loginUser(
 	}
 
 	// Verify password
-	const isValidPassword = await verifyPassword(
-		input.password,
-		user.passwordHash,
-	);
+	const isValidPassword = await verifyPassword(input.password, user.password);
 	if (!isValidPassword) {
 		throw new AuthError("Invalid email or password", "INVALID_CREDENTIALS");
 	}
@@ -96,7 +104,7 @@ export async function loginUser(
 	});
 
 	// Return user without password hash and session token
-	const { passwordHash: _, ...publicUser } = user;
+	const { password: _, ...publicUser } = user;
 	return { user: publicUser, sessionToken };
 }
 
@@ -122,7 +130,7 @@ export async function validateSession(
 	}
 
 	// Return user without password hash
-	const { passwordHash: _, ...publicUser } = result.user;
+	const { password: _, ...publicUser } = result.user;
 	return {
 		user: publicUser,
 		session: result,
@@ -148,7 +156,7 @@ export async function getUserById(userId: string): Promise<PublicUser | null> {
 		return null;
 	}
 
-	const { passwordHash: _, ...publicUser } = user;
+	const { password: _, ...publicUser } = user;
 	return publicUser;
 }
 
@@ -156,5 +164,5 @@ export async function getUserById(userId: string): Promise<PublicUser | null> {
  * Clean up expired sessions
  */
 export async function cleanupExpiredSessions(): Promise<void> {
-	await db.delete(sessions).where(eq(sessions.expiresAt, new Date()));
+	await db.delete(sessions).where(lt(sessions.expiresAt, new Date())); // Fixed: use lt (less than) instead of eq
 }
