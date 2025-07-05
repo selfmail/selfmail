@@ -54,3 +54,5 @@ export const verificationTokenRelations = relations(
 		}),
 	}),
 );
+
+export type PublicUser = Omit<typeof users.$inferSelect, "password">;

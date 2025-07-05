@@ -1,7 +1,10 @@
 import type { Context as HonoContext } from "hono";
-import type { PublicUser } from "../db/index.js";
 import { extractSessionToken } from "./auth.js";
-import { validateSession } from "./auth-service.js";
+import {
+	type PublicUser,
+	type Session,
+	validateSession,
+} from "./auth-service.js";
 
 export type CreateContextOptions = {
 	context: HonoContext;
