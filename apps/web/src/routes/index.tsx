@@ -4,7 +4,6 @@ import { ArrowRight, Globe, Mail, Shield, Users, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
-import { trpc } from "@/utils/trpc";
 
 export const Route = createFileRoute("/")({
 	component: HomeComponent,
@@ -13,7 +12,6 @@ export const Route = createFileRoute("/")({
 function HomeComponent() {
 	console.log(import.meta.env.VITE_SERVER_URL);
 	// Fetch health check status from the server
-	const healthCheck = useQuery(trpc.healthCheck.queryOptions());
 	const { user, isAuthenticated, logout, isLoading } = useAuth();
 
 	return (

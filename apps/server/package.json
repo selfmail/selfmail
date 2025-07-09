@@ -3,9 +3,6 @@
 	"main": "api/index.js",
 	"type": "module",
 	"scripts": {
-		"build": "tsc && tsc-alias",
-		"dev": "tsx watch src/dev.ts",
-		"start": "node dist/api/index.js",
 		"db:push": "drizzle-kit push",
 		"db:studio": "drizzle-kit studio",
 		"db:generate": "drizzle-kit generate",

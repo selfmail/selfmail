@@ -1,6 +1,6 @@
 import { relations } from "drizzle-orm";
 import { boolean, pgTable, primaryKey, text, uuid } from "drizzle-orm/pg-core";
-import { users } from "./user.js";
+import { users } from "./user";
 
 export const roles = pgTable("roles", {
 	id: uuid("id").primaryKey().defaultRandom(),

@@ -4,21 +4,18 @@ import { publicElysia } from "./public";
 import { smtp } from "./smtp";
 import { web } from "./web";
 
-const app = new Elysia()
+const app = new Elysia({
+	prefix: "/v1",
+	name: "selfmail-api",
+	detail: {
+		description: "The main entry point for the selfmail api.",
+	},
+})
 	.use(swagger())
 	.use(smtp)
 	.use(publicElysia)
 	.use(web)
-	.get("/", () => "Welcome to the Selfmail api!", {
-		description: "Welcome to the Selfmail API",
-	})
 	.listen(3000);
-
-app.get("/hey", () => "Welcome to the Selfmail API!", {
-	detail: {
-		description: "Welcome to the Selfmail API",
-	},
-});
 
 export type App = typeof app;
 
