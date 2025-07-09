@@ -1,9 +1,8 @@
 import { and, eq } from "drizzle-orm";
-import { db } from "src/db/index.js";
 import { smtpCrendetials } from "src/db/schema/workspace.js";
 import { z } from "zod/v4";
 import { app } from "../../app.js";
-import { posthog } from "../../lib/posthog.js";
+import { db } from "../..//db/index.js";
 import {
 	handlePermissionsError,
 	handleValidationError,

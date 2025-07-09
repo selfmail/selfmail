@@ -31,33 +31,34 @@ if (env.UNKEY_API_ID) {
 }
 
 app.use(logger());
+
 app.use(
 	"/*",
 	cors({
-		origin: (origin, c) => {
+		origin: (origin) => {
 			if (env.NODE_ENV === "development") {
-				// Allow localhost in development without CORS origin
-				return "http://localhost:3001";
+				// Allow all origins in development
+				return origin ?? "*";
 			}
-			if (origin.endsWith(".selfmail.app")) {
-				// Allow all subdomains of selfmail.app in production
+
+			// Allow all subdomains of selfmail.app in production
+			if (origin?.endsWith(".selfmail.app")) {
 				return origin;
 			}
 
-			// for other options we use the env variable CORS_ORIGIN
-			if (!env.CORS_ORIGIN) {
-				// If no CORS_ORIGIN is set, allow all origins
-				return "*";
+			// Check environment variable for allowed origins
+			if (env.CORS_ORIGIN) {
+				if (env.CORS_ORIGIN.includes(",")) {
+					// Handle multiple origins
+					const origins = env.CORS_ORIGIN.split(",").map((o) => o.trim());
+					return origins.includes(origin ?? "") ? origin : null;
+				}
+				// Handle single origin
+				return env.CORS_ORIGIN === origin ? origin : null;
 			}
 
-			// If CORS_ORIGIN is set, split by comma and return the first match
-			if (env.CORS_ORIGIN.includes(",")) {
-				const origins = env.CORS_ORIGIN.split(",");
-				if (origins.includes(origin)) {
-					return origin;
-				}
-				return "*"; // If the origin is not in the list, return *
-			}
+			// If no CORS_ORIGIN is set, allow all origins
+			return origin ?? "*";
 		},
 		allowMethods: ["GET", "POST", "OPTIONS"],
 		credentials: true, // Allow cookies to be sent
@@ -85,6 +86,7 @@ app.get("/", (c) => {
 
 // Initialize routes
 async function initializeRoutes() {
+	console.log();
 	await handler();
 }
 

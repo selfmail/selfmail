@@ -6,18 +6,20 @@
 	"scripts": {
 		"build": "bun build --target=node src/index.ts --outdir dist",
 		"start": "sudo env \"PATH=$PATH\" node dist/index.js",
-		"dev": "nodemon --ignore dist --exec \"sudo env \"PATH=$PATH\" bun run build && sudo env \"PATH=$PATH\" node dist/index.js\""
+		"dev": "nodemon -e .ts,.json --ignore dist --exec \"clear && sudo env \"PATH=$PATH\" bun run build && sudo env \"PATH=$PATH\" node dist/index.js\""
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
 		"@types/mailparser": "^3.4.6",
 		"@types/nodemailer": "^6.4.17",
-		"@types/smtp-server": "^3.5.10"
+		"@types/smtp-server": "^3.5.10",
+		"elysia": "^1.3.5"
 	},
 	"peerDependencies": {
 		"typescript": "^5"
 	},
 	"dependencies": {
+		"@elysiajs/eden": "^1.3.2",
 		"chalk": "^5.4.1",
 		"consola": "^3.4.2",
 		"dotenv": "^17.0.1",

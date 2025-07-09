@@ -1,6 +1,6 @@
 import { and, eq, gt, lt } from "drizzle-orm";
-import { db } from "src/db/index.js";
-import { sessions, users } from "src/db/schema/user.js";
+import { db } from "../../src/db/index.js";
+import { sessions, users } from "../../src/db/schema/user.js";
 import {
 	generateSessionToken,
 	hashPassword,
