@@ -4,6 +4,7 @@ import type {
 	SMTPServerSession,
 } from "smtp-server";
 import { request } from "undici";
+import { client } from "@/lib/client";
 import { posthog } from "@/lib/posthog";
 import { createOutboundLog } from "../../utils/logs";
 
@@ -30,40 +31,43 @@ export async function auth(
 		`Authentication attempt from ${session.remoteAddress}: ${auth.username}`,
 	);
 
-	const { body, statusCode } = await request(
-		"http://localhost:3000/v1/smtp/check-credentials",
-		{
-			method: "POST",
-			body: JSON.stringify({
-				user: auth.username,
-				pass: auth.password,
-			}),
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${process.env.BACKEND_TOKEN}`,
-				"User-Agent": "SelfMail SMTP Server",
-			},
-		},
-	);
+	if (!auth.username || !auth.password) {
+		authLog("Username or password is missing, returning error.");
+		return callback(new Error("Username or password is missing"), {});
+	}
 
-	if (statusCode !== 200) {
+	const res = await client.v1.smtp.authentication.post({
+		password: auth.password,
+		username: auth.username,
+	});
+
+	if (res.status !== 200 || res.error || !res.data) {
 		posthog.capture({
 			distinctId: session.remoteAddress,
 			event: "outbound_authentication_failed",
 			properties: {
 				remoteAddress: session.remoteAddress,
 				username: auth.username,
-				statusCode,
+				statusCode: res.status,
 				timestamp: new Date().toISOString(),
 			},
 		});
 
 		authLog(
-			`Authentication failed for ${auth.username} with status code ${statusCode}`,
+			`Authentication failed for ${auth.username} with status code ${res.status}`,
 		);
 
 		return callback(Error("Authentication failed"), {});
 	}
 
-	const data = await body.json();
+	const data = res.data;
+
+	return new callback(null, {
+		user: {
+			id: data.id,
+			username: data.username,
+			email: data.email,
+			roles: data.roles,
+		},
+	});
 }

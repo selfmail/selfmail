@@ -1,5 +1,8 @@
 import { resolve4 } from "node:dns/promises";
+import { and, eq } from "drizzle-orm";
 import { status } from "elysia";
+import { db } from "../db";
+import { smtpCrendetials } from "../db/schema/workspace";
 import type { SMTPModule } from "./module";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: This is a static utility class for handling SMTP connections.
@@ -39,20 +42,63 @@ export abstract class SMTPService {
 		};
 	}
 
+	/**
+	 * Handle SMTP authentication (the AUTH command). This method will check the provided username and password against the database.
+	 * If the credentials are valid, it will return a success response. If not, it will throw a 401 Unauthorized error. The SMTP server
+	 * will handle the response.
+	 */
 	static async handleAuthentication({
 		username,
 		password,
 	}: SMTPModule.AuthenticationBody) {
-		if (!username || !password) {
-			throw status(400, {
-				success: false,
-				message: "Username and password are required for authentication.",
+		const credentials = await db
+			.select()
+			.from(smtpCrendetials)
+			.where(
+				and(
+					eq(smtpCrendetials.username, username),
+					eq(smtpCrendetials.password, password),
+				),
+			)
+			.limit(1);
+
+		if (credentials.length === 0) {
+			throw status(401, {
+				valid: false,
+				message: "Invalid SMTP credentials.",
 			});
 		}
 
 		return {
-			success: true,
-			message: "Authentication successful.",
+			
+		};
+	}
+
+	static async verifyMailFrom(from: string) {
+		const [user, domain] = from.split("@");
+
+		if (!user || !domain) {
+			throw status(400, {
+				valid: false,
+				message: "Invalid email format.",
+			});
+		}
+
+		const credentials = await db
+			.select()
+			.from(smtpCrendetials)
+			.where(eq(smtpCrendetials.username, user))
+			.limit(1);
+
+		if (credentials.length === 0) {
+			return {
+				valid: false,
+				message: "Email address not found.",
+			};
+		}
+
+		return {
+			id: 
 		};
 	}
 }

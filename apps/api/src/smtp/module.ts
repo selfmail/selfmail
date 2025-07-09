@@ -22,4 +22,28 @@ export namespace SMTPModule {
 		}),
 	});
 	export type AuthenticationBody = typeof AuthenticationBody.static;
+
+	// mail from
+	export const MailFromBody = t.Object({
+		from: t.String({
+			description: "The email address of the sender",
+		}),
+	});
+	export type MailFromBody = typeof MailFromBody.static;
+
+	// rcpt to
+	export const RcptToBody = t.Object({
+		to: t.String({
+			description: "The email address of the recipient",
+		}),
+	});
+	export type RcptToBody = typeof RcptToBody.static;
+
+	// data
+	export const DataBody = t.Object({
+		data: t.String({
+			description: "The raw email data",
+		}),
+	});
+	export type DataBody = typeof DataBody.static;
 }

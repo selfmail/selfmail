@@ -1,0 +1,239 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id       String @id @default(cuid())
+    name     String
+    password String
+    email    String @unique
+
+    // a single user can be member of different workspaces
+    member            Member[]
+    EmailVerification EmailVerification[]
+    Session           Session[]
+}
+
+model EmailVerification {
+    id String @id @default(cuid())
+
+    // the user that is being verified
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    // the verification token
+    token String @unique
+
+    // the date when the verification was created
+    createdAt DateTime @default(now())
+}
+
+model Session {
+    id String @id @default(cuid())
+
+    // the user that is being verified
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    // the session token
+    token String @unique
+
+    // the date when the session was created
+    createdAt DateTime @default(now())
+}
+
+model Member {
+    id String @id @default(cuid())
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    // profile configuration
+    profileName String? // by default it's the name of the user
+    description String?
+    image       String? // url to image (hosted on selfmail r2) or undefined for no image
+
+    // permissions
+
+    workspaceId      String
+    workspace        Workspace          @relation(fields: [workspaceId], references: [id])
+    MemberPermission MemberPermission[]
+    MemberAddress    MemberAddress[]
+    OutgoingEmail    OutgoingEmail[]
+
+    @@index([userId])
+}
+
+// permissions
+
+// A role is just a set of editable permissions that can be assigned to users. These roles are editable
+// by the owner of the workspace. The owner can create, update, and delete roles, and assign them to users.
+model Role {
+    id          String  @id @default(cuid())
+    name        String
+    description String?
+
+    workspaceId    String
+    workspace      Workspace        @relation(fields: [workspaceId], references: [id])
+    RolePermission RolePermission[]
+}
+
+model RolePermission {
+    roleId String
+    role   Role   @relation(fields: [roleId], references: [id])
+
+    permissionId String
+    permission   Permission @relation(fields: [permissionId], references: [id])
+
+    @@id([roleId, permissionId])
+}
+
+model MemberPermission {
+    memberId String
+    member   Member @relation(fields: [memberId], references: [id])
+
+    permissionId String
+    permission   Permission @relation(fields: [permissionId], references: [id])
+
+    granted   Boolean  @default(false)
+    grantedAt DateTime @default(now())
+
+    @@id([memberId, permissionId])
+}
+
+// Permissions are the actual actions that a user can perform in a workspace. These permissions
+// are not editable by the owner of the workspace, he can only assign them to roles and users.
+model Permission {
+    id          String  @id @default(cuid())
+    name        String  @unique
+    description String?
+
+    RolePermission    RolePermission[]
+    MemberPermissions MemberPermission[]
+}
+
+// Workspaces
+
+model Workspace {
+    id          String  @id @default(cuid())
+    name        String
+    description String?
+
+    slug    String   @unique @default(cuid())
+    ownerId String
+    Member  Member[]
+    Role    Role[]
+    Domain  Domain[]
+
+    @@index([ownerId])
+}
+
+model Domain {
+    id String @id @default(cuid())
+
+    domain String @unique
+
+    workspaceId String
+    workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+    verified   Boolean   @default(false)
+    verifiedAt DateTime?
+
+    // a verification token must be a txt record for the domain
+    // it is used to verify that the user owns the domain
+    verificationToken String? @unique @default(cuid())
+}
+
+// addresses
+model Address {
+    id String @id @default(cuid())
+
+    email String @unique
+
+    // multiple members can access the same address (e.g. shared addresses)
+    MemberAddress MemberAddress[]
+    Email         Email[]
+    OutgoingEmail OutgoingEmail[]
+}
+
+model MemberAddress {
+    memberId String
+    member   Member @relation(fields: [memberId], references: [id])
+
+    addressId String
+    address   Address @relation(fields: [addressId], references: [id])
+
+    @@id([memberId, addressId])
+}
+
+model Contact {
+    id String @id @default(cuid())
+
+    name        String?
+    description String?
+    image       String? // url to image (hosted on selfmail r2) or undefined
+
+    // Expecting addiotional information to be stored as JSON as the following schema:
+
+    /**
+     * (pretty weird formatting from vscode and prisma :/ )
+     * [
+     * {
+     * "key": "phone",
+     * "value": "+1234567890"
+     * },
+     * {
+     * "key": "address",
+     * "value": "123 Main St, Anytown, USA"
+     * }
+     * ]
+     */
+    additionalInformation Json[]
+
+    email         String
+    Email         Email[]
+    OutgoingEmail OutgoingEmail[]
+}
+
+model Email {
+    id String @id @default(cuid())
+
+    // email data
+    subject String
+    body    String
+    html    String?
+
+    // instead of referencing the address directly, we reference the contact
+    contact   Contact @relation(fields: [contactId], references: [id])
+    contactId String
+
+    // the recipient of the email
+    addressId String
+    address   Address @relation(fields: [addressId], references: [id])
+
+    date DateTime @default(now())
+}
+
+model OutgoingEmail {
+    id String @id @default(cuid())
+
+    // email data
+    subject String
+    body    String
+    html    String?
+
+    // the sender of the email
+    addressId String
+    address   Address @relation(fields: [addressId], references: [id])
+
+    // the user which sent the email
+    memberId String
+    member   Member @relation(fields: [memberId], references: [id])
+
+    // the recipient of the email
+    contact   Contact @relation(fields: [contactId], references: [id])
+    contactId String
+
+    date DateTime @default(now())
+}
