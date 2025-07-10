@@ -39,15 +39,49 @@ export namespace SMTPOutgoingModule {
 	// rcpt to
 	export const RcptToBody = t.Object({
 		to: t.String({
+			format: "email",
 			description: "The email address of the recipient",
+		}),
+		addressId: t.String({
+			description:
+				"The address ID of the recipient, fetched in the authentication step.",
 		}),
 	});
 	export type RcptToBody = typeof RcptToBody.static;
 
 	// data
 	export const DataBody = t.Object({
-		data: t.String({
-			description: "The raw email data",
+		body: t.String({
+			description: "The raw email data in RFC 5322 format",
+		}),
+		addressId: t.String({
+			description:
+				"The address ID of the sender, fetched in the authentication step.",
+		}),
+		subject: t.String({
+			description: "The subject of the email",
+		}),
+		html: t.Optional(
+			t.String({
+				description: "The optioanl HTML content of the email",
+			}),
+		),
+		attachements: t.Optional(
+			t.Files({
+				description: "Optional attachments for the email",
+			}),
+		),
+		preview: t.Optional(
+			t.Boolean({
+				description: "Whether to preview the email before sending",
+			}),
+		),
+		from: t.String({
+			format: "email",
+			description: "The email address of the sender",
+		}),
+		to: t.String({
+			description: "The address to send the email to.",
 		}),
 	});
 	export type DataBody = typeof DataBody.static;

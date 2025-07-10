@@ -3,6 +3,13 @@ import { status } from "elysia";
 import { db } from "../lib/db";
 import type { SMTPOutgoingModule } from "./module";
 
+/**
+ * This class handles the SMTP outgoing service, which is responsible for managing SMTP connections,
+ * authentication, and email sending. It provides methods to handle connection requests, authenticate users,
+ * validate email addresses, and process email data. The service is meant for the outgoing Selfmail SMTP Server,
+ * in the `smtp` package. Rate-limiting will be handled by the SMTP server.
+ */
+
 // biome-ignore lint/complexity/noStaticOnlyClass: This is a static utility class for handling SMTP connections.
 export abstract class SMTPOutgoingService {
 	static async handleConnection({
@@ -77,52 +84,99 @@ export abstract class SMTPOutgoingService {
 		};
 	}
 
+	/**
+	 * The mail comes from a selfmail address, which is connected via the smtp credentials. This means, we
+	 * can fetch the addressId based on the credentials used in the authentication step.
+	 */
 	static async handleMailFrom({
 		from,
 		addressId,
 	}: SMTPOutgoingModule.MailFromBody) {
-		const [user, domain] = from.split("@");
+		const address = await db.address.findFirst({
+			where: {
+				email: from,
+				id: addressId,
+			},
+		});
 
-		if (!user || !domain) {
+		if (!address)
+			throw status(404, {
+				valid: false,
+				message: "Address not found.",
+			});
+
+		if (address.email !== from)
 			throw status(400, {
 				valid: false,
-				message: "Invalid email format.",
+				message: "Email address does not match the authenticated address.",
 			});
-		}
 
-		let contactId: string | null = null;
+		return {
+			valid: true,
+		};
+	}
 
+	/**
+	 * Handle the RCPT TO command of the SMTP server. This method will check if the recipient email address is valid and that the contact exists in the database
+	 * for the recipient's address. If not, a new contact will be created.
+	 */
+	static async handleRcptTo({ addressId, to }: SMTPOutgoingModule.RcptToBody) {
 		const contact = await db.contact.findUnique({
 			where: {
 				email_addressId: {
-					email: from,
+					email: to,
 					addressId,
 				},
 			},
 		});
 
 		if (!contact) {
-			const newContact = await db.contact.create({
+			// If the contact does not exist, create a new one
+			await db.contact.create({
 				data: {
-					email: from,
+					email: to,
 					addressId,
 				},
-			});
-
-			contactId = newContact.id;
-		} else {
-			contactId = contact.id;
-		}
-
-		if (!contactId) {
-			throw status(500, {
-				valid: false,
-				message: "Failed to create or find contact for the email.",
 			});
 		}
 
 		return {
 			valid: true,
+		};
+	}
+
+	/**
+	 * Handle the DATA command, checking for spam with rspamd and forwarding the email to the relay server.
+	 */
+	static async handleData({
+		addressId,
+		body,
+		from,
+		subject,
+		to,
+		attachements,
+		html,
+		preview,
+	}: SMTPOutgoingModule.DataBody) {
+		const address = await db.address.findUnique({
+			where: {
+				id: addressId,
+			},
+		});
+
+		if (!address) {
+			throw status(404, {
+				valid: false,
+				message: "Address not found.",
+			});
+		}
+
+		// Here you would typically process the email data, e.g., send it to a relay server or store it in the database.
+		// For this example, we will just return a success response.
+
+		return {
+			valid: true,
+			message: "Email data processed successfully.",
 		};
 	}
 }

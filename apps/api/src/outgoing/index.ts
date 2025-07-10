@@ -8,8 +8,6 @@ export const outgoingSmtp = new Elysia({
 	name: "smtp-outgoing",
 	detail: {
 		tags: ["Outgoing SMTP"],
-		description:
-			"Routes for the outgoing smtp service. This handles the Permissions to send emails via SMTP. It's not responsible for the relay server, just for the outgoing smtp connection.",
 	},
 })
 	.derive(
@@ -92,5 +90,27 @@ export const outgoingSmtp = new Elysia({
 			body: SMTPOutgoingModule.MailFromBody,
 			description:
 				"Handle the MAIL FROM command of the SMTP server. You need to pass the email address of the sender.",
+		},
+	)
+	.post(
+		"/rcpt-to",
+		async ({ body }) => {
+			return await SMTPOutgoingService.handleRcptTo(body);
+		},
+		{
+			body: SMTPOutgoingModule.RcptToBody,
+			description:
+				"Handle the RCPT TO command of the SMTP server. You need to pass the email address of the recipient.",
+		},
+	)
+	.post(
+		"/data",
+		async ({ body }) => {
+			return await SMTPOutgoingService.handleData(body);
+		},
+		{
+			body: SMTPOutgoingModule.DataBody,
+			description:
+				"Handle the DATA command of the SMTP server. You need to pass the email data.",
 		},
 	);
