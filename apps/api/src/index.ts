@@ -1,7 +1,7 @@
 import swagger from "@elysiajs/swagger";
 import { Elysia } from "elysia";
+import { outgoingSmtp } from "./outgoing";
 import { publicElysia } from "./public";
-import { smtp } from "./smtp";
 import { web } from "./web";
 
 const app = new Elysia({
@@ -12,7 +12,7 @@ const app = new Elysia({
 	},
 })
 	.use(swagger())
-	.use(smtp)
+	.use(outgoingSmtp)
 	.use(publicElysia)
 	.use(web)
 	.listen(3000);

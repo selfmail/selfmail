@@ -3,6 +3,10 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+generator client {
+    provider = "prisma-client-js"
+}
+
 model User {
     id       String @id @default(cuid())
     name     String
@@ -13,6 +17,7 @@ model User {
     member            Member[]
     EmailVerification EmailVerification[]
     Session           Session[]
+    SmtpCredentials   SmtpCredentials[]
 }
 
 model EmailVerification {
@@ -120,11 +125,12 @@ model Workspace {
     name        String
     description String?
 
-    slug    String   @unique @default(cuid())
-    ownerId String
-    Member  Member[]
-    Role    Role[]
-    Domain  Domain[]
+    slug            String            @unique @default(cuid())
+    ownerId         String
+    Member          Member[]
+    Role            Role[]
+    Domain          Domain[]
+    SmtpCredentials SmtpCredentials[]
 
     @@index([ownerId])
 }
@@ -152,9 +158,11 @@ model Address {
     email String @unique
 
     // multiple members can access the same address (e.g. shared addresses)
-    MemberAddress MemberAddress[]
-    Email         Email[]
-    OutgoingEmail OutgoingEmail[]
+    MemberAddress   MemberAddress[]
+    Email           Email[]
+    OutgoingEmail   OutgoingEmail[]
+    SmtpCredentials SmtpCredentials[]
+    Contact         Contact[]
 }
 
 model MemberAddress {
@@ -173,6 +181,11 @@ model Contact {
     name        String?
     description String?
     image       String? // url to image (hosted on selfmail r2) or undefined
+
+    blocked Boolean @default(false)
+
+    addressId String
+    address   Address @relation(fields: [addressId], references: [id])
 
     // Expecting addiotional information to be stored as JSON as the following schema:
 
@@ -194,6 +207,8 @@ model Contact {
     email         String
     Email         Email[]
     OutgoingEmail OutgoingEmail[]
+
+    @@unique([email, addressId])
 }
 
 model Email {
@@ -236,4 +251,33 @@ model OutgoingEmail {
     contactId String
 
     date DateTime @default(now())
+}
+
+model SmtpCredentials {
+    id String @id @default(cuid())
+
+    title       String
+    description String?
+
+    // actual credentials
+    username String
+    password String
+
+    // created by the user
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    // the workspace this credentials are used for
+    workspaceId String
+    workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+    // the address of the crendentials
+    addressId String
+    address   Address @relation(fields: [addressId], references: [id])
+
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    activeUntil DateTime?
+
+    @@unique([username, password])
 }

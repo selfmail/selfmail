@@ -1,15 +1,15 @@
 import { verifyKey } from "@unkey/api";
 import Elysia from "elysia";
-import { SMTPModule } from "./module";
-import { SMTPService } from "./service";
+import { SMTPOutgoingModule } from "./module";
+import { SMTPOutgoingService } from "./service";
 
-export const smtp = new Elysia({
-	prefix: "/smtp",
-	name: "smtp",
+export const outgoingSmtp = new Elysia({
+	prefix: "/smtp-outgoing",
+	name: "smtp-outgoing",
 	detail: {
-		tags: ["Smtp"],
+		tags: ["Outgoing SMTP"],
 		description:
-			"The plugin for the communication with the SMTP server. The smtp server will hit the API for verifivying users, saving and sending emails and more.",
+			"Routes for the outgoing smtp service. This handles the Permissions to send emails via SMTP. It's not responsible for the relay server, just for the outgoing smtp connection.",
 	},
 })
 	.derive(
@@ -19,7 +19,6 @@ export const smtp = new Elysia({
 		function deriveBearer({ headers: { authorization } }) {
 			return {
 				get bearer(): string | undefined {
-					console.log("Extracting bearer token from headers:", authorization);
 					if ((authorization as string)?.startsWith("Bearer "))
 						return (authorization as string).slice(7);
 
@@ -65,10 +64,10 @@ export const smtp = new Elysia({
 	.post(
 		"/connection",
 		async ({ body }) => {
-			return await SMTPService.handleConnection(body);
+			return await SMTPOutgoingService.handleConnection(body);
 		},
 		{
-			body: SMTPModule.ConnectionBody,
+			body: SMTPOutgoingModule.ConnectionBody,
 			description:
 				'Handle a connection to the SMTP server. You need to past the "hostname" and the "ip" of the server that\'s connecting.',
 		},
@@ -76,11 +75,22 @@ export const smtp = new Elysia({
 	.post(
 		"/authentication",
 		async ({ body }) => {
-			return await SMTPService.handleAuthentication(body);
+			return await SMTPOutgoingService.handleAuthentication(body);
 		},
 		{
-			body: SMTPModule.AuthenticationBody,
+			body: SMTPOutgoingModule.AuthenticationBody,
 			description:
 				"Handle the authentication of the SMTP server. You need to pass the username and password for the SMTP server.",
+		},
+	)
+	.post(
+		"/mail-from",
+		async ({ body }) => {
+			return await SMTPOutgoingService.handleMailFrom(body);
+		},
+		{
+			body: SMTPOutgoingModule.MailFromBody,
+			description:
+				"Handle the MAIL FROM command of the SMTP server. You need to pass the email address of the sender.",
 		},
 	);

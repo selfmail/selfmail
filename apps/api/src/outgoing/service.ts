@@ -1,13 +1,14 @@
 import { resolve4 } from "node:dns/promises";
-import { and, eq } from "drizzle-orm";
 import { status } from "elysia";
-import { db } from "../db";
-import { smtpCrendetials } from "../db/schema/workspace";
-import type { SMTPModule } from "./module";
+import { db } from "../lib/db";
+import type { SMTPOutgoingModule } from "./module";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: This is a static utility class for handling SMTP connections.
-export abstract class SMTPService {
-	static async handleConnection({ ip, host }: SMTPModule.ConnectionBody) {
+export abstract class SMTPOutgoingService {
+	static async handleConnection({
+		ip,
+		host,
+	}: SMTPOutgoingModule.ConnectionBody) {
 		const invalidHostDueToLocalhost = () => {
 			throw status(403, {
 				success: false,
@@ -50,19 +51,17 @@ export abstract class SMTPService {
 	static async handleAuthentication({
 		username,
 		password,
-	}: SMTPModule.AuthenticationBody) {
-		const credentials = await db
-			.select()
-			.from(smtpCrendetials)
-			.where(
-				and(
-					eq(smtpCrendetials.username, username),
-					eq(smtpCrendetials.password, password),
-				),
-			)
-			.limit(1);
+	}: SMTPOutgoingModule.AuthenticationBody) {
+		const credentials = await db.smtpCredentials.findUnique({
+			where: {
+				username_password: {
+					username,
+					password,
+				},
+			},
+		});
 
-		if (credentials.length === 0) {
+		if (!credentials) {
 			throw status(401, {
 				valid: false,
 				message: "Invalid SMTP credentials.",
@@ -70,11 +69,18 @@ export abstract class SMTPService {
 		}
 
 		return {
-			
+			valid: true,
+			credentials: {
+				workspaceId: credentials.workspaceId,
+				addressId: credentials.addressId,
+			},
 		};
 	}
 
-	static async verifyMailFrom(from: string) {
+	static async handleMailFrom({
+		from,
+		addressId,
+	}: SMTPOutgoingModule.MailFromBody) {
 		const [user, domain] = from.split("@");
 
 		if (!user || !domain) {
@@ -84,21 +90,39 @@ export abstract class SMTPService {
 			});
 		}
 
-		const credentials = await db
-			.select()
-			.from(smtpCrendetials)
-			.where(eq(smtpCrendetials.username, user))
-			.limit(1);
+		let contactId: string | null = null;
 
-		if (credentials.length === 0) {
-			return {
+		const contact = await db.contact.findUnique({
+			where: {
+				email_addressId: {
+					email: from,
+					addressId,
+				},
+			},
+		});
+
+		if (!contact) {
+			const newContact = await db.contact.create({
+				data: {
+					email: from,
+					addressId,
+				},
+			});
+
+			contactId = newContact.id;
+		} else {
+			contactId = contact.id;
+		}
+
+		if (!contactId) {
+			throw status(500, {
 				valid: false,
-				message: "Email address not found.",
-			};
+				message: "Failed to create or find contact for the email.",
+			});
 		}
 
 		return {
-			id: 
+			valid: true,
 		};
 	}
 }

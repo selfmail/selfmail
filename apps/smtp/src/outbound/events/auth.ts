@@ -3,7 +3,6 @@ import type {
 	SMTPServerAuthenticationResponse,
 	SMTPServerSession,
 } from "smtp-server";
-import { request } from "undici";
 import { client } from "@/lib/client";
 import { posthog } from "@/lib/posthog";
 import { createOutboundLog } from "../../utils/logs";
@@ -36,7 +35,7 @@ export async function auth(
 		return callback(new Error("Username or password is missing"), {});
 	}
 
-	const res = await client.v1.smtp.authentication.post({
+	const res = await client.v1["smtp-outgoing"].authentication.post({
 		password: auth.password,
 		username: auth.username,
 	});
@@ -62,12 +61,11 @@ export async function auth(
 
 	const data = res.data;
 
-	return new callback(null, {
+	return callback(null, {
 		user: {
-			id: data.id,
-			username: data.username,
-			email: data.email,
-			roles: data.roles,
+			workspaceId: data.credentials.workspaceId,
+			addressId: data.credentials.addressId,
+			username: auth.username,
 		},
 	});
 }

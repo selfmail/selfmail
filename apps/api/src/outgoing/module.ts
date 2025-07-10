@@ -1,6 +1,6 @@
 import { t } from "elysia";
 
-export namespace SMTPModule {
+export namespace SMTPOutgoingModule {
 	// connection
 	export const ConnectionBody = t.Object({
 		host: t.String({
@@ -26,7 +26,12 @@ export namespace SMTPModule {
 	// mail from
 	export const MailFromBody = t.Object({
 		from: t.String({
-			description: "The email address of the sender",
+			format: "email",
+			error: "Invalid email",
+		}),
+		addressId: t.String({
+			description:
+				"The address ID of the sender, fetched in the authentication step.",
 		}),
 	});
 	export type MailFromBody = typeof MailFromBody.static;
