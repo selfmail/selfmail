@@ -2,7 +2,7 @@
 	"name": "smtp-api",
 	"type": "module",
 	"scripts": {
-		"start": "bun --watch run src/index.ts",
+		"dev": "bun --watch run src/index.ts",
 		"typecheck": "tsc"
 	},
 	"devDependencies": {

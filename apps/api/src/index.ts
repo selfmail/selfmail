@@ -1,6 +1,5 @@
 import swagger from "@elysiajs/swagger";
 import { Elysia } from "elysia";
-import { outgoingSmtp } from "./outgoing";
 import { publicElysia } from "./public";
 import { web } from "./web";
 
@@ -12,8 +11,7 @@ const app = new Elysia({
 	},
 })
 	.use(swagger())
-	.use(outgoingSmtp)
-	.use(publicElysia)
+	.use(publicElysia) // the public api for the users to automate stuff with selfmail
 	.use(web)
 	.listen(3000);
 

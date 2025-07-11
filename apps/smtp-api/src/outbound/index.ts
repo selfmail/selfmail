@@ -3,7 +3,7 @@ import Elysia from "elysia";
 import { OutboundModule } from "./module";
 import { OutboundService } from "./service";
 
-export const outgoingSmtp = new Elysia({
+export const outboundSmtp = new Elysia({
 	prefix: "/smtp-outgoing",
 	name: "smtp-outgoing",
 	detail: {

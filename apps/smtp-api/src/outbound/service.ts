@@ -1,6 +1,6 @@
 import { resolve4 } from "node:dns/promises";
+import { db } from "database";
 import { status } from "elysia";
-import { db } from "../lib/db";
 import type { OutboundModule } from "./module";
 
 /**
