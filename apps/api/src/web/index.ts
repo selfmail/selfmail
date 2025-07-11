@@ -20,7 +20,6 @@ export const web = new Elysia({ name: "Web", prefix: "/web" })
 		}),
 	)
 	.onRequest(async ({ server, request, status }) => {
-		console.log(server?.requestIP(request));
 		let ip: string | undefined;
 		const ipv4 = await z
 			.ipv4()
@@ -47,10 +46,4 @@ export const web = new Elysia({ name: "Web", prefix: "/web" })
 		if (!ratelimit.success) {
 			return new Response("try again later", { status: 429 });
 		}
-	})
-	.get("/", () => "<h1>Hello World</h1>", {
-		afterHandle({ response, set }) {
-			set.headers["Content-Type"] = "text/html; charset=utf8";
-		},
-	})
-	.get("/hi", () => "<h1>Hello World</h1>");
+	});

@@ -215,9 +215,10 @@ model Email {
     id String @id @default(cuid())
 
     // email data
-    subject String
-    body    String
-    html    String?
+    subject     String
+    body        String
+    html        String?
+    attachments String[] // array of attachment IDs
 
     // instead of referencing the address directly, we reference the contact
     contact   Contact @relation(fields: [contactId], references: [id])

@@ -10,13 +10,20 @@ export namespace InboundModule {
 
 	// Mail form a new server.
 	export const mailFromBody = t.Object({
-		from: t.String(),
+		from: t.String({
+			format: "email",
+		}),
 	});
 	export type MailFromBody = typeof mailFromBody.static;
 
 	// RCPT TO from a new server.
 	export const rcptToBody = t.Object({
-		to: t.String(),
+		to: t.String({
+			format: "email",
+		}),
+		mailFrom: t.String({
+			format: "email",
+		}),
 	});
 	export type RcptToBody = typeof rcptToBody.static;
 
@@ -26,6 +33,12 @@ export namespace InboundModule {
 		html: t.String().optional(),
 		text: t.String(),
 		attachments: t.Files(),
+		to: t.String({
+			format: "email",
+		}),
+		mailFrom: t.String({
+			format: "email",
+		}),
 	});
 	export type DataBody = typeof dataBody.static;
 }
