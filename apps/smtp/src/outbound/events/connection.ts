@@ -1,5 +1,6 @@
 import { resolve4 } from "node:dns/promises";
 import type { SMTPServerSession } from "smtp-server";
+import { unkey } from "@/lib/unkey.js";
 import { posthog } from "../../lib/posthog.js";
 import { createOutboundLog } from "../../utils/logs.js";
 
@@ -9,6 +10,11 @@ export async function connection(
 	session: SMTPServerSession,
 	callback: (err?: Error | null) => void,
 ): Promise<void> {
+	const ratelimit = await unkey.limit(session.remoteAddress);
+	if (!ratelimit.success) {
+		return callback(new Error("Rate limit exceeded"));
+	}
+
 	posthog.capture({
 		distinctId: session.remoteAddress,
 		event: "outbound_connection",
@@ -19,11 +25,11 @@ export async function connection(
 		},
 	});
 
-	// do not accept connections from localhost to prevent spam, only in prod mode
 	if (
 		process.env.NODE_ENV === "production" &&
 		(session.remoteAddress === "127.0.0.1" || session.remoteAddress === "::1")
 	) {
+		// do not accept connections from localhost to prevent spam, only in prod mode
 		connectionLog("Connection from localhost is not allowed.");
 		return callback(new Error("Connection from localhost is not allowed"));
 	}

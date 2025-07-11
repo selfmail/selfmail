@@ -1,0 +1,17 @@
+{
+	"name": "smtp-api",
+	"type": "module",
+	"scripts": {
+		"start": "bun --watch run src/index.ts",
+		"typecheck": "tsc"
+	},
+	"devDependencies": {
+		"@types/bun": "1",
+		"typescript": "5"
+	},
+	"dependencies": {
+		"elysia": "latest",
+		"database": "workspace:*",
+		"@unkey/api": "latest"
+	}
+}

@@ -1,4 +1,3 @@
-// copied from stack.t3.gg – hope it is ok for them, I didn't asked
 import { PrismaClient } from "@prisma/client";
 
 const createPrismaClient = () => new PrismaClient();

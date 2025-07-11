@@ -12,6 +12,5 @@ export async function mailFrom(
 
 	// Here you can add any additional logic for processing the MAIL FROM command
 	// For example, you might want to validate the sender's address or log it
-
 	return callback();
 }

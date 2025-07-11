@@ -23,13 +23,13 @@
         "@elysiajs/swagger": "^1.3.1",
         "@polar-sh/elysia": "^0.2.2",
         "@polar-sh/sdk": "^0.34.3",
-        "@prisma/client": "^6.11.1",
         "@unkey/api": "^0.38.0",
+        "@unkey/ratelimit": "^2.0.0",
         "better-auth": "^1.2.12",
+        "database": "workspace:*",
         "drizzle-kit": "^0.31.4",
         "drizzle-orm": "^0.44.2",
         "elysia": "latest",
-        "prisma": "^6.11.1",
         "zod": "^4.0.0",
       },
       "devDependencies": {
@@ -85,6 +85,7 @@
       "name": "smtp",
       "dependencies": {
         "@elysiajs/eden": "^1.3.2",
+        "@unkey/ratelimit": "^2.0.0",
         "chalk": "^5.4.1",
         "consola": "^3.4.2",
         "dotenv": "^17.0.1",
@@ -104,6 +105,18 @@
       },
       "peerDependencies": {
         "typescript": "^5",
+      },
+    },
+    "apps/smtp-api": {
+      "name": "smtp-api",
+      "dependencies": {
+        "@unkey/api": "latest",
+        "database": "workspace:*",
+        "elysia": "latest",
+      },
+      "devDependencies": {
+        "@types/bun": "1",
+        "typescript": "5",
       },
     },
     "apps/web": {
@@ -145,6 +158,19 @@
         "postcss": "^8.5.3",
         "tailwindcss": "^4.0.15",
         "vite": "^6.2.2",
+      },
+    },
+    "packages/database": {
+      "name": "database",
+      "dependencies": {
+        "@prisma/client": "^6.11.1",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+        "prisma": "^6.11.1",
+      },
+      "peerDependencies": {
+        "typescript": "^5",
       },
     },
   },
@@ -891,6 +917,8 @@
 
     "csstype": ["csstype@3.1.3", "", {}, "sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw=="],
 
+    "database": ["database@workspace:packages/database"],
+
     "debug": ["debug@4.4.1", "", { "dependencies": { "ms": "^2.1.3" } }, "sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ=="],
 
     "decode-formdata": ["decode-formdata@0.9.0", "", {}, "sha512-q5uwOjR3Um5YD+ZWPOF/1sGHVW9A5rCrRwITQChRXlmPkxDFBqCm4jNTIVdGHNH9OnR+V9MoZVgRhsFb+ARbUw=="],
@@ -1498,6 +1526,8 @@
     "slice-ansi": ["slice-ansi@5.0.0", "", { "dependencies": { "ansi-styles": "^6.0.0", "is-fullwidth-code-point": "^4.0.0" } }, "sha512-FC+lgizVPfie0kkhqUScwRu1O/lF6NOgJmlCgK+/LYxDCTk8sGelYaHDhFcDN+Sn3Cv+3VSa4Byeo+IMCzpMgQ=="],
 
     "smtp": ["smtp@workspace:apps/smtp"],
+
+    "smtp-api": ["smtp-api@workspace:apps/smtp-api"],
 
     "smtp-server": ["smtp-server@3.14.0", "", { "dependencies": { "base32.js": "0.1.0", "ipv6-normalize": "1.0.1", "nodemailer": "7.0.3", "punycode.js": "2.3.1" } }, "sha512-cEw/hdIY+xw1pkbQbQ23hvnm9kNABAsgYB+jJYGkzAynZxJ2VB9aqC6JhB1vpdDnqan7C7AL3qHYRGwz5eD6BQ=="],
 
