@@ -1,4 +1,4 @@
 import { treaty } from "@elysiajs/eden";
-import type { App } from "@/../api/src/index";
+import type { Smtp } from "@/../smtp-api/src/index.ts";
 
-export const client = treaty<App>("localhost:3000");
+export const client = treaty<Smtp>("localhost:4001");

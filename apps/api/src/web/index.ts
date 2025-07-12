@@ -1,5 +1,5 @@
 import { cors } from "@elysiajs/cors";
-import Elysia, { status, t } from "elysia";
+import Elysia from "elysia";
 import z from "zod";
 import { unkey } from "../lib/unkey";
 

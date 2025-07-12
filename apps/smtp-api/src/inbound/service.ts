@@ -78,6 +78,8 @@ export abstract class InboundService {
 		mailFrom,
 		to,
 	}: InboundModule.DataBody) {
+		// call rspamd to check if the email has spam
+
 		const address = await db.address.findUnique({
 			where: {
 				email: to,

@@ -26,11 +26,38 @@ export const inboundSmtp = new Elysia({
 		"/mail-from",
 		async ({ body }) => {
 			return await InboundService.handleMailFrom({
-				address: body.address,
-				size: body.size,
+				from: body.from,
 			});
 		},
 		{
 			body: InboundModule.mailFromBody,
+		},
+	)
+	.get(
+		"/rcpt-to",
+		async ({ body }) => {
+			return await InboundService.handleRcptTo({
+				to: body.to,
+				mailFrom: body.mailFrom,
+			});
+		},
+		{
+			body: InboundModule.rcptToBody,
+		},
+	)
+	.get(
+		"/data",
+		async ({ body }) => {
+			return await InboundService.handleData({
+				attachments: body.attachments,
+				mailFrom: body.mailFrom,
+				to: body.to,
+				subject: body.subject,
+				text: body.text,
+				html: body.html,
+			});
+		},
+		{
+			body: InboundModule.dataBody,
 		},
 	);
