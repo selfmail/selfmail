@@ -9,19 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as InboxRouteImport } from './routes/inbox'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as ThirdInboxRouteImport } from './routes/third-inbox'
+import { Route as SecondInboxRouteImport } from './routes/second-inbox'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 
-const InboxRoute = InboxRouteImport.update({
-  id: '/inbox',
-  path: '/inbox',
+const ThirdInboxRoute = ThirdInboxRouteImport.update({
+  id: '/third-inbox',
+  path: '/third-inbox',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const SecondInboxRoute = SecondInboxRouteImport.update({
+  id: '/second-inbox',
+  path: '/second-inbox',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
@@ -36,53 +36,58 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/inbox': typeof InboxRoute
+  '/second-inbox': typeof SecondInboxRoute
+  '/third-inbox': typeof ThirdInboxRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/inbox': typeof InboxRoute
+  '/second-inbox': typeof SecondInboxRoute
+  '/third-inbox': typeof ThirdInboxRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/inbox': typeof InboxRoute
+  '/second-inbox': typeof SecondInboxRoute
+  '/third-inbox': typeof ThirdInboxRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/inbox' | '/auth/login' | '/auth/register'
+  fullPaths: '/second-inbox' | '/third-inbox' | '/auth/login' | '/auth/register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/inbox' | '/auth/login' | '/auth/register'
-  id: '__root__' | '/' | '/inbox' | '/auth/login' | '/auth/register'
+  to: '/second-inbox' | '/third-inbox' | '/auth/login' | '/auth/register'
+  id:
+    | '__root__'
+    | '/second-inbox'
+    | '/third-inbox'
+    | '/auth/login'
+    | '/auth/register'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  InboxRoute: typeof InboxRoute
+  SecondInboxRoute: typeof SecondInboxRoute
+  ThirdInboxRoute: typeof ThirdInboxRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/inbox': {
-      id: '/inbox'
-      path: '/inbox'
-      fullPath: '/inbox'
-      preLoaderRoute: typeof InboxRouteImport
+    '/third-inbox': {
+      id: '/third-inbox'
+      path: '/third-inbox'
+      fullPath: '/third-inbox'
+      preLoaderRoute: typeof ThirdInboxRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/second-inbox': {
+      id: '/second-inbox'
+      path: '/second-inbox'
+      fullPath: '/second-inbox'
+      preLoaderRoute: typeof SecondInboxRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/register': {
@@ -103,8 +108,8 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  InboxRoute: InboxRoute,
+  SecondInboxRoute: SecondInboxRoute,
+  ThirdInboxRoute: ThirdInboxRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
 }
