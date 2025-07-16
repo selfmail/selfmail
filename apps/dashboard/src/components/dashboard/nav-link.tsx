@@ -10,7 +10,7 @@ export function NavLink({
 	return (
 		<a
 			href={href}
-			className={`rounded-md font-medium text-black text-xl ring-neutral-100 transition-all hover:bg-neutral-100 hover:ring-4 ${className}`}
+			className={`w-fit rounded-md font-medium text-black text-xl ring-neutral-100 transition-all hover:bg-neutral-100 hover:ring-4 ${className}`}
 		>
 			{children}
 		</a>

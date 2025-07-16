@@ -1,7 +1,10 @@
+import { useIntersection } from "@mantine/hooks";
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import Email from "@/components/dashboard/email";
+import EmailViewer from "@/components/dashboard/email-viewer";
 import DashboardHeader from "@/components/dashboard/header";
 import DashboardNavigation from "@/components/dashboard/navigation";
-
 export const Route = createFileRoute("/second-inbox")({
 	component: RouteComponent,
 });
@@ -9,34 +12,41 @@ export const Route = createFileRoute("/second-inbox")({
 const mails = [];
 
 function RouteComponent() {
+	const [open, setOpen] = useState(true);
+
+	const { entry, ref } = useIntersection({
+		threshold: 0,
+		rootMargin: "0%",
+	});
+
+	useEffect(() => {
+		if (entry?.isIntersecting) {
+			setOpen(false);
+		}
+	}, [entry?.isIntersecting]);
 	return (
 		<div className="flex flex-col">
 			<DashboardHeader />
 			<DashboardNavigation />
-			<div className="flex flex-col space-x-3 px-32 py-5">
+			<div ref={ref} className="flex flex-col space-x-3 px-32 py-5">
 				<h1 className="text-2xl">Unified Inbox</h1>
 				<p>
 					About 5000 Mails,{" "}
 					<span className="font-medium text-black">100 unread</span>
 				</p>
 			</div>
+			<EmailViewer open={open} />
 			<div className="flex flex-col space-y-3 px-32 py-5">
-				<div className="flex flex-row items-center">
-					<h3>Google</h3>
-					<p>Login To your account</p>
-				</div>
-				<div className="flex flex-row items-center">
-					<h3>Google</h3>
-					<p>Login To your account</p>
-				</div>
-				<div className="flex flex-row items-center">
-					<h3>Google</h3>
-					<p>Login To your account</p>
-				</div>
-				<div className="flex flex-row items-center">
-					<h3>Google</h3>
-					<p>Login To your account</p>
-				</div>
+				<Email />
+				<Email />
+				<Email />
+				<Email />
+				<Email />
+				<Email />
+				<Email />
+				<Email />
+				<Email />
+				<Email />
 			</div>
 		</div>
 	);
