@@ -1,0 +1,8 @@
+$ vite --port 3001
+Generated route tree in 93ms
+
+  VITE v6.3.5  ready in 667 ms
+
+  ➜  Local:   http://localhost:3001/
+  ➜  Network: use --host to expose
+error: script "dev" exited with code 143
