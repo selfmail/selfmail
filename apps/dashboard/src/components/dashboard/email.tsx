@@ -1,36 +1,38 @@
+import { cn } from "@/lib/utils";
 import type { EmailData } from "@/types/email";
 
 interface EmailProps {
 	email: EmailData;
 	onClick: () => void;
+	ref?: (instance: unknown) => void;
 }
-export default function Email({ email, onClick }: EmailProps) {
+export default function Email({ email, ref, onClick }: EmailProps) {
 	return (
-		<div
-			className="cursor-pointer rounded-lg bg-transparent px-2.5 py-5 ring-0 ring-neutral-100 transition-all hover:bg-neutral-100 hover:ring-2"
+		<button
+			ref={ref}
+			type="button"
+			className={cn(
+				"group flex flex-row justify-between p-4 px-32 hover:bg-gray-100",
+				email?.unread ? "pl-28" : "pl-32",
+			)}
 			onClick={onClick}
 		>
-			<div className="flex flex-row items-center justify-between">
-				<div className="flex flex-row items-center space-x-3">
-					{email.unread && <div className="h-1 w-1 rounded-full bg-blue-500" />}
-					<div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-200 font-medium text-sm">
-						{email.avatar}
-					</div>
-					<div className="flex flex-col">
-						<div className="flex items-center space-x-2">
-							<h2 className={`text-lg ${email.unread ? "font-semibold" : ""}`}>
-								{email.from}
-							</h2>
-							<span className="text-neutral-500 text-sm">{email.date}</span>
-						</div>
-						<p
-							className={`text-neutral-600 ${email.unread ? "font-medium" : ""}`}
-						>
-							{email.subject}
-						</p>
-					</div>
+			<div className="flex flex-row items-center">
+				{email?.unread && (
+					<span className="mr-2 h-2 w-2 rounded-full bg-blue-300" />
+				)}
+				<div className="mr-2 flex h-7 w-7 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-neutral-200">
+					{email.avatar}
+				</div>
+				<div className="relative flex w-36 items-center justify-start overflow-hidden px-2">
+					<span className="">{email.from}</span>
+					<div className="pointer-events-none absolute top-0 right-0 h-full w-7 bg-gradient-to-r from-transparent to-white group-hover:to-gray-100" />
+				</div>
+				<div className="flex flex-1 items-center justify-start overflow-hidden px-2">
+					{email.subject}
 				</div>
 			</div>
-		</div>
+			<span>{new Date(email.date).toLocaleTimeString("de-DE")}</span>
+		</button>
 	);
 }

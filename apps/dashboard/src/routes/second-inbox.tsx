@@ -8,43 +8,34 @@ import DashboardNavigation from "@/components/dashboard/navigation";
 import type { EmailData } from "@/types/email";
 
 export const Route = createFileRoute("/second-inbox")({
-  component: RouteComponent,
+	component: RouteComponent,
 });
 
 function RouteComponent() {
-  const [open, setOpen] = useState(true);
-  const [selectedEmail, setSelectedEmail] = useState<EmailData | null>(null);
+	const [open, setOpen] = useState(true);
+	const [selectedEmail, setSelectedEmail] = useState<EmailData | null>(null);
 
-  const handleEmailClick = (email: EmailData) => {
-    setSelectedEmail(email);
-    setOpen(true);
-  };
+	const handleEmailClick = (email: EmailData) => {
+		setSelectedEmail(email);
+		setOpen(true);
+	};
 
-  return (
-    <div className="flex flex-col min-h-screen">
-      <DashboardHeader />
-      <DashboardNavigation />
-      <div className="flex flex-col space-x-3 px-32 py-5">
-        <h1 className="text-2xl">Unified Inbox</h1>
-        <p>
-          About 200 Mails,{" "}
-          <span className="!text-black font-medium">Loading...</span>
-        </p>
-      </div>
-      <EmailViewer
-        setOpen={setOpen}
-        open={open}
-        selectedEmail={selectedEmail}
-      />
-      <motion.div
-        initial={{ width: "100%" }}
-        animate={{
-          width: open ? "50%" : "100%",
-        }}
-        className="flex flex-col px-32 pb-10"
-      >
-        <EmailList onEmailClick={handleEmailClick} />
-      </motion.div>
-    </div>
-  );
+	return (
+		<div className="flex min-h-screen flex-col">
+			<DashboardHeader />
+			<DashboardNavigation />
+			<div className="flex flex-col space-x-3 px-32 py-5">
+				<h1 className="text-2xl">Unified Inbox</h1>
+				<p>About 200 Mails</p>
+			</div>
+			<EmailViewer
+				setOpen={setOpen}
+				open={open}
+				selectedEmail={selectedEmail}
+			/>
+			<motion.div>
+				<EmailList onEmailClick={handleEmailClick} />
+			</motion.div>
+		</div>
+	);
 }

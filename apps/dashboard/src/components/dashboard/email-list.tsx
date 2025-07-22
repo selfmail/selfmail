@@ -124,14 +124,15 @@ export default function EmailList({ onEmailClick }: EmailListProps) {
 	}
 
 	return (
-		<div className="w-full space-y-2">
+		<div className="flex w-full flex-col space-y-2">
 			{allEmails.map((email, index) => {
 				if (index === allEmails.length - 1) {
-					// Last email, add ref to load more
 					return (
-						<div key={email.id} ref={ref}>
-							<Email email={email} onClick={() => onEmailClick(email)} />
-						</div>
+						<Email
+							ref={ref}
+							email={email}
+							onClick={() => onEmailClick(email)}
+						/>
 					);
 				}
 				return (
