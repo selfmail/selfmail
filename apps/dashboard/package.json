@@ -28,11 +28,13 @@
 		"@tanstack/react-router-devtools": "^1.121.2",
 		"@tanstack/react-virtual": "^3.13.12",
 		"@tanstack/router-plugin": "^1.121.2",
+		"@types/use-double-click": "^1.0.5",
 		"lucide-react": "^0.525.0",
 		"motion": "^12.23.6",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
-		"tailwindcss": "^4.0.6"
+		"tailwindcss": "^4.0.6",
+		"use-double-click": "^1.0.5"
 	},
 	"devDependencies": {
 		"@testing-library/dom": "^10.4.0",

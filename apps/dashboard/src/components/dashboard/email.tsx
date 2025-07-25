@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import useDoubleClick from "use-double-click";
 import { cn } from "@/lib/utils";
 import type { EmailData } from "@/types/email";
 

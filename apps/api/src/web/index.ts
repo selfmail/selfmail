@@ -17,6 +17,7 @@ export const web = new Elysia({ name: "Web", prefix: "/web" })
 			origin: true,
 		}),
 	)
+	.post("/register", async ({}) => {})
 	.get(
 		"/emails",
 		async ({ query }) => {

@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "motion/react";
 import { useState } from "react";
 import EmailList from "@/components/dashboard/email-list";
 import EmailViewer from "@/components/dashboard/email-viewer";
@@ -33,9 +32,7 @@ function RouteComponent() {
 				open={open}
 				selectedEmail={selectedEmail}
 			/>
-			<motion.div>
-				<EmailList onEmailClick={handleEmailClick} />
-			</motion.div>
+			<EmailList onEmailClick={handleEmailClick} />
 		</div>
 	);
 }

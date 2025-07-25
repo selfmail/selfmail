@@ -1,15 +1,85 @@
 import * as RadixDropdownMenu from "@radix-ui/react-dropdown-menu";
-export function DropdownMenu() {
+import { cn } from "@/lib/utils";
+import type { FileRouteTypes } from "@/routeTree.gen";
+
+interface DropdownMenuProps extends RadixDropdownMenu.DropdownMenuProps {}
+
+export function DropdownMenu({ ...props }: DropdownMenuProps) {
+	return <RadixDropdownMenu.Root {...props} />;
+}
+
+export function DropdownMenuTrigger({
+	children,
+	styled = true,
+	...props
+}: RadixDropdownMenu.DropdownMenuTriggerProps & {
+	styled?: boolean;
+}) {
 	return (
-		<RadixDropdownMenu.Root>
-			<RadixDropdownMenu.Trigger asChild>
-				<button type="button">Open Menu</button>
-			</RadixDropdownMenu.Trigger>
-			<RadixDropdownMenu.Content className="min-w-72 rounded-md border border-neutral-700 bg-neutral-800 p-0.5 shadow-md">
-				<RadixDropdownMenu.Item className="rounded-full px-2.5 py-0.5 text-neutral-200 text-sm outline-none focus:bg-neutral-700 focus:text-white">
-					Item 1
-				</RadixDropdownMenu.Item>
-			</RadixDropdownMenu.Content>
-		</RadixDropdownMenu.Root>
+		<RadixDropdownMenu.Trigger
+			className={cn(styled && "", "outline-none")}
+			{...props}
+		>
+			{children}
+		</RadixDropdownMenu.Trigger>
+	);
+}
+export function DropdownMenuContent({
+	children,
+	styled = true,
+	...props
+}: RadixDropdownMenu.DropdownMenuContentProps & {
+	styled?: boolean;
+}) {
+	return (
+		<RadixDropdownMenu.Content
+			className={cn(
+				styled &&
+					"dropdown-fade-in mt-2 min-w-64 rounded-xl bg-[#f5f5f5e4] p-2 shadow-sm backdrop-blur-sm",
+			)}
+			{...props}
+		>
+			{children}
+		</RadixDropdownMenu.Content>
+	);
+}
+
+export function DropdownMenuItem({
+	children,
+	styled = true,
+	...props
+}: RadixDropdownMenu.DropdownMenuItemProps & {
+	styled?: boolean;
+	href?: FileRouteTypes["to"];
+}) {
+	return (
+		<RadixDropdownMenu.Item
+			{...props}
+			className={cn(
+				styled &&
+					"cursor-pointer rounded-md px-2 py-1 text-lg transition-colors duration-75 hover:bg-neutral-200",
+				"outline-none",
+				props.className,
+			)}
+		>
+			{children}
+		</RadixDropdownMenu.Item>
+	);
+}
+
+export function DropdownMenuSeparator(
+	props: RadixDropdownMenu.DropdownMenuSeparatorProps,
+) {
+	return <RadixDropdownMenu.Separator {...props} />;
+}
+
+export function DropdownMenuCheckboxItem({
+	children,
+	...props
+}: RadixDropdownMenu.DropdownMenuCheckboxItemProps) {
+	return (
+		<RadixDropdownMenu.CheckboxItem {...props}>
+			{children}
+		</RadixDropdownMenu.CheckboxItem>
 	);
 }

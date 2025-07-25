@@ -6,6 +6,7 @@ import Email from "./email";
 
 interface EmailListProps {
 	onEmailClick: (email: EmailData) => void;
+	clickRef?: React.RefObject<HTMLDivElement>;
 }
 
 interface EmailResponse {
@@ -20,7 +21,7 @@ interface EmailResponse {
 	};
 }
 
-export default function EmailList({ onEmailClick }: EmailListProps) {
+export default function EmailList({ onEmailClick, clickRef }: EmailListProps) {
 	const loadMoreRef = useRef<HTMLDivElement>(null);
 
 	const { entry, ref } = useIntersection({
@@ -124,7 +125,7 @@ export default function EmailList({ onEmailClick }: EmailListProps) {
 	}
 
 	return (
-		<div className="flex w-full flex-col space-y-2">
+		<div ref={clickRef} className="flex w-full flex-col space-y-2">
 			{allEmails.map((email, index) => {
 				if (index === allEmails.length - 1) {
 					return (

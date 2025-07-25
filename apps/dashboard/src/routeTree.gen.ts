@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ThirdInboxRouteImport } from './routes/third-inbox'
 import { Route as SecondInboxRouteImport } from './routes/second-inbox'
+import { Route as MailMailIdRouteImport } from './routes/mail/$mailId'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 
@@ -22,6 +23,11 @@ const ThirdInboxRoute = ThirdInboxRouteImport.update({
 const SecondInboxRoute = SecondInboxRouteImport.update({
   id: '/second-inbox',
   path: '/second-inbox',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MailMailIdRoute = MailMailIdRouteImport.update({
+  id: '/mail/$mailId',
+  path: '/mail/$mailId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
@@ -40,12 +46,14 @@ export interface FileRoutesByFullPath {
   '/third-inbox': typeof ThirdInboxRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/mail/$mailId': typeof MailMailIdRoute
 }
 export interface FileRoutesByTo {
   '/second-inbox': typeof SecondInboxRoute
   '/third-inbox': typeof ThirdInboxRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/mail/$mailId': typeof MailMailIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,18 +61,30 @@ export interface FileRoutesById {
   '/third-inbox': typeof ThirdInboxRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/mail/$mailId': typeof MailMailIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/second-inbox' | '/third-inbox' | '/auth/login' | '/auth/register'
+  fullPaths:
+    | '/second-inbox'
+    | '/third-inbox'
+    | '/auth/login'
+    | '/auth/register'
+    | '/mail/$mailId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/second-inbox' | '/third-inbox' | '/auth/login' | '/auth/register'
+  to:
+    | '/second-inbox'
+    | '/third-inbox'
+    | '/auth/login'
+    | '/auth/register'
+    | '/mail/$mailId'
   id:
     | '__root__'
     | '/second-inbox'
     | '/third-inbox'
     | '/auth/login'
     | '/auth/register'
+    | '/mail/$mailId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -72,6 +92,7 @@ export interface RootRouteChildren {
   ThirdInboxRoute: typeof ThirdInboxRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
+  MailMailIdRoute: typeof MailMailIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -88,6 +109,13 @@ declare module '@tanstack/react-router' {
       path: '/second-inbox'
       fullPath: '/second-inbox'
       preLoaderRoute: typeof SecondInboxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mail/$mailId': {
+      id: '/mail/$mailId'
+      path: '/mail/$mailId'
+      fullPath: '/mail/$mailId'
+      preLoaderRoute: typeof MailMailIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/register': {
@@ -112,6 +140,7 @@ const rootRouteChildren: RootRouteChildren = {
   ThirdInboxRoute: ThirdInboxRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
+  MailMailIdRoute: MailMailIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
