@@ -1,6 +1,6 @@
 import { t } from "elysia";
 
-export namespace WebModule {
+export namespace AuthenticationModule {
 	export const registerBody = t.Object({
 		email: t.String({
 			format: "email",
