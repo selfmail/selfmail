@@ -1,4 +1,5 @@
 import { db } from "database";
+import { status } from "elysia";
 import type { AuthenticationModule } from "./module";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: This class is designed to be static and does not require instantiation.
@@ -14,8 +15,13 @@ export abstract class AuthenticationService {
 			data: {
 				email,
 				password: passwordHash,
+				name,
 			},
 		});
+
+		if (!user) throw status(500);
+
+		// log the user in
 	}
 
 	static async handleLogin({

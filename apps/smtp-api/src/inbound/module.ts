@@ -30,7 +30,7 @@ export namespace InboundModule {
 	// Data for the SMTP DATA command.
 	export const dataBody = t.Object({
 		subject: t.String(),
-		html: t.String().optional(),
+		html: t.String(),
 		text: t.String(),
 		attachments: t.Files(),
 		to: t.String({

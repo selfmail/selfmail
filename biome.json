@@ -42,6 +42,9 @@
 					}
 				}
 			},
+			"complexity": {
+				"noStaticOnlyClass": "off"
+			},
 			"style": {
 				"noParameterAssign": "error",
 				"useAsConstAssertion": "error",
