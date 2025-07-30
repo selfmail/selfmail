@@ -8,6 +8,7 @@ import type { EmailData } from "@/types/email";
 
 export const Route = createFileRoute("/second-inbox")({
 	component: RouteComponent,
+	loader(ctx) {},
 });
 
 function RouteComponent() {

@@ -1,5 +1,6 @@
 import { db } from "database";
 import { status } from "elysia";
+import { Authentication } from "../../lib/auth";
 import type { AuthenticationModule } from "./module";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: This class is designed to be static and does not require instantiation.
@@ -35,6 +36,8 @@ export abstract class AuthenticationService {
 		if (!user || !(await Bun.password.verify(user.password, password))) {
 			throw new Error("Invalid email or password");
 		}
+
+		await Authentication.login();
 
 		return user;
 	}
