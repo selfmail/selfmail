@@ -11,7 +11,6 @@ export abstract class DashboardService {
 		const emails = await db.email.findMany({
 			take: limit,
 			skip: (page - 1) * limit,
-			orderBy: { createdAt: "desc" },
 		});
 
 		const totalCount = await db.email.count();

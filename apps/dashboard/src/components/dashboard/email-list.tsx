@@ -1,6 +1,7 @@
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
+import { client } from "@/lib/client";
 import type { EmailData } from "@/types/email";
 import Email from "./email";
 
@@ -10,15 +11,20 @@ interface EmailListProps {
 }
 
 interface EmailResponse {
-	data: EmailData[];
-	pagination: {
-		page: number;
-		limit: number;
-		totalCount: number;
-		totalPages: number;
-		hasNextPage: boolean;
-		hasPreviousPage: boolean;
-	};
+	emails: {
+		body: string;
+		id: string;
+		subject: string;
+		html: string | null;
+		attachments: string[];
+		contactId: string;
+		addressId: string;
+		date: Date;
+	}[];
+	totalCount: number;
+	page: number;
+	limit: number;
+	totalPages: number;
 }
 
 export default function EmailList({ onEmailClick, clickRef }: EmailListProps) {
@@ -45,22 +51,20 @@ export default function EmailList({ onEmailClick, clickRef }: EmailListProps) {
 			console.log("Fetch URL:", url);
 
 			try {
-				const response = await fetch(url, {
-					method: "GET",
+				const res = await client.v1.web.dashboard.emails.get({
+					query: {
+						limit: 20,
+						page: pageParam,
+					},
 				});
 
-				console.log("Response status:", response.status);
-				console.log("Response ok:", response.ok);
-
-				if (!response.ok) {
-					const errorText = await response.text();
+				if (res.error) {
+					const errorText = res.error.value.message;
 					console.error("Response error:", errorText);
-					throw new Error(
-						`HTTP error! status: ${response.status} - ${errorText}`,
-					);
+					throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
 				}
 
-				const data = await response.json();
+				const data = res.data;
 				console.log("Fetched data:", data);
 				return data;
 			} catch (fetchError) {
@@ -70,8 +74,8 @@ export default function EmailList({ onEmailClick, clickRef }: EmailListProps) {
 		},
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => {
-			return lastPage.pagination.hasNextPage
-				? lastPage.pagination.page + 1
+			return lastPage.totalCount !== lastPage.page
+				? lastPage.page + 1
 				: undefined;
 		},
 		retry: 3,
@@ -80,7 +84,7 @@ export default function EmailList({ onEmailClick, clickRef }: EmailListProps) {
 
 	console.log("Query state:", { isLoading, isError, data });
 
-	const allEmails = data?.pages.flatMap((page) => page.data) ?? [];
+	const allEmails = data?.pages.flatMap((page) => page.emails) ?? [];
 
 	// Trigger fetchNextPage when the load more element comes into view
 	useEffect(() => {

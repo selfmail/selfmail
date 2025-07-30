@@ -4,7 +4,16 @@ import { cn } from "@/lib/utils";
 import type { EmailData } from "@/types/email";
 
 interface EmailProps {
-	email: EmailData;
+	email: {
+		body: string;
+		id: string;
+		subject: string;
+		html: string | null;
+		attachments: string[];
+		contactId: string;
+		addressId: string;
+		date: Date;
+	};
 	onClick: () => void;
 	ref?: (instance: unknown) => void;
 }
