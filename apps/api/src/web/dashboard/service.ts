@@ -2,18 +2,53 @@ import { db } from "database";
 import { status } from "elysia";
 import type { DashboardModule } from "./module";
 
-// biome-ignore lint/complexity/noStaticOnlyClass: This class is designed to be static and does not require instantiation.
 export abstract class DashboardService {
-	static async multipleEmails({ limit, page }: DashboardModule.EmailsQuery) {
+	static async multipleEmails(
+		{ limit, page }: DashboardModule.EmailsQuery,
+		userId: string,
+	) {
 		page = Number(page) || 1;
 		limit = Number(limit) || 20;
 
-		const emails = await db.email.findMany({
-			take: limit,
-			skip: (page - 1) * limit,
+		// Get user's accessible addresses through member addresses
+		const memberAddresses = await db.memberAddress.findMany({
+			where: {
+				member: {
+					userId: userId,
+				},
+			},
+			select: { addressId: true },
 		});
 
-		const totalCount = await db.email.count();
+		const addressIds = memberAddresses.map((ma) => ma.addressId);
+
+		// Only fetch emails for the user's accessible addresses
+		const emails = await db.email.findMany({
+			where:
+				addressIds.length > 0
+					? {
+							addressId: {
+								in: addressIds,
+							},
+						}
+					: undefined,
+			take: limit,
+			skip: (page - 1) * limit,
+			orderBy: {
+				date: "desc",
+			},
+		});
+
+		const totalCount = await db.email.count({
+			where:
+				addressIds.length > 0
+					? {
+							addressId: {
+								in: addressIds,
+							},
+						}
+					: undefined,
+		});
 
 		return {
 			emails,
@@ -23,9 +58,34 @@ export abstract class DashboardService {
 			totalPages: Math.ceil(totalCount / limit),
 		};
 	}
-	static async singleEmail({ id }: DashboardModule.SingleEmailParams) {
-		const email = await db.email.findUnique({
-			where: { id },
+
+	static async singleEmail(
+		{ id }: DashboardModule.SingleEmailParams,
+		userId: string,
+	) {
+		// Get user's accessible addresses through member addresses
+		const memberAddresses = await db.memberAddress.findMany({
+			where: {
+				member: {
+					userId: userId,
+				},
+			},
+			select: { addressId: true },
+		});
+
+		const addressIds = memberAddresses.map((ma) => ma.addressId);
+
+		const email = await db.email.findFirst({
+			where: {
+				id,
+				...(addressIds.length > 0
+					? {
+							addressId: {
+								in: addressIds,
+							},
+						}
+					: {}),
+			},
 		});
 
 		if (!email) {

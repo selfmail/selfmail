@@ -1,8 +1,10 @@
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
+import { useAuth } from "@/lib/auth";
 import { client } from "@/lib/client";
-import type { EmailData } from "@/types/email";
+import type { ApiEmailData, EmailData } from "@/types/email";
+import { transformApiEmail } from "@/types/email";
 import Email from "./email";
 
 interface EmailListProps {
@@ -11,16 +13,7 @@ interface EmailListProps {
 }
 
 interface EmailResponse {
-	emails: {
-		body: string;
-		id: string;
-		subject: string;
-		html: string | null;
-		attachments: string[];
-		contactId: string;
-		addressId: string;
-		date: Date;
-	}[];
+	emails: ApiEmailData[];
 	totalCount: number;
 	page: number;
 	limit: number;
@@ -84,7 +77,8 @@ export default function EmailList({ onEmailClick, clickRef }: EmailListProps) {
 
 	console.log("Query state:", { isLoading, isError, data });
 
-	const allEmails = data?.pages.flatMap((page) => page.emails) ?? [];
+	const allEmails =
+		data?.pages.flatMap((page) => page.emails.map(transformApiEmail)) ?? [];
 
 	// Trigger fetchNextPage when the load more element comes into view
 	useEffect(() => {

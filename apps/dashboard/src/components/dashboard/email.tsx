@@ -1,22 +1,12 @@
-import { useRef } from "react";
-import useDoubleClick from "use-double-click";
 import { cn } from "@/lib/utils";
 import type { EmailData } from "@/types/email";
 
 interface EmailProps {
-	email: {
-		body: string;
-		id: string;
-		subject: string;
-		html: string | null;
-		attachments: string[];
-		contactId: string;
-		addressId: string;
-		date: Date;
-	};
+	email: EmailData;
 	onClick: () => void;
 	ref?: (instance: unknown) => void;
 }
+
 export default function Email({ email, ref, onClick }: EmailProps) {
 	return (
 		<button
