@@ -1,4 +1,4 @@
-import Elysia from "elysia";
+import Elysia, { t } from "elysia";
 import { sessionAuthMiddleware } from "../../lib/auth-middleware";
 import { AuthenticationModule } from "./module";
 import { AuthenticationService } from "./service";
@@ -53,6 +53,9 @@ export const authentication = new Elysia({
 			detail: {
 				description: "Register a new user account",
 			},
+			cookie: t.Object({
+				"session-token": t.Cookie({}),
+			}),
 		},
 	)
 	.post(

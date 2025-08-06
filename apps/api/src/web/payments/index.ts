@@ -25,7 +25,7 @@ export const payments = new Elysia({
 		},
 		params: PaymentsModule.checkoutParams,
 	})
-	.post("/webhooks", async (req) => PaymentsService.webhooks(), {
+	.post("/webhooks", async () => PaymentsService.webhooks(), {
 		detail: {
 			description: "Handle webhooks from the payment provider.",
 		},

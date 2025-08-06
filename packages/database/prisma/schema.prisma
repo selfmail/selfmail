@@ -19,6 +19,7 @@ model User {
     EmailVerification EmailVerification[]
     Session           Session[]
     SmtpCredentials   SmtpCredentials[]
+    Activity          Activity[]
 }
 
 model EmailVerification {
@@ -134,6 +135,7 @@ model Workspace {
     Role            Role[]
     Domain          Domain[]
     SmtpCredentials SmtpCredentials[]
+    Activity        Activity[]
 
     @@index([ownerId])
 }
@@ -284,4 +286,42 @@ model SmtpCredentials {
     activeUntil DateTime?
 
     @@unique([username, password])
+}
+
+// Activity Log
+model Activity {
+    id String @id @default(uuid())
+
+    title       String
+    description String?
+    color       ActivityColor
+    type        ActivityType
+
+    // Relations
+    workspaceId String
+    workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+    userId String?
+    user   User?   @relation(fields: [userId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([workspaceId])
+    @@index([userId])
+    @@index([createdAt])
+    @@index([type])
+}
+
+enum ActivityColor {
+    neutral
+    positive
+    negative
+}
+
+enum ActivityType {
+    task
+    note
+    event
+    reminder
 }

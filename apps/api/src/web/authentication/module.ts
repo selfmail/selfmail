@@ -19,6 +19,8 @@ export namespace AuthenticationModule {
 
 	export type RegisterBody = typeof registerBody.static;
 
+	// Login
+
 	export const loginBody = t.Object({
 		email: t.String({
 			format: "email",
