@@ -2,6 +2,7 @@ import { cors } from "@elysiajs/cors";
 import Elysia from "elysia";
 import { authentication } from "./authentication";
 import { dashboard } from "./dashboard";
+import { payments } from "./payments";
 import { workspace } from "./workspace";
 
 export const web = new Elysia({ name: "Web", prefix: "/web" })
@@ -17,4 +18,5 @@ export const web = new Elysia({ name: "Web", prefix: "/web" })
 	})
 	.use(dashboard)
 	.use(workspace)
-	.use(authentication);
+	.use(authentication)
+	.use(payments);

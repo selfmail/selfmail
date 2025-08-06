@@ -9,7 +9,7 @@ generator client {
 
 // Authentication
 model User {
-    id       String @id @default(cuid())
+    id       String @id @default(uuid())
     name     String
     password String
     email    String @unique
@@ -22,7 +22,7 @@ model User {
 }
 
 model EmailVerification {
-    id String @id @default(cuid())
+    id String @id @default(uuid())
 
     // the user that is being verified
     userId String
@@ -36,7 +36,7 @@ model EmailVerification {
 }
 
 model Session {
-    id String @id @default(cuid())
+    id String @id @default(uuid())
 
     // the user that is being verified
     userId String
@@ -50,7 +50,7 @@ model Session {
 }
 
 model Member {
-    id String @id @default(cuid())
+    id String @id @default(uuid())
 
     userId String
     user   User   @relation(fields: [userId], references: [id])
@@ -77,7 +77,7 @@ model Member {
 // A role is just a set of editable permissions that can be assigned to users. These roles are editable
 // by the owner of the workspace. The owner can create, update, and delete roles, and assign them to users.
 model Role {
-    id          String  @id @default(cuid())
+    id          String  @id @default(uuid())
     name        String
     description String?
 
@@ -112,7 +112,7 @@ model MemberPermission {
 // Permissions are the actual actions that a user can perform in a workspace. These permissions
 // are not editable by the owner of the workspace, he can only assign them to roles and users.
 model Permission {
-    id          String  @id @default(cuid())
+    id          String  @id @default(uuid())
     name        String  @unique
     description String?
 
@@ -123,11 +123,12 @@ model Permission {
 // Workspaces
 
 model Workspace {
-    id          String  @id @default(cuid())
+    id          String  @id @default(uuid())
     name        String
     description String?
+    image       String? // url to image (hosted on selfmail r2) or undefined for no image
 
-    slug            String            @unique @default(cuid())
+    slug            String            @unique @default(uuid())
     ownerId         String
     Member          Member[]
     Role            Role[]
@@ -138,7 +139,7 @@ model Workspace {
 }
 
 model Domain {
-    id String @id @default(cuid())
+    id String @id @default(uuid())
 
     domain String @unique
 
@@ -150,12 +151,12 @@ model Domain {
 
     // a verification token must be a txt record for the domain
     // it is used to verify that the user owns the domain
-    verificationToken String? @unique @default(cuid())
+    verificationToken String? @unique @default(uuid())
 }
 
 // addresses
 model Address {
-    id String @id @default(cuid())
+    id String @id @default(uuid())
 
     email String @unique
 
@@ -178,7 +179,7 @@ model MemberAddress {
 }
 
 model Contact {
-    id String @id @default(cuid())
+    id String @id @default(uuid())
 
     name        String?
     description String?
@@ -214,7 +215,7 @@ model Contact {
 }
 
 model Email {
-    id String @id @default(cuid())
+    id String @id @default(uuid())
 
     // email data
     subject     String
@@ -234,7 +235,7 @@ model Email {
 }
 
 model OutgoingEmail {
-    id String @id @default(cuid())
+    id String @id @default(uuid())
 
     // email data
     subject String
@@ -257,7 +258,7 @@ model OutgoingEmail {
 }
 
 model SmtpCredentials {
-    id String @id @default(cuid())
+    id String @id @default(uuid())
 
     title       String
     description String?
