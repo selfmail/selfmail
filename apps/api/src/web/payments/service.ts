@@ -2,7 +2,13 @@ import { Webhooks } from "@polar-sh/elysia";
 import { db } from "database";
 import { redirect, status } from "elysia";
 import { Analytics } from "../../lib/analytics";
+import { polar } from "../../lib/payments";
 import type { PaymentsModule } from "./module";
+
+const products = {
+	"selfmail-plus": process.env.POLAR_SELFMAIL_PLUS_ID,
+	"selfmail-premium": process.env.POLAR_SELFMAIL_PREMIUM_ID,
+} as const;
 
 export abstract class PaymentsService {
 	static async webhooks() {
@@ -18,7 +24,7 @@ export abstract class PaymentsService {
 	static async customerPortal({
 		userId,
 		workspaceId,
-	}: PaymentsModule.CustomerPortalBody) {
+	}: PaymentsModule.CustomerPortalParams) {
 		const workspace = await db.workspace.findUnique({
 			where: { id: workspaceId },
 			select: { id: true, name: true, slug: true },
@@ -70,5 +76,61 @@ export abstract class PaymentsService {
 
 		throw redirect(`https://polar.sh/${process.env.POLAR_ORG_SLUG}/portal`);
 	}
-	static async checkout() {}
+	static async checkout({
+		workspaceId,
+		userId,
+		product,
+	}: PaymentsModule.CheckoutParams) {
+		const workspace = await db.workspace.findUnique({
+			where: { id: workspaceId },
+			select: { id: true, name: true, slug: true },
+		});
+
+		if (!workspace) {
+			throw status(404, "Workspace not found");
+		}
+
+		const user = await db.user.findUnique({
+			where: { id: userId },
+			select: { id: true },
+		});
+
+		if (!user) {
+			throw status(404, "User not found");
+		}
+
+		// check for required permissions to manage payments
+		const hasPermission = await db.memberPermission.findUnique({
+			where: {
+				memberId_permissionId: {
+					memberId: userId,
+					permissionId: "manage_payments",
+				},
+			},
+			select: {},
+		});
+
+		if (!hasPermission) {
+			throw status(403, "You do not have permission to manage payments");
+		}
+
+		Analytics.trackEvent("payments.checkout", {
+			properties: {
+				userId,
+				workspaceId,
+			},
+		});
+
+		if (!products[product]) {
+			throw status(400, "Invalid product specified");
+		}
+
+		const url = await polar.checkoutLinks.create({
+			productId: products[product],
+			paymentProcessor: "stripe",
+			successUrl: `${process.env.SELFMAIL_URL}/payments/success`,
+		});
+
+		throw redirect(url.url);
+	}
 }
