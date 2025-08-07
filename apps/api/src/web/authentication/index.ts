@@ -1,7 +1,40 @@
-import Elysia, { t } from "elysia";
+import Elysia, { status, t } from "elysia";
 import { sessionAuthMiddleware } from "../../lib/auth-middleware";
 import { AuthenticationModule } from "./module";
 import { AuthenticationService } from "./service";
+
+const sessionTokenSchema = t.Cookie({
+	"session-token": t.String({
+		description: "Session token for authentication",
+	}),
+});
+
+export const requireAuthentication = new Elysia({
+	name: "Auth.Service",
+	detail: {
+		description: "Authentication plugin for protected routes",
+	},
+})
+	.macro({
+		isSignIn: {
+			async resolve({ cookie, status }) {
+				if (!cookie["session-token"]?.value) return status(401);
+
+				const authUser = await sessionAuthMiddleware({
+					cookie: cookie["session-token"]
+						? `session-token=${cookie["session-token"]}`
+						: "",
+				});
+
+				if (!authUser) {
+					throw status(401, "Authentication required");
+				}
+
+				return { user: authUser };
+			},
+		},
+	})
+	.as("global");
 
 export const authentication = new Elysia({
 	prefix: "/authentication",
@@ -11,7 +44,7 @@ export const authentication = new Elysia({
 })
 	.post(
 		"/login",
-		async ({ body, request, set }) => {
+		async ({ body, request, cookie }) => {
 			const clientIp =
 				request.headers.get("x-forwarded-for") ||
 				request.headers.get("x-real-ip") ||
@@ -19,9 +52,12 @@ export const authentication = new Elysia({
 
 			const result = await AuthenticationService.handleLogin(body, clientIp);
 
-			// Set session cookie
-			set.headers["Set-Cookie"] =
-				`session-token=${result.sessionToken}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=604800`; // 7 days
+			cookie["session-token"].value = result.sessionToken;
+			cookie["session-token"].httpOnly = true;
+			cookie["session-token"].secure = true;
+			cookie["session-token"].sameSite = "strict";
+			cookie["session-token"].path = "/";
+			cookie["session-token"].maxAge = 604800; // 7 days
 
 			return result;
 		},
@@ -30,11 +66,12 @@ export const authentication = new Elysia({
 			detail: {
 				description: "Login with email and password",
 			},
+			cookie: sessionTokenSchema,
 		},
 	)
 	.post(
 		"/register",
-		async ({ body, request, set }) => {
+		async ({ body, request, cookie }) => {
 			const clientIp =
 				request.headers.get("x-forwarded-for") ||
 				request.headers.get("x-real-ip") ||
@@ -42,9 +79,12 @@ export const authentication = new Elysia({
 
 			const result = await AuthenticationService.handleRegister(body, clientIp);
 
-			// Set session cookie
-			set.headers["Set-Cookie"] =
-				`session-token=${result.sessionToken}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=604800`; // 7 days
+			cookie["session-token"].value = result.sessionToken;
+			cookie["session-token"].httpOnly = true;
+			cookie["session-token"].secure = true;
+			cookie["session-token"].sameSite = "strict";
+			cookie["session-token"].path = "/";
+			cookie["session-token"].maxAge = 604800; // 7 days
 
 			return result;
 		},
@@ -53,24 +93,23 @@ export const authentication = new Elysia({
 			detail: {
 				description: "Register a new user account",
 			},
-			cookie: t.Object({
-				"session-token": t.Cookie({}),
-			}),
+			cookie: sessionTokenSchema,
 		},
 	)
 	.post(
 		"/logout",
-		async ({ request, set }) => {
-			const cookieHeader = request.headers.get("cookie");
-			const sessionToken = extractSessionToken(cookieHeader);
+		async ({ cookie }) => {
+			const sessionToken = cookie["session-token"]?.value;
+
+			if (!sessionToken) {
+				throw status(401, "Not authenticated");
+			}
 
 			if (sessionToken) {
 				await AuthenticationService.handleLogout(sessionToken);
 			}
 
-			// Clear session cookie
-			set.headers["Set-Cookie"] =
-				"session-token=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0";
+			cookie["session-token"].remove();
 
 			return { success: true, message: "Logged out successfully" };
 		},
@@ -78,70 +117,14 @@ export const authentication = new Elysia({
 			detail: {
 				description: "Logout and clear session",
 			},
+			cookie: sessionTokenSchema,
 		},
 	)
-	.get(
-		"/me",
-		async ({ request, set }) => {
-			const authUser = await sessionAuthMiddleware(
-				Object.fromEntries(request.headers.entries()),
-			);
-
-			if (!authUser) {
-				set.status = 401;
-				throw new Error("Authentication required");
-			}
-
-			return await AuthenticationService.handleMe(authUser.id);
+	.use(requireAuthentication)
+	.get("/me", async ({ user }) => user, {
+		detail: {
+			description: "Get current user information",
 		},
-		{
-			detail: {
-				description: "Get current user information",
-			},
-		},
-	);
-
-// Helper function to extract session token from cookies
-function extractSessionToken(cookieHeader: string | null): string | null {
-	if (!cookieHeader) return null;
-
-	const cookies = cookieHeader
-		.split(";")
-		.map((cookie) => cookie.trim())
-		.reduce(
-			(acc, cookie) => {
-				const [key, value] = cookie.split("=");
-				if (key && value) {
-					acc[key] = value;
-				}
-				return acc;
-			},
-			{} as Record<string, string>,
-		);
-
-	return cookies["session-token"] || null;
-}
-
-export const requireAuthentication = new Elysia({
-	detail: {
-		description: "Required Authentication for dashboard and workspace routes.",
-	},
-})
-	.state("user", "")
-	.derive(({ store }) => ({
-		user({ email }: { email: string }) {
-			store.user = email;
-		},
-	}))
-	.onBeforeHandle(async ({ request, set }) => {
-		const authUser = await sessionAuthMiddleware(
-			Object.fromEntries(request.headers.entries()),
-		);
-
-		if (!authUser) {
-			set.status = 401;
-			throw new Error("Authentication required");
-		}
-
-		return { authUser };
+		cookie: sessionTokenSchema,
+		isSignIn: true,
 	});
