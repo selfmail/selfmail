@@ -1,6 +1,7 @@
 import { Webhooks } from "@polar-sh/elysia";
 import { db } from "database";
 import { redirect, status } from "elysia";
+import { Activity } from "../../lib/activity";
 import { Analytics } from "../../lib/analytics";
 import { polar } from "../../lib/payments";
 import type { PaymentsModule } from "./module";
@@ -18,7 +19,7 @@ export abstract class PaymentsService {
 
 		return Webhooks({
 			webhookSecret: process.env.POLAR_WEBHOOK_SECRET,
-			onPayload: async (payload) => {},
+			onPayload: async () => {},
 		});
 	}
 	static async customerPortal({
@@ -92,26 +93,23 @@ export abstract class PaymentsService {
 
 		const user = await db.user.findUnique({
 			where: { id: userId },
-			select: { id: true },
+			select: { id: true, name: true },
 		});
 
 		if (!user) {
 			throw status(404, "User not found");
 		}
 
-		// check for required permissions to manage payments
-		const hasPermission = await db.memberPermission.findUnique({
+		const member = await db.member.findFirst({
 			where: {
-				memberId_permissionId: {
-					memberId: userId,
-					permissionId: "manage_payments",
-				},
+				userId: user.id,
+				workspaceId: workspace.id,
 			},
-			select: {},
+			select: { id: true, profileName: true },
 		});
 
-		if (!hasPermission) {
-			throw status(403, "You do not have permission to manage payments");
+		if (!member) {
+			throw status(403, "User is not a member of the workspace");
 		}
 
 		Analytics.trackEvent("payments.checkout", {
@@ -129,6 +127,23 @@ export abstract class PaymentsService {
 			productId: products[product],
 			paymentProcessor: "stripe",
 			successUrl: `${process.env.SELFMAIL_URL}/payments/success`,
+		});
+
+		Analytics.trackEvent("payments.checkoutLinkCreated", {
+			properties: {
+				userId,
+				workspaceId,
+				product,
+			},
+		});
+
+		Activity.capture({
+			type: "event",
+			color: "positive",
+			userId,
+			workspaceId,
+			title: `Checkout link created for ${product}`,
+			description: `A checkout link for the ${product === "selfmail-plus" ? "Selfmail Plus" : "Selfmail Premium"} product was created by ${member.profileName ?? user.name}.`,
 		});
 
 		throw redirect(url.url);
