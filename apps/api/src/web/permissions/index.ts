@@ -1,5 +1,6 @@
 import { db } from "database";
 import Elysia, { status, t } from "elysia";
+import z from "zod";
 import { requireAuthentication } from "../authentication";
 
 export const requirePermissions = new Elysia({
@@ -19,14 +20,25 @@ export const requirePermissions = new Elysia({
 	})
 	.macro({
 		permissions: (permissions: string[]) => ({
-			async resolve({ user }) {
-				if (!user) throw status(401, "Authentication required");
+			async resolve({ user, body }) {
+				const parse = await z
+					.object({
+						workspaceId: z
+							.string()
+							.describe("ID of the workspace to check permissions for"),
+					})
+					.safeParseAsync(body);
+
+				if (!user || !parse.success)
+					throw status(401, "Authentication required");
+
+				const { workspaceId } = parse.data;
 
 				// check if user is a member of the workspace and fetch member id
 				const member = await db.member.findFirst({
 					where: {
 						userId: user.id,
-						workspaceId: user.workspaceId,
+						workspaceId: workspaceId,
 					},
 					select: {
 						MemberPermission: {
@@ -58,4 +70,5 @@ export const requirePermissions = new Elysia({
 				return { member };
 			},
 		}),
-	});
+	})
+	.as("global");

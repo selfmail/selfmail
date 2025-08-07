@@ -1,4 +1,6 @@
+import { db } from "database";
 import Elysia, { status, t } from "elysia";
+import z from "zod";
 import { sessionAuthMiddleware } from "../../lib/auth-middleware";
 import { AuthenticationModule } from "./module";
 import { AuthenticationService } from "./service";
@@ -21,8 +23,8 @@ export const requireAuthentication = new Elysia({
 				if (!cookie["session-token"]?.value) return status(401);
 
 				const authUser = await sessionAuthMiddleware({
-					cookie: cookie["session-token"]
-						? `session-token=${cookie["session-token"]}`
+					cookie: cookie["session-token"].value
+						? `session-token=${cookie["session-token"].value}`
 						: "",
 				});
 
@@ -34,6 +36,58 @@ export const requireAuthentication = new Elysia({
 			},
 		},
 	})
+	.as("global");
+
+export const requireWorkspaceMember = new Elysia({
+	name: "RequireWorkspaceMember",
+	detail: {
+		description: "Middleware to ensure the user is a member of a workspace.",
+	},
+})
+	.use(requireAuthentication)
+	.guard(
+		{
+			isSignIn: true,
+			body: t.Object({
+				workspaceId: t.String({
+					description: "ID of the workspace to check membership for",
+				}),
+			}),
+		},
+		(app) =>
+			app.macro({
+				workspaceMember: {
+					async resolve({ user, body }) {
+						const parse = await z
+							.object({
+								workspaceId: z
+									.string()
+									.describe("ID of the workspace to check permissions for"),
+							})
+							.safeParseAsync(body);
+
+						if (!user || !parse.success)
+							throw status(401, "Authentication required");
+
+						const { workspaceId } = parse.data;
+
+						const member = await db.member.findFirst({
+							where: {
+								userId: user.id,
+								workspaceId: workspaceId,
+							},
+							select: {
+								id: true,
+							},
+						});
+						if (!member) {
+							throw status(403, "User is not a member of the workspace");
+						}
+						return { member };
+					},
+				},
+			}),
+	)
 	.as("global");
 
 export const authentication = new Elysia({
@@ -121,10 +175,12 @@ export const authentication = new Elysia({
 		},
 	)
 	.use(requireAuthentication)
+	.use(requireWorkspaceMember)
 	.get("/me", async ({ user }) => user, {
 		detail: {
 			description: "Get current user information",
 		},
 		cookie: sessionTokenSchema,
 		isSignIn: true,
+		workspaceMember: true,
 	});
