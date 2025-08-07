@@ -1,4 +1,6 @@
 import Elysia from "elysia";
+import { requireAuthentication } from "../authentication";
+import { requirePermissions } from "../permissions";
 import { PaymentsModule } from "./module";
 import { PaymentsService } from "./service";
 
@@ -8,6 +10,13 @@ export const payments = new Elysia({
 	},
 	prefix: "/payments",
 })
+	.post("/webhooks", async () => PaymentsService.webhooks(), {
+		detail: {
+			description: "Handle webhooks from the payment provider.",
+		},
+	})
+	.use(requireAuthentication)
+	.use(requirePermissions)
 	.get(
 		"/customer-portal",
 		async ({ params }) => PaymentsService.customerPortal(params),
@@ -17,6 +26,8 @@ export const payments = new Elysia({
 					"Redirect to the customer portal for managing subscriptions and payments.",
 			},
 			params: PaymentsModule.customerPortalParams,
+			isSignIn: true,
+			permissions: ["payments:manage"],
 		},
 	)
 	.get("/checkout", async ({ params }) => PaymentsService.checkout(params), {
@@ -24,9 +35,6 @@ export const payments = new Elysia({
 			description: "Redirect to the checkout page for creating a new payment.",
 		},
 		params: PaymentsModule.checkoutParams,
-	})
-	.post("/webhooks", async () => PaymentsService.webhooks(), {
-		detail: {
-			description: "Handle webhooks from the payment provider.",
-		},
+		isSignIn: true,
+		permissions: ["payments:create"],
 	});
