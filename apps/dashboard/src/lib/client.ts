@@ -14,7 +14,7 @@ function createAuthenticatedClient() {
 
 export const client = createAuthenticatedClient();
 
-// Function to recreate client (keeping for compatibility)
+// Function to recreate the client (keeping for compatibility)
 export function updateClientAuth() {
 	const newClient = createAuthenticatedClient();
 	Object.assign(client, newClient);

@@ -13,6 +13,7 @@ import { Route as ThirdInboxRouteImport } from './routes/third-inbox'
 import { Route as SecondInboxRouteImport } from './routes/second-inbox'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MailMailIdRouteImport } from './routes/mail/$mailId'
+import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 
@@ -36,6 +37,11 @@ const MailMailIdRoute = MailMailIdRouteImport.update({
   path: '/mail/$mailId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/auth/reset-password',
+  path: '/auth/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/auth/register',
   path: '/auth/register',
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/third-inbox': typeof ThirdInboxRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/mail/$mailId': typeof MailMailIdRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/third-inbox': typeof ThirdInboxRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/mail/$mailId': typeof MailMailIdRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/third-inbox': typeof ThirdInboxRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/mail/$mailId': typeof MailMailIdRoute
 }
 export interface FileRouteTypes {
@@ -80,6 +89,7 @@ export interface FileRouteTypes {
     | '/third-inbox'
     | '/auth/login'
     | '/auth/register'
+    | '/auth/reset-password'
     | '/mail/$mailId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -88,6 +98,7 @@ export interface FileRouteTypes {
     | '/third-inbox'
     | '/auth/login'
     | '/auth/register'
+    | '/auth/reset-password'
     | '/mail/$mailId'
   id:
     | '__root__'
@@ -96,6 +107,7 @@ export interface FileRouteTypes {
     | '/third-inbox'
     | '/auth/login'
     | '/auth/register'
+    | '/auth/reset-password'
     | '/mail/$mailId'
   fileRoutesById: FileRoutesById
 }
@@ -105,6 +117,7 @@ export interface RootRouteChildren {
   ThirdInboxRoute: typeof ThirdInboxRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   MailMailIdRoute: typeof MailMailIdRoute
 }
 
@@ -138,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MailMailIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/reset-password': {
+      id: '/auth/reset-password'
+      path: '/auth/reset-password'
+      fullPath: '/auth/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/register': {
       id: '/auth/register'
       path: '/auth/register'
@@ -161,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   ThirdInboxRoute: ThirdInboxRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
+  AuthResetPasswordRoute: AuthResetPasswordRoute,
   MailMailIdRoute: MailMailIdRoute,
 }
 export const routeTree = rootRouteImport

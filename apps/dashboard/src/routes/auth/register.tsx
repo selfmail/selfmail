@@ -19,11 +19,8 @@ export const Route = createFileRoute("/auth/register")({
 	component: RegisterComponent,
 });
 
-const registerSchema = z.object({
-	email: z
-		.string()
-		.email("Please enter a valid email address")
-		.max(128, "Email must be at most 128 characters long."),
+const schema = z.object({
+	email: z.email(),
 	name: z
 		.string()
 		.min(1, "Name is required")
@@ -32,35 +29,45 @@ const registerSchema = z.object({
 		.string()
 		.min(8, "Password must be at least 8 characters long.")
 		.max(128, "Password must be at most 128 characters long."),
+    passwordVerification: z
+        .string()
 });
 
-type RegisterFormValues = z.infer<typeof registerSchema>;
 
 function RegisterComponent() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
 
-	const form = useForm<RegisterFormValues>({
-		resolver: zodResolver(registerSchema),
-		defaultValues: {
-			email: "",
-			password: "",
-		},
-	});
+    const form = useForm<z.infer<typeof schema>>({
+        resolver: zodResolver(schema),
+        defaultValues: {
+            email: "",
+            password: "",
+            name: "",
+            passwordVerification: ""
+        },
+    });
 
-	const handleSubmit = async (values: RegisterFormValues) => {
+	const handleSubmit = async (values: z.infer<typeof schema>) => {
 		setIsLoading(true);
 		setError("");
 
+        if (values.password !== values.passwordVerification) {
+            setError("Passwords do not match.");
+            setIsLoading(false);
+            return;
+        }
+
 		try {
-			const res = await client.v1.web.authentication.login.post({
+			const res = await client.v1.web.authentication.register.post({
 				email: values.email,
 				password: values.password,
+				name: values.name,
 			});
 
 			if (res.status !== 200 || res.error) {
 				setError(
-					"sjfjd" ??
+					res.data?.message ??
 						"An error occurred during register. Your email may already be registered.",
 				);
 				setIsLoading(false);
@@ -81,8 +88,26 @@ function RegisterComponent() {
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(handleSubmit)}
-						className="space-y-4"
+						className="space-y-4 px-5 md:px-0"
 					>
+						<h1 className={"font-bold text-2xl tracking-tight"}>Register</h1>
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Name</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="text"
+                                            placeholder="Enter your name"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 						<FormField
 							control={form.control}
 							name="email"
@@ -117,10 +142,27 @@ function RegisterComponent() {
 								</FormItem>
 							)}
 						/>
+                        <FormField
+                            control={form.control}
+                            name="passwordVerification"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Confirm Password</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="password"
+                                            placeholder="Enter your password"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 						{error && (
 							<div className="text-center text-red-600 text-sm">{error}</div>
 						)}
-						<Button type="submit" className="w-full" disabled={isLoading}>
+						<Button onClick={() => console.log("pressed")} type="submit" className="w-full" disabled={isLoading}>
 							{isLoading ? "Logging in..." : "Login"}
 						</Button>
 					</form>
