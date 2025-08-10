@@ -10,8 +10,12 @@ import type { EmailData } from "@/types/email";
 export const Route = createFileRoute("/second-inbox")({
 	component: RouteComponent,
 	beforeLoad: async () => {
-		// Auth check will be handled by the AuthProvider and useAuth hook
-		// If user is not authenticated, they'll be redirected in the component
+		const { isAuthenticated } = useAuth();
+		if (!isAuthenticated) {
+			window.location.href = "/auth/login";
+			return false; // Prevent route loading
+		}
+		return true; // Allow route loading
 	},
 });
 

@@ -11,7 +11,10 @@ export abstract class AuthenticationService {
 		// Rate limiting for registration
 		const rateLimit = await rateLimitMiddleware(clientIp, "auth");
 		if (!rateLimit.success) {
-			throw status(429, "Too many requests. Please try again later.");
+			throw status(429, {
+				success: false,
+				message: "Too many requests. Please try again later.",
+			});
 		}
 
 		// Check if user already exists
@@ -20,7 +23,10 @@ export abstract class AuthenticationService {
 		});
 
 		if (existingUser) {
-			throw status(409, "User with this email already exists");
+			throw status(409, {
+				success: false,
+				message: "Email already registered. Please log in instead.",
+			});
 		}
 
 		// Hash password
@@ -35,7 +41,11 @@ export abstract class AuthenticationService {
 			},
 		});
 
-		if (!user) throw status(500, "Failed to create user");
+		if (!user)
+			throw status(500, {
+				success: false,
+				message: "Failed to create user. Please try again later.",
+			});
 
 		// Create session token
 		const sessionToken = crypto.randomUUID();
@@ -66,7 +76,10 @@ export abstract class AuthenticationService {
 		// Rate limiting for login
 		const rateLimit = await rateLimitMiddleware(clientIp, "auth");
 		if (!rateLimit.success) {
-			throw status(429, "Too many requests. Please try again later.");
+			throw status(429, {
+				success: false,
+				message: "Too many requests. Please try again later.",
+			});
 		}
 
 		const user = await db.user.findUnique({
@@ -74,7 +87,10 @@ export abstract class AuthenticationService {
 		});
 
 		if (!user || !(await Bun.password.verify(password, user.password))) {
-			throw status(401, "Invalid email or password");
+			throw status(401, {
+				success: false,
+				message: "Invalid email or password",
+			});
 		}
 
 		// Create session token
@@ -85,12 +101,18 @@ export abstract class AuthenticationService {
 			where: { userId: user.id },
 		});
 
-		await db.session.create({
+		const session = await db.session.create({
 			data: {
 				token: sessionToken,
 				userId: user.id,
 			},
 		});
+
+		if (!session)
+			throw status(500, {
+				success: false,
+				message: "Failed to create session",
+			});
 
 		return {
 			success: true,

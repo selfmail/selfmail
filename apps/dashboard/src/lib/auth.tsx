@@ -43,7 +43,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 			const response = await client.v1.web.authentication.me.get();
 
 			if (response.data && !response.error) {
-				setUser(response.data.user);
+				setUser(response.data);
 			} else {
 				setUser(null);
 			}

@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
+@import "ui/styles.css";
 @import "tailwindcss";
+@source "../../../packages/ui";
 
 body {
 	@apply m-0;
@@ -13,7 +15,10 @@ body {
 	font-family: "Geist", sans-serif;
 	font-optical-sizing: auto;
 	font-style: normal;
-	color: #525252;
+}
+
+p {
+	@apply text-sm text-muted-foreground;
 }
 
 h1,
