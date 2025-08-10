@@ -17,7 +17,9 @@ export abstract class AuthenticationService {
 			});
 		}
 
-		// Check if user already exists
+        console.log("Not ratelimited")
+
+		// Check if the user already exists
 		const existingUser = await db.user.findUnique({
 			where: { email },
 		});

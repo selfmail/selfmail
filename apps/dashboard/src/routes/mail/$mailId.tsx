@@ -18,7 +18,7 @@ function RouteComponent() {
 		);
 	}
 
-	// Redirect to login if not authenticated
+	// Redirect to login-page if not authenticated
 	if (!isAuthenticated) {
 		window.location.href = "/auth/login";
 		return null;
