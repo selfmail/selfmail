@@ -8,22 +8,22 @@
 	"scripts": {
 		"check": "biome check --write .",
 		"prepare": "husky",
-		"dev": "turbo dev --ui tui -F !smtp",
+		"dev": "infisical run --env=dev -- turbo dev --ui tui -F !smtp",
 		"build": "turbo build",
 		"check-types": "turbo check-types",
 		"dev:native": "turbo -F native dev",
 		"dev:web": "turbo -F web dev",
 		"dev:server": "turbo -F server dev",
-		"db:push": "turbo -F server db:push",
-		"db:studio": "turbo -F server db:studio",
-		"db:generate": "turbo -F server db:generate",
-		"db:migrate": "turbo -F server db:migrate"
+		"db:push": "turbo -F database db:push",
+		"db:studio": "infisical run --env=dev -- turbo -F database db:studio",
+		"db:generate": "infisical run --env=dev -- turbo -F database db:generate",
+		"db:migrate": "infisical run --env=dev -- turbo -F database db:migrate"
 	},
 	"dependencies": {
 		"undici": "^7.13.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.1.3",
+		"@biomejs/biome": "^2.1.4",
 		"husky": "^9.1.7",
 		"lint-staged": "^15.5.2",
 		"turbo": "^2.5.5"

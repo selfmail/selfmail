@@ -2,6 +2,10 @@
 	"name": "database",
 	"module": "src/index.ts",
 	"type": "module",
+	"scripts": {
+		"db:push": "infisical run --env=dev -- prisma db push",
+		"db:push-reset": "infisical run --env=dev -- prisma db push --force-reset"
+	},
 	"exports": {
 		".": {
 			"import": "./src/index.ts",
