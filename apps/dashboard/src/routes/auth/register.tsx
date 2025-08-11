@@ -1,9 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { InfoIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
   Button,
   Form,
   FormControl,
@@ -15,9 +18,17 @@ import {
 } from "ui";
 import { z } from "zod";
 import { client } from "@/lib/client";
+import { formatErrorText, getFirstFormError } from "@/lib/form/validation";
 
 export const Route = createFileRoute("/auth/register")({
   component: RegisterComponent,
+  validateSearch: z
+    .object({
+      redirectTo: z.string().optional(),
+      error: z.string().optional(),
+    })
+    .optional()
+    .default({}),
 });
 
 const schema = z
@@ -42,7 +53,9 @@ const schema = z
   });
 
 function RegisterComponent() {
+  const search = Route.useSearch();
   const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -52,27 +65,47 @@ function RegisterComponent() {
       name: "",
       passwordVerification: "",
     },
-    mode: "onSubmit",
+    mode: "onChange",
+    criteriaMode: "all",
+    delayError: 700,
   });
 
+  useEffect(() => {
+    // Check if search and search.error exist before using them
+    if (search && typeof search.error === "string" && search.error) {
+      form.setError("root", {
+        type: "server",
+        message: search.error,
+      });
+    }
+  }, [search, form]);
+
   const handleSubmit = async (values: z.infer<typeof schema>) => {
+    if (!form.formState.isValid) {
+      return; // Don't submit if form is invalid
+    }
+
     setIsLoading(true);
     form.clearErrors();
 
     try {
+      console.log("Submitting registration form:", values);
       const res = await client.v1.web.authentication.register.post({
         email: values.email,
         password: values.password,
         name: values.name,
       });
 
-      if (res.status !== 200 || (res as any)?.error) {
+      if (res.status !== 200) {
         const status = res.status;
+        // Access error message safely from response data
         const message =
-          (res as any)?.error?.message?.toString?.() ??
-          "An error occurred during register. Your email may already be registered.";
+          typeof res.data === "object" && res.data
+            ? res.data.message ||
+            "An error occurred during registration. Your email may already be registered."
+            : "An error occurred during registration. Your email may already be registered.";
 
-        // Mappe serverseitige Fehler auf Felder bzw. global
+        // Map server-side errors to fields or global errors
         if (status === 409 || /already registered/i.test(message)) {
           form.setError("email", {
             type: "server",
@@ -84,10 +117,28 @@ function RegisterComponent() {
             message: "Too many requests. Please try again later.",
           });
         } else if (status === 400) {
-          form.setError("root", {
-            type: "server",
-            message: message,
-          });
+          // Try to extract field-specific errors if available
+          if (/email/i.test(message)) {
+            form.setError("email", {
+              type: "server",
+              message: message,
+            });
+          } else if (/password/i.test(message)) {
+            form.setError("password", {
+              type: "server",
+              message: message,
+            });
+          } else if (/name/i.test(message)) {
+            form.setError("name", {
+              type: "server",
+              message: message,
+            });
+          } else {
+            form.setError("root", {
+              type: "server",
+              message: message,
+            });
+          }
         } else {
           form.setError("root", {
             type: "server",
@@ -96,19 +147,43 @@ function RegisterComponent() {
               "An unexpected error occurred. Please try again later.",
           });
         }
+        setIsLoading(false);
         return;
       }
 
-      window.location.href = "/second-inbox";
-    } catch (_err) {
+      // Show success message before redirecting
+      setSuccess(true);
+      setTimeout(() => {
+        window.location.href = (search && search.redirectTo) || "/second-inbox";
+      }, 1500);
+    } catch (err) {
+      console.error("Registration error:", err);
       form.setError("root", {
         type: "server",
-        message: "Network error. Please try again.",
+        message:
+          err instanceof Error
+            ? err.message
+            : "Network error. Please check your connection and try again.",
       });
-    } finally {
       setIsLoading(false);
     }
   };
+
+  if (success) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center">
+        <div className="w-full max-w-md space-y-4 px-5 md:px-0">
+          <Alert className="border-green-200 bg-green-50">
+            <AlertTitle>Registration Successful</AlertTitle>
+            <AlertDescription>
+              Your account has been created successfully. You will be redirected
+              to your inbox shortly.
+            </AlertDescription>
+          </Alert>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
@@ -194,9 +269,23 @@ function RegisterComponent() {
 
             {form.formState.errors.root && (
               <div className="text-center text-red-600 text-sm">
-                {form.formState.errors.root.message}
+                {formatErrorText(
+                  form.formState.errors.root.message?.toString() ||
+                  "An error occurred during registration",
+                )}
               </div>
             )}
+
+            {form.formState.isSubmitted &&
+              !form.formState.isValid &&
+              !form.formState.errors.root && (
+                <div className="text-center text-red-600 text-sm">
+                  {formatErrorText(
+                    getFirstFormError(form.formState) ||
+                    "Please fix the errors above before submitting",
+                  )}
+                </div>
+              )}
 
             <div className={"flex flex-row items-center space-x-2"}>
               <InfoIcon className={"h-4 w-4 text-muted-foreground"} />
@@ -209,9 +298,20 @@ function RegisterComponent() {
               </p>
             </div>
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isLoading || form.formState.isSubmitting}
+            >
               {isLoading ? "Registering..." : "Register"}
             </Button>
+
+            <div className="text-center text-muted-foreground text-sm">
+              Already have an account?{" "}
+              <Link to="/auth/login" className="text-blue-500">
+                Login here
+              </Link>
+            </div>
           </form>
         </Form>
       </div>
