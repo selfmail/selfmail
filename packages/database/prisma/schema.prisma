@@ -26,6 +26,8 @@ model User {
     SmtpCredentials   SmtpCredentials[]
     Activity          Activity[]
     TwoFactorToken    TwoFactorToken[]
+
+    @@unique([id, email])
 }
 
 model EmailVerification {
@@ -33,13 +35,17 @@ model EmailVerification {
 
     // the user that is being verified
     userId String
-    user   User   @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId, email], references: [id, email])
+
+    email String
 
     // the verification token
     token String @unique
 
     // the date when the verification was created
     createdAt DateTime @default(now())
+
+    @@unique([email, userId])
 }
 
 model Session {

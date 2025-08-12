@@ -138,4 +138,12 @@ export abstract class AuthenticationService {
 			user,
 		};
 	}
+	static async listSessions(userId: string) {
+		const sessions = await db.session.findMany({
+			where: { userId },
+		});
+		return {
+			sessions,
+		};
+	}
 }

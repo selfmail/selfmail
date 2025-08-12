@@ -1,7 +1,6 @@
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
-import { useAuth } from "@/lib/auth";
 import { client } from "@/lib/client";
 import type { ApiEmailData, EmailData } from "@/types/email";
 import { transformApiEmail } from "@/types/email";
@@ -41,7 +40,6 @@ export default function EmailList({ onEmailClick, clickRef }: EmailListProps) {
 			console.log("Fetching emails page:", pageParam);
 
 			const url = `http://localhost:3000/v1/web/emails?page=${pageParam}&limit=20`;
-			console.log("Fetch URL:", url);
 
 			try {
 				const res = await client.v1.web.dashboard.emails.get({
@@ -49,6 +47,7 @@ export default function EmailList({ onEmailClick, clickRef }: EmailListProps) {
 						limit: 20,
 						page: pageParam,
 					},
+					workspaceId: "",
 				});
 
 				if (res.error) {

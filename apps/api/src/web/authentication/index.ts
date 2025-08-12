@@ -15,28 +15,44 @@ export const requireAuthentication = new Elysia({
 			"session-token": t.String({
 				description: "Session token for authentication",
 			}),
-			// "temp-session-token": t.Optional(
-			// 	t.String({
-			// 		description: "Temporary session token for two-factor authentication",
-			// 	}),
-			// ),
+			"temp-session-token": t.Optional(
+				t.String({
+					description: "Temporary session token for two-factor authentication",
+				}),
+			),
 		}),
 	})
 	.guard({
 		cookie: "session",
 	})
-	.resolve(async ({ cookie }) => {
+	.resolve(async ({ cookie, redirect }) => {
 		const sessionToken = cookie["session-token"]?.value;
+		const tempSessionToken = cookie["temp-session-token"]?.value;
 
 		if (!sessionToken) {
+			if (tempSessionToken) redirect("/auth/verify");
 			throw status(401, "Authentication required");
 		}
 
 		const user = await sessionAuthMiddleware({
 			cookie: `session-token=${sessionToken}`,
 		});
+
 		if (!user) {
 			throw status(401, "Authentication required");
+		}
+
+		const verification = await db.emailVerification.findUnique({
+			where: {
+				email_userId: {
+					email: user.email,
+					userId: user.id,
+				},
+			},
+		});
+
+		if (!verification) {
+			throw redirect("/auth/verify");
 		}
 
 		return { user };
@@ -189,15 +205,9 @@ export const authentication = new Elysia({
 		},
 	)
 	.use(requireAuthentication)
-	.get(
-		"/me",
-		async ({ user }) => {
-			return user;
-		},
-		{
-			isSignIn: true,
-		},
-	)
+	.get("/me", async ({ user }) => user, {
+		isSignIn: true,
+	})
 	.use(requireWorkspaceMember)
 	.get(
 		"/me/workspace",
