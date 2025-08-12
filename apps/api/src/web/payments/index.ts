@@ -1,5 +1,4 @@
 import Elysia from "elysia";
-import { requireAuthentication } from "../authentication";
 import { requirePermissions } from "../permissions";
 import { PaymentsModule } from "./module";
 import { PaymentsService } from "./service";
@@ -15,7 +14,6 @@ export const payments = new Elysia({
 			description: "Handle webhooks from the payment provider.",
 		},
 	})
-	.use(requireAuthentication)
 	.use(requirePermissions)
 	.get(
 		"/customer-portal",

@@ -1,3 +1,5 @@
+// Import this at the top of the file
+import { Prisma, User } from "@prisma/client";
 import { db } from "database";
 import { status } from "elysia";
 import { rateLimitMiddleware } from "../../lib/auth-middleware";
@@ -67,10 +69,7 @@ export abstract class AuthenticationService {
 		// Rate limiting for login
 		const rateLimit = await rateLimitMiddleware(clientIp, "auth");
 		if (!rateLimit.success) {
-			throw status(429, {
-				success: false,
-				message: "Too many requests. Please try again later.",
-			});
+			return status(429, "Too many requests. Please try again later.");
 		}
 
 		const user = await db.user.findUnique({
@@ -78,10 +77,7 @@ export abstract class AuthenticationService {
 		});
 
 		if (!user || !(await Bun.password.verify(password, user.password))) {
-			throw status(401, {
-				success: false,
-				message: "Invalid email or password",
-			});
+			return status(401, "Invalid email or password");
 		}
 
 		// Create session token
@@ -99,11 +95,7 @@ export abstract class AuthenticationService {
 			},
 		});
 
-		if (!session)
-			throw status(500, {
-				success: false,
-				message: "Failed to create session",
-			});
+		if (!session) return status(500, "Failed to create session");
 
 		return {
 			success: true,
@@ -134,6 +126,7 @@ export abstract class AuthenticationService {
 				id: true,
 				email: true,
 				name: true,
+				twoFactorEnabled: true,
 			},
 		});
 

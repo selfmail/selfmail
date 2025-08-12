@@ -1,7 +1,6 @@
 import { db } from "database";
 import Elysia, { status, t } from "elysia";
 import z from "zod";
-import { requireAuthentication } from "../authentication";
 
 export const requirePermissions = new Elysia({
 	name: "requirePermissions",
@@ -9,7 +8,6 @@ export const requirePermissions = new Elysia({
 		description: "Middleware to check user permissions for specific actions.",
 	},
 })
-	.use(requireAuthentication)
 	.guard({
 		isSignIn: true,
 		body: t.Object({

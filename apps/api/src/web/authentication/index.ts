@@ -1,186 +1,212 @@
 import { db } from "database";
 import Elysia, { status, t } from "elysia";
-import z from "zod";
 import { sessionAuthMiddleware } from "../../lib/auth-middleware";
 import { AuthenticationModule } from "./module";
 import { AuthenticationService } from "./service";
 
-const sessionTokenSchema = t.Cookie({
-  "session-token": t.String({
-    description: "Session token for authentication",
-  }),
-});
-
 export const requireAuthentication = new Elysia({
-  name: "Auth.Service",
-  detail: {
-    description: "Authentication plugin for protected routes",
-  },
+	name: "auth-plugin",
+	detail: {
+		description: "Authentication plugin for Elysia",
+	},
 })
-  .macro({
-    isSignIn: {
-      async resolve({ cookie, status }) {
-        if (!cookie["session-token"]?.value) return status(401);
+	.model({
+		session: t.Cookie({
+			"session-token": t.String({
+				description: "Session token for authentication",
+			}),
+			// "temp-session-token": t.Optional(
+			// 	t.String({
+			// 		description: "Temporary session token for two-factor authentication",
+			// 	}),
+			// ),
+		}),
+	})
+	.guard({
+		cookie: "session",
+	})
+	.resolve(async ({ cookie }) => {
+		const sessionToken = cookie["session-token"]?.value;
 
-        const authUser = await sessionAuthMiddleware({
-          cookie: cookie["session-token"].value
-            ? `session-token=${cookie["session-token"].value}`
-            : "",
-        });
+		if (!sessionToken) {
+			throw status(401, "Authentication required");
+		}
 
-        if (!authUser) {
-          throw status(401, "Authentication required");
-        }
+		const user = await sessionAuthMiddleware({
+			cookie: `session-token=${sessionToken}`,
+		});
+		if (!user) {
+			throw status(401, "Authentication required");
+		}
 
-        return { user: authUser };
-      },
-    },
-  })
-  .as("global");
+		return { user };
+	})
+	.as("scoped");
 
 export const requireWorkspaceMember = new Elysia({
-  name: "RequireWorkspaceMember",
-  detail: {
-    description: "Middleware to ensure the user is a member of a workspace.",
-  },
+	name: "workspace/member",
 })
-  .use(requireAuthentication)
-  .guard(
-    {
-      isSignIn: true,
-      body: t.Object({
-        workspaceId: t.String({
-          description: "ID of the workspace to check membership for",
-        }),
-      }),
-    },
-    (app) =>
-      app.macro({
-        workspaceMember: {
-          async resolve({ user, body }) {
-            const parse = await z
-              .object({
-                workspaceId: z
-                  .string()
-                  .describe("ID of the workspace to check permissions for"),
-              })
-              .safeParseAsync(body);
+	.use(requireAuthentication)
+	.guard({
+		body: t.Object({
+			workspaceId: t.String({
+				description: "ID of the workspace to check membership for",
+			}),
+		}),
+		cookie: "session",
+	})
+	.resolve(async ({ cookie, body: { workspaceId } }) => {
+		const user = await sessionAuthMiddleware({
+			cookie: `session-token=${cookie["session-token"]?.value}`,
+		});
+		if (!user) {
+			throw status(401, "Authentication required");
+		}
 
-            if (!user || !parse.success)
-              throw status(401, "Authentication required");
+		const workspace = await db.workspace.findUnique({
+			where: {
+				id: workspaceId,
+			},
+		});
 
-            const { workspaceId } = parse.data;
+		if (!workspace) {
+			return status(500, "Internal Server Error");
+		}
 
-            const member = await db.member.findFirst({
-              where: {
-                userId: user.id,
-                workspaceId: workspaceId,
-              },
-              select: {
-                id: true,
-              },
-            });
-            if (!member) {
-              throw status(403, "User is not a member of the workspace");
-            }
-            return { member };
-          },
-        },
-      }),
-  )
-  .as("global");
+		const member = await db.member.findUnique({
+			where: {
+				workspaceId_userId: {
+					userId: user.id,
+					workspaceId: workspace.id,
+				},
+			},
+		});
+
+		return { member, workspace };
+	})
+	.as("scoped");
 
 export const authentication = new Elysia({
-  prefix: "/authentication",
-  detail: {
-    description: "Authentication endpoints for user registration and login.",
-  },
+	prefix: "/authentication",
+	detail: {
+		description: "Authentication endpoints for user registration and login.",
+	},
 })
-  .post(
-    "/login",
-    async ({ body, request, cookie }) => {
-      const clientIp =
-        request.headers.get("x-forwarded-for") ||
-        request.headers.get("x-real-ip") ||
-        "unknown";
-
-      const result = await AuthenticationService.handleLogin(body, clientIp);
-
-      cookie["session-token"].value = result.sessionToken;
-      cookie["session-token"].httpOnly = true;
-      cookie["session-token"].secure = true;
-      cookie["session-token"].sameSite = "strict";
-      cookie["session-token"].path = "/";
-      cookie["session-token"].maxAge = 604800; // 7 days
-
-      return result;
-    },
-    {
-      body: AuthenticationModule.loginBody,
-      detail: {
-        description: "Login with email and password",
-      },
-      cookie: sessionTokenSchema,
-    },
-  )
-  .post(
-    "/register",
-    async ({ body, request, cookie }) => {
-      const clientIp =
-        request.headers.get("x-forwarded-for") ||
-        request.headers.get("x-real-ip") ||
-        "unknown";
-
-      const result = await AuthenticationService.handleRegister(body, clientIp);
-
-      cookie["session-token"].value = result.sessionToken;
-      cookie["session-token"].httpOnly = true;
-      cookie["session-token"].secure = true;
-      cookie["session-token"].sameSite = "strict";
-      cookie["session-token"].path = "/";
-      cookie["session-token"].maxAge = 604800; // 7 days
-
-      return result;
-    },
-    {
-      body: AuthenticationModule.registerBody,
-      detail: {
-        description: "Register a new user account",
-      },
-      cookie: sessionTokenSchema,
-    },
-  )
-  .post(
-    "/logout",
-    async ({ cookie }) => {
-      const sessionToken = cookie["session-token"]?.value;
-
-      if (!sessionToken) {
-        throw status(401, "Not authenticated");
-      }
-
-      if (sessionToken) {
-        await AuthenticationService.handleLogout(sessionToken);
-      }
-
-      cookie["session-token"].remove();
-
-      return { success: true, message: "Logged out successfully" };
-    },
-    {
-      detail: {
-        description: "Logout and clear session",
-      },
-      cookie: sessionTokenSchema,
-    },
-  )
-  .use(requireAuthentication)
-  .use(requireWorkspaceMember)
-  .get("/me", async ({ user }) => user, {
-    detail: {
-      description: "Get current user information",
-    },
-    cookie: sessionTokenSchema,
-    isSignIn: true,
-    workspaceMember: true,
-  });
+	.post(
+		"/login",
+		async (ctx) => {
+			const { body, request, cookie, set } = ctx;
+			const clientIp =
+				request.headers.get("x-forwarded-for") ||
+				request.headers.get("x-real-ip") ||
+				"unknown";
+			const result = await AuthenticationService.handleLogin(body, clientIp);
+			if (!("sessionToken" in result)) {
+				// result is a status() response
+				if (
+					typeof result === "object" &&
+					"status" in result &&
+					"body" in result
+				) {
+					set.status = Number(result.status);
+					return { success: false, message: result.body };
+				}
+				set.status = 400;
+				return { success: false, message: "Login failed" };
+			}
+			cookie["session-token"].value = result.sessionToken;
+			cookie["session-token"].httpOnly = true;
+			cookie["session-token"].secure = true;
+			cookie["session-token"].sameSite = "strict";
+			cookie["session-token"].path = "/";
+			cookie["session-token"].maxAge = 604800; // 7 days
+			return result;
+		},
+		{
+			body: AuthenticationModule.loginBody,
+			detail: {
+				description: "Login with email and password",
+			},
+		},
+	)
+	.post(
+		"/register",
+		async (ctx) => {
+			const { body, request, cookie, set } = ctx;
+			const clientIp =
+				request.headers.get("x-forwarded-for") ||
+				request.headers.get("x-real-ip") ||
+				"unknown";
+			const result = await AuthenticationService.handleRegister(body, clientIp);
+			if (!("sessionToken" in result)) {
+				if (
+					typeof result === "object" &&
+					"status" in result &&
+					"body" in result
+				) {
+					set.status = Number(result.status);
+					return { success: false, message: result.body };
+				}
+				set.status = 400;
+				return { success: false, message: "Registration failed" };
+			}
+			cookie["session-token"].value = result.sessionToken;
+			cookie["session-token"].httpOnly = true;
+			cookie["session-token"].secure = true;
+			cookie["session-token"].sameSite = "strict";
+			cookie["session-token"].path = "/";
+			cookie["session-token"].maxAge = 604800; // 7 days
+			return result;
+		},
+		{
+			body: AuthenticationModule.registerBody,
+			detail: {
+				description: "Register a new user account",
+			},
+		},
+	)
+	.post(
+		"/logout",
+		async ({ cookie, set }) => {
+			const sessionToken = cookie["session-token"]?.value;
+			if (!sessionToken) {
+				set.status = 401;
+				return { success: false, message: "Not authenticated" };
+			}
+			await AuthenticationService.handleLogout(sessionToken);
+			cookie["session-token"].remove();
+			return { success: true, message: "Logged out successfully" };
+		},
+		{
+			detail: {
+				description: "Logout and clear session",
+			},
+			cookie: t.Cookie({
+				"session-token": t.String({
+					description: "Session token for authentication",
+				}),
+			}),
+		},
+	)
+	.use(requireAuthentication)
+	.get(
+		"/me",
+		async ({ user }) => {
+			return user;
+		},
+		{
+			isSignIn: true,
+		},
+	)
+	.use(requireWorkspaceMember)
+	.get(
+		"/me/workspace",
+		async ({ user, member, workspace }) => {
+			return { user, member, workspace };
+		},
+		{
+			detail: {
+				description: "Get current user information",
+			},
+		},
+	);

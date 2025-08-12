@@ -1,6 +1,5 @@
-import Elysia from "elysia";
-import { requireAuthentication } from "../authentication";
-import { requirePermissions } from "../permissions";
+import Elysia, { status } from "elysia";
+import { authenticationPlugin } from "../authentication";
 import { DashboardModule } from "./module";
 import { DashboardService } from "./service";
 
@@ -10,11 +9,13 @@ export const dashboard = new Elysia({
 		description: "Dashboard endpoints for authenticated users.",
 	},
 })
-	.use(requireAuthentication)
-	.use(requirePermissions)
+	.use(authenticationPlugin)
 	.get(
 		"/emails",
 		async ({ query, user }) => {
+			if (!user) {
+				throw status(401, "Authentication required");
+			}
 			return await DashboardService.multipleEmails(query, user.id);
 		},
 		{
@@ -22,12 +23,14 @@ export const dashboard = new Elysia({
 			detail: {
 				description: "Get multiple emails for the authenticated user",
 			},
-			isSignIn: true,
 		},
 	)
 	.get(
 		"/emails/:id",
 		async ({ params, user }) => {
+			if (!user) {
+				throw status(401, "Authentication required");
+			}
 			return await DashboardService.singleEmail(params, user.id);
 		},
 		{

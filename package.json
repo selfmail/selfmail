@@ -14,10 +14,7 @@
 		"dev:native": "turbo -F native dev",
 		"dev:web": "turbo -F web dev",
 		"dev:server": "turbo -F server dev",
-		"db:push": "turbo -F database db:push",
-		"db:studio": "infisical run --env=dev -- turbo -F database db:studio",
-		"db:generate": "infisical run --env=dev -- turbo -F database db:generate",
-		"db:migrate": "infisical run --env=dev -- turbo -F database db:migrate"
+		"db:push": "turbo -F database db:push"
 	},
 	"dependencies": {
 		"undici": "^7.13.0"

@@ -14,12 +14,18 @@ model User {
     password String
     email    String @unique
 
+    // Two-factor authentication fields
+    twoFactorEnabled Boolean @default(false)
+    twoFactorSecret  String?
+    backupCodes      String? // JSON array of hashed backup codes
+
     // a single user can be member of different workspaces
     member            Member[]
     EmailVerification EmailVerification[]
     Session           Session[]
     SmtpCredentials   SmtpCredentials[]
     Activity          Activity[]
+    TwoFactorToken    TwoFactorToken[]
 }
 
 model EmailVerification {
@@ -70,6 +76,7 @@ model Member {
     OutgoingEmail    OutgoingEmail[]
     roles            Role[]
 
+    @@unique([workspaceId, userId])
     @@index([userId])
 }
 
@@ -324,4 +331,17 @@ enum ActivityType {
     note
     event
     reminder
+}
+
+// Two-Factor Authentication
+model TwoFactorToken {
+    id        String   @id @default(uuid())
+    token     String   @unique
+    userId    String
+    user      User     @relation(fields: [userId], references: [id])
+    createdAt DateTime @default(now())
+    expiresAt DateTime
+
+    @@index([userId])
+    @@index([token])
 }

@@ -45,31 +45,26 @@ function RegisterComponent() {
 		setIsLoading(true);
 		setError("");
 
-		const res = await client.v1.web.authentication.register.post({
-			email: values.email,
-			password: values.password,
-			name: values.name,
-		});
+		await client.v1.web.authentication.register
+			.post({
+				email: values.email,
+				password: values.password,
+				name: values.name,
+			})
+			.then(() => {
+				navigation({
+					to: "/second-inbox",
+				});
+			})
+			.catch((err) => {
+				if (err.response) {
+					console.log(err);
+				}
 
-		if (res.error) {
-			setError(
-				typeof res.error.value === "string"
-					? res.error.value
-					: "An error occurred during registration",
-			);
-			setIsLoading(false);
-			return;
-		}
-
-		if (res.status !== 200) {
-			setError("An error occurred during registration");
-			setIsLoading(false);
-			return;
-		}
-
-		navigation({
-			to: "/second-inbox",
-		});
+				setIsLoading(false);
+				setError("An error occurred during registration");
+				return;
+			});
 	};
 
 	// Simplified error handling
