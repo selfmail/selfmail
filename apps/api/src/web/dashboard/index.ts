@@ -1,5 +1,5 @@
 import Elysia, { status } from "elysia";
-import { authenticationPlugin } from "../authentication";
+import { requireWorkspaceMember } from "../authentication";
 import { DashboardModule } from "./module";
 import { DashboardService } from "./service";
 
@@ -9,7 +9,7 @@ export const dashboard = new Elysia({
 		description: "Dashboard endpoints for authenticated users.",
 	},
 })
-	.use(authenticationPlugin)
+	.use(requireWorkspaceMember)
 	.get(
 		"/emails",
 		async ({ query, user }) => {

@@ -1,6 +1,7 @@
 import { db } from "database";
 import Elysia, { status, t } from "elysia";
 import z from "zod";
+import { requireWorkspaceMember } from "../authentication";
 
 export const requirePermissions = new Elysia({
 	name: "requirePermissions",
@@ -8,17 +9,10 @@ export const requirePermissions = new Elysia({
 		description: "Middleware to check user permissions for specific actions.",
 	},
 })
-	.guard({
-		isSignIn: true,
-		body: t.Object({
-			workspaceId: t.String({
-				description: "ID of the workspace to check permissions for",
-			}),
-		}),
-	})
+	.use(requireWorkspaceMember)
 	.macro({
 		permissions: (permissions: string[]) => ({
-			async resolve({ user, body }) {
+			async beforeHandle({ user, body }) {
 				const parse = await z
 					.object({
 						workspaceId: z
@@ -64,9 +58,7 @@ export const requirePermissions = new Elysia({
 						`Missing permissions: ${missingPermissions.join(", ")}`,
 					);
 				}
-
-				return { member };
 			},
 		}),
 	})
-	.as("global");
+	.as("scoped");
