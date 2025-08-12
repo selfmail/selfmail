@@ -102,12 +102,12 @@
     },
     "apps/relay": {
       "name": "relay",
-      "version": "1.0.50",
       "dependencies": {
-        "elysia": "latest",
+        "elysia": "1",
       },
       "devDependencies": {
-        "bun-types": "latest",
+        "@types/bun": "1",
+        "typescript": "5",
       },
     },
     "apps/smtp": {
