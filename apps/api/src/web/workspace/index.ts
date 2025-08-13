@@ -18,7 +18,6 @@ export const workspace = new Elysia({
 	.post("/invite", async ({ body, user }) => {}, {
 		permissions: ["workspace:invite"],
 	})
-	// edit the dashboard settings, all changed values from the settings form will be transmitted
 	.post("/settings", async ({ body, user }) => {}, {
 		permissions: ["workspace:edit"],
 	})

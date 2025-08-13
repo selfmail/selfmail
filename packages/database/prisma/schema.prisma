@@ -166,7 +166,7 @@ model Domain {
 
     // a verification token must be a txt record for the domain
     // it is used to verify that the user owns the domain
-    verificationToken String? @unique @default(uuid())
+    verificationToken String
 }
 
 // addresses

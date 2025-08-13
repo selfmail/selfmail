@@ -7,6 +7,7 @@ export const payments = new Elysia({
 	detail: {
 		description: "Payments endpoints for authenticated users.",
 	},
+	name: "service/payments",
 	prefix: "/payments",
 })
 	.post("/webhooks", async () => PaymentsService.webhooks(), {

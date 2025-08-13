@@ -98,6 +98,10 @@ export const requireWorkspaceMember = new Elysia({
 			},
 		});
 
+		if (!member) {
+			throw status(403, "User is not a member of the workspace");
+		}
+
 		return { member, workspace };
 	})
 	.as("scoped");
