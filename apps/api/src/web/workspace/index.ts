@@ -1,6 +1,7 @@
-import Elysia from "elysia";
+import Elysia, { t } from "elysia";
 import { requireAuthentication } from "../authentication";
 import { requirePermissions } from "../permissions";
+import { WorkspaceService } from "./service";
 
 export const workspace = new Elysia({
 	prefix: "/workspace",
@@ -10,11 +11,36 @@ export const workspace = new Elysia({
 	},
 })
 	.use(requireAuthentication)
-	.post("/create", async ({ body, user }) => {}, {
-		detail: {
-			description: "Create a new workspace",
+	.post(
+		"/create",
+		async ({ body, user }) => {
+			return WorkspaceService.create({
+				name: body.name,
+				image: body.image,
+				userId: user.id,
+			});
 		},
-	})
+		{
+			detail: {
+				description: "Create a new workspace",
+			},
+			body: t.Object({
+				image: t.Optional(
+					t.File({
+						type: "image",
+						maxSize: 2 * 1024 * 1024, // 2 MB
+						description:
+							"Workspace avatar image. Maximal size for this image is 2mb.",
+					}),
+				),
+				name: t.String({
+					minLength: 1,
+					maxLength: 100,
+					description: "Name of the workspace",
+				}),
+			}),
+		},
+	)
 	.use(requirePermissions)
 	.post("/invite", async ({ body, user }) => {}, {
 		permissions: ["workspace:invite"],

@@ -26,6 +26,7 @@ model User {
     SmtpCredentials   SmtpCredentials[]
     Activity          Activity[]
     TwoFactorToken    TwoFactorToken[]
+    Workspace         Workspace[]
 
     @@unique([id, email])
 }
@@ -144,6 +145,7 @@ model Workspace {
 
     slug            String            @unique @default(uuid())
     ownerId         String
+    owner           User              @relation(fields: [ownerId], references: [id])
     Member          Member[]
     Role            Role[]
     Domain          Domain[]

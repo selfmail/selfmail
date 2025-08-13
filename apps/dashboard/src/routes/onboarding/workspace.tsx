@@ -42,45 +42,35 @@ function WorkspaceComponent() {
 		setError("");
 
 		try {
-			// First create the workspace
+			// Let's try a direct fetch approach for the form submission
+			const formData = new FormData();
+			formData.append("name", values.name);
+
+			// Only include image if it exists
+			if (workspaceImage) {
+				formData.append("image", workspaceImage);
+			}
+
+			// Use fetch directly with FormData
 			const response = await client.v1.web.workspace.create.post({
+				image: workspaceImage ?? undefined,
 				name: values.name,
 			});
 
 			if (response.error) {
+				console.log(response.error.value);
+				if (response.error.value === "Internal Server Error") {
+					setError(response.error.value);
+					setIsLoading(false);
+					return;
+				}
+
 				setError(
-					typeof response.error.value === "string"
-						? response.error.value
-						: "An error occurred while creating the workspace",
+					response.error.value.message ||
+						"An error occurred while creating the workspace",
 				);
 				setIsLoading(false);
 				return;
-			}
-
-			// If we have an image and the API supports image upload, handle it here
-			// This is a placeholder for workspace avatar upload functionality
-			// You'll need to implement the actual API endpoints for this
-			if (workspaceImage && response.data) {
-				try {
-					const formData = new FormData();
-					formData.append("file", workspaceImage);
-
-					// This is a placeholder - replace with actual API endpoint when available
-					const imageUploadResponse = await fetch(
-						"/api/workspace/avatar/upload",
-						{
-							method: "POST",
-							body: formData,
-						},
-					);
-
-					if (!imageUploadResponse.ok) {
-						console.error("Failed to upload workspace image");
-					}
-				} catch (imageError) {
-					console.error("Error uploading workspace image:", imageError);
-					// Continue anyway since the workspace was created
-				}
 			}
 
 			// Redirect to the appropriate page
