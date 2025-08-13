@@ -4,6 +4,7 @@ import { requirePermissions } from "../permissions";
 
 export const workspace = new Elysia({
 	prefix: "/workspace",
+	name: "service/workspace",
 	detail: {
 		description: "Endpoints for workspace settings",
 	},

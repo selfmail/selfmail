@@ -53,7 +53,7 @@ function RegisterComponent() {
 			})
 			.then(() => {
 				navigation({
-					to: "/second-inbox",
+					to: "/onboarding/workspace",
 				});
 			})
 			.catch((err) => {
