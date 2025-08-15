@@ -15,21 +15,21 @@ function RouteComponent() {
 				<Link
 					to="/workspace/$workspaceId/settings"
 					params={{ workspaceId }}
-					className="rounded-md bg-neutral-100 p-2 font-medium text-lg ring-2 ring-neutral-100 transition-all"
+					className="rounded-md bg-neutral-100 p-2 font-medium text-lg ring-2 ring-neutral-100"
 				>
 					Workspace Settings
 				</Link>
 				<Link
 					to="/workspace/$workspaceId/settings/member"
 					params={{ workspaceId }}
-					className="rounded-md p-2 font-medium text-lg transition-all"
+					className="rounded-md p-2 font-medium text-lg"
 				>
 					Member Settings
 				</Link>
 				<Link
 					to="/workspace/$workspaceId/settings/user"
 					params={{ workspaceId }}
-					className="rounded-md p-2 font-medium text-lg transition-all"
+					className="rounded-md p-2 font-medium text-lg"
 				>
 					User Settings
 				</Link>
