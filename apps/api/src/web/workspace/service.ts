@@ -1,6 +1,7 @@
 import { db } from "database";
 import { status } from "elysia";
 import { Files } from "../../lib/files";
+import { Ratelimit } from "../../lib/ratelimit";
 
 export class WorkspaceService {
 	static async create({
@@ -12,6 +13,11 @@ export class WorkspaceService {
 		image?: File;
 		userId: string;
 	}) {
+		// Ratelimiting
+		const allowed = await Ratelimit.limit(userId);
+		if (!allowed)
+			return status(429, "Too many requests. Please try again later.");
+
 		let imageUrl: string | undefined;
 
 		if (image) {

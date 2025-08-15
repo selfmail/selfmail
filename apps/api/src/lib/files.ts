@@ -1,8 +1,6 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { status } from "elysia";
-import type { ElysiaCustomStatusResponse } from "elysia/error";
-import { Activity } from "./activity";
 import { Logs } from "./logs";
 
 /**

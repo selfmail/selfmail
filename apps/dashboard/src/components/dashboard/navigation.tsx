@@ -2,7 +2,7 @@ import { NavLink } from "./nav-link";
 
 export default function DashboardNavigation() {
 	return (
-		<div className="flex w-full flex-row items-start justify-between px-32 py-5">
+		<div className="flex w-full flex-row items-start justify-between px-4 py-5 sm:px-6 lg:px-26 xl:px-32">
 			<div className="flex flex-col space-y-2">
 				<p className="font-medium">Mail</p>
 				<NavLink href="/">Inbox</NavLink>

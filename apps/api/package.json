@@ -15,12 +15,12 @@
 		"@polar-sh/elysia": "^0.2.2",
 		"@polar-sh/sdk": "^0.34.3",
 		"@unkey/api": "^0.38.0",
-		"@unkey/ratelimit": "^2.0.0",
 		"better-auth": "^1.2.12",
 		"database": "workspace:*",
 		"drizzle-kit": "^0.31.4",
 		"drizzle-orm": "^0.44.2",
 		"elysia": "latest",
+		"elysia-ip": "^1.0.10",
 		"zod": "^4.0.5"
 	},
 	"devDependencies": {

@@ -18,6 +18,10 @@ import { Route as LegalTosRouteImport } from './routes/legal/tos'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as WorkspaceWorkspaceIdIndexRouteImport } from './routes/workspace/$workspaceId/index'
+import { Route as WorkspaceWorkspaceIdSettingsIndexRouteImport } from './routes/workspace/$workspaceId/settings/index'
+import { Route as WorkspaceWorkspaceIdSettingsUserRouteImport } from './routes/workspace/$workspaceId/settings/user'
+import { Route as WorkspaceWorkspaceIdSettingsMemberRouteImport } from './routes/workspace/$workspaceId/settings/member'
 
 const ThirdInboxRoute = ThirdInboxRouteImport.update({
   id: '/third-inbox',
@@ -64,6 +68,30 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkspaceWorkspaceIdIndexRoute =
+  WorkspaceWorkspaceIdIndexRouteImport.update({
+    id: '/workspace/$workspaceId/',
+    path: '/workspace/$workspaceId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkspaceWorkspaceIdSettingsIndexRoute =
+  WorkspaceWorkspaceIdSettingsIndexRouteImport.update({
+    id: '/workspace/$workspaceId/settings/',
+    path: '/workspace/$workspaceId/settings/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkspaceWorkspaceIdSettingsUserRoute =
+  WorkspaceWorkspaceIdSettingsUserRouteImport.update({
+    id: '/workspace/$workspaceId/settings/user',
+    path: '/workspace/$workspaceId/settings/user',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkspaceWorkspaceIdSettingsMemberRoute =
+  WorkspaceWorkspaceIdSettingsMemberRouteImport.update({
+    id: '/workspace/$workspaceId/settings/member',
+    path: '/workspace/$workspaceId/settings/member',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +103,10 @@ export interface FileRoutesByFullPath {
   '/legal/tos': typeof LegalTosRoute
   '/mail/$mailId': typeof MailMailIdRoute
   '/onboarding/workspace': typeof OnboardingWorkspaceRoute
+  '/workspace/$workspaceId': typeof WorkspaceWorkspaceIdIndexRoute
+  '/workspace/$workspaceId/settings/member': typeof WorkspaceWorkspaceIdSettingsMemberRoute
+  '/workspace/$workspaceId/settings/user': typeof WorkspaceWorkspaceIdSettingsUserRoute
+  '/workspace/$workspaceId/settings': typeof WorkspaceWorkspaceIdSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +118,10 @@ export interface FileRoutesByTo {
   '/legal/tos': typeof LegalTosRoute
   '/mail/$mailId': typeof MailMailIdRoute
   '/onboarding/workspace': typeof OnboardingWorkspaceRoute
+  '/workspace/$workspaceId': typeof WorkspaceWorkspaceIdIndexRoute
+  '/workspace/$workspaceId/settings/member': typeof WorkspaceWorkspaceIdSettingsMemberRoute
+  '/workspace/$workspaceId/settings/user': typeof WorkspaceWorkspaceIdSettingsUserRoute
+  '/workspace/$workspaceId/settings': typeof WorkspaceWorkspaceIdSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +134,10 @@ export interface FileRoutesById {
   '/legal/tos': typeof LegalTosRoute
   '/mail/$mailId': typeof MailMailIdRoute
   '/onboarding/workspace': typeof OnboardingWorkspaceRoute
+  '/workspace/$workspaceId/': typeof WorkspaceWorkspaceIdIndexRoute
+  '/workspace/$workspaceId/settings/member': typeof WorkspaceWorkspaceIdSettingsMemberRoute
+  '/workspace/$workspaceId/settings/user': typeof WorkspaceWorkspaceIdSettingsUserRoute
+  '/workspace/$workspaceId/settings/': typeof WorkspaceWorkspaceIdSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +151,10 @@ export interface FileRouteTypes {
     | '/legal/tos'
     | '/mail/$mailId'
     | '/onboarding/workspace'
+    | '/workspace/$workspaceId'
+    | '/workspace/$workspaceId/settings/member'
+    | '/workspace/$workspaceId/settings/user'
+    | '/workspace/$workspaceId/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +166,10 @@ export interface FileRouteTypes {
     | '/legal/tos'
     | '/mail/$mailId'
     | '/onboarding/workspace'
+    | '/workspace/$workspaceId'
+    | '/workspace/$workspaceId/settings/member'
+    | '/workspace/$workspaceId/settings/user'
+    | '/workspace/$workspaceId/settings'
   id:
     | '__root__'
     | '/'
@@ -133,6 +181,10 @@ export interface FileRouteTypes {
     | '/legal/tos'
     | '/mail/$mailId'
     | '/onboarding/workspace'
+    | '/workspace/$workspaceId/'
+    | '/workspace/$workspaceId/settings/member'
+    | '/workspace/$workspaceId/settings/user'
+    | '/workspace/$workspaceId/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -145,6 +197,10 @@ export interface RootRouteChildren {
   LegalTosRoute: typeof LegalTosRoute
   MailMailIdRoute: typeof MailMailIdRoute
   OnboardingWorkspaceRoute: typeof OnboardingWorkspaceRoute
+  WorkspaceWorkspaceIdIndexRoute: typeof WorkspaceWorkspaceIdIndexRoute
+  WorkspaceWorkspaceIdSettingsMemberRoute: typeof WorkspaceWorkspaceIdSettingsMemberRoute
+  WorkspaceWorkspaceIdSettingsUserRoute: typeof WorkspaceWorkspaceIdSettingsUserRoute
+  WorkspaceWorkspaceIdSettingsIndexRoute: typeof WorkspaceWorkspaceIdSettingsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -212,6 +268,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/workspace/$workspaceId/': {
+      id: '/workspace/$workspaceId/'
+      path: '/workspace/$workspaceId'
+      fullPath: '/workspace/$workspaceId'
+      preLoaderRoute: typeof WorkspaceWorkspaceIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/$workspaceId/settings/': {
+      id: '/workspace/$workspaceId/settings/'
+      path: '/workspace/$workspaceId/settings'
+      fullPath: '/workspace/$workspaceId/settings'
+      preLoaderRoute: typeof WorkspaceWorkspaceIdSettingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/$workspaceId/settings/user': {
+      id: '/workspace/$workspaceId/settings/user'
+      path: '/workspace/$workspaceId/settings/user'
+      fullPath: '/workspace/$workspaceId/settings/user'
+      preLoaderRoute: typeof WorkspaceWorkspaceIdSettingsUserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/$workspaceId/settings/member': {
+      id: '/workspace/$workspaceId/settings/member'
+      path: '/workspace/$workspaceId/settings/member'
+      fullPath: '/workspace/$workspaceId/settings/member'
+      preLoaderRoute: typeof WorkspaceWorkspaceIdSettingsMemberRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -225,6 +309,12 @@ const rootRouteChildren: RootRouteChildren = {
   LegalTosRoute: LegalTosRoute,
   MailMailIdRoute: MailMailIdRoute,
   OnboardingWorkspaceRoute: OnboardingWorkspaceRoute,
+  WorkspaceWorkspaceIdIndexRoute: WorkspaceWorkspaceIdIndexRoute,
+  WorkspaceWorkspaceIdSettingsMemberRoute:
+    WorkspaceWorkspaceIdSettingsMemberRoute,
+  WorkspaceWorkspaceIdSettingsUserRoute: WorkspaceWorkspaceIdSettingsUserRoute,
+  WorkspaceWorkspaceIdSettingsIndexRoute:
+    WorkspaceWorkspaceIdSettingsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

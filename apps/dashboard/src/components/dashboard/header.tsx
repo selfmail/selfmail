@@ -8,7 +8,7 @@ import {
 
 export default function DashboardHeader() {
 	return (
-		<header className="flex items-center justify-between px-32 py-5">
+		<header className="flex items-center justify-between px-4 py-5 sm:px-6 lg:px-26 xl:px-32">
 			<DropdownMenu>
 				<DropdownMenuTrigger>
 					<div className="rouded-md flex cursor-pointer flex-row items-center space-x-3 rounded-md bg-transparent outline-none ring-neutral-100 transition-all hover:bg-neutral-100 hover:ring-4">

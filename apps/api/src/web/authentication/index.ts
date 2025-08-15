@@ -1,6 +1,8 @@
 import { db } from "database";
 import Elysia, { status, t } from "elysia";
+import { ip } from "elysia-ip";
 import { sessionAuthMiddleware } from "../../lib/auth-middleware";
+import { Ratelimit } from "../../lib/ratelimit";
 import { AuthenticationModule } from "./module";
 import { AuthenticationService } from "./service";
 
@@ -10,6 +12,7 @@ export const requireAuthentication = new Elysia({
 		description: "Authentication plugin for Elysia",
 	},
 })
+	.use(ip())
 	.model({
 		session: t.Cookie({
 			"session-token": t.String({
@@ -25,13 +28,19 @@ export const requireAuthentication = new Elysia({
 	.guard({
 		cookie: "session",
 	})
-	.resolve(async ({ cookie, redirect }) => {
+	.resolve(async ({ cookie, redirect, ip }) => {
+		const limit = await Ratelimit.limit(ip);
+
+		if (!limit.success) {
+			throw status(429, "Rate limit exceeded");
+		}
+
 		const sessionToken = cookie["session-token"]?.value;
 		const tempSessionToken = cookie["temp-session-token"]?.value;
 
 		if (!sessionToken) {
 			if (tempSessionToken) redirect("/auth/verify");
-			throw status(401, "Authentication required");
+			return status(401, "Authentication required");
 		}
 
 		const user = await sessionAuthMiddleware({
@@ -86,7 +95,7 @@ export const requireWorkspaceMember = new Elysia({
 		});
 
 		if (!workspace) {
-			return status(500, "Internal Server Error");
+			throw status(500, "Internal Server Error");
 		}
 
 		const member = await db.member.findUnique({
