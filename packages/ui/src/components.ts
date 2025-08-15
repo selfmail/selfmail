@@ -45,5 +45,6 @@ export {
 	SelectTrigger,
 	SelectValue,
 } from "./components/ui/select";
+export { Toaster } from "./components/ui/sonner";
 // Utility exports
 export { cn } from "./lib/utils";

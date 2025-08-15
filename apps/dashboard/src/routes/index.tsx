@@ -6,19 +6,15 @@ export const Route = createFileRoute("/")({
 });
 
 function IndexComponent() {
-	const { isAuthenticated, isLoading } = useAuth();
+	const { isAuthenticated } = useAuth();
 
-	if (isLoading) {
-		return (
-			<div className="flex min-h-screen items-center justify-center">
-				<div className="text-lg">Loading...</div>
-			</div>
-		);
+	if (!isAuthenticated) {
+		return <Navigate to="/auth/login" />;
 	}
 
-	if (isAuthenticated) {
-		return <Navigate to="/second-inbox" />;
-	}
-
-	return <Navigate to="/auth/login" />;
+	return (
+		<div>
+			<h1>Welcome to the Dashboard</h1>
+		</div>
+	);
 }

@@ -34,6 +34,11 @@ function RouteComponent() {
 					User Settings
 				</Link>
 			</div>
+			<div className="flex flex-col space-y-5 px-4 py-5 sm:px-6 lg:px-26 xl:px-32">
+				<form action="">
+					<h2 className="font-medium text-xl">Workspace Settings</h2>
+				</form>
+			</div>
 		</div>
 	);
 }

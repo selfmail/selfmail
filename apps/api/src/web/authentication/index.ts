@@ -194,7 +194,7 @@ export const authentication = new Elysia({
 			},
 		},
 	)
-	.post(
+	.get(
 		"/logout",
 		async ({ cookie, set }) => {
 			const sessionToken = cookie["session-token"]?.value;
