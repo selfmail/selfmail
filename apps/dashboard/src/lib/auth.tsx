@@ -31,8 +31,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [authenticated, setAuthenticated] = useState(false);
 
-	const navigate = useNavigate();
-
 	const checkAuthStatus = async () => {
 		setIsLoading(true);
 		try {
@@ -42,16 +40,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 				setAuthenticated(true);
 			} else {
 				setAuthenticated(false);
-				navigate({
-					to: "/auth/login",
-				});
 			}
-		} catch (error) {
+		} catch {
 			toast.error("Failed to check authentication status. Please try again.");
 			setAuthenticated(false);
-			navigate({
-				to: "/auth/login",
-			});
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -82,10 +76,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	);
 }
 
-export function useAuth() {
+export function useAuth(shouldNavigate = true) {
 	const context = useContext(AuthContext);
+	const navigate = useNavigate();
+
 	if (!context) {
 		throw new Error("useAuth must be used within an AuthProvider");
 	}
+
+	// Navigate to login if not authenticated and shouldNavigate is true
+	useEffect(() => {
+		if (shouldNavigate && !context.isLoading && !context.isAuthenticated) {
+			navigate({
+				to: "/auth/login",
+			});
+		}
+	}, [shouldNavigate, context.isLoading, context.isAuthenticated, navigate]);
+
 	return context;
 }

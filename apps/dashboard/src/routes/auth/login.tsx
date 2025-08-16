@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 import { InfoIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ import {
 	FormMessage,
 	Input,
 } from "ui";
+import { useAuth } from "@/lib/auth";
 import { client } from "@/lib/client";
 
 export const Route = createFileRoute("/auth/login")({
