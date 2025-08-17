@@ -7,6 +7,7 @@ import {
 	useState,
 } from "react";
 import { toast } from "sonner";
+import type { AuthUser } from "../../../api/src/lib/auth-middleware";
 import { client } from "./client";
 
 export interface User {
@@ -16,7 +17,7 @@ export interface User {
 }
 
 export interface AuthContextType {
-	isLoading: boolean;
+	user: AuthUser | null;
 	logout: () => Promise<void>;
 	isAuthenticated: boolean;
 }
@@ -30,18 +31,24 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [authenticated, setAuthenticated] = useState(false);
+	const [user, setUser] = useState<AuthUser | null>(null);
 
 	const checkAuthStatus = async () => {
 		setIsLoading(true);
 		try {
 			const response = await client.v1.web.authentication.me.get();
+			console.log("Authentication response:", response);
 
 			if (response.data && !response.error) {
+				console.log("User is authenticated:", response.data);
+				setUser(response.data);
 				setAuthenticated(true);
 			} else {
+				console.log("User is not authenticated:", response.error);
 				setAuthenticated(false);
 			}
-		} catch {
+		} catch (error) {
+			console.log("Authentication check failed:", error);
 			toast.error("Failed to check authentication status. Please try again.");
 			setAuthenticated(false);
 		} finally {
@@ -53,6 +60,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	useEffect(() => {
 		checkAuthStatus();
 	}, []);
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
 
 	const logout = async () => {
 		try {
@@ -66,7 +77,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	return (
 		<AuthContext.Provider
 			value={{
-				isLoading,
+				user,
 				logout,
 				isAuthenticated: authenticated,
 			}}
@@ -86,12 +97,15 @@ export function useAuth(shouldNavigate = true) {
 
 	// Navigate to login if not authenticated and shouldNavigate is true
 	useEffect(() => {
-		if (shouldNavigate && !context.isLoading && !context.isAuthenticated) {
+		if (shouldNavigate && !context.isAuthenticated) {
 			navigate({
 				to: "/auth/login",
+				search: {
+					redirectTo: window.location.pathname,
+				},
 			});
 		}
-	}, [shouldNavigate, context.isLoading, context.isAuthenticated, navigate]);
+	}, [shouldNavigate, context.isAuthenticated, navigate]);
 
 	return context;
 }

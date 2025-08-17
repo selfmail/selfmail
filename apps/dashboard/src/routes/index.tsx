@@ -1,4 +1,4 @@
-import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/")({
@@ -6,15 +6,11 @@ export const Route = createFileRoute("/")({
 });
 
 function IndexComponent() {
-	const { isAuthenticated } = useAuth();
-
-	if (!isAuthenticated) {
-		return <Navigate to="/auth/login" />;
-	}
+	const auth = useAuth();
 
 	return (
-		<div>
-			<h1>Welcome to the Dashboard</h1>
+		<div className="flex min-h-screen flex-col items-center justify-center">
+			<h1>Choose your workspace</h1>
 		</div>
 	);
 }

@@ -14,8 +14,8 @@ export const Route = createRootRoute({
 					<Outlet />
 					<Toaster />
 				</Provider>
+				<TanStackRouterDevtools />
 			</AuthProvider>
-			<TanStackRouterDevtools />
 		</>
 	),
 });

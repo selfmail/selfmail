@@ -12,6 +12,7 @@ import {
 	ImageUpload,
 	Input,
 } from "ui";
+import { useAuth } from "@/lib/auth";
 import { client } from "@/lib/client";
 
 export const Route = createFileRoute("/onboarding/workspace")({
@@ -25,6 +26,8 @@ type FormData = {
 
 // Create a new workspace
 function WorkspaceComponent() {
+	useAuth();
+
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
 	const [workspaceImage, setWorkspaceImage] = useState<File | null>(null);
@@ -59,7 +62,7 @@ function WorkspaceComponent() {
 
 			if (response.error) {
 				console.log(response.error.value);
-				if (response.error.value === "Internal Server Error") {
+				if (typeof response.error.value === "string") {
 					setError(response.error.value);
 					setIsLoading(false);
 					return;

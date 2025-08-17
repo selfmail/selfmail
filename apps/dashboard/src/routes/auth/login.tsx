@@ -12,11 +12,15 @@ import {
 	FormMessage,
 	Input,
 } from "ui";
-import { useAuth } from "@/lib/auth";
 import { client } from "@/lib/client";
 
 export const Route = createFileRoute("/auth/login")({
 	component: LoginComponent,
+	validateSearch: (search: Record<string, unknown>) => {
+		return {
+			redirectTo: (search.redirectTo as string) || "/workspace",
+		};
+	},
 });
 
 // Define the form data structure
@@ -28,6 +32,8 @@ type FormData = {
 function LoginComponent() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
+
+	const searchParams = Route.useSearch();
 
 	const form = useForm<FormData>({
 		defaultValues: {
@@ -64,7 +70,7 @@ function LoginComponent() {
 		}
 
 		// Successful login handling
-		window.location.href = "/second-inbox"; // Redirect to dashboard
+		window.location.href = searchParams.redirectTo as string;
 	};
 
 	return (

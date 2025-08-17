@@ -2,6 +2,7 @@ import { db } from "database";
 import Elysia, { status, t } from "elysia";
 import { ip } from "elysia-ip";
 import { sessionAuthMiddleware } from "../../lib/auth-middleware";
+import { Logs } from "../../lib/logs";
 import { Ratelimit } from "../../lib/ratelimit";
 import { AuthenticationModule } from "./module";
 import { AuthenticationService } from "./service";
@@ -29,14 +30,20 @@ export const requireAuthentication = new Elysia({
 		cookie: "session",
 	})
 	.resolve(async ({ cookie, redirect, ip }) => {
-		const limit = await Ratelimit.limit(ip);
+		Logs.log("Authentication attempt");
 
+		const limit = await Ratelimit.limit(ip);
+		Logs.log(`Rate limit status: ${JSON.stringify(limit)}`);
 		if (!limit.success) {
+			Logs.error(`Rate limit exceeded for IP: ${ip}`);
 			throw status(429, "Rate limit exceeded");
 		}
 
 		const sessionToken = cookie["session-token"]?.value;
 		const tempSessionToken = cookie["temp-session-token"]?.value;
+
+		Logs.log(`Session token: ${sessionToken}`);
+		Logs.log(`Temporary session token: ${tempSessionToken}`);
 
 		if (!sessionToken) {
 			if (tempSessionToken) redirect("/auth/verify");
@@ -48,6 +55,7 @@ export const requireAuthentication = new Elysia({
 		});
 
 		if (!user) {
+			Logs.error("User not found");
 			throw status(401, "Authentication required");
 		}
 
@@ -61,6 +69,7 @@ export const requireAuthentication = new Elysia({
 		});
 
 		if (!verification) {
+			Logs.error("Email verification not found");
 			throw redirect("/auth/verify");
 		}
 
@@ -218,8 +227,9 @@ export const authentication = new Elysia({
 		},
 	)
 	.use(requireAuthentication)
-	.get("/me", async ({ user }) => user, {
-		isSignIn: true,
+	.get("/me", async ({ user }) => {
+		console.log(`Got User: ${JSON.stringify(user)}`);
+		return user;
 	})
 	.use(requireWorkspaceMember)
 	.get(

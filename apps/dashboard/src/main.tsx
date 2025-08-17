@@ -5,6 +5,7 @@ import ReactDOM from "react-dom/client";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 import "./styles.css";
+import { AuthProvider } from "./lib/auth.tsx";
 import reportWebVitals from "./reportWebVitals.ts";
 
 const queryClient = new QueryClient();
@@ -12,7 +13,6 @@ const queryClient = new QueryClient();
 // Create a new router instance
 const router = createRouter({
 	routeTree,
-	context: {},
 	defaultPreload: "intent",
 	scrollRestoration: true,
 	defaultStructuralSharing: true,
@@ -33,7 +33,9 @@ if (rootElement && !rootElement.innerHTML) {
 	root.render(
 		<StrictMode>
 			<QueryClientProvider client={queryClient}>
-				<RouterProvider router={router} />
+				<AuthProvider>
+					<RouterProvider router={router} />
+				</AuthProvider>
 			</QueryClientProvider>
 		</StrictMode>,
 	);
