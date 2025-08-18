@@ -8,6 +8,7 @@ import Email from "./email";
 
 interface EmailListProps {
 	onEmailClick: (email: EmailData) => void;
+	workspace: string;
 	clickRef?: React.RefObject<HTMLDivElement>;
 }
 
@@ -19,7 +20,11 @@ interface EmailResponse {
 	totalPages: number;
 }
 
-export default function EmailList({ onEmailClick, clickRef }: EmailListProps) {
+export default function EmailList({
+	onEmailClick,
+	workspace,
+	clickRef,
+}: EmailListProps) {
 	const loadMoreRef = useRef<HTMLDivElement>(null);
 
 	const { entry, ref } = useIntersection({
@@ -37,17 +42,12 @@ export default function EmailList({ onEmailClick, clickRef }: EmailListProps) {
 	} = useInfiniteQuery({
 		queryKey: ["emails"],
 		queryFn: async ({ pageParam = 1 }): Promise<EmailResponse> => {
-			console.log("Fetching emails page:", pageParam);
-
-			const url = `http://localhost:3000/v1/web/emails?page=${pageParam}&limit=20`;
-
 			try {
 				const res = await client.v1.web.dashboard.emails.get({
 					query: {
 						limit: 20,
 						page: pageParam,
 					},
-					workspaceId: "",
 				});
 
 				if (res.error) {

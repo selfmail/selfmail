@@ -6,22 +6,9 @@ export const Route = createFileRoute("/third-inbox")({
 });
 
 function RouteComponent() {
-	const { isAuthenticated, isLoading } = useAuth();
+	const { user } = useAuth();
 
-	// Show loading state
-	if (isLoading) {
-		return (
-			<div className="flex min-h-screen items-center justify-center">
-				<div className="text-lg">Loading...</div>
-			</div>
-		);
-	}
-
-	// Redirect to login if not authenticated
-	if (!isAuthenticated) {
-		window.location.href = "/auth/login";
-		return null;
-	}
+	console.log("user", user);
 
 	return (
 		<div className="grid h-screen w-full grid-cols-6 gap-3 bg-white p-3">

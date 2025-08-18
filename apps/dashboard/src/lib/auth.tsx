@@ -7,6 +7,7 @@ import {
 	useState,
 } from "react";
 import { toast } from "sonner";
+import Loading from "@/components/loading";
 import type { AuthUser } from "../../../api/src/lib/auth-middleware";
 import { client } from "./client";
 
@@ -62,7 +63,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	}, []);
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <Loading />;
 	}
 
 	const logout = async () => {
@@ -101,7 +102,7 @@ export function useAuth(shouldNavigate = true) {
 			navigate({
 				to: "/auth/login",
 				search: {
-					redirectTo: window.location.pathname,
+					redirectTo: undefined,
 				},
 			});
 		}

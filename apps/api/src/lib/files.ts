@@ -43,6 +43,7 @@ export abstract class Files {
 		}
 
 		const bucketName = `selfmail-${bucket}`;
+
 		const key = folder ? `${folder}/${name}` : name;
 
 		try {
@@ -60,17 +61,7 @@ export abstract class Files {
 
 			await Files.s3Client.send(putCommand);
 
-			// Generate a pre-signed URL for the uploaded file
-			const getCommand = new PutObjectCommand({
-				Bucket: bucketName,
-				Key: key,
-			});
-			const url = await getSignedUrl(Files.s3Client, getCommand, {
-				expiresIn: 3600,
-			});
-
-			// Return the base URL without query parameters
-			return url.split("?")[0];
+			return `https://workspace-icons.selfmail.app/${key}`;
 		} catch (error) {
 			Logs.error(`Error uploading file to S3: ${(error as Error).message}`);
 

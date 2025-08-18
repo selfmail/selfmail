@@ -19,6 +19,7 @@ export const workspace = new Elysia({
 				name: body.name,
 				image: body.image,
 				userId: user.id,
+				username: user.name,
 			});
 		},
 		{
@@ -42,6 +43,9 @@ export const workspace = new Elysia({
 			}),
 		},
 	)
+	.get("/user", async ({ user }) => {
+		return await WorkspaceService.user(user.id);
+	})
 	.use(requirePermissions)
 	.post("/invite", async ({ body, user }) => {}, {
 		permissions: ["workspace:invite"],

@@ -1,4 +1,9 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	Link,
+	Navigate,
+	useNavigate,
+} from "@tanstack/react-router";
 import { InfoIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -12,10 +17,16 @@ import {
 	FormMessage,
 	Input,
 } from "ui";
+import { useAuth } from "@/lib/auth";
 import { client } from "@/lib/client";
 
 export const Route = createFileRoute("/auth/register")({
 	component: RegisterComponent,
+	validateSearch: (search: Record<string, unknown>) => {
+		return {
+			redirectTo: (search.redirectTo as string) || undefined,
+		};
+	},
 });
 
 // Define the form data structure
@@ -30,7 +41,9 @@ function RegisterComponent() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
 
-	const navigation = useNavigate();
+	const searchParams = Route.useSearch();
+
+	const auth = useAuth();
 
 	const form = useForm<FormData>({
 		defaultValues: {
@@ -51,10 +64,24 @@ function RegisterComponent() {
 				password: values.password,
 				name: values.name,
 			})
-			.then(() => {
-				navigation({
-					to: "/onboarding/workspace",
-				});
+			.then(async () => {
+				const workspace = await client.v1.web.workspace.user.get();
+
+				if (workspace.error) {
+					setError("An error occurred while fetching workspace");
+					setIsLoading(false);
+					return;
+				}
+
+				if (!workspace.data || workspace.data.length === 0) {
+					return <Navigate to="/onboarding/workspace" />;
+				}
+
+				if (searchParams.redirectTo) {
+					return <Navigate to={searchParams.redirectTo as string} />;
+				}
+
+				return <Navigate to="/" />;
 			})
 			.catch((err) => {
 				if (err.response) {
@@ -84,6 +111,17 @@ function RegisterComponent() {
 						onSubmit={form.handleSubmit(handleSubmit)}
 						className="space-y-4 px-5 md:px-0"
 					>
+						{auth.isAuthenticated && (
+							<Link
+								to={"/"}
+								className="flex flex-col space-y-2 rounded-md border border-neutral-100 bg-neutral-50 p-4"
+							>
+								<h2 className="font-medium text-lg">
+									Welcome back, {auth.user?.name}!
+								</h2>
+								<p>You can go ahead, and access your dashboard!</p>
+							</Link>
+						)}
 						<h1 className={"font-bold text-2xl tracking-tight"}>Register</h1>
 
 						<FormField
@@ -214,7 +252,11 @@ function RegisterComponent() {
 
 						<div className="text-center text-muted-foreground text-sm">
 							Already have an account?{" "}
-							<Link to="/auth/login" className="text-blue-500">
+							<Link
+								search={{ redirectTo: "/" }}
+								to="/auth/login"
+								className="text-blue-500"
+							>
 								Login here
 							</Link>
 						</div>

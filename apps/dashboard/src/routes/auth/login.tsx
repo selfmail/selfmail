@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { InfoIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -12,13 +12,14 @@ import {
 	FormMessage,
 	Input,
 } from "ui";
+import { useAuth } from "@/lib/auth";
 import { client } from "@/lib/client";
 
 export const Route = createFileRoute("/auth/login")({
 	component: LoginComponent,
 	validateSearch: (search: Record<string, unknown>) => {
 		return {
-			redirectTo: (search.redirectTo as string) || "/workspace",
+			redirectTo: (search.redirectTo as string) || undefined,
 		};
 	},
 });
@@ -32,6 +33,9 @@ type FormData = {
 function LoginComponent() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
+	const auth = useAuth();
+
+	const navigate = useNavigate();
 
 	const searchParams = Route.useSearch();
 
@@ -43,7 +47,6 @@ function LoginComponent() {
 	});
 
 	const handleSubmit = async (values: FormData) => {
-		console.log("Submitting login form:", values);
 		setIsLoading(true);
 		setError("");
 
@@ -69,8 +72,35 @@ function LoginComponent() {
 			return;
 		}
 
-		// Successful login handling
-		window.location.href = searchParams.redirectTo as string;
+		const workspace = await client.v1.web.workspace.user.get();
+
+		console.log(workspace);
+
+		if (workspace.error) {
+			console.log("Error occured!");
+			setError("An error occurred while fetching workspace");
+			setIsLoading(false);
+			return;
+		}
+
+		if (!workspace.data || workspace.data.length === 0) {
+			console.log("No workspace found, redirecting to create a workspace");
+			throw navigate({
+				to: "/workspace/create",
+			});
+		}
+
+		if (searchParams.redirectTo) {
+			throw navigate({
+				to: searchParams.redirectTo as string,
+			});
+		}
+
+		console.log("Login successful, redirecting to home page");
+
+		navigate({
+			to: "/",
+		});
 	};
 
 	return (
@@ -81,6 +111,17 @@ function LoginComponent() {
 						onSubmit={form.handleSubmit(handleSubmit)}
 						className="space-y-4 px-5 md:px-0"
 					>
+						{auth.isAuthenticated && (
+							<Link
+								to={"/"}
+								className="flex flex-col space-y-2 rounded-md border border-neutral-100 bg-neutral-50 p-4"
+							>
+								<h2 className="font-medium text-lg">
+									Welcome back, {auth.user?.name}!
+								</h2>
+								<p>You can go ahead, and access your dashboard!</p>
+							</Link>
+						)}
 						<h1 className={"font-bold text-2xl tracking-tight"}>Login</h1>
 						<FormField
 							control={form.control}
@@ -163,7 +204,11 @@ function LoginComponent() {
 
 						<div className="text-center text-muted-foreground text-sm">
 							Don't have an account?{" "}
-							<Link to="/auth/register" className="text-blue-500">
+							<Link
+								search={{ redirectTo: undefined }}
+								to="/auth/register"
+								className="text-blue-500"
+							>
 								Register here
 							</Link>
 						</div>
