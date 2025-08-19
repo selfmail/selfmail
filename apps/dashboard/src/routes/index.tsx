@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useAuth } from "@/lib/auth";
+import { RequireAuth, useUser } from "@/lib/auth";
 import { client } from "@/lib/client";
 import { cn } from "@/lib/utils";
 
@@ -17,63 +17,47 @@ type Workspace = {
 };
 
 function IndexComponent() {
-	const auth = useAuth(false);
+	return (
+		<RequireAuth>
+			<WorkspaceSelector />
+		</RequireAuth>
+	);
+}
+
+function WorkspaceSelector() {
+	const user = useUser();
 	const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
-	const [isLoadingWorkspaces, setIsLoadingWorkspaces] = useState(false);
 	const navigate = useNavigate();
 
-	console.log("IndexComponent rendered, auth state:", {
-		isAuthenticated: auth.isAuthenticated,
-		userId: auth.user?.id,
-		user: auth.user,
-		isLoadingWorkspaces,
-	});
-
 	const fetchWorkspaces = async () => {
-		console.log("fetchWorkspaces called");
-		setIsLoadingWorkspaces(true);
 		try {
 			const workspaces = await client.v1.web.workspace.user.get();
 
-			console.log("Workspaces response:", workspaces);
-
-			if (!workspaces.data || workspaces.error) {
+			if (workspaces.error) {
 				console.error("Failed to fetch workspaces:", workspaces.error);
-				toast.error(
-					`Unknown error: failed to fetch workspaces for user ${auth.user?.id ?? "undefined"}.`,
-				);
+				toast.error("Failed to fetch workspaces. Please try again later.");
 				return;
 			}
 
-			if (workspaces.data.length === 0) {
+			if (!workspaces.data || workspaces.data.length === 0) {
 				await navigate({
 					to: "/workspace/create",
 				});
 				return;
 			}
 
-			console.log("Setting workspaces:", workspaces.data);
 			setWorkspaces(workspaces.data);
 		} catch (error) {
-			console.error("Error in fetchWorkspaces:", error);
-			toast.error("Failed to fetch workspaces");
-		} finally {
-			setIsLoadingWorkspaces(false);
+			console.error("Error fetching workspaces:", error);
+			toast.error("Failed to fetch workspaces. Please try again later.");
 		}
 	};
 
 	useEffect(() => {
-		if (auth.isAuthenticated && auth.user?.id) {
+		if (user?.id) {
 			fetchWorkspaces();
-		} else if (auth.isAuthenticated === false) {
-			navigate({
-				to: "/auth/login",
-				search: { redirectTo: undefined },
-			});
-
-			return;
 		}
-	}, [auth.isAuthenticated, auth.user?.id]);
+	}, [user?.id]);
 
 	return (
 		<div className="flex min-h-screen flex-col items-center justify-center space-y-4">
@@ -105,6 +89,9 @@ function IndexComponent() {
 			) : (
 				<p>No workspaces found.</p>
 			)}
+			<Link to="/workspace/create" className="text-neutral-700! underline">
+				Create a new workspace
+			</Link>
 		</div>
 	);
 }

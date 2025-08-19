@@ -1,5 +1,4 @@
 import Elysia, { t } from "elysia";
-import { ip } from "elysia-ip";
 import { requireAuthentication } from "../authentication";
 import { requirePermissions } from "../permissions";
 import { WorkspaceService } from "./service";

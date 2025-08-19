@@ -94,4 +94,47 @@ export abstract class DashboardService {
 
 		return email;
 	}
+
+	static async userAddresses(memberId: string) {
+		console.log("Fetching addresses for member:", memberId);
+		const addresses = await db.memberAddress.findMany({
+			where: {
+				memberId,
+			},
+			include: {
+				address: {
+					select: {
+						id: true,
+						email: true,
+						MemberAddress: {
+							include: {
+								member: {
+									select: {
+										id: true,
+										profileName: true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		});
+
+		console.log(addresses);
+
+		if (!addresses) {
+			return status(404, "No addresses found for this user");
+		}
+
+		// map addresses for a simple object array
+		return addresses.map((address) => ({
+			id: address.address.id,
+			email: address.address.email,
+			access: address.address.MemberAddress.map((ma) => ({
+				id: ma.member.id,
+				profileName: ma.member.profileName,
+			})),
+		}));
+	}
 }

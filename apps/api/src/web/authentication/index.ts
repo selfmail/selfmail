@@ -82,27 +82,19 @@ export const requireWorkspaceMember = new Elysia({
 })
 	.use(requireAuthentication)
 	.guard({
-		body: t.Object({
+		query: t.Object({
 			workspaceId: t.String({
 				description: "ID of the workspace to check membership for",
 			}),
 		}),
 		cookie: "session",
 	})
-	.resolve(async ({ cookie, body: { workspaceId } }) => {
-		const user = await sessionAuthMiddleware({
-			cookie: `session-token=${cookie["session-token"]?.value}`,
-		});
-		if (!user) {
-			throw status(401, "Authentication required");
-		}
-
+	.resolve(async ({ cookie, query: { workspaceId }, user }) => {
 		const workspace = await db.workspace.findUnique({
 			where: {
 				id: workspaceId,
 			},
 		});
-
 		if (!workspace) {
 			throw status(500, "Internal Server Error");
 		}
@@ -228,18 +220,17 @@ export const authentication = new Elysia({
 	)
 	.use(requireAuthentication)
 	.get("/me", async ({ user }) => {
-		console.log(`Got User: ${JSON.stringify(user)}`);
 		return user;
 	})
 	.use(requireWorkspaceMember)
 	.get(
-		"/me/workspace",
+		"/me/workspace/",
 		async ({ user, member, workspace }) => {
 			return { user, member, workspace };
 		},
 		{
 			detail: {
-				description: "Get current user information",
+				description: "Get current user information for a specific workspace",
 			},
 		},
 	);

@@ -21,8 +21,15 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as WorkspaceCreateIndexRouteImport } from './routes/workspace/create/index'
 import { Route as WorkspaceWorkspaceIdIndexRouteImport } from './routes/workspace/$workspaceId/index'
 import { Route as WorkspaceWorkspaceIdSettingsIndexRouteImport } from './routes/workspace/$workspaceId/settings/index'
+import { Route as WorkspaceWorkspaceIdMembersIndexRouteImport } from './routes/workspace/$workspaceId/members/index'
 import { Route as WorkspaceWorkspaceIdSettingsUserRouteImport } from './routes/workspace/$workspaceId/settings/user'
 import { Route as WorkspaceWorkspaceIdSettingsMemberRouteImport } from './routes/workspace/$workspaceId/settings/member'
+import { Route as WorkspaceWorkspaceIdMembersRolesRouteImport } from './routes/workspace/$workspaceId/members/roles'
+import { Route as WorkspaceWorkspaceIdMembersPermissionsRouteImport } from './routes/workspace/$workspaceId/members/permissions'
+import { Route as WorkspaceWorkspaceIdMembersMemberIdRouteImport } from './routes/workspace/$workspaceId/members/$memberId'
+import { Route as WorkspaceWorkspaceIdAddressCreateRouteImport } from './routes/workspace/$workspaceId/address/create'
+import { Route as WorkspaceWorkspaceIdAddressAddressIdIndexRouteImport } from './routes/workspace/$workspaceId/address/$addressId/index'
+import { Route as WorkspaceWorkspaceIdAddressAddressIdSettingsRouteImport } from './routes/workspace/$workspaceId/address/$addressId/settings'
 
 const ThirdInboxRoute = ThirdInboxRouteImport.update({
   id: '/third-inbox',
@@ -86,6 +93,12 @@ const WorkspaceWorkspaceIdSettingsIndexRoute =
     path: '/workspace/$workspaceId/settings/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const WorkspaceWorkspaceIdMembersIndexRoute =
+  WorkspaceWorkspaceIdMembersIndexRouteImport.update({
+    id: '/workspace/$workspaceId/members/',
+    path: '/workspace/$workspaceId/members/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const WorkspaceWorkspaceIdSettingsUserRoute =
   WorkspaceWorkspaceIdSettingsUserRouteImport.update({
     id: '/workspace/$workspaceId/settings/user',
@@ -96,6 +109,42 @@ const WorkspaceWorkspaceIdSettingsMemberRoute =
   WorkspaceWorkspaceIdSettingsMemberRouteImport.update({
     id: '/workspace/$workspaceId/settings/member',
     path: '/workspace/$workspaceId/settings/member',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkspaceWorkspaceIdMembersRolesRoute =
+  WorkspaceWorkspaceIdMembersRolesRouteImport.update({
+    id: '/workspace/$workspaceId/members/roles',
+    path: '/workspace/$workspaceId/members/roles',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkspaceWorkspaceIdMembersPermissionsRoute =
+  WorkspaceWorkspaceIdMembersPermissionsRouteImport.update({
+    id: '/workspace/$workspaceId/members/permissions',
+    path: '/workspace/$workspaceId/members/permissions',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkspaceWorkspaceIdMembersMemberIdRoute =
+  WorkspaceWorkspaceIdMembersMemberIdRouteImport.update({
+    id: '/workspace/$workspaceId/members/$memberId',
+    path: '/workspace/$workspaceId/members/$memberId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkspaceWorkspaceIdAddressCreateRoute =
+  WorkspaceWorkspaceIdAddressCreateRouteImport.update({
+    id: '/workspace/$workspaceId/address/create',
+    path: '/workspace/$workspaceId/address/create',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkspaceWorkspaceIdAddressAddressIdIndexRoute =
+  WorkspaceWorkspaceIdAddressAddressIdIndexRouteImport.update({
+    id: '/workspace/$workspaceId/address/$addressId/',
+    path: '/workspace/$workspaceId/address/$addressId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkspaceWorkspaceIdAddressAddressIdSettingsRoute =
+  WorkspaceWorkspaceIdAddressAddressIdSettingsRouteImport.update({
+    id: '/workspace/$workspaceId/address/$addressId/settings',
+    path: '/workspace/$workspaceId/address/$addressId/settings',
     getParentRoute: () => rootRouteImport,
   } as any)
 
@@ -111,9 +160,16 @@ export interface FileRoutesByFullPath {
   '/onboarding/workspace': typeof OnboardingWorkspaceRoute
   '/workspace/$workspaceId': typeof WorkspaceWorkspaceIdIndexRoute
   '/workspace/create': typeof WorkspaceCreateIndexRoute
+  '/workspace/$workspaceId/address/create': typeof WorkspaceWorkspaceIdAddressCreateRoute
+  '/workspace/$workspaceId/members/$memberId': typeof WorkspaceWorkspaceIdMembersMemberIdRoute
+  '/workspace/$workspaceId/members/permissions': typeof WorkspaceWorkspaceIdMembersPermissionsRoute
+  '/workspace/$workspaceId/members/roles': typeof WorkspaceWorkspaceIdMembersRolesRoute
   '/workspace/$workspaceId/settings/member': typeof WorkspaceWorkspaceIdSettingsMemberRoute
   '/workspace/$workspaceId/settings/user': typeof WorkspaceWorkspaceIdSettingsUserRoute
+  '/workspace/$workspaceId/members': typeof WorkspaceWorkspaceIdMembersIndexRoute
   '/workspace/$workspaceId/settings': typeof WorkspaceWorkspaceIdSettingsIndexRoute
+  '/workspace/$workspaceId/address/$addressId/settings': typeof WorkspaceWorkspaceIdAddressAddressIdSettingsRoute
+  '/workspace/$workspaceId/address/$addressId': typeof WorkspaceWorkspaceIdAddressAddressIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -127,9 +183,16 @@ export interface FileRoutesByTo {
   '/onboarding/workspace': typeof OnboardingWorkspaceRoute
   '/workspace/$workspaceId': typeof WorkspaceWorkspaceIdIndexRoute
   '/workspace/create': typeof WorkspaceCreateIndexRoute
+  '/workspace/$workspaceId/address/create': typeof WorkspaceWorkspaceIdAddressCreateRoute
+  '/workspace/$workspaceId/members/$memberId': typeof WorkspaceWorkspaceIdMembersMemberIdRoute
+  '/workspace/$workspaceId/members/permissions': typeof WorkspaceWorkspaceIdMembersPermissionsRoute
+  '/workspace/$workspaceId/members/roles': typeof WorkspaceWorkspaceIdMembersRolesRoute
   '/workspace/$workspaceId/settings/member': typeof WorkspaceWorkspaceIdSettingsMemberRoute
   '/workspace/$workspaceId/settings/user': typeof WorkspaceWorkspaceIdSettingsUserRoute
+  '/workspace/$workspaceId/members': typeof WorkspaceWorkspaceIdMembersIndexRoute
   '/workspace/$workspaceId/settings': typeof WorkspaceWorkspaceIdSettingsIndexRoute
+  '/workspace/$workspaceId/address/$addressId/settings': typeof WorkspaceWorkspaceIdAddressAddressIdSettingsRoute
+  '/workspace/$workspaceId/address/$addressId': typeof WorkspaceWorkspaceIdAddressAddressIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -144,9 +207,16 @@ export interface FileRoutesById {
   '/onboarding/workspace': typeof OnboardingWorkspaceRoute
   '/workspace/$workspaceId/': typeof WorkspaceWorkspaceIdIndexRoute
   '/workspace/create/': typeof WorkspaceCreateIndexRoute
+  '/workspace/$workspaceId/address/create': typeof WorkspaceWorkspaceIdAddressCreateRoute
+  '/workspace/$workspaceId/members/$memberId': typeof WorkspaceWorkspaceIdMembersMemberIdRoute
+  '/workspace/$workspaceId/members/permissions': typeof WorkspaceWorkspaceIdMembersPermissionsRoute
+  '/workspace/$workspaceId/members/roles': typeof WorkspaceWorkspaceIdMembersRolesRoute
   '/workspace/$workspaceId/settings/member': typeof WorkspaceWorkspaceIdSettingsMemberRoute
   '/workspace/$workspaceId/settings/user': typeof WorkspaceWorkspaceIdSettingsUserRoute
+  '/workspace/$workspaceId/members/': typeof WorkspaceWorkspaceIdMembersIndexRoute
   '/workspace/$workspaceId/settings/': typeof WorkspaceWorkspaceIdSettingsIndexRoute
+  '/workspace/$workspaceId/address/$addressId/settings': typeof WorkspaceWorkspaceIdAddressAddressIdSettingsRoute
+  '/workspace/$workspaceId/address/$addressId/': typeof WorkspaceWorkspaceIdAddressAddressIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -162,9 +232,16 @@ export interface FileRouteTypes {
     | '/onboarding/workspace'
     | '/workspace/$workspaceId'
     | '/workspace/create'
+    | '/workspace/$workspaceId/address/create'
+    | '/workspace/$workspaceId/members/$memberId'
+    | '/workspace/$workspaceId/members/permissions'
+    | '/workspace/$workspaceId/members/roles'
     | '/workspace/$workspaceId/settings/member'
     | '/workspace/$workspaceId/settings/user'
+    | '/workspace/$workspaceId/members'
     | '/workspace/$workspaceId/settings'
+    | '/workspace/$workspaceId/address/$addressId/settings'
+    | '/workspace/$workspaceId/address/$addressId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -178,9 +255,16 @@ export interface FileRouteTypes {
     | '/onboarding/workspace'
     | '/workspace/$workspaceId'
     | '/workspace/create'
+    | '/workspace/$workspaceId/address/create'
+    | '/workspace/$workspaceId/members/$memberId'
+    | '/workspace/$workspaceId/members/permissions'
+    | '/workspace/$workspaceId/members/roles'
     | '/workspace/$workspaceId/settings/member'
     | '/workspace/$workspaceId/settings/user'
+    | '/workspace/$workspaceId/members'
     | '/workspace/$workspaceId/settings'
+    | '/workspace/$workspaceId/address/$addressId/settings'
+    | '/workspace/$workspaceId/address/$addressId'
   id:
     | '__root__'
     | '/'
@@ -194,9 +278,16 @@ export interface FileRouteTypes {
     | '/onboarding/workspace'
     | '/workspace/$workspaceId/'
     | '/workspace/create/'
+    | '/workspace/$workspaceId/address/create'
+    | '/workspace/$workspaceId/members/$memberId'
+    | '/workspace/$workspaceId/members/permissions'
+    | '/workspace/$workspaceId/members/roles'
     | '/workspace/$workspaceId/settings/member'
     | '/workspace/$workspaceId/settings/user'
+    | '/workspace/$workspaceId/members/'
     | '/workspace/$workspaceId/settings/'
+    | '/workspace/$workspaceId/address/$addressId/settings'
+    | '/workspace/$workspaceId/address/$addressId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -211,9 +302,16 @@ export interface RootRouteChildren {
   OnboardingWorkspaceRoute: typeof OnboardingWorkspaceRoute
   WorkspaceWorkspaceIdIndexRoute: typeof WorkspaceWorkspaceIdIndexRoute
   WorkspaceCreateIndexRoute: typeof WorkspaceCreateIndexRoute
+  WorkspaceWorkspaceIdAddressCreateRoute: typeof WorkspaceWorkspaceIdAddressCreateRoute
+  WorkspaceWorkspaceIdMembersMemberIdRoute: typeof WorkspaceWorkspaceIdMembersMemberIdRoute
+  WorkspaceWorkspaceIdMembersPermissionsRoute: typeof WorkspaceWorkspaceIdMembersPermissionsRoute
+  WorkspaceWorkspaceIdMembersRolesRoute: typeof WorkspaceWorkspaceIdMembersRolesRoute
   WorkspaceWorkspaceIdSettingsMemberRoute: typeof WorkspaceWorkspaceIdSettingsMemberRoute
   WorkspaceWorkspaceIdSettingsUserRoute: typeof WorkspaceWorkspaceIdSettingsUserRoute
+  WorkspaceWorkspaceIdMembersIndexRoute: typeof WorkspaceWorkspaceIdMembersIndexRoute
   WorkspaceWorkspaceIdSettingsIndexRoute: typeof WorkspaceWorkspaceIdSettingsIndexRoute
+  WorkspaceWorkspaceIdAddressAddressIdSettingsRoute: typeof WorkspaceWorkspaceIdAddressAddressIdSettingsRoute
+  WorkspaceWorkspaceIdAddressAddressIdIndexRoute: typeof WorkspaceWorkspaceIdAddressAddressIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -302,6 +400,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkspaceWorkspaceIdSettingsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/workspace/$workspaceId/members/': {
+      id: '/workspace/$workspaceId/members/'
+      path: '/workspace/$workspaceId/members'
+      fullPath: '/workspace/$workspaceId/members'
+      preLoaderRoute: typeof WorkspaceWorkspaceIdMembersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/workspace/$workspaceId/settings/user': {
       id: '/workspace/$workspaceId/settings/user'
       path: '/workspace/$workspaceId/settings/user'
@@ -314,6 +419,48 @@ declare module '@tanstack/react-router' {
       path: '/workspace/$workspaceId/settings/member'
       fullPath: '/workspace/$workspaceId/settings/member'
       preLoaderRoute: typeof WorkspaceWorkspaceIdSettingsMemberRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/$workspaceId/members/roles': {
+      id: '/workspace/$workspaceId/members/roles'
+      path: '/workspace/$workspaceId/members/roles'
+      fullPath: '/workspace/$workspaceId/members/roles'
+      preLoaderRoute: typeof WorkspaceWorkspaceIdMembersRolesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/$workspaceId/members/permissions': {
+      id: '/workspace/$workspaceId/members/permissions'
+      path: '/workspace/$workspaceId/members/permissions'
+      fullPath: '/workspace/$workspaceId/members/permissions'
+      preLoaderRoute: typeof WorkspaceWorkspaceIdMembersPermissionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/$workspaceId/members/$memberId': {
+      id: '/workspace/$workspaceId/members/$memberId'
+      path: '/workspace/$workspaceId/members/$memberId'
+      fullPath: '/workspace/$workspaceId/members/$memberId'
+      preLoaderRoute: typeof WorkspaceWorkspaceIdMembersMemberIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/$workspaceId/address/create': {
+      id: '/workspace/$workspaceId/address/create'
+      path: '/workspace/$workspaceId/address/create'
+      fullPath: '/workspace/$workspaceId/address/create'
+      preLoaderRoute: typeof WorkspaceWorkspaceIdAddressCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/$workspaceId/address/$addressId/': {
+      id: '/workspace/$workspaceId/address/$addressId/'
+      path: '/workspace/$workspaceId/address/$addressId'
+      fullPath: '/workspace/$workspaceId/address/$addressId'
+      preLoaderRoute: typeof WorkspaceWorkspaceIdAddressAddressIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/$workspaceId/address/$addressId/settings': {
+      id: '/workspace/$workspaceId/address/$addressId/settings'
+      path: '/workspace/$workspaceId/address/$addressId/settings'
+      fullPath: '/workspace/$workspaceId/address/$addressId/settings'
+      preLoaderRoute: typeof WorkspaceWorkspaceIdAddressAddressIdSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -331,11 +478,23 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingWorkspaceRoute: OnboardingWorkspaceRoute,
   WorkspaceWorkspaceIdIndexRoute: WorkspaceWorkspaceIdIndexRoute,
   WorkspaceCreateIndexRoute: WorkspaceCreateIndexRoute,
+  WorkspaceWorkspaceIdAddressCreateRoute:
+    WorkspaceWorkspaceIdAddressCreateRoute,
+  WorkspaceWorkspaceIdMembersMemberIdRoute:
+    WorkspaceWorkspaceIdMembersMemberIdRoute,
+  WorkspaceWorkspaceIdMembersPermissionsRoute:
+    WorkspaceWorkspaceIdMembersPermissionsRoute,
+  WorkspaceWorkspaceIdMembersRolesRoute: WorkspaceWorkspaceIdMembersRolesRoute,
   WorkspaceWorkspaceIdSettingsMemberRoute:
     WorkspaceWorkspaceIdSettingsMemberRoute,
   WorkspaceWorkspaceIdSettingsUserRoute: WorkspaceWorkspaceIdSettingsUserRoute,
+  WorkspaceWorkspaceIdMembersIndexRoute: WorkspaceWorkspaceIdMembersIndexRoute,
   WorkspaceWorkspaceIdSettingsIndexRoute:
     WorkspaceWorkspaceIdSettingsIndexRoute,
+  WorkspaceWorkspaceIdAddressAddressIdSettingsRoute:
+    WorkspaceWorkspaceIdAddressAddressIdSettingsRoute,
+  WorkspaceWorkspaceIdAddressAddressIdIndexRoute:
+    WorkspaceWorkspaceIdAddressAddressIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

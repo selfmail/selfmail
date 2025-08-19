@@ -12,12 +12,19 @@ import {
 	ImageUpload,
 	Input,
 } from "ui";
-import { useAuth } from "@/lib/auth";
+import { RequireAuth, useAuth } from "@/lib/auth";
 import { client } from "@/lib/client";
 
 export const Route = createFileRoute("/workspace/create/")({
-	component: WorkspaceComponent,
+	component: IndexComponent,
 });
+function IndexComponent() {
+	return (
+		<RequireAuth>
+			<WorkspaceComponent />
+		</RequireAuth>
+	);
+}
 
 // Define the form data structure
 type FormData = {
@@ -38,7 +45,7 @@ function WorkspaceComponent() {
 		defaultValues: {
 			name: "",
 		},
-	})
+	});
 
 	const handleSubmit = async (values: FormData) => {
 		setIsLoading(true);
@@ -58,22 +65,22 @@ function WorkspaceComponent() {
 			const response = await client.v1.web.workspace.create.post({
 				image: workspaceImage ?? undefined,
 				name: values.name,
-			})
+			});
 
 			if (response.error) {
 				console.log(response.error.value);
 				if (typeof response.error.value === "string") {
 					setError(response.error.value);
 					setIsLoading(false);
-					return
+					return;
 				}
 
 				setError(
 					response.error.value.message ||
 						"An error occurred while creating the workspace",
-				)
+				);
 				setIsLoading(false);
-				return
+				return;
 			}
 
 			// Redirect to the appropriate page
@@ -83,7 +90,7 @@ function WorkspaceComponent() {
 			setError("An unexpected error occurred while creating the workspace");
 			setIsLoading(false);
 		}
-	}
+	};
 
 	return (
 		<div className="flex min-h-screen flex-col items-center justify-center">
@@ -141,5 +148,5 @@ function WorkspaceComponent() {
 				</Form>
 			</div>
 		</div>
-	)
+	);
 }

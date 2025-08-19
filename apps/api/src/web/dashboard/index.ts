@@ -1,4 +1,4 @@
-import Elysia, { status } from "elysia";
+import Elysia, { status, t } from "elysia";
 import { requireWorkspaceMember } from "../authentication";
 import { DashboardModule } from "./module";
 import { DashboardService } from "./service";
@@ -20,9 +20,6 @@ export const dashboard = new Elysia({
 		},
 		{
 			query: DashboardModule.multipleEmailsQuery,
-			detail: {
-				description: "Get multiple emails for the authenticated user",
-			},
 		},
 	)
 	.get(
@@ -39,4 +36,7 @@ export const dashboard = new Elysia({
 				description: "Get a single email by ID for the authenticated user",
 			},
 		},
-	);
+	)
+	.get("/addresses", async ({ member }) => {
+		return await DashboardService.userAddresses(member.id);
+	});

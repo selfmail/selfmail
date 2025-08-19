@@ -5,8 +5,14 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "ui";
+import { useWorkspaceMember } from "@/lib/workspace";
 
-export default function DashboardHeader() {
+export default function DashboardHeader({
+	workspaceId,
+}: {
+	workspaceId: string;
+}) {
+	const { workspace } = useWorkspaceMember(workspaceId);
 	return (
 		<header className="flex items-center justify-between px-4 py-5 sm:px-6 lg:px-26 xl:px-32">
 			<DropdownMenu>

@@ -1,10 +1,11 @@
-import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import EmailList from "@/components/dashboard/email-list";
 import EmailViewer from "@/components/dashboard/email-viewer";
 import DashboardHeader from "@/components/dashboard/header";
 import DashboardNavigation from "@/components/dashboard/navigation";
-import { useAuth } from "@/lib/auth";
+import { RequireAuth } from "@/lib/auth";
+import { RequireWorkspace } from "@/lib/workspace";
 import type { EmailData } from "@/types/email";
 
 export const Route = createFileRoute("/workspace/$workspaceId/")({
@@ -12,22 +13,20 @@ export const Route = createFileRoute("/workspace/$workspaceId/")({
 });
 
 function RouteComponent() {
-	const { user } = useAuth();
 	const { workspaceId } = Route.useParams();
 
+	return (
+		<RequireAuth>
+			<RequireWorkspace workspaceId={workspaceId}>
+				<WorkspaceDashboard workspaceId={workspaceId} />
+			</RequireWorkspace>
+		</RequireAuth>
+	);
+}
+
+function WorkspaceDashboard({ workspaceId }: { workspaceId: string }) {
 	const [open, setOpen] = useState(true);
 	const [selectedEmail, setSelectedEmail] = useState<EmailData | null>(null);
-
-	if (!user) {
-		return (
-			<Navigate
-				to="/auth/login"
-				search={{
-					redirectTo: `/workspace/${workspaceId}/`,
-				}}
-			/>
-		);
-	}
 
 	const handleEmailClick = (email: EmailData) => {
 		setSelectedEmail(email);
@@ -36,8 +35,8 @@ function RouteComponent() {
 
 	return (
 		<div className="flex min-h-screen flex-col bg-white text-black">
-			<DashboardHeader workspace={workspaceId} />
-			<DashboardNavigation workspace={workspaceId} />
+			<DashboardHeader workspaceId={workspaceId} />
+			<DashboardNavigation workspaceId={workspaceId} />
 
 			{/* Page container */}
 			<div className="mx-auto w-full px-4 sm:px-6 lg:px-26 xl:px-32">

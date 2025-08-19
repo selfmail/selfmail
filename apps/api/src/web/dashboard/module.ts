@@ -4,6 +4,7 @@ export namespace DashboardModule {
 	export const multipleEmailsQuery = t.Object({
 		page: t.Optional(t.Numeric({ default: 1, minimum: 1 })),
 		limit: t.Optional(t.Numeric({ default: 20, minimum: 1, maximum: 100 })),
+		workspaceId: t.String(),
 	});
 
 	export type EmailsQuery = typeof multipleEmailsQuery.static;

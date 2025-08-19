@@ -1,5 +1,3 @@
-// Import this at the top of the file
-import { Prisma, User } from "@prisma/client";
 import { db } from "database";
 import { status } from "elysia";
 import { rateLimitMiddleware } from "../../lib/auth-middleware";

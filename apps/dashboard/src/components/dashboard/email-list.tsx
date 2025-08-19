@@ -47,6 +47,7 @@ export default function EmailList({
 					query: {
 						limit: 20,
 						page: pageParam,
+						workspaceId: workspace,
 					},
 				});
 

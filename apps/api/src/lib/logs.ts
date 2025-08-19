@@ -3,6 +3,6 @@ export abstract class Logs {
 		console.error(`[ERROR] ${new Date().toISOString()}: ${message}`);
 	}
 	static async log(message: string) {
-		console.log(`[LOG] ${new Date().toISOString()}: ${message}`);
+		//console.log(`[LOG] ${new Date().toISOString()}: ${message}`);
 	}
 }

@@ -1,112 +1,84 @@
-import { useNavigate } from "@tanstack/react-router";
-import {
-	createContext,
-	type ReactNode,
-	useContext,
-	useEffect,
-	useState,
-} from "react";
-import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { Navigate } from "@tanstack/react-router";
+import type { ReactNode } from "react";
+import ErrorScreen from "@/components/error";
 import Loading from "@/components/loading";
-import type { AuthUser } from "../../../api/src/lib/auth-middleware";
 import { client } from "./client";
 
-export interface User {
-	id: string;
-	email: string;
-	name: string;
-}
+export const useAuth = () => {
+	const { data, isLoading, error, refetch } = useQuery({
+		queryKey: ["user"],
+		queryFn: async () => {
+			const user = await client.v1.web.authentication.me.get();
 
-export interface AuthContextType {
-	user: AuthUser | null;
-	logout: () => Promise<void>;
-	isAuthenticated: boolean;
-}
-
-const AuthContext = createContext<AuthContextType | null>(null);
-
-interface AuthProviderProps {
-	children: ReactNode;
-}
-
-export function AuthProvider({ children }: AuthProviderProps) {
-	const [isLoading, setIsLoading] = useState(true);
-	const [authenticated, setAuthenticated] = useState(false);
-	const [user, setUser] = useState<AuthUser | null>(null);
-
-	const checkAuthStatus = async () => {
-		setIsLoading(true);
-		try {
-			const response = await client.v1.web.authentication.me.get();
-			console.log("Authentication response:", response);
-
-			if (response.data && !response.error) {
-				console.log("User is authenticated:", response.data);
-				setUser(response.data);
-				setAuthenticated(true);
-			} else {
-				console.log("User is not authenticated:", response.error);
-				setAuthenticated(false);
+			if (user.error) {
+				if (user.error.status === 422 || user.error.status === 401) {
+					return null;
+				}
+				throw new Error("Internal Server error. Please try again later.");
 			}
-		} catch (error) {
-			console.log("Authentication check failed:", error);
-			toast.error("Failed to check authentication status. Please try again.");
-			setAuthenticated(false);
-		} finally {
-			setIsLoading(false);
-		}
-	};
 
-	// Check for existing auth on mount
-	useEffect(() => {
-		checkAuthStatus();
-	}, []);
+			if (!user.data) {
+				return null;
+			}
 
+			return user.data;
+		},
+		retry: false, // Don't retry authentication failures
+	});
+
+	const isAuthenticated = !isLoading && !!data;
+
+	return { isAuthenticated, data, isLoading, error, refetch };
+};
+
+// Higher-order component that automatically handles auth
+export function RequireAuth({
+	children,
+	redirectTo = "/auth/login",
+	fallback,
+}: {
+	children: ReactNode;
+	redirectTo?: string;
+	fallback?: ReactNode;
+}) {
+	const { isAuthenticated, isLoading, error } = useAuth();
+
+	// Show loading while checking authentication
 	if (isLoading) {
-		return <Loading />;
+		return fallback || <Loading />;
 	}
 
-	const logout = async () => {
-		try {
-			await client.v1.web.authentication.logout.get();
-			setAuthenticated(false);
-		} catch {
-			toast.error("Logout failed. Please try again.");
-		}
-	};
+	// Redirect to login if not authenticated
+	if (!isAuthenticated) {
+		return (
+			<Navigate
+				to={redirectTo}
+				search={{ redirectTo: window.location.pathname }}
+				replace
+			/>
+		);
+	}
 
-	return (
-		<AuthContext.Provider
-			value={{
-				user,
-				logout,
-				isAuthenticated: authenticated,
-			}}
-		>
-			{children}
-		</AuthContext.Provider>
-	);
+	// Show error if there was a server error
+	if (error) {
+		return (
+			<ErrorScreen message="Failed to verify authentication. Please try again." />
+		);
+	}
+
+	// User is authenticated, render children
+	return <>{children}</>;
 }
 
-export function useAuth(shouldNavigate = true) {
-	const context = useContext(AuthContext);
-	const navigate = useNavigate();
+// Simple hook that returns user data or null (handles loading/errors internally)
+export function useUser() {
+	const { data, isLoading } = useAuth();
+	return isLoading ? null : data;
+}
 
-	if (!context) {
-		throw new Error("useAuth must be used within an AuthProvider");
-	}
-
-	// Navigate to login if not authenticated and shouldNavigate is true
-	useEffect(() => {
-		if (shouldNavigate && !context.isAuthenticated) {
-			navigate({
-				to: "/auth/login",
-				search: {
-					redirectTo: undefined,
-				},
-			});
-		}
-	}, [shouldNavigate, context.isAuthenticated, navigate]);
-
-	return context;
+// Hook that returns whether user is authenticated (boolean)
+export function useIsAuthenticated() {
+	const { isAuthenticated } = useAuth();
+	return isAuthenticated;
 }
