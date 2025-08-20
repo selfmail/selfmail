@@ -5,7 +5,10 @@ import { toast } from "sonner";
 import Loading from "@/components/loading";
 import { client } from "./client";
 
-export const useWorkspaceMember = (workspaceId: string) => {
+export const useWorkspaceMember = (
+	workspaceId: string,
+	permissions?: string[],
+) => {
 	const { data, error, isLoading, refetch } = useQuery({
 		queryKey: ["workspace", workspaceId],
 		queryFn: async () => {
@@ -14,6 +17,25 @@ export const useWorkspaceMember = (workspaceId: string) => {
 					workspaceId,
 				},
 			});
+
+			if (permissions) {
+				const hasPermissionsForAction =
+					await client.v1.web.authentication.me.workspace.permissions.get({
+						query: {
+							workspaceId,
+							permissions,
+						},
+					});
+
+				if (
+					hasPermissionsForAction.error ||
+					hasPermissionsForAction.data.hasPermissions === false
+				) {
+					throw new Error(
+						"You do not have permission to access this workspace.",
+					);
+				}
+			}
 
 			if (workspace.error) {
 				throw new Error("Internal Server Error. Please try again later!");
@@ -35,15 +57,19 @@ export function RequireWorkspace({
 	workspaceId,
 	children,
 	redirectTo = "/",
+	permissions,
 	fallback,
 }: {
 	workspaceId: string;
 	children: ReactNode;
+	permissions?: string[];
 	redirectTo?: string;
 	fallback?: ReactNode;
 }) {
-	const { hasAccess, isLoading, error } = useWorkspaceMember(workspaceId);
-
+	const { hasAccess, isLoading, error } = useWorkspaceMember(
+		workspaceId,
+		permissions,
+	);
 	// Show loading while checking workspace access
 	if (isLoading) {
 		return fallback || <Loading />;

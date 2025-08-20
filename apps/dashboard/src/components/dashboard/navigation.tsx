@@ -68,7 +68,7 @@ export default function DashboardNavigation({
 						</Link>
 					</p>
 				)}
-				{data?.length < 0 && (
+				{data && data.length < 0 && (
 					<div className="flex w-min flex-row items-center space-x-0.5 rounded-md bg-transparent p-2 ring-neutral-100 transition-all hover:bg-neutral-100 hover:ring-4">
 						<span className="h-1 w-1 rounded-full bg-neutral-600" />
 						<span className="h-1 w-1 rounded-full bg-neutral-600" />

@@ -136,4 +136,75 @@ export abstract class AuthenticationService {
 			user,
 		};
 	}
+	static async hasPermissions(memberId: string, permissions: string[]) {
+		// If no permissions to check, return early
+		if (!permissions || permissions.length === 0) {
+			return {
+				hasPermissions: true,
+				missingPermissions: [],
+				userPermissions: [],
+			};
+		}
+
+		// Single query to get all member permissions (direct + role-based)
+		const member = await db.member.findUnique({
+			where: { id: memberId },
+			select: {
+				MemberPermission: {
+					select: {
+						permission: {
+							select: {
+								name: true,
+							},
+						},
+					},
+				},
+				roles: {
+					select: {
+						RolePermission: {
+							select: {
+								permission: {
+									select: {
+										name: true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		});
+
+		if (!member) {
+			return {
+				hasPermissions: false,
+				missingPermissions: permissions,
+				userPermissions: [],
+			};
+		}
+
+		// Collect all permissions from direct assignments and roles
+		const userPermissionSet = new Set<string>();
+
+		// Add direct permissions
+		for (const mp of member.MemberPermission) {
+			userPermissionSet.add(mp.permission.name);
+		}
+
+		// Add role-based permissions
+		for (const role of member.roles) {
+			for (const rp of role.RolePermission) {
+				userPermissionSet.add(rp.permission.name);
+			}
+		}
+
+		// Check for missing permissions using Set for O(1) lookup
+		const missingPermissions = permissions.filter(
+			(permission) => !userPermissionSet.has(permission),
+		);
+
+		return {
+			hasPermissions: missingPermissions.length === 0,
+		};
+	}
 }

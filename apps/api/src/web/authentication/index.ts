@@ -233,4 +233,21 @@ export const authentication = new Elysia({
 				description: "Get current user information for a specific workspace",
 			},
 		},
+	)
+	.get(
+		"/me/workspace/permissions",
+		async ({ member, query }) => {
+			return await AuthenticationService.hasPermissions(
+				member.id,
+				query.permissions,
+			);
+		},
+		{
+			query: t.Object({
+				permissions: t.Array(t.String()),
+				workspaceId: t.String({
+					description: "ID of the workspace to check permissions for",
+				}),
+			}),
+		},
 	);

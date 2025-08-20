@@ -1,6 +1,7 @@
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
+import { toast } from "sonner";
 import { client } from "@/lib/client";
 import type { ApiEmailData, EmailData } from "@/types/email";
 import { transformApiEmail } from "@/types/email";
@@ -42,28 +43,21 @@ export default function EmailList({
 	} = useInfiniteQuery({
 		queryKey: ["emails"],
 		queryFn: async ({ pageParam = 1 }): Promise<EmailResponse> => {
-			try {
-				const res = await client.v1.web.dashboard.emails.get({
-					query: {
-						limit: 20,
-						page: pageParam,
-						workspaceId: workspace,
-					},
-				});
+			const res = await client.v1.web.dashboard.emails.get({
+				query: {
+					limit: 20,
+					page: pageParam,
+					workspaceId: workspace,
+				},
+			});
 
-				if (res.error) {
-					const errorText = res.error.value.message;
-					console.error("Response error:", errorText);
-					throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
-				}
-
-				const data = res.data;
-				console.log("Fetched data:", data);
-				return data;
-			} catch (fetchError) {
-				console.error("Fetch error:", fetchError);
-				throw fetchError;
+			if (res.error) {
+				const errorText = res.error.value.message;
+				throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
 			}
+
+			const data = res.data;
+			return data;
 		},
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => {
@@ -75,12 +69,9 @@ export default function EmailList({
 		retryDelay: 1000,
 	});
 
-	console.log("Query state:", { isLoading, isError, data });
-
 	const allEmails =
 		data?.pages.flatMap((page) => page.emails.map(transformApiEmail)) ?? [];
 
-	// Trigger fetchNextPage when the load more element comes into view
 	useEffect(() => {
 		if (entry?.isIntersecting && hasNextPage && !isFetchingNextPage) {
 			fetchNextPage();
