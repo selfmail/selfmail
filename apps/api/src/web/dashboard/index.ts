@@ -12,11 +12,15 @@ export const dashboard = new Elysia({
 	.use(requireWorkspaceMember)
 	.get(
 		"/emails",
-		async ({ query, user }) => {
-			if (!user) {
+		async ({ query, member, workspace }) => {
+			if (!member || !workspace) {
 				throw status(401, "Authentication required");
 			}
-			return await DashboardService.multipleEmails(query, user.id);
+			return await DashboardService.multipleEmails(
+				query,
+				member.id,
+				workspace.id,
+			);
 		},
 		{
 			query: DashboardModule.multipleEmailsQuery,

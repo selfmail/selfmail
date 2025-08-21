@@ -5,16 +5,24 @@ import type { DashboardModule } from "./module";
 export abstract class DashboardService {
 	static async multipleEmails(
 		{ limit, page }: DashboardModule.EmailsQuery,
-		userId: string,
+		memberId: string,
+		workspaceId: string,
 	) {
 		page = Number(page) || 1;
 		limit = Number(limit) || 20;
+
+		const workspace = await db.workspace.findUnique({
+			where: {
+				id: workspaceId,
+			},
+		});
 
 		// Get user's accessible addresses through member addresses
 		const memberAddresses = await db.memberAddress.findMany({
 			where: {
 				member: {
-					userId: userId,
+					id: memberId,
+					workspaceId,
 				},
 			},
 			select: { addressId: true },
@@ -22,16 +30,23 @@ export abstract class DashboardService {
 
 		const addressIds = memberAddresses.map((ma) => ma.addressId);
 
+		if (addressIds.length < 0) {
+			return {
+				emails: [],
+				totalCount: 0,
+				page,
+				limit,
+				totalPages: 0,
+			};
+		}
+
 		// Only fetch emails for the user's accessible addresses
 		const emails = await db.email.findMany({
-			where:
-				addressIds.length > 0
-					? {
-							addressId: {
-								in: addressIds,
-							},
-						}
-					: undefined,
+			where: {
+				addressId: {
+					in: addressIds,
+				},
+			},
 			take: limit,
 			skip: (page - 1) * limit,
 			orderBy: {
@@ -96,7 +111,6 @@ export abstract class DashboardService {
 	}
 
 	static async userAddresses(memberId: string) {
-		console.log("Fetching addresses for member:", memberId);
 		const addresses = await db.memberAddress.findMany({
 			where: {
 				memberId,
@@ -120,8 +134,6 @@ export abstract class DashboardService {
 				},
 			},
 		});
-
-		console.log(addresses);
 
 		if (!addresses) {
 			return status(404, "No addresses found for this user");
