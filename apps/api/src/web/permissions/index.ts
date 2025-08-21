@@ -36,6 +36,14 @@ export const requirePermissions = new Elysia({
 					if (!member)
 						throw status(403, "User is not a member of the workspace");
 
+					const permissionWorkspace = await db.workspace.findUnique({
+						where: {
+							id: workspace.id,
+						},
+					});
+
+					if (!permissionWorkspace) throw status(404, "Workspace not found");
+
 					// Check if user has all required permissions
 					const userPermissions = member.MemberPermission.map(
 						(mp) => mp.permission.name,
@@ -44,7 +52,10 @@ export const requirePermissions = new Elysia({
 						(permission) => !userPermissions.includes(permission),
 					);
 
-					if (missingPermissions.length > 0) {
+					if (
+						missingPermissions.length > 0 &&
+						permissionWorkspace?.ownerId !== user.id
+					) {
 						throw status(
 							403,
 							`Missing permissions: ${missingPermissions.join(", ")}`,
