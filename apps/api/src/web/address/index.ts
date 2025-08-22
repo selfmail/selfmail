@@ -24,6 +24,43 @@ export const address = new Elysia({
 			body: AddressModule.createAddressBody,
 		},
 	)
+	.get("/emails", async ({ workspace }) => {
+		return await AddressService.getAddressEmails(workspace.id);
+	})
+	.get(
+		"/emails",
+		async ({ workspace, query }) => {
+			return await AddressService.getEmailsByAddressId({
+				addressId: query.addressId,
+				workspaceId: workspace.id,
+				page: query.page ? Number(query.page) : 1,
+				limit: query.limit ? Number(query.limit) : 20,
+				search: query.search,
+			});
+		},
+		{
+			permissions: ["addresses:view"],
+			params: AddressModule.addressParamsSchema,
+			query: AddressModule.emailsQuerySchema,
+		},
+	)
+	.get(
+		"/emails/:addressId",
+		async ({ workspace, params, query }) => {
+			return await AddressService.getAddressEmailsById({
+				addressId: params.addressId,
+				workspaceId: workspace.id,
+				page: query.page ? Number(query.page) : 1,
+				limit: query.limit ? Number(query.limit) : 20,
+				search: query.search,
+			});
+		},
+		{
+			permissions: ["addresses:view"],
+			params: AddressModule.addressParamsSchema,
+			query: AddressModule.emailsQuerySchema,
+		},
+	)
 	.delete(
 		"/delete",
 		async ({ member, workspace, body, user }) => {

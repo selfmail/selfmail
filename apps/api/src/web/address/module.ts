@@ -20,4 +20,27 @@ export namespace AddressModule {
 		}),
 	});
 	export type DeleteAddressBody = typeof deleteAddressBody.static;
+
+	export const addressParamsSchema = t.Object({
+		addressId: t.String({
+			description: "The address ID to get emails for",
+		}),
+	});
+	export type AddressParams = typeof addressParamsSchema.static;
+
+	export const emailsQuerySchema = t.Object({
+		page: t.Optional(t.Numeric({ default: 1, minimum: 1 })),
+		limit: t.Optional(t.Numeric({ default: 20, minimum: 1, maximum: 100 })),
+		search: t.Optional(
+			t.String({ description: "Search term for filtering emails" }),
+		),
+		workspaceId: t.String({
+			description: "The workspace ID to filter emails by",
+		}),
+		addressId: t.String({
+			format: "uuid",
+			description: "The address ID to filter emails by",
+		}),
+	});
+	export type EmailsQuery = typeof emailsQuerySchema.static;
 }

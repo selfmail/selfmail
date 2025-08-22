@@ -156,4 +156,265 @@ export abstract class AddressService {
 
 		return allDomains;
 	}
+	static async getAddressEmails(workspaceId: string) {
+		// Get all addresses for the workspace through member addresses
+		const memberAddresses = await db.memberAddress.findMany({
+			where: {
+				member: {
+					workspaceId,
+				},
+			},
+			select: { addressId: true },
+		});
+
+		const addressIds = memberAddresses.map((ma) => ma.addressId);
+
+		if (addressIds.length === 0) {
+			return {
+				emails: [],
+				totalCount: 0,
+			};
+		}
+
+		// Get all emails for all addresses in the workspace
+		const emails = await db.email.findMany({
+			where: {
+				addressId: {
+					in: addressIds,
+				},
+			},
+			orderBy: {
+				date: "desc",
+			},
+			include: {
+				address: {
+					select: {
+						id: true,
+						email: true,
+					},
+				},
+			},
+		});
+
+		const totalCount = await db.email.count({
+			where: {
+				addressId: {
+					in: addressIds,
+				},
+			},
+		});
+
+		return {
+			emails,
+			totalCount,
+		};
+	}
+
+	static async getEmailsByAddressId({
+		addressId,
+		workspaceId,
+		page = 1,
+		limit = 20,
+		search,
+	}: {
+		addressId: string;
+		workspaceId: string;
+		page?: number;
+		limit?: number;
+		search?: string;
+	}) {
+		// First, verify that the address exists and belongs to the workspace
+		const memberAddress = await db.memberAddress.findFirst({
+			where: {
+				addressId,
+				member: {
+					workspaceId,
+				},
+			},
+			include: {
+				address: {
+					select: {
+						id: true,
+						email: true,
+					},
+				},
+			},
+		});
+
+		if (!memberAddress) {
+			return status(404, "Address not found or access denied");
+		}
+
+		// Build the where clause for emails
+		const whereClause: {
+			addressId: string;
+			OR?: Array<{
+				subject?: { contains: string; mode: "insensitive" };
+				fromEmail?: { contains: string; mode: "insensitive" };
+				fromName?: { contains: string; mode: "insensitive" };
+			}>;
+		} = {
+			addressId,
+		};
+
+		// Add search functionality if provided
+		if (search) {
+			whereClause.OR = [
+				{
+					subject: {
+						contains: search,
+						mode: "insensitive",
+					},
+				},
+				{
+					fromEmail: {
+						contains: search,
+						mode: "insensitive",
+					},
+				},
+				{
+					fromName: {
+						contains: search,
+						mode: "insensitive",
+					},
+				},
+			];
+		}
+
+		// Get emails for this specific address
+		const emails = await db.email.findMany({
+			where: whereClause,
+			take: limit,
+			skip: (page - 1) * limit,
+			orderBy: {
+				date: "desc",
+			},
+			include: {
+				address: {
+					select: {
+						id: true,
+						email: true,
+					},
+				},
+			},
+		});
+
+		// Get total count for pagination
+		const totalCount = await db.email.count({
+			where: whereClause,
+		});
+
+		return {
+			emails,
+			totalCount,
+			page,
+			limit,
+			totalPages: Math.ceil(totalCount / limit),
+			address: memberAddress.address,
+		};
+	}
+
+	static async getAddressEmailsById({
+		addressId,
+		workspaceId,
+		page = 1,
+		limit = 20,
+		search,
+	}: {
+		addressId: string;
+		workspaceId: string;
+		page?: number;
+		limit?: number;
+		search?: string;
+	}) {
+		// Verify that the address belongs to a member of this workspace
+		const memberAddress = await db.memberAddress.findFirst({
+			where: {
+				addressId,
+				member: {
+					workspaceId,
+				},
+			},
+			include: {
+				address: {
+					select: {
+						id: true,
+						email: true,
+					},
+				},
+			},
+		});
+
+		if (!memberAddress) {
+			return status(404, "Address not found or access denied");
+		}
+
+		// Build the where clause for emails
+		const whereClause: {
+			addressId: string;
+			OR?: Array<{
+				subject?: { contains: string; mode: "insensitive" };
+				fromEmail?: { contains: string; mode: "insensitive" };
+				fromName?: { contains: string; mode: "insensitive" };
+			}>;
+		} = {
+			addressId,
+		};
+
+		// Add search functionality if provided
+		if (search) {
+			whereClause.OR = [
+				{
+					subject: {
+						contains: search,
+						mode: "insensitive",
+					},
+				},
+				{
+					fromEmail: {
+						contains: search,
+						mode: "insensitive",
+					},
+				},
+				{
+					fromName: {
+						contains: search,
+						mode: "insensitive",
+					},
+				},
+			];
+		}
+
+		// Get emails for this specific address
+		const emails = await db.email.findMany({
+			where: whereClause,
+			take: limit,
+			skip: (page - 1) * limit,
+			orderBy: {
+				date: "desc",
+			},
+			include: {
+				address: {
+					select: {
+						id: true,
+						email: true,
+					},
+				},
+			},
+		});
+
+		// Get total count for pagination
+		const totalCount = await db.email.count({
+			where: whereClause,
+		});
+
+		return {
+			emails,
+			totalCount,
+			page,
+			limit,
+			totalPages: Math.ceil(totalCount / limit),
+			address: memberAddress.address,
+		};
+	}
 }
