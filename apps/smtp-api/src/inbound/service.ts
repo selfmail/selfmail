@@ -2,7 +2,6 @@ import { db } from "database";
 import { status } from "elysia";
 import type { InboundModule } from "./module";
 
-// biome-ignore lint/complexity/noStaticOnlyClass: This is a static utility class for handling SMTP connections.
 export abstract class InboundService {
 	/**
 	 * Connection of a new SMTP client. We are checking for spam (in the database) and if the

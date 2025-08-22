@@ -43,8 +43,7 @@ export const outboundServer = new SMTPServer({
 	 * 2. onAuth: Handles authentication, checks credentials, and logs the user
 	 * 3. onMailFrom: Validates the sender's email address
 	 * 4. onRcptTo: Validates the recipient's email address
-	 * 5. onData: Processes the email data, saves it to the database,
-	 *    and sends it to the recipient
+	 * 5. onData: Processes the email data, saves it to the database, and sends it to the recipient
 	 * 6. onClose: Cleans up the session and logs the closure
 	 */
 	onAuth: auth,
