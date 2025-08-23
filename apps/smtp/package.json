@@ -25,6 +25,7 @@
 		"chalk": "^5.4.1",
 		"consola": "^3.4.2",
 		"dotenv": "^17.0.1",
+		"ioredis": "^5.4.1",
 		"mailparser": "^3.7.4",
 		"nodemailer": "^7.0.4",
 		"nodemon": "^3.1.10",

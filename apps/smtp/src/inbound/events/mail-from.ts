@@ -14,7 +14,7 @@ export async function handleMailFrom(
 		`Mail from address: ${address.address}, session ID: ${session.id}, remote address: ${session.remoteAddress || "unknown"}`,
 	);
 
-	const res = await client.inbound["mail-from"].get({
+	const res = await client.inbound["mail-from"].post({
 		from: address.address,
 	});
 

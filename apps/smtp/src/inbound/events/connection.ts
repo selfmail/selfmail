@@ -1,4 +1,4 @@
-import { Ratelimit } from "services/ratelimit";
+import { Ratelimit } from "@/lib/ratelimit";
 import type { SMTPServerSession } from "smtp-server";
 import { client } from "@/lib/client";
 import { createInboundLog } from "@/utils/logs";
@@ -23,7 +23,7 @@ export async function handleConnection(
 		return callback(new Error("Rate limit exceeded"));
 	}
 
-	const res = await client.inbound.connection.get({
+	const res = await client.inbound.connection.post({
 		ip: session.remoteAddress || "unknown",
 		hostname: session.clientHostname || "unknown",
 	});

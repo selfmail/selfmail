@@ -1,0 +1,3 @@
+password = "CHANGE_ME"; // password for web ui
+enable_password = "CHANGE_ME"; // password for web ui
+bind_socket = "*:11334";

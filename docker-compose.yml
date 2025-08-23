@@ -1,41 +1,14 @@
-version: '3.8'
-
 services:
-  api:
-    build:
-      context: ./api
+  rspamd:
+    image: rspamd/rspamd:latest
+    container_name: rspamd
+    restart: unless-stopped
     ports:
-      - "4000:4000"
+      - "11332:11332" # Proxy/Milter
+      - "11333:11333" # HTTP/JSON API
+      - "11334:11334" # Web UI
     volumes:
-      - ./api:/app
+      - ./rspamd/etc:/etc/rspamd
+      - ./rspamd/var:/var/lib/rspamd
     environment:
-      - NODE_ENV=development
-    depends_on:
-      - db
-
-  web:
-    build:
-      context: ./web
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./web:/app
-    environment:
-      - NODE_ENV=development
-    depends_on:
-      - api
-
-  db:
-    image: postgres:15
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: selfmail
-    ports:
-      - "5432:5432"
-    volumes:
-      - db_data:/var/lib/postgresql/data
-
-volumes:
-  db_data:
+      - TZ=Europe/Berlin

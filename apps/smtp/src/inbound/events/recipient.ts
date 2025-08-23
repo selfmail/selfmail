@@ -19,7 +19,7 @@ export async function handleRcptTo(
 		return callback(new Error("No MAIL FROM address set"));
 	}
 
-	const res = await client.inbound["rcpt-to"].get({
+	const res = await client.inbound["rcpt-to"].post({
 		to: address.address,
 		mailFrom: session.envelope.mailFrom.address,
 	});
