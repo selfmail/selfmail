@@ -79,47 +79,6 @@ export abstract class InboundService {
 		mailFrom,
 		to,
 	}: InboundModule.DataBody) {
-		// Convert File objects to Attachment format for MailComposer
-		const mailAttachments = attachments
-			? await Promise.all(
-					attachments.map(async (file) => ({
-						filename: file.name,
-						content: Buffer.from(await file.arrayBuffer()),
-						contentType: file.type,
-					})),
-				)
-			: [];
-
-		// convert mail to eml file
-		const mail = new MailComposer({
-			from: mailFrom,
-			to,
-			subject,
-			text,
-			html,
-			attachments: mailAttachments,
-		});
-
-		// convert to Raw RFC822
-		const eml = await new Promise<Buffer>((resolve, reject) =>
-			mail
-				.compile()
-				.build((err, message) => (err ? reject(err) : resolve(message))),
-		);
-
-		// call rspamd to check if the email has spam
-		const res = await fetch("http://127.0.0.1:11333/checkv2", {
-			method: "POST",
-			headers: { "Content-Type": "message/rfc822" },
-			body: eml,
-		});
-
-		const result = (await res.json()) as RspamdResult;
-
-		if (result.action === "reject" || result.score > 5) {
-			throw status(403, "Email rejected by spam filter");
-		}
-
 		const address = await db.address.findUnique({
 			where: {
 				email: to,
@@ -170,6 +129,50 @@ export abstract class InboundService {
 		to,
 		attachments,
 	}: InboundModule.SpamBody) {
-		// TODO: Implement spam detection logic
+		// Convert File objects to Attachment format for MailComposer
+		const mailAttachments = attachments
+			? await Promise.all(
+					attachments.map(async (file) => ({
+						filename: file.name,
+						content: Buffer.from(await file.arrayBuffer()),
+						contentType: file.type,
+					})),
+				)
+			: [];
+
+		// convert mail to eml file
+		const mail = new MailComposer({
+			from: from,
+			to,
+			subject,
+			text: body,
+			html,
+			attachments: mailAttachments,
+		});
+
+		// convert to Raw RFC822
+		const eml = await new Promise<Buffer>((resolve, reject) =>
+			mail
+				.compile()
+				.build((err, message) => (err ? reject(err) : resolve(message))),
+		);
+
+		// call rspamd to check if the email has spam
+		const res = await fetch("http://127.0.0.1:11333/checkv2", {
+			method: "POST",
+			headers: { "Content-Type": "message/rfc822" },
+			body: eml,
+		});
+
+		const result = (await res.json()) as RspamdResult;
+
+		if (result.action === "reject" || result.score > 5) {
+			throw status(403, "Email rejected by spam filter");
+		}
+
+		return {
+			score: result.score,
+			action: result.action,
+		};
 	}
 }

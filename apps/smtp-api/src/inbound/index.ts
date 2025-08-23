@@ -60,4 +60,20 @@ export const inboundSmtp = new Elysia({
 		{
 			body: InboundModule.dataBody,
 		},
+	)
+	.get(
+		"/spam",
+		async ({ body }) => {
+			return await InboundService.spam({
+				body: body.body,
+				subject: body.subject,
+				html: body.html,
+				from: body.from,
+				to: body.to,
+				attachments: body.attachments,
+			});
+		},
+		{
+			body: InboundModule.spamBody,
+		},
 	);
