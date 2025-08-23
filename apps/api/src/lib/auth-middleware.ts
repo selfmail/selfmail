@@ -1,6 +1,6 @@
 import { verifyKey } from "@unkey/api";
-import { Ratelimit } from "@unkey/ratelimit";
 import { db } from "database";
+import { Ratelimit } from "services/ratelimit";
 
 export interface AuthUser {
 	id: string;
@@ -13,21 +13,6 @@ export interface AuthContext {
 	user: AuthUser;
 	apiKey: string;
 }
-
-// Rate limiting instances
-const authRateLimit = new Ratelimit({
-	rootKey: process.env.UNKEY_ROOT_KEY ?? "",
-	namespace: "auth-requests",
-	limit: 10,
-	duration: "1m",
-});
-
-const dashboardRateLimit = new Ratelimit({
-	rootKey: process.env.UNKEY_ROOT_KEY ?? "",
-	namespace: "dashboard-api",
-	limit: 100,
-	duration: "1m",
-});
 
 /**
  * Authentication middleware for Elysia routes
@@ -162,31 +147,33 @@ export async function rateLimitMiddleware(
 	reset: number;
 }> {
 	try {
-		let rateLimit: Ratelimit;
+		let maxRequests: number;
+		let windowInSeconds: number;
 
 		switch (type) {
 			case "auth":
-				rateLimit = authRateLimit;
+				maxRequests = 10;
+				windowInSeconds = 60; // 1 minute
 				break;
 			case "dashboard":
-				rateLimit = dashboardRateLimit;
+				maxRequests = 100;
+				windowInSeconds = 60; // 1 minute
 				break;
 			default:
-				rateLimit = new Ratelimit({
-					rootKey: process.env.UNKEY_ROOT_KEY ?? "",
-					namespace: "api-requests",
-					limit: customLimit ?? 50,
-					duration: "60s",
-				});
+				maxRequests = customLimit ?? 50;
+				windowInSeconds = 60; // 1 minute
 		}
 
-		const result = await rateLimit.limit(identifier);
+		const result = await Ratelimit.limit(identifier, {
+			max: maxRequests,
+			windowInSeconds,
+		});
 
 		return {
 			success: result.success,
-			limit: result.limit,
+			limit: maxRequests,
 			remaining: result.remaining,
-			reset: result.reset,
+			reset: Date.now() + result.resetIn * 1000, // Convert seconds to milliseconds
 		};
 	} catch (error) {
 		console.error("Rate limiting error:", error);

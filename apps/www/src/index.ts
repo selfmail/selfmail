@@ -1,11 +1,13 @@
 import { serve } from "bun";
 import home from "./routes/home/index.html";
+import roadmap from "./routes/roadmap/index.html";
 
 const server = serve({
 	port: 1234,
 	routes: {
 		// Serve index.html for all unmatched routes.
 		"/": home,
+		"/roadmap": roadmap,
 
 		"/api/hello": {
 			async GET(req) {

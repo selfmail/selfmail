@@ -10,7 +10,7 @@ export default function Home() {
 				<p>
 					Selfmail is a business-first email provider, engineered to enhance
 					productivity and collaboration. Currently in development, launching
-					soon. The platform is completely open-source.
+					soon. Selfmail is completely open-source.
 				</p>
 				<a
 					className="underline"
@@ -24,18 +24,19 @@ export default function Home() {
 					Roadmap
 				</a>
 			</div>
-			<div className="flex flex-1 flex-col space-y-5 p-5">
+			<div className="flex flex-1 flex-col space-y-5 py-5 lg:p-5">
 				<OptimizedVideo
 					webmSrc="https://cdn.selfmail.app/result.webm"
 					mp4Src="https://cdn.selfmail.app/result.mp4"
 					poster="https://cdn.selfmail.app/result-poster.jpg"
 				/>
 				<p>
-					Selfmail is designed for businesses, projects and ideas. We don't
-					believe in a clumpy ui, bad features, and AI for just summarizing an
-					email. We believe in a clean, fast, and efficient email, together with
-					your team, and without a learning curve. Selfmail is currently still
-					in development, but with the plan to launch in october 2025.
+					Selfmail is a project for now more than a year now. It started as a
+					simple draft in an ipad, and is now almost ready for the first beta.
+					It wasn't easy to figure out, how to create an SMTP Server, how
+					relaying an email works, what features are needed and how to implement
+					them. I'm trying my best to make selfmail a reality. Probably
+					launching in october.
 				</p>
 			</div>
 		</div>

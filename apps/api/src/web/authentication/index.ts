@@ -1,9 +1,9 @@
 import { db } from "database";
 import Elysia, { status, t } from "elysia";
 import { ip } from "elysia-ip";
+import { Logs } from "services/logs";
+import { Ratelimit } from "services/ratelimit";
 import { sessionAuthMiddleware } from "../../lib/auth-middleware";
-import { Logs } from "../../lib/logs";
-import { Ratelimit } from "../../lib/ratelimit";
 import { AuthenticationModule } from "./module";
 import { AuthenticationService } from "./service";
 

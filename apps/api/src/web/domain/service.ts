@@ -1,8 +1,8 @@
 import { promises as dns } from "node:dns";
 import { db } from "database";
 import { status } from "elysia";
-import { Activity } from "../../lib/activity";
-import { Analytics } from "../../lib/analytics";
+import { Activity } from "services/activity";
+import { Analytics } from "services/analytics";
 import type { DomainModule } from "./module";
 
 export abstract class DomainService {

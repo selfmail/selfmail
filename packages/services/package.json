@@ -1,0 +1,34 @@
+{
+	"name": "services",
+	"module": "src/index.ts",
+	"type": "module",
+	"private": true,
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"exports": {
+		".": {
+			"import": "./src/index.ts",
+			"types": "./src/index.ts"
+		},
+		"./logs": {
+			"import": "./src/logs.ts",
+			"types": "./src/logs.ts"
+		},
+		"./analytics": {
+			"import": "./src/analytics.ts",
+			"types": "./src/analytics.ts"
+		},
+		"./ratelimit": {
+			"import": "./src/ratelimit.ts",
+			"types": "./src/ratelimit.ts"
+		},
+		"./activity": {
+			"import": "./src/activity.ts",
+			"types": "./src/activity.ts"
+		}
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	}
+}

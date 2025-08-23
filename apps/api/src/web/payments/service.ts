@@ -1,8 +1,8 @@
 import { Webhooks } from "@polar-sh/elysia";
 import { db } from "database";
 import { redirect, status } from "elysia";
-import { Activity } from "../../lib/activity";
-import { Analytics } from "../../lib/analytics";
+import { Activity } from "services/activity";
+import { Analytics } from "services/analytics";
 import { polar } from "../../lib/payments";
 import type { PaymentsModule } from "./module";
 

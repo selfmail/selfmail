@@ -17,6 +17,7 @@
 		"@unkey/api": "^0.38.0",
 		"better-auth": "^1.2.12",
 		"database": "workspace:*",
+		"services": "workspace:*",
 		"drizzle-kit": "^0.31.4",
 		"drizzle-orm": "^0.44.2",
 		"elysia": "latest",

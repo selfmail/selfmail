@@ -14,7 +14,7 @@ export default function Home() {
 				</p>
 				<a
 					className="underline"
-					href="http://github.com/selfmail/selfmail"
+					href="http://git.new/selfmail"
 					target="_blank"
 					rel="noopener noreferrer"
 				>
@@ -25,18 +25,43 @@ export default function Home() {
 				</a>
 			</div>
 			<div className="flex flex-1 flex-col space-y-5 p-5">
-				<OptimizedVideo
-					webmSrc="https://cdn.selfmail.app/result.webm"
-					mp4Src="https://cdn.selfmail.app/result.mp4"
-					poster="https://cdn.selfmail.app/result-poster.jpg"
-				/>
-				<p>
-					Selfmail is designed for businesses, projects and ideas. We don't
-					believe in a clumpy ui, bad features, and AI for just summarizing an
-					email. We believe in a clean, fast, and efficient email, together with
-					your team, and without a learning curve. Selfmail is currently still
-					in development, but with the plan to launch in october 2025.
-				</p>
+				<div className="flex flex-col space-y-2">
+					<h2>
+						1. Dashboard <span className="text-green-500">(completed)</span>
+					</h2>
+					<ul className="list-disc pl-5">
+						<li>Authentication</li>
+						<li>Workspaces</li>
+						<li>Settings (in progress, not important)</li>
+						<li>Addresses</li>
+					</ul>
+				</div>
+				<div className="flex flex-col space-y-2">
+					<h2>
+						2. Api <span className="text-green-500">(completed)</span>
+					</h2>
+					<ul className="list-disc pl-5">
+						<li>Permissions</li>
+						<li>Authentication</li>
+						<li>Ratelimiting</li>
+						<li>Logs & Analytics</li>
+						<li>Addresses</li>
+						<li>Workspaces</li>
+						<li>Email handling</li>
+						<li>Custom domains</li>
+					</ul>
+				</div>
+				<div className="flex flex-col space-y-2">
+					<h2>
+						3. SMTP Server{" "}
+						<span className="text-red-500">(not quite completed)</span>
+					</h2>
+					<ul className="list-disc pl-5">
+						<li>Inbound functionality (completed)</li>
+						<li>Relay server (completed)</li>
+						<li>Spam handling</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	);

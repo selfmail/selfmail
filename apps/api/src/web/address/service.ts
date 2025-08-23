@@ -1,7 +1,7 @@
 import { db } from "database";
 import { status } from "elysia";
-import { Activity } from "../../lib/activity";
-import { Ratelimit } from "../../lib/ratelimit";
+import { Activity } from "services/activity";
+import { Ratelimit } from "services/ratelimit";
 import type { AddressModule } from "./module";
 
 export abstract class AddressService {

@@ -1,28 +1,13 @@
 import { RedisClient } from "bun";
 
 export interface RateLimitOptions {
-	/**
-	 * Maximum number of requests allowed within the time window
-	 */
 	max: number;
-	/**
-	 * Time window in seconds
-	 */
 	windowInSeconds: number;
 }
 
 export interface RateLimitResult {
-	/**
-	 * Whether the request is allowed or has been rate limited
-	 */
 	success: boolean;
-	/**
-	 * Number of remaining requests in the current time window
-	 */
 	remaining: number;
-	/**
-	 * Time in seconds until the rate limit resets
-	 */
 	resetIn: number;
 }
 
@@ -33,13 +18,6 @@ export class Ratelimit {
 		max: 100,
 		windowInSeconds: 60,
 	};
-
-	/**
-	 * Checks if the request should be rate limited
-	 * @param id Unique identifier for the rate limit (e.g., IP address, user ID)
-	 * @param options Rate limit options
-	 * @returns Whether the request is allowed and rate limit information
-	 */
 	static async limit(
 		id: string,
 		options?: Partial<RateLimitOptions>,
