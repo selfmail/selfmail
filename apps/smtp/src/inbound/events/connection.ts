@@ -1,15 +1,19 @@
+import { Ratelimit } from "services/ratelimit";
 import type { SMTPServerSession } from "smtp-server";
 import { client } from "@/lib/client";
 import { createInboundLog } from "@/utils/logs";
-import { inboundRatelimiting } from "../utils/ratelimiting";
 
 const log = createInboundLog("connection");
 export async function handleConnection(
 	session: SMTPServerSession,
 	callback: (err?: Error | null) => void,
 ): Promise<void> {
-	const ratelimit = await inboundRatelimiting.limit(
-		session.remoteAddress || "unknown",
+	const ratelimit = await Ratelimit.limit(
+		`inbound-${session.remoteAddress || "unknown"}`,
+		{
+			windowInSeconds: 60,
+			max: 100,
+		},
 	);
 
 	if (!ratelimit.success) {

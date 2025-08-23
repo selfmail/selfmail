@@ -5,6 +5,7 @@ import { createInboundLog } from "@/utils/logs";
 
 const log = createInboundLog("data");
 
+// 4. Handling function
 export async function handleData(
 	stream: SMTPServerDataStream,
 	session: SMTPServerSession,

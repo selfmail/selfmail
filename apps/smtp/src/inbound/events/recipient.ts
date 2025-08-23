@@ -4,6 +4,7 @@ import { createInboundLog } from "@/utils/logs";
 
 const log = createInboundLog("rcpt-to");
 
+// 3. Handling function
 export async function handleRcptTo(
 	address: SMTPServerAddress,
 	session: SMTPServerSession,

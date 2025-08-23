@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		// Environment setup & latest features
 		"lib": ["ESNext"],
-		"target": "ESNext",
+		"target": "esnext",
 		"module": "ESNext",
 		"moduleDetection": "force",
 		"jsx": "react-jsx",
@@ -10,14 +10,13 @@
 
 		// Output configuration
 		"outDir": "./dist",
-		"rootDir": "./src",
-		"moduleResolution": "node",
-		"allowImportingTsExtensions": false,
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": true,
 		"allowSyntheticDefaultImports": true,
 		"verbatimModuleSyntax": false,
-		"noEmit": false,
-		"declaration": true,
-		"declarationMap": true,
+		"noEmit": true,
+		"declaration": false,
+		"declarationMap": false,
 		"sourceMap": true,
 
 		// Best practices
@@ -27,8 +26,11 @@
 		"noUncheckedIndexedAccess": true,
 		"noImplicitOverride": true,
 
+		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["src/*"],
+			"services": ["../../packages/services/src/index.ts"],
+			"services/*": ["../../packages/services/src/*"]
 		},
 
 		// Some stricter flags (disabled by default)

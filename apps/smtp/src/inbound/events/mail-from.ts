@@ -4,6 +4,7 @@ import { createInboundLog } from "@/utils/logs";
 
 const log = createInboundLog("mail-from");
 
+// 2. Handling function
 export async function handleMailFrom(
 	address: SMTPServerAddress,
 	session: SMTPServerSession,
@@ -22,5 +23,5 @@ export async function handleMailFrom(
 		return callback(new Error("Failed to handle mail from address"));
 	}
 
-	return callback(null); // Call the callback with no error to continue processing
+	return callback(null); // continue
 }

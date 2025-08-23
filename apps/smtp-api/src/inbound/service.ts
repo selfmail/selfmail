@@ -1,6 +1,8 @@
 import { db } from "database";
 import { status } from "elysia";
+import MailComposer from "nodemailer/lib/mail-composer";
 import type { InboundModule } from "./module";
+import type { RspamdResult } from "./types";
 
 export abstract class InboundService {
 	/**
@@ -77,16 +79,57 @@ export abstract class InboundService {
 		mailFrom,
 		to,
 	}: InboundModule.DataBody) {
+		// Convert File objects to Attachment format for MailComposer
+		const mailAttachments = attachments
+			? await Promise.all(
+					attachments.map(async (file) => ({
+						filename: file.name,
+						content: Buffer.from(await file.arrayBuffer()),
+						contentType: file.type,
+					})),
+				)
+			: [];
+
+		// convert mail to eml file
+		const mail = new MailComposer({
+			from: mailFrom,
+			to,
+			subject,
+			text,
+			html,
+			attachments: mailAttachments,
+		});
+
+		// convert to Raw RFC822
+		const eml = await new Promise<Buffer>((resolve, reject) =>
+			mail
+				.compile()
+				.build((err, message) => (err ? reject(err) : resolve(message))),
+		);
+
 		// call rspamd to check if the email has spam
+		const res = await fetch("http://127.0.0.1:11333/checkv2", {
+			method: "POST",
+			headers: { "Content-Type": "message/rfc822" },
+			body: eml,
+		});
+
+		const result = (await res.json()) as RspamdResult;
+
+		if (result.action === "reject" || result.score > 5) {
+			throw status(403, "Email rejected by spam filter");
+		}
 
 		const address = await db.address.findUnique({
 			where: {
 				email: to,
 			},
 		});
+
 		if (!address) {
 			throw status(404, "Address not found");
 		}
+
 		const contact = await db.contact.findUnique({
 			where: {
 				email_addressId: {
@@ -95,9 +138,11 @@ export abstract class InboundService {
 				},
 			},
 		});
+
 		if (!contact) {
 			throw status(404, "Contact not found");
 		}
+
 		// save the email to the database
 		const email = await db.email.create({
 			data: {
@@ -116,5 +161,15 @@ export abstract class InboundService {
 		return {
 			valid: true,
 		};
+	}
+	static async spam({
+		body,
+		subject,
+		html,
+		from,
+		to,
+		attachments,
+	}: InboundModule.SpamBody) {
+		// TODO: Implement spam detection logic
 	}
 }
