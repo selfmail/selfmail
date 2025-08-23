@@ -16,8 +16,16 @@ export async function handleData(
 	);
 
 	try {
+		const s = stream.on("end", () => {
+			if (s.sizeExceeded) {
+				const err = Object.assign(new Error("Message too large"), {
+					responseCode: 552,
+				});
+				throw callback(err);
+			}
+		});
 		// Parse the email from the stream
-		const parsed = await simpleParser(stream);
+		const parsed = await simpleParser(s);
 
 		log(
 			`Parsed email - From: ${parsed.from?.text}, To: ${
@@ -60,10 +68,43 @@ export async function handleData(
 			sessionId: session.id,
 			remoteAddress: session.remoteAddress || "",
 		};
+		const spam = await client.inbound.spam.post({
+			body: emailData.text,
+			subject: emailData.subject,
+			html: emailData.html,
+			from: emailData.from,
+			to: emailData.to,
+			attachments: parsed.attachments?.map((att) => {
+				// Create a proper File object from the attachment
+				const buffer = att.content || Buffer.from("");
+				const file = new File([buffer], att.filename || "unknown", {
+					type: att.contentType || "application/octet-stream",
+				});
+				return file;
+			}),
+		});
+
+		if (spam.error) {
+			// formatting elysia error to string
+			const errorMessage =
+				typeof spam.error.value === "string"
+					? spam.error.value
+					: "Unknown error";
+
+			return callback(new Error(errorMessage));
+		}
 
 		// Send to your API endpoint
-		const res = await client.inbound.data.get({
-			attachments: emailData.attachments,
+		const res = await client.inbound.data.post({
+			attachments:
+				parsed.attachments?.map((att) => {
+					// Create proper File objects for the data endpoint
+					const buffer = att.content || Buffer.from("");
+					const file = new File([buffer], att.filename || "unknown", {
+						type: att.contentType || "application/octet-stream",
+					});
+					return file;
+				}) || [],
 			mailFrom: emailData.from,
 			to: emailData.to,
 			subject: emailData.subject,

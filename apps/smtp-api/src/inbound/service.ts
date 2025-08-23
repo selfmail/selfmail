@@ -164,10 +164,14 @@ export abstract class InboundService {
 			body: eml,
 		});
 
+		if (res.status !== 200) {
+			return status(500, "Failed to check email for spam");
+		}
+
 		const result = (await res.json()) as RspamdResult;
 
 		if (result.action === "reject" || result.score > 5) {
-			throw status(403, "Email rejected by spam filter");
+			return status(403, "Email rejected by spam filter");
 		}
 
 		return {

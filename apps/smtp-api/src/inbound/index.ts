@@ -10,7 +10,7 @@ export const inboundSmtp = new Elysia({
 		description: "Handles inbound SMTP requests",
 	},
 })
-	.get(
+	.post(
 		"/connection",
 		async ({ body }) => {
 			return await InboundService.handleConnection({
@@ -22,7 +22,7 @@ export const inboundSmtp = new Elysia({
 			body: InboundModule.connectionBody,
 		},
 	)
-	.get(
+	.post(
 		"/mail-from",
 		async ({ body }) => {
 			return await InboundService.handleMailFrom({
@@ -33,7 +33,7 @@ export const inboundSmtp = new Elysia({
 			body: InboundModule.mailFromBody,
 		},
 	)
-	.get(
+	.post(
 		"/rcpt-to",
 		async ({ body }) => {
 			return await InboundService.handleRcptTo({
@@ -45,7 +45,7 @@ export const inboundSmtp = new Elysia({
 			body: InboundModule.rcptToBody,
 		},
 	)
-	.get(
+	.post(
 		"/data",
 		async ({ body }) => {
 			return await InboundService.handleData({
@@ -61,7 +61,7 @@ export const inboundSmtp = new Elysia({
 			body: InboundModule.dataBody,
 		},
 	)
-	.get(
+	.post(
 		"/spam",
 		async ({ body }) => {
 			return await InboundService.spam({

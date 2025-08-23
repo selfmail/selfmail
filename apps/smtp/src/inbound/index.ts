@@ -11,6 +11,8 @@ export const inboundServer = new SMTPServer({
 	disabledCommands: ["AUTH", "STARTTLS"],
 	secure: false,
 
+	size: 25 * 1024 * 1024, // 25 MB
+
 	/**
 	 * Event handlers for the smtp server. These are async functions that handle
 	 * the api requests to the private smtp-api-server.
