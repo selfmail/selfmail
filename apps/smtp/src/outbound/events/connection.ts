@@ -1,28 +1,25 @@
 import { resolve4 } from "node:dns/promises";
+import { Analytics } from "services/analytics";
+import { Logs } from "services/logs";
+import { Ratelimit } from "services/ratelimit";
 import type { SMTPServerSession } from "smtp-server";
-import { unkey } from "@/lib/unkey.js";
-import { posthog } from "../../lib/posthog.js";
-import { createOutboundLog } from "../../utils/logs.js";
-
-const connectionLog = createOutboundLog("connection");
 
 export async function connection(
 	session: SMTPServerSession,
 	callback: (err?: Error | null) => void,
 ): Promise<void> {
-	const ratelimit = await unkey.limit(session.remoteAddress);
-	if (!ratelimit.success) {
+	const limit = await Ratelimit.limit(
+		`smtp-outbound-connection-${session.remoteAddress}`,
+	);
+
+	if (!limit.success) {
 		return callback(new Error("Rate limit exceeded"));
 	}
 
-	posthog.capture({
-		distinctId: session.remoteAddress,
-		event: "outbound_connection",
-		properties: {
-			remoteAddress: session.remoteAddress,
-			secure: session.secure,
-			timestamp: new Date().toISOString(),
-		},
+	Analytics.trackEvent("smtp_outbound_connection_attempt", {
+		remoteAddress: session.remoteAddress,
+		secure: session.secure,
+		timestamp: new Date().toISOString(),
 	});
 
 	if (
@@ -30,7 +27,7 @@ export async function connection(
 		(session.remoteAddress === "127.0.0.1" || session.remoteAddress === "::1")
 	) {
 		// do not accept connections from localhost to prevent spam, only in prod mode
-		connectionLog("Connection from localhost is not allowed.");
+		Logs.log("Connection from localhost is not allowed.");
 		return callback(new Error("Connection from localhost is not allowed"));
 	}
 
@@ -43,23 +40,18 @@ export async function connection(
 	} catch (e) {
 		if (e instanceof Error && e.message.includes("ENOTFOUND")) {
 			// Not listed, continue
-			connectionLog(
+			Logs.log(
 				"IP not listed in DNSBL (Spamhaus), proceeding with connection.",
 			);
 		} else {
-			connectionLog(`Error checking DNSBL (Spamhaus): ${e}`);
+			Logs.log(`Error checking DNSBL (Spamhaus): ${e}`);
 			return callback(new Error("Error checking DNSBL (Spamhaus)"));
 		}
 	}
-
-	posthog.capture({
-		distinctId: session.remoteAddress,
-		event: "successfull_outbound_connection",
-		properties: {
-			remoteAddress: session.remoteAddress,
-			secure: session.secure,
-			timestamp: new Date().toISOString(),
-		},
+	Analytics.trackEvent("successful_outbound_connection", {
+		remoteAddress: session.remoteAddress,
+		secure: session.secure,
+		timestamp: new Date().toISOString(),
 	});
 
 	return callback();

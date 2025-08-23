@@ -82,6 +82,7 @@ model Member {
     MemberAddress    MemberAddress[]
     OutgoingEmail    OutgoingEmail[]
     roles            Role[]
+    SmtpCredentials  SmtpCredentials[]
 
     @@unique([workspaceId, userId])
     @@index([userId])
@@ -285,8 +286,8 @@ model SmtpCredentials {
     password String
 
     // created by the user
-    userId String
-    user   User   @relation(fields: [userId], references: [id])
+    memberId String
+    member   Member @relation(fields: [memberId], references: [id])
 
     // the workspace this credentials are used for
     workspaceId String
@@ -299,6 +300,8 @@ model SmtpCredentials {
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt
     activeUntil DateTime?
+    User        User?     @relation(fields: [userId], references: [id])
+    userId      String?
 
     @@unique([username, password])
 }

@@ -1,13 +1,11 @@
+import { Analytics } from "services/analytics";
+import { Logs } from "services/logs";
 import type {
 	SMTPServerAuthentication,
 	SMTPServerAuthenticationResponse,
 	SMTPServerSession,
 } from "smtp-server";
 import { client } from "@/lib/client";
-import { posthog } from "@/lib/posthog";
-import { createOutboundLog } from "../../utils/logs";
-
-const authLog = createOutboundLog("auth");
 
 export async function auth(
 	auth: SMTPServerAuthentication,
@@ -18,7 +16,7 @@ export async function auth(
 	) => void,
 ): Promise<void> {
 	if (auth.method === "XOAUTH2") {
-		authLog("XOAUTH2 used as login method. Error was triggered.");
+		Logs.log("XOAUTH2 used as login method. Error was triggered.");
 		return callback(
 			new Error(
 				"XOAUTH2 method is not allowed, expecting LOGIN authentication",
@@ -26,33 +24,27 @@ export async function auth(
 		);
 	}
 
-	authLog(
+	Logs.log(
 		`Authentication attempt from ${session.remoteAddress}: ${auth.username}`,
 	);
 
 	if (!auth.username || !auth.password) {
-		authLog("Username or password is missing, returning error.");
+		Logs.log("Username or password is missing, returning error.");
 		return callback(new Error("Username or password is missing"), {});
 	}
 
-	const res = await client.v1["smtp-outgoing"].authentication.post({
+	const res = await client.outbound.authentication.post({
 		password: auth.password,
 		username: auth.username,
 	});
 
 	if (res.status !== 200 || res.error || !res.data) {
-		posthog.capture({
-			distinctId: session.remoteAddress,
-			event: "outbound_authentication_failed",
-			properties: {
-				remoteAddress: session.remoteAddress,
-				username: auth.username,
-				statusCode: res.status,
-				timestamp: new Date().toISOString(),
-			},
+		Analytics.trackEvent("smtp_auth_failed", {
+			username: auth.username,
+			ip: session.remoteAddress || "unknown",
 		});
 
-		authLog(
+		Logs.log(
 			`Authentication failed for ${auth.username} with status code ${res.status}`,
 		);
 
@@ -65,7 +57,7 @@ export async function auth(
 		user: {
 			workspaceId: data.credentials.workspaceId,
 			addressId: data.credentials.addressId,
-			username: auth.username,
+			memberId: data.credentials.memberId,
 		},
 	});
 }

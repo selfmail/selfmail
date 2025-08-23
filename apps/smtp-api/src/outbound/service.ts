@@ -9,8 +9,6 @@ import type { OutboundModule } from "./module";
  * validate email addresses, and process email data. The service is meant for the outgoing Selfmail SMTP Server,
  * in the `smtp` package. Rate-limiting will be handled by the SMTP server.
  */
-
-// biome-ignore lint/complexity/noStaticOnlyClass: This is a static utility class for handling SMTP connections.
 export abstract class OutboundService {
 	static async handleConnection({ ip, host }: OutboundModule.ConnectionBody) {
 		const invalidHostDueToLocalhost = () => {
@@ -77,6 +75,7 @@ export abstract class OutboundService {
 			credentials: {
 				workspaceId: credentials.workspaceId,
 				addressId: credentials.addressId,
+				memberId: credentials.memberId,
 			},
 		};
 	}
@@ -89,10 +88,9 @@ export abstract class OutboundService {
 		from,
 		addressId,
 	}: OutboundModule.MailFromBody) {
-		const address = await db.address.findFirst({
+		const address = await db.address.findUnique({
 			where: {
 				email: from,
-				id: addressId,
 			},
 		});
 
