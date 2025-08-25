@@ -30,6 +30,8 @@ export abstract class InboundService {
   }
 
   static async handleRcptTo({ to, mailFrom }: InboundModule.RcptToBody) {
+    console.log("Connection received!");
+    console.log(to);
     const address = await db.address.findUnique({
       where: {
         email: to,
@@ -37,10 +39,11 @@ export abstract class InboundService {
     });
 
     if (!address) {
+      console.log("Address was not found!");
       throw status(404, "Address not found");
     }
 
-    Logs.log("Address was found!");
+    console.log("Address was found!");
 
     const contact = await db.contact.findUnique({
       where: {
@@ -52,14 +55,14 @@ export abstract class InboundService {
     });
 
     if (contact?.blocked) {
-      Logs.log("Contact blocked!");
+      console.log("Contact blocked!");
       throw status(403, "Contact is blocked");
     }
 
-    Logs.log("Contact was found!");
+    console.log("Contact was found!");
 
     if (!contact) {
-      Logs.log("Contact not found, creating...");
+      console.log("Contact not found, creating...");
       const newContact = await db.contact.create({
         data: {
           email: mailFrom,
@@ -71,7 +74,7 @@ export abstract class InboundService {
         throw status(500, "Failed to create contact");
       }
     }
-    Logs.log("Return valid result!");
+    console.log("Return valid result!");
     return {
       valid: true,
     };
@@ -157,6 +160,8 @@ export abstract class InboundService {
       attachments: mailAttachments,
     });
 
+    console.log("Checking for spam!");
+
     // convert to Raw RFC822
     const eml = await new Promise<Buffer>((resolve, reject) =>
       mail
@@ -176,6 +181,8 @@ export abstract class InboundService {
     }
 
     const result = (await res.json()) as RspamdResult;
+
+    console.log(result);
 
     if (result.action === "reject" || result.score > 5) {
       return status(403, "Email rejected by spam filter");
