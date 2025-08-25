@@ -24,7 +24,7 @@ export async function handleRcptTo(
 		mailFrom: session.envelope.mailFrom.address,
 	});
 
-	if (res.status !== 200) {
+	if (res.error) {
 		log(`Failed to handle recipient address: ${address.address}`);
 		return callback(new Error("Failed to handle recipient address"));
 	}

@@ -12,3 +12,9 @@ services:
       - ./rspamd/var:/var/lib/rspamd
     environment:
       - TZ=Europe/Berlin
+  clamav:
+    image: clamav/clamav:latest
+    container_name: clamav
+    restart: unless-stopped
+    ports:
+      - "3310:3310"
