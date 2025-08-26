@@ -20,7 +20,22 @@ export interface RspamdResult {
 	required_score: number;
 	symbols: Record<string, RspamdSymbol>;
 	message_id?: string;
-	// manchmal liefert Rspamd zusätzliche Felder:
+	// Additional fields that rspamd may provide:
 	scan_time?: number;
 	size?: number;
+	subject?: string;
+	urls?: string[];
+	emails?: string[];
+	dkim?: {
+		valid: boolean;
+		domain?: string;
+	};
+	spf?: {
+		result: string;
+		domain?: string;
+	};
+	dmarc?: {
+		result: string;
+		policy?: string;
+	};
 }

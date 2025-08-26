@@ -1,6 +1,6 @@
-import { Ratelimit } from "@/lib/ratelimit";
 import type { SMTPServerSession } from "smtp-server";
 import { client } from "@/lib/client";
+import { Ratelimit } from "@/lib/ratelimit";
 import { createInboundLog } from "@/utils/logs";
 
 const log = createInboundLog("connection");
@@ -31,6 +31,8 @@ export async function handleConnection(
 	if (res.status !== 200) {
 		return callback(new Error("Failed to handle connection"));
 	}
+
+	// TODO: check for possible spam in the ip address of the sender
 
 	log(
 		`Connection established with identifier: ${session.remoteAddress || "unknown"}`,

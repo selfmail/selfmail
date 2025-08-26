@@ -12,7 +12,9 @@
 		"@types/bun": "latest",
 		"@types/mailparser": "^3.4.6",
 		"@types/nodemailer": "^6.4.17",
+		"@types/sanitize-html": "^2.16.0",
 		"@types/smtp-server": "^3.5.10",
+		"@types/validator": "^13.15.2",
 		"elysia": "^1.3.5"
 	},
 	"peerDependencies": {
@@ -21,16 +23,20 @@
 	"dependencies": {
 		"@elysiajs/eden": "^1.3.2",
 		"@unkey/ratelimit": "^2.0.0",
-		"services": "workspace:*",
 		"chalk": "^5.4.1",
 		"consola": "^3.4.2",
 		"dotenv": "^17.0.1",
 		"ioredis": "^5.4.1",
+		"isomorphic-dompurify": "^2.26.0",
 		"mailparser": "^3.7.4",
 		"nodemailer": "^7.0.4",
 		"nodemon": "^3.1.10",
 		"posthog-node": "^5.1.1",
+		"sanitize-html": "^2.17.0",
+		"services": "workspace:*",
 		"smtp-server": "^3.14.0",
+		"validator": "^13.15.15",
+		"xss": "^1.0.15",
 		"zod": "^3.25.74"
 	}
 }
