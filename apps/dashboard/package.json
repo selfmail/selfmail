@@ -30,6 +30,7 @@
 		"@tanstack/react-virtual": "^3.13.12",
 		"@tanstack/router-plugin": "^1.121.2",
 		"@types/use-double-click": "^1.0.5",
+		"input-otp": "^1.4.2",
 		"lucide-react": "^0.539.0",
 		"motion": "^12.23.6",
 		"react": "^19.0.0",

@@ -30,6 +30,9 @@ export const requireAuthentication = new Elysia({
 		cookie: "session",
 	})
 	.resolve(async ({ cookie, redirect, ip }) => {
+		if (cookie["temp-session-token"]) {
+			throw status(403, "User is not verified. Please try to login.");
+		}
 		Logs.log("Authentication attempt");
 
 		const limit = await Ratelimit.limit(ip);
@@ -40,15 +43,8 @@ export const requireAuthentication = new Elysia({
 		}
 
 		const sessionToken = cookie["session-token"]?.value;
-		const tempSessionToken = cookie["temp-session-token"]?.value;
 
 		Logs.log(`Session token: ${sessionToken}`);
-		Logs.log(`Temporary session token: ${tempSessionToken}`);
-
-		if (!sessionToken) {
-			if (tempSessionToken) redirect("/auth/verify");
-			return status(401, "Authentication required");
-		}
 
 		const user = await sessionAuthMiddleware({
 			cookie: `session-token=${sessionToken}`,
@@ -90,6 +86,10 @@ export const requireWorkspaceMember = new Elysia({
 		cookie: "session",
 	})
 	.resolve(async ({ cookie, query: { workspaceId }, user }) => {
+		if (cookie["temp-session-token"]) {
+			throw status(403, "User is not verified. Please try to login.");
+		}
+
 		const workspace = await db.workspace.findUnique({
 			where: {
 				id: workspaceId,
@@ -167,7 +167,9 @@ export const authentication = new Elysia({
 				request.headers.get("x-forwarded-for") ||
 				request.headers.get("x-real-ip") ||
 				"unknown";
+
 			const result = await AuthenticationService.handleRegister(body, clientIp);
+
 			if (!("sessionToken" in result)) {
 				if (
 					typeof result === "object" &&
@@ -180,12 +182,13 @@ export const authentication = new Elysia({
 				set.status = 400;
 				return { success: false, message: "Registration failed" };
 			}
-			cookie["session-token"].value = result.sessionToken;
-			cookie["session-token"].httpOnly = true;
-			cookie["session-token"].secure = true;
-			cookie["session-token"].sameSite = "strict";
-			cookie["session-token"].path = "/";
-			cookie["session-token"].maxAge = 604800; // 7 days
+
+			cookie["temp-session-token"].value = result.sessionToken;
+			cookie["temp-session-token"].httpOnly = true;
+			cookie["temp-session-token"].secure = true;
+			cookie["temp-session-token"].sameSite = "strict";
+			cookie["temp-session-token"].path = "/";
+			cookie["temp-session-token"].maxAge = 604800; // 7 days
 			return result;
 		},
 		{

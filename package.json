@@ -1,35 +1,35 @@
 {
-  "name": "selfmail",
-  "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "scripts": {
-    "check": "biome check --write .",
-    "prepare": "husky",
-    "dev": "infisical run --env=dev -- turbo dev --ui tui -F !smtp",
-    "dev:smtp": "infisical run --env=dev -- turbo dev   -F smtp-api -F smtp",
-    "build": "turbo build",
-    "check-types": "turbo check-types",
-    "dev:native": "turbo -F native dev",
-    "dev:web": "turbo -F web dev",
-    "dev:server": "turbo -F server dev",
-    "db:push": "turbo -F database db:push"
-  },
-  "dependencies": {
-    "undici": "^7.13.0"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^2.1.4",
-    "husky": "^9.1.7",
-    "lint-staged": "^15.5.2",
-    "turbo": "^2.5.5"
-  },
-  "lint-staged": {
-    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
-      "biome check --write ."
-    ]
-  },
-  "packageManager": "bun@1.2.15"
+	"name": "selfmail",
+	"private": true,
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"scripts": {
+		"check": "biome check --write .",
+		"prepare": "husky",
+		"dev": "infisical run --env=dev -- turbo dev --ui tui -F !smtp -F !smtp-api -F !relay",
+		"dev:smtp": "infisical run --env=dev -- turbo dev   -F smtp-api -F smtp -F relay",
+		"build": "turbo build",
+		"check-types": "turbo check-types",
+		"dev:native": "turbo -F native dev",
+		"dev:web": "turbo -F web dev",
+		"dev:server": "turbo -F server dev",
+		"db:push": "turbo -F database db:push"
+	},
+	"dependencies": {
+		"undici": "^7.13.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.1.4",
+		"husky": "^9.1.7",
+		"lint-staged": "^15.5.2",
+		"turbo": "^2.5.5"
+	},
+	"lint-staged": {
+		"*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+			"biome check --write ."
+		]
+	},
+	"packageManager": "bun@1.2.15"
 }

@@ -1,9 +1,4 @@
-import {
-	createFileRoute,
-	Link,
-	Navigate,
-	useNavigate,
-} from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { InfoIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -22,11 +17,6 @@ import { client } from "@/lib/client";
 
 export const Route = createFileRoute("/auth/register")({
 	component: RegisterComponent,
-	validateSearch: (search: Record<string, unknown>) => {
-		return {
-			redirectTo: (search.redirectTo as string) || undefined,
-		};
-	},
 });
 
 // Define the form data structure
@@ -41,8 +31,6 @@ function RegisterComponent() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
 
-	const searchParams = Route.useSearch();
-
 	const auth = useAuth();
 
 	const form = useForm<FormData>({
@@ -54,44 +42,29 @@ function RegisterComponent() {
 		},
 	});
 
+	const navigate = useNavigate();
+
 	const handleSubmit = async (values: FormData) => {
 		setIsLoading(true);
 		setError("");
 
-		await client.v1.web.authentication.register
-			.post({
-				email: values.email,
-				password: values.password,
-				name: values.name,
-			})
-			.then(async () => {
-				const workspace = await client.v1.web.workspace.user.get();
+		const res = await client.v1.web.authentication.register.post({
+			email: values.email,
+			password: values.password,
+			name: values.name,
+		});
 
-				if (workspace.error) {
-					setError("An error occurred while fetching workspace");
-					setIsLoading(false);
-					return;
-				}
+		if (res.error) {
+			setIsLoading(false);
+			setError("An error occurred during registration");
+			return;
+		}
 
-				if (!workspace.data || workspace.data.length === 0) {
-					return <Navigate to="/onboarding/workspace" />;
-				}
-
-				if (searchParams.redirectTo) {
-					return <Navigate to={searchParams.redirectTo as string} />;
-				}
-
-				return <Navigate to="/" />;
-			})
-			.catch((err) => {
-				if (err.response) {
-					console.log(err);
-				}
-
-				setIsLoading(false);
-				setError("An error occurred during registration");
-				return;
-			});
+		console.log("Navigating to /auth/verify");
+		setIsLoading(false);
+		return navigate({
+			to: "/auth/verify",
+		});
 	};
 
 	// Simplified error handling
@@ -117,7 +90,7 @@ function RegisterComponent() {
 								className="flex flex-col space-y-2 rounded-md border border-neutral-100 bg-neutral-50 p-4"
 							>
 								<h2 className="font-medium text-lg">
-									Welcome back, {auth.user?.name}!
+									Welcome back {auth.data?.name}!
 								</h2>
 								<p>You can go ahead, and access your dashboard!</p>
 							</Link>

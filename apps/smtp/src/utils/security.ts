@@ -1,7 +1,7 @@
 import DOMPurify from "isomorphic-dompurify";
-import { filterXSS } from "xss";
-import validator from "validator";
 import sanitizeHtml from "sanitize-html";
+import validator from "validator";
+import { filterXSS } from "xss";
 import { createInboundLog } from "./logs";
 
 const log = createInboundLog("security");
@@ -26,14 +26,40 @@ export abstract class SecurityService {
 	 */
 	static readonly DEFAULT_EMAIL_OPTIONS: SecurityOptions = {
 		allowedTags: [
-			"p", "br", "div", "span", "strong", "b", "em", "i", "u", "ul", "ol", "li",
-			"h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "pre", "code", "a",
-			"img", "table", "thead", "tbody", "tr", "td", "th"
+			"p",
+			"br",
+			"div",
+			"span",
+			"strong",
+			"b",
+			"em",
+			"i",
+			"u",
+			"ul",
+			"ol",
+			"li",
+			"h1",
+			"h2",
+			"h3",
+			"h4",
+			"h5",
+			"h6",
+			"blockquote",
+			"pre",
+			"code",
+			"a",
+			"img",
+			"table",
+			"thead",
+			"tbody",
+			"tr",
+			"td",
+			"th",
 		],
 		allowedAttributes: {
-			"a": ["href", "title", "target"],
-			"img": ["src", "alt", "width", "height", "title"],
-			"*": ["style", "class", "id"]
+			a: ["href", "title", "target"],
+			img: ["src", "alt", "width", "height", "title"],
+			"*": ["style", "class", "id"],
 		},
 		maxLength: 1024 * 1024, // 1MB
 		stripScripts: true,
@@ -57,7 +83,10 @@ export abstract class SecurityService {
 	 * @param options Security options
 	 * @returns Sanitized content with modification info
 	 */
-	static sanitizeHtml(html: string, options: SecurityOptions = SecurityService.DEFAULT_EMAIL_OPTIONS): SanitizationResult {
+	static sanitizeHtml(
+		html: string,
+		options: SecurityOptions = SecurityService.DEFAULT_EMAIL_OPTIONS,
+	): SanitizationResult {
 		if (!html || typeof html !== "string") {
 			return { content: "", modified: false, threats: [] };
 		}
@@ -69,7 +98,9 @@ export abstract class SecurityService {
 		try {
 			// Check for length limits
 			if (options.maxLength && content.length > options.maxLength) {
-				log(`Content truncated from ${content.length} to ${options.maxLength} characters`);
+				log(
+					`Content truncated from ${content.length} to ${options.maxLength} characters`,
+				);
 				content = content.substring(0, options.maxLength);
 				threats.push("content_truncated");
 			}
@@ -153,7 +184,7 @@ export abstract class SecurityService {
 			}
 
 			const modified = content !== html || originalLength !== content.length;
-			
+
 			if (threats.length > 0) {
 				log(`HTML sanitization completed with threats: ${threats.join(", ")}`);
 			}
@@ -161,10 +192,10 @@ export abstract class SecurityService {
 			return { content, modified, threats };
 		} catch (error) {
 			log(`HTML sanitization error: ${error}`);
-			return { 
-				content: SecurityService.stripAllHtml(html), 
-				modified: true, 
-				threats: ["sanitization_error"] 
+			return {
+				content: SecurityService.stripAllHtml(html),
+				modified: true,
+				threats: ["sanitization_error"],
 			};
 		}
 	}
@@ -175,7 +206,10 @@ export abstract class SecurityService {
 	 * @param options Security options
 	 * @returns Sanitized text with modification info
 	 */
-	static sanitizeText(text: string, options: SecurityOptions = SecurityService.DEFAULT_EMAIL_OPTIONS): SanitizationResult {
+	static sanitizeText(
+		text: string,
+		options: SecurityOptions = SecurityService.DEFAULT_EMAIL_OPTIONS,
+	): SanitizationResult {
 		if (!text || typeof text !== "string") {
 			return { content: "", modified: false, threats: [] };
 		}
@@ -191,11 +225,14 @@ export abstract class SecurityService {
 		}
 
 		// Remove null bytes and control characters
-		const cleanContent = content.split("").filter(char => {
-			const code = char.charCodeAt(0);
-			// Allow printable ASCII and common whitespace, exclude control chars
-			return code >= 32 || code === 9 || code === 10 || code === 13;
-		}).join("");
+		const cleanContent = content
+			.split("")
+			.filter((char) => {
+				const code = char.charCodeAt(0);
+				// Allow printable ASCII and common whitespace, exclude control chars
+				return code >= 32 || code === 9 || code === 10 || code === 13;
+			})
+			.join("");
 		if (cleanContent !== content) {
 			threats.push("control_characters_removed");
 			content = cleanContent;
@@ -239,12 +276,14 @@ export abstract class SecurityService {
 
 		// Normalize email
 		try {
-			return validator.normalizeEmail(email, {
-				gmail_lowercase: true,
-				gmail_remove_dots: false,
-				yahoo_lowercase: true,
-				icloud_lowercase: true,
-			}) || null;
+			return (
+				validator.normalizeEmail(email, {
+					gmail_lowercase: true,
+					gmail_remove_dots: false,
+					yahoo_lowercase: true,
+					icloud_lowercase: true,
+				}) || null
+			);
 		} catch {
 			return null;
 		}
@@ -258,10 +297,10 @@ export abstract class SecurityService {
 	static extractValidUrls(content: string): string[] {
 		if (!content) return [];
 
-		const urlRegex = /https?:\/\/[^\s<>"{}|\\^`\[\]]+/gi;
+		const urlRegex = /https?:\/\/[^\s<>"{}|\\^`[\]]+/gi;
 		const urls = content.match(urlRegex) || [];
 
-		return urls.filter(url => {
+		return urls.filter((url) => {
 			try {
 				return validator.isURL(url, {
 					protocols: ["http", "https"],
@@ -303,7 +342,11 @@ export abstract class SecurityService {
 	 * @param size File size in bytes
 	 * @returns Validation result
 	 */
-	static validateAttachment(filename: string, contentType: string, size: number): {
+	static validateAttachment(
+		filename: string,
+		contentType: string,
+		size: number,
+	): {
 		valid: boolean;
 		threats: string[];
 		normalizedFilename: string;
@@ -318,11 +361,28 @@ export abstract class SecurityService {
 
 		// Check for dangerous extensions
 		const dangerousExtensions = [
-			".exe", ".bat", ".cmd", ".com", ".pif", ".scr", ".vbs", ".js", ".jar",
-			".zip", ".rar", ".7z", ".app", ".deb", ".rpm", ".dmg", ".pkg"
+			".exe",
+			".bat",
+			".cmd",
+			".com",
+			".pif",
+			".scr",
+			".vbs",
+			".js",
+			".jar",
+			".zip",
+			".rar",
+			".7z",
+			".app",
+			".deb",
+			".rpm",
+			".dmg",
+			".pkg",
 		];
 
-		const fileExt = normalizedFilename.toLowerCase().substring(normalizedFilename.lastIndexOf("."));
+		const fileExt = normalizedFilename
+			.toLowerCase()
+			.substring(normalizedFilename.lastIndexOf("."));
 		if (dangerousExtensions.includes(fileExt)) {
 			threats.push("dangerous_file_extension");
 		}
@@ -361,10 +421,10 @@ export abstract class SecurityService {
 			const data = encoder.encode(content);
 			const hash = await globalThis.crypto.subtle.digest("SHA-256", data);
 			return Array.from(new Uint8Array(hash))
-				.map(b => b.toString(16).padStart(2, "0"))
+				.map((b) => b.toString(16).padStart(2, "0"))
 				.join("");
 		}
-		
+
 		// Node.js environment
 		const crypto = await import("node:crypto");
 		return crypto.createHash("sha256").update(content).digest("hex");

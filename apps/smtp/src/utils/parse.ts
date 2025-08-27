@@ -106,39 +106,57 @@ export abstract class Parse {
 		remoteAddress?: string,
 	): Promise<InboundEmail> {
 		// Extract and validate email addresses
-		const fromAddress = email.from?.value?.[0]?.address || email.from?.text || "";
-		const validatedFrom = SecurityService.validateEmail(fromAddress) || fromAddress;
+		const fromAddress =
+			email.from?.value?.[0]?.address || email.from?.text || "";
+		const validatedFrom =
+			SecurityService.validateEmail(fromAddress) || fromAddress;
 
 		const toAddresses = Array.isArray(email.to)
-			? email.to.map((addr) => {
-				const address = addr.text || addr.value?.[0]?.address || "";
-				return SecurityService.validateEmail(address) || address;
-			}).filter(Boolean)
-			: [SecurityService.validateEmail(email.to?.text || email.to?.value?.[0]?.address || "") || ""].filter(Boolean);
+			? email.to
+					.map((addr) => {
+						const address = addr.text || addr.value?.[0]?.address || "";
+						return SecurityService.validateEmail(address) || address;
+					})
+					.filter(Boolean)
+			: [
+					SecurityService.validateEmail(
+						email.to?.text || email.to?.value?.[0]?.address || "",
+					) || "",
+				].filter(Boolean);
 
 		// Sanitize content
-		const textResult = email.text ? SecurityService.sanitizeText(email.text) : { content: "", modified: false, threats: [] };
-		const htmlResult = email.html ? SecurityService.sanitizeHtml(String(email.html)) : { content: "", modified: false, threats: [] };
-		const subjectResult = email.subject ? SecurityService.sanitizeText(email.subject, SecurityService.STRICT_OPTIONS) : { content: "", modified: false, threats: [] };
+		const textResult = email.text
+			? SecurityService.sanitizeText(email.text)
+			: { content: "", modified: false, threats: [] };
+		const htmlResult = email.html
+			? SecurityService.sanitizeHtml(String(email.html))
+			: { content: "", modified: false, threats: [] };
+		const subjectResult = email.subject
+			? SecurityService.sanitizeText(
+					email.subject,
+					SecurityService.STRICT_OPTIONS,
+				)
+			: { content: "", modified: false, threats: [] };
 
 		// Validate and sanitize attachments
-		const sanitizedAttachments = email.attachments?.map((att) => {
-			const validation = SecurityService.validateAttachment(
-				att.filename || "unknown",
-				att.contentType || "application/octet-stream",
-				att.size || 0
-			);
+		const sanitizedAttachments =
+			email.attachments?.map((att) => {
+				const validation = SecurityService.validateAttachment(
+					att.filename || "unknown",
+					att.contentType || "application/octet-stream",
+					att.size || 0,
+				);
 
-			return {
-				filename: validation.normalizedFilename,
-				contentType: att.contentType || undefined,
-				size: att.size || undefined,
-				content: att.content?.toString("base64") || undefined,
-				cid: att.cid || undefined,
-				securityThreats: validation.threats,
-				isSecure: validation.valid,
-			};
-		}) || [];
+				return {
+					filename: validation.normalizedFilename,
+					contentType: att.contentType || undefined,
+					size: att.size || undefined,
+					content: att.content?.toString("base64") || undefined,
+					cid: att.cid || undefined,
+					securityThreats: validation.threats,
+					isSecure: validation.valid,
+				};
+			}) || [];
 
 		const emailData = {
 			messageId: email.messageId || undefined,
@@ -146,19 +164,31 @@ export abstract class Parse {
 			to: toAddresses.length > 0 ? toAddresses : toAddresses[0] || "",
 			cc: email.cc
 				? Array.isArray(email.cc)
-					? email.cc.map((addr) => {
-						const address = addr.text || addr.value?.[0]?.address || "";
-						return SecurityService.validateEmail(address) || address;
-					}).filter(Boolean)
-					: [SecurityService.validateEmail(email.cc.text || email.cc.value?.[0]?.address || "") || ""].filter(Boolean)
+					? email.cc
+							.map((addr) => {
+								const address = addr.text || addr.value?.[0]?.address || "";
+								return SecurityService.validateEmail(address) || address;
+							})
+							.filter(Boolean)
+					: [
+							SecurityService.validateEmail(
+								email.cc.text || email.cc.value?.[0]?.address || "",
+							) || "",
+						].filter(Boolean)
 				: undefined,
 			bcc: email.bcc
 				? Array.isArray(email.bcc)
-					? email.bcc.map((addr) => {
-						const address = addr.text || addr.value?.[0]?.address || "";
-						return SecurityService.validateEmail(address) || address;
-					}).filter(Boolean)
-					: [SecurityService.validateEmail(email.bcc.text || email.bcc.value?.[0]?.address || "") || ""].filter(Boolean)
+					? email.bcc
+							.map((addr) => {
+								const address = addr.text || addr.value?.[0]?.address || "";
+								return SecurityService.validateEmail(address) || address;
+							})
+							.filter(Boolean)
+					: [
+							SecurityService.validateEmail(
+								email.bcc.text || email.bcc.value?.[0]?.address || "",
+							) || "",
+						].filter(Boolean)
 				: undefined,
 			subject: subjectResult.content,
 			text: textResult.content || undefined,
@@ -184,11 +214,12 @@ export abstract class Parse {
 					...textResult.threats,
 					...htmlResult.threats,
 					...subjectResult.threats,
-					...sanitizedAttachments.flatMap(att => att.securityThreats || [])
+					...sanitizedAttachments.flatMap((att) => att.securityThreats || []),
 				],
-				secureAttachments: sanitizedAttachments.filter(att => att.isSecure).length,
+				secureAttachments: sanitizedAttachments.filter((att) => att.isSecure)
+					.length,
 				totalAttachments: sanitizedAttachments.length,
-			}
+			},
 		};
 
 		return await InboundEmailSchema.parseAsync(emailData);

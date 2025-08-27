@@ -41,14 +41,6 @@ export abstract class AuthenticationService {
 		// Create session token
 		const sessionToken = crypto.randomUUID();
 
-		// Create session
-		await db.session.create({
-			data: {
-				token: sessionToken,
-				userId: user.id,
-			},
-		});
-
 		return {
 			success: true,
 			user: {

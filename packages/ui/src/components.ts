@@ -32,6 +32,12 @@ export {
 } from "./components/ui/form";
 export { ImageUpload } from "./components/ui/image-upload";
 export { Input } from "./components/ui/input";
+export {
+	InputOTP,
+	InputOTPGroup,
+	InputOTPSeparator,
+	InputOTPSlot,
+} from "./components/ui/input-otp";
 export { Label } from "./components/ui/label";
 export {
 	Select,
