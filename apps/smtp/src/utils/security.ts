@@ -2,9 +2,6 @@ import DOMPurify from "isomorphic-dompurify";
 import sanitizeHtml from "sanitize-html";
 import validator from "validator";
 import { filterXSS } from "xss";
-import { createInboundLog } from "./logs";
-
-const log = createInboundLog("security");
 
 export interface SecurityOptions {
 	allowedTags?: string[];
@@ -98,9 +95,6 @@ export abstract class SecurityService {
 		try {
 			// Check for length limits
 			if (options.maxLength && content.length > options.maxLength) {
-				log(
-					`Content truncated from ${content.length} to ${options.maxLength} characters`,
-				);
 				content = content.substring(0, options.maxLength);
 				threats.push("content_truncated");
 			}
@@ -124,17 +118,19 @@ export abstract class SecurityService {
 			// Second pass: XSS library for additional protection
 			const xssOptions = {
 				allowList: options.allowedAttributes || {},
-				stripIgnoreTag: true,
+				stripIgnoreTag: false,
 				stripIgnoreTagBody: ["script", "style"],
 				onIgnoreTag: (tag: string) => {
 					if (["script", "iframe", "object", "embed"].includes(tag)) {
 						threats.push(`dangerous_tag_${tag}`);
 					}
+					return ""; // Return empty string to remove the tag
 				},
 				onIgnoreTagAttr: (_tag: string, name: string, value: string) => {
 					if (name.startsWith("on") || value.includes("javascript:")) {
 						threats.push("dangerous_attribute");
 					}
+					return ""; // Return empty string to remove the attribute
 				},
 			};
 
@@ -161,7 +157,6 @@ export abstract class SecurityService {
 
 			// Additional security checks
 			if (content.includes("<script") || content.includes("javascript:")) {
-				log("Potential script injection attempt detected");
 				threats.push("script_injection_attempt");
 				content = content.replace(/<script[^>]*>.*?<\/script>/gi, "");
 				content = content.replace(/javascript:/gi, "");
@@ -186,12 +181,11 @@ export abstract class SecurityService {
 			const modified = content !== html || originalLength !== content.length;
 
 			if (threats.length > 0) {
-				log(`HTML sanitization completed with threats: ${threats.join(", ")}`);
+				// TODO: fix
 			}
 
 			return { content, modified, threats };
 		} catch (error) {
-			log(`HTML sanitization error: ${error}`);
 			return {
 				content: SecurityService.stripAllHtml(html),
 				modified: true,

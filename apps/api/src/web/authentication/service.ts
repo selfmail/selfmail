@@ -38,6 +38,19 @@ export abstract class AuthenticationService {
 		if (!user)
 			throw status(500, "Failed to create user. Please try again later.");
 
+		// create OTP
+		const otpToken = Math.floor(100000 + Math.random() * 900000).toString();
+
+		// Save OTP to database
+		await db.emailVerification.create({
+			data: {
+				token: otpToken,
+				email: user.email,
+				userId: user.id,
+				expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes from now
+			},
+		});
+
 		// Create session token
 		const sessionToken = crypto.randomUUID();
 
@@ -50,6 +63,70 @@ export abstract class AuthenticationService {
 			},
 			sessionToken,
 		};
+	}
+
+	static async verifyEmail(token: string, _tempSessionToken: string) {
+		// Find the OTP token in the database
+		const verification = await db.emailVerification.findUnique({
+			where: { token },
+			include: {
+				user: true,
+			},
+		});
+
+		if (!verification) {
+			throw status(401, "Invalid OTP token");
+		}
+
+		// Check if the token has expired
+		const now = new Date();
+		if (verification.expiresAt < now) {
+			// Clean up expired token
+			await db.emailVerification.delete({
+				where: { id: verification.id },
+			});
+			throw status(401, "Email verification token has expired");
+		}
+
+		// Mark email as verified
+		await db.user.update({
+			where: { id: verification.user.id },
+			data: { emailVerified: new Date() },
+		});
+
+		return {
+			success: true,
+			user: {
+				id: verification.user.id,
+				email: verification.user.email,
+				name: verification.user.name,
+			},
+		};
+	}
+
+	static async createOTP(userId: string): Promise<string> {
+		// Generate a 6-digit OTP
+		const otpToken = Math.floor(100000 + Math.random() * 900000).toString();
+
+		// Set expiration time (10 minutes from now)
+		const expiresAt = new Date();
+		expiresAt.setMinutes(expiresAt.getMinutes() + 10);
+
+		// Delete any existing OTP tokens for this user
+		await db.twoFactorToken.deleteMany({
+			where: { userId },
+		});
+
+		// Create new OTP token
+		await db.twoFactorToken.create({
+			data: {
+				token: otpToken,
+				userId,
+				expiresAt,
+			},
+		});
+
+		return otpToken;
 	}
 
 	static async handleLogin(

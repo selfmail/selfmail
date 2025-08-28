@@ -1,8 +1,5 @@
 import type { SMTPServerAddress, SMTPServerSession } from "smtp-server";
 import { client } from "@/lib/client";
-import { createInboundLog } from "@/utils/logs";
-
-const log = createInboundLog("mail-from");
 
 // 2. Handling function
 export async function handleMailFrom(
@@ -10,16 +7,11 @@ export async function handleMailFrom(
 	session: SMTPServerSession,
 	callback: (err?: Error | null) => void,
 ): Promise<void> {
-	log(
-		`Mail from address: ${address.address}, session ID: ${session.id}, remote address: ${session.remoteAddress || "unknown"}`,
-	);
-
 	const res = await client.inbound["mail-from"].post({
 		from: address.address,
 	});
 
 	if (res.status !== 200) {
-		log(`Failed to handle mail from address: ${address.address}`);
 		return callback(new Error("Failed to handle mail from address"));
 	}
 

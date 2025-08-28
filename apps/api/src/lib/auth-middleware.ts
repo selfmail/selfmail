@@ -7,11 +7,11 @@ export interface AuthUser {
 	email: string;
 	name: string;
 	workspaceId?: string;
+	emailVerified?: Date;
 }
 
 export interface AuthContext {
 	user: AuthUser;
-	apiKey: string;
 }
 
 /**
@@ -69,8 +69,8 @@ export async function authMiddleware(
 				email: user.email,
 				name: user.name,
 				workspaceId: user.member[0]?.workspaceId,
+				emailVerified: user.emailVerified ?? undefined,
 			},
-			apiKey,
 		};
 	} catch (error) {
 		console.error("Auth middleware error:", error);
@@ -126,6 +126,7 @@ export async function sessionAuthMiddleware(
 			email: session.user.email,
 			name: session.user.name,
 			workspaceId: session.user.member[0]?.workspaceId,
+			emailVerified: session.user.emailVerified ?? undefined,
 		};
 	} catch (error) {
 		console.error("Session auth middleware error:", error);

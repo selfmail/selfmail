@@ -12,6 +12,7 @@
 	},
 	"dependencies": {
 		"@unkey/api": "latest",
+		"services": "workspace:*",
 		"database": "workspace:*",
 		"elysia": "latest",
 		"nodemailer": "^7.0.5"

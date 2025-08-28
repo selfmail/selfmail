@@ -1,6 +1,7 @@
 import { db } from "database";
 import { status } from "elysia";
 import MailComposer from "nodemailer/lib/mail-composer";
+import { Logs } from "services/logs";
 import type { InboundModule } from "./module";
 import type { RspamdResult } from "./types";
 
@@ -13,6 +14,7 @@ export abstract class InboundService {
 		hostname,
 		ip,
 	}: InboundModule.ConnectionBody) {
+		Logs.log(`Connection received by ip ${ip} and ${hostname}.`);
 		return {
 			valid: true,
 		};
@@ -23,14 +25,14 @@ export abstract class InboundService {
 			throw status(403, "Selfmail addresses are not allowed");
 		}
 
+		Logs.log(`Mail from address: ${from}`);
+
 		return {
 			valid: true,
 		};
 	}
 
 	static async handleRcptTo({ to, mailFrom }: InboundModule.RcptToBody) {
-		console.log("Connection received!");
-		console.log(to);
 		const address = await db.address.findUnique({
 			where: {
 				email: to,
@@ -38,11 +40,8 @@ export abstract class InboundService {
 		});
 
 		if (!address) {
-			console.log("Address was not found!");
 			throw status(404, "Address not found");
 		}
-
-		console.log("Address was found!");
 
 		const contact = await db.contact.findUnique({
 			where: {
@@ -54,14 +53,10 @@ export abstract class InboundService {
 		});
 
 		if (contact?.blocked) {
-			console.log("Contact blocked!");
 			throw status(403, "Contact is blocked");
 		}
 
-		console.log("Contact was found!");
-
 		if (!contact) {
-			console.log("Contact not found, creating...");
 			const newContact = await db.contact.create({
 				data: {
 					email: mailFrom,
@@ -73,7 +68,9 @@ export abstract class InboundService {
 				throw status(500, "Failed to create contact");
 			}
 		}
-		console.log("Return valid result!");
+
+		Logs.log(`Address was found, contact ${contact ? "also" : "not"}`);
+
 		return {
 			valid: true,
 		};
@@ -95,10 +92,11 @@ export abstract class InboundService {
 		});
 
 		if (!address) {
+			Logs.error(`Address ${to} not found in DATA`);
 			throw status(404, "Address not found");
 		}
 
-		const contact = await db.contact.findUnique({
+		let contact = await db.contact.findUnique({
 			where: {
 				email_addressId: {
 					email: mailFrom,
@@ -107,8 +105,22 @@ export abstract class InboundService {
 			},
 		});
 
+		Logs.log(`Found contact: ${contact ? "yes" : "no"}`);
+
 		if (!contact) {
-			throw status(404, "Contact not found");
+			Logs.log(
+				`Creating new contact for ${mailFrom} in ${address.email}. The value of the old contact was: ${contact}`,
+			);
+			contact = await db.contact.create({
+				data: {
+					email: mailFrom,
+					addressId: address.id,
+				},
+			});
+
+			if (!contact) {
+				throw status(500, "Failed to create contact in DATA");
+			}
 		}
 
 		// save the email to the database
@@ -141,10 +153,6 @@ export abstract class InboundService {
 		try {
 			// First, scan attachments with ClamAV for viruses/malware
 			if (attachments && attachments.length > 0) {
-				console.log(
-					`Scanning ${attachments.length} attachments with ClamAV...`,
-				);
-
 				for (const attachment of attachments) {
 					try {
 						const attachmentBuffer = Buffer.from(
@@ -199,30 +207,20 @@ export abstract class InboundService {
 							});
 						});
 
-						console.log(`ClamAV result for ${attachment.name}: ${scanResult}`);
-
 						if (scanResult.includes("FOUND")) {
 							const virusMatch = scanResult.match(/: (.+) FOUND/);
 							const virusName = virusMatch ? virusMatch[1] : "Unknown virus";
-							console.log(
-								`Virus detected in attachment ${attachment.name}: ${virusName}`,
-							);
 							return status(
 								403,
 								`Virus detected in attachment: ${attachment.name} (${virusName})`,
 							);
 						}
 					} catch (clamError) {
-						console.log(
-							`ClamAV scan error for attachment ${attachment.name}:`,
-							clamError,
-						);
+						// TODO: Fix I guess
 						// Continue processing - don't let ClamAV errors block legitimate emails
 						// In production, you might want to configure this behavior
 					}
 				}
-
-				console.log("All attachments passed ClamAV scan");
 			}
 
 			// Convert File objects to Attachment format for MailComposer
@@ -246,16 +244,12 @@ export abstract class InboundService {
 				attachments: mailAttachments,
 			});
 
-			console.log("Converting email to RFC822 format for rspamd...");
-
 			// Convert to Raw RFC822
 			const eml = await new Promise<Buffer>((resolve, reject) =>
 				mail
 					.compile()
 					.build((err, message) => (err ? reject(err) : resolve(message))),
 			);
-
-			console.log("Checking email for spam with rspamd...");
 
 			// Call rspamd to check if the email contains spam
 			const rspamdResponse = await fetch("http://127.0.0.1:11333/checkv2", {
@@ -268,26 +262,12 @@ export abstract class InboundService {
 			});
 
 			if (!rspamdResponse.ok) {
-				console.log(
-					`Rspamd check failed: ${rspamdResponse.status} ${rspamdResponse.statusText}`,
-				);
 				return status(500, "Failed to check email for spam");
 			}
 
 			const result = (await rspamdResponse.json()) as RspamdResult;
-
-			console.log("Rspamd result:", {
-				action: result.action,
-				score: result.score,
-				required_score: result.required_score,
-				symbols: Object.keys(result.symbols || {}),
-			});
-
 			// Check if email should be rejected based on rspamd results
 			if (result.action === "reject" || result.score > 5) {
-				console.log(
-					`Email rejected by spam filter - Action: ${result.action}, Score: ${result.score}`,
-				);
 				return status(
 					403,
 					`Email rejected by spam filter (score: ${result.score}, action: ${result.action})`,
@@ -299,9 +279,7 @@ export abstract class InboundService {
 				result.action === "add header" ||
 				result.action === "rewrite subject"
 			) {
-				console.log(
-					`Email flagged but accepted - Action: ${result.action}, Score: ${result.score}`,
-				);
+				// TODO: Implement logging for flagged emails
 			}
 
 			return {

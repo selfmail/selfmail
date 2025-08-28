@@ -1,10 +1,77 @@
 import { simpleParser } from "mailparser";
+import { Logs } from "services/logs";
 import type { SMTPServerDataStream, SMTPServerSession } from "smtp-server";
 import { client } from "@/lib/client";
-import { createInboundLog } from "@/utils/logs";
 import { Parse } from "@/utils/parse";
 
-const log = createInboundLog("data");
+const extractAddress = (address: string | { address: string }) => {
+	if (typeof address === "string") {
+		return address;
+	}
+	return address.address;
+};
+
+const extractSender = (
+	to:
+		| string
+		| {
+				address: string;
+				name?: string | undefined;
+		  }
+		| {
+				address: string;
+				name?: string | undefined;
+		  }[]
+		| string[],
+) =>
+	Array.isArray(to)
+		? to[0] && (typeof to[0] === "string" ? to[0] : to[0].address)
+		: typeof to === "string"
+			? to
+			: to.address;
+
+async function createProperAttachments(
+	attachments: {
+		filename?: string | undefined;
+		contentType?: string | undefined;
+		size?: number | undefined;
+		content?: string | undefined;
+		cid?: string | undefined;
+		securityThreats?: string[] | undefined;
+		isSecure?: boolean | undefined;
+	}[],
+) {
+	// Create proper File objects for the attachments
+	return attachments.map((att) => {
+		if (!att.content) {
+			return new File([], att.filename || "unknown", {
+				type: att.contentType || "application/octet-stream",
+			});
+		}
+
+		const buffer = Buffer.from(att.content, "base64");
+		return new File([buffer], att.filename || "unknown", {
+			type: att.contentType || "application/octet-stream",
+		});
+	});
+}
+
+const extractErrorMessage = (error: {
+	status: 422;
+	value: {
+		type: "validation";
+		on: string;
+		summary?: string | undefined;
+		message?: string | undefined;
+		found?: unknown;
+		property?: string | undefined;
+		expected?: string | undefined;
+	};
+}) => {
+	return typeof error.value === "string"
+		? error.value
+		: `Data processing failed: ${JSON.stringify(error)}`;
+};
 
 // 4. Handling function
 export async function handleData(
@@ -12,32 +79,21 @@ export async function handleData(
 	session: SMTPServerSession,
 	callback: (err?: Error | null) => void,
 ): Promise<void> {
-	log(
-		`Handle DATA Command for ${session.id}, remote address: ${session.remoteAddress || "unknown"}`,
-	);
-
-	console.log(session);
-
 	try {
 		const s = stream.on("end", () => {
 			if (s.sizeExceeded) {
+				Logs.error("Message too large.");
+
 				const err = Object.assign(new Error("Message too large"), {
 					responseCode: 552,
 				});
+
 				throw callback(err);
 			}
 		});
 
-		// Parse the email from the stream
 		const parsed = await simpleParser(s);
 
-		log(
-			`Parsed email - From: ${parsed.from?.text}, To: ${
-				Array.isArray(parsed.to) ? parsed.to[0]?.text : parsed.to?.text || ""
-			}, Subject: ${parsed.subject}`,
-		);
-
-		// Parse and validate the email using our Parse utility
 		const emailData = await Parse.inboundEmail(
 			parsed,
 			session.id,
@@ -45,98 +101,15 @@ export async function handleData(
 		);
 
 		// Extract email addresses for spam checking
-		const fromAddress =
-			typeof emailData.from === "string"
-				? emailData.from
-				: emailData.from.address;
+		const fromAddress = extractAddress(emailData.from);
+		const toAddress = extractSender(emailData.to);
 
-		const toAddress = Array.isArray(emailData.to)
-			? emailData.to[0] &&
-				(typeof emailData.to[0] === "string"
-					? emailData.to[0]
-					: emailData.to[0].address)
-			: typeof emailData.to === "string"
-				? emailData.to
-				: emailData.to.address;
-
-		if (!toAddress) {
-			log("No valid recipient address found");
+		if (!toAddress || !fromAddress) {
 			return callback(new Error("No valid recipient address found"));
 		}
 
-		// Check for spam using rspamd
-		log(
-			`Checking email for spam using rspamd - From: ${fromAddress}, To: ${toAddress}`,
-		);
-
-		const spam = await client.inbound.spam.post({
-			body: emailData.text || "",
-			subject: emailData.subject,
-			html: emailData.html || "",
-			from: fromAddress,
-			to: toAddress,
-			attachments:
-				emailData.attachments?.map((att) => {
-					// Create a proper File object from the attachment for spam checking
-					if (!att.content) {
-						return new File([], att.filename || "unknown", {
-							type: att.contentType || "application/octet-stream",
-						});
-					}
-
-					const buffer = Buffer.from(att.content, "base64");
-					const file = new File([buffer], att.filename || "unknown", {
-						type: att.contentType || "application/octet-stream",
-					});
-					return file;
-				}) || [],
-		});
-
-		if (spam.error) {
-			log(`Spam check failed: ${JSON.stringify(spam.error)}`);
-			const errorMessage =
-				typeof spam.error.value === "string"
-					? spam.error.value
-					: `Spam check failed: ${JSON.stringify(spam.error)}`;
-			return callback(new Error(errorMessage));
-		}
-
-		if (spam.data) {
-			log(
-				`Spam check completed - Score: ${spam.data.score}, Action: ${spam.data.action}`,
-			);
-
-			// If email is marked as spam/rejected, reject it
-			if (spam.data.action === "reject" || spam.data.score > 5) {
-				log(
-					`Email rejected by spam filter - Score: ${spam.data.score}, Action: ${spam.data.action}`,
-				);
-				const err = Object.assign(new Error("Email rejected by spam filter"), {
-					responseCode: 550,
-				});
-				return callback(err);
-			}
-		}
-
-		// Process the email data
-		log(`Processing email data for session ${session.id}`);
-
 		const res = await client.inbound.data.post({
-			attachments:
-				emailData.attachments?.map((att) => {
-					// Create proper File objects for the data endpoint
-					if (!att.content) {
-						return new File([], att.filename || "unknown", {
-							type: att.contentType || "application/octet-stream",
-						});
-					}
-
-					const buffer = Buffer.from(att.content, "base64");
-					const file = new File([buffer], att.filename || "unknown", {
-						type: att.contentType || "application/octet-stream",
-					});
-					return file;
-				}) || [],
+			attachments: createProperAttachments(emailData.attachments || []),
 			mailFrom: fromAddress,
 			to: toAddress,
 			subject: emailData.subject,
@@ -145,22 +118,53 @@ export async function handleData(
 		});
 
 		if (res.error) {
-			log(`Data processing failed: ${JSON.stringify(res.error)}`);
-			const errorMessage =
-				typeof res.error.value === "string"
-					? res.error.value
-					: `Data processing failed: ${JSON.stringify(res.error)}`;
+			const errorMessage = extractErrorMessage(res.error);
 			return callback(new Error(errorMessage));
 		}
 
-		log(
-			`Email processed successfully for session ${session.id}, response: ${res.status}`,
-		);
-
-		// Call callback to indicate success
 		callback();
 	} catch (error) {
-		log(`Error processing email for session ${session.id}: ${error}`);
 		callback(error instanceof Error ? error : new Error(String(error)));
 	}
 }
+
+// const spam = await client.inbound.spam.post({
+// 	body: emailData.text || "",
+// 	subject: emailData.subject,
+// 	html: emailData.html || "",
+// 	from: fromAddress,
+// 	to: toAddress,
+// 	attachments:
+// 		emailData.attachments?.map((att) => {
+// 			// Create a proper File object from the attachment for spam checking
+// 			if (!att.content) {
+// 				return new File([], att.filename || "unknown", {
+// 					type: att.contentType || "application/octet-stream",
+// 				});
+// 			}
+
+// 			const buffer = Buffer.from(att.content, "base64");
+// 			const file = new File([buffer], att.filename || "unknown", {
+// 				type: att.contentType || "application/octet-stream",
+// 			});
+// 			return file;
+// 		}) || [],
+// });
+
+// if (spam.error) {
+// 	const errorMessage =
+// 		typeof spam.error.value === "string"
+// 			? spam.error.value
+// 			: `Spam check failed: ${JSON.stringify(spam.error)}`;
+// 	return callback(new Error(errorMessage));
+// }
+
+// if (spam.data) {
+// 	// If email is marked as spam/rejected, reject it
+// 	if (spam.data.action === "reject" || spam.data.score > 5) {
+// 		const err = Object.assign(new Error("Email rejected by spam filter"), {
+// 			responseCode: 550,
+// 		});
+// 		return callback(err);
+// 	}
+// }

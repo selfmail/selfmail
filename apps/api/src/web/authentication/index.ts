@@ -19,20 +19,12 @@ export const requireAuthentication = new Elysia({
 			"session-token": t.String({
 				description: "Session token for authentication",
 			}),
-			"temp-session-token": t.Optional(
-				t.String({
-					description: "Temporary session token for two-factor authentication",
-				}),
-			),
 		}),
 	})
 	.guard({
 		cookie: "session",
 	})
-	.resolve(async ({ cookie, redirect, ip }) => {
-		if (cookie["temp-session-token"]) {
-			throw status(403, "User is not verified. Please try to login.");
-		}
+	.resolve(async ({ cookie, ip }) => {
 		Logs.log("Authentication attempt");
 
 		const limit = await Ratelimit.limit(ip);
@@ -55,18 +47,9 @@ export const requireAuthentication = new Elysia({
 			throw status(401, "Authentication required");
 		}
 
-		const verification = await db.emailVerification.findUnique({
-			where: {
-				email_userId: {
-					email: user.email,
-					userId: user.id,
-				},
-			},
-		});
-
-		if (!verification) {
-			Logs.error("Email verification not found");
-			throw redirect("/auth/verify");
+		if (!user.emailVerified) {
+			Logs.error("Email not verified.");
+			throw status(403, "Email not verified");
 		}
 
 		return { user };
@@ -86,7 +69,7 @@ export const requireWorkspaceMember = new Elysia({
 		cookie: "session",
 	})
 	.resolve(async ({ cookie, query: { workspaceId }, user }) => {
-		if (cookie["temp-session-token"]) {
+		if (cookie["temp-session-token"].value) {
 			throw status(403, "User is not verified. Please try to login.");
 		}
 
@@ -144,6 +127,8 @@ export const authentication = new Elysia({
 				set.status = 400;
 				return { success: false, message: "Login failed" };
 			}
+			cookie["temp-session-cookie"].remove();
+
 			cookie["session-token"].value = result.sessionToken;
 			cookie["session-token"].httpOnly = true;
 			cookie["session-token"].secure = true;
@@ -217,6 +202,41 @@ export const authentication = new Elysia({
 			cookie: t.Cookie({
 				"session-token": t.String({
 					description: "Session token for authentication",
+				}),
+			}),
+		},
+	)
+	.get(
+		"/verifyEmail",
+		async ({ cookie, query: { token } }) => {
+			const tempSessionToken = cookie["temp-session-token"]?.value;
+
+			if (!tempSessionToken) {
+				throw status(401, "Not authenticated");
+			}
+
+			const verified = await AuthenticationService.verifyEmail(
+				token,
+				tempSessionToken,
+			);
+
+			if (!verified.success) {
+				return {
+					success: false,
+				};
+			}
+
+			return { success: true, message: "User is authenticated" };
+		},
+		{
+			query: t.Object({
+				token: t.String({
+					description: "One-time password for verification",
+				}),
+			}),
+			cookie: t.Cookie({
+				"temp-session-token": t.String({
+					description: "Temporary session token for Email verification",
 				}),
 			}),
 		},

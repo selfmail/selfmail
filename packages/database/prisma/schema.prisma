@@ -19,6 +19,8 @@ model User {
     twoFactorSecret  String?
     backupCodes      String? // JSON array of hashed backup codes
 
+    emailVerified DateTime?
+
     // a single user can be member of different workspaces
     member            Member[]
     EmailVerification EmailVerification[]
@@ -44,7 +46,7 @@ model EmailVerification {
     token String @unique
 
     // the date when the verification was created
-    createdAt DateTime @default(now())
+    expiresAt DateTime
 
     @@unique([email, userId])
 }
