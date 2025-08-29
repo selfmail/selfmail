@@ -2,9 +2,7 @@ import { Logs } from "services/logs";
 import type { SMTPServerSession } from "smtp-server";
 import { client } from "@/lib/client";
 import { Ratelimit } from "@/lib/ratelimit";
-import { createInboundLog } from "@/utils/logs";
 
-const log = createInboundLog("connection");
 export async function handleConnection(
 	session: SMTPServerSession,
 	callback: (err?: Error | null) => void,
@@ -31,7 +29,9 @@ export async function handleConnection(
 	}
 
 	// TODO: check for possible spam in the ip address of the sender
-	Logs.log("COnnection accepted");
+	Logs.log(
+		`Connection accepted with hostname ${session.clientHostname || "unknown"}`,
+	);
 
 	return callback(null);
 }

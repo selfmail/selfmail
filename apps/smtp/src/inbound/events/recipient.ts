@@ -1,8 +1,6 @@
+import { Logs } from "services/logs";
 import type { SMTPServerAddress, SMTPServerSession } from "smtp-server";
 import { client } from "@/lib/client";
-import { createInboundLog } from "@/utils/logs";
-
-const log = createInboundLog("rcpt-to");
 
 // 3. Handling function
 export async function handleRcptTo(
@@ -22,6 +20,8 @@ export async function handleRcptTo(
 	if (res.error) {
 		return callback(new Error("Failed to handle recipient address"));
 	}
+
+	Logs.log(`Recipient ${address.address} accepted`);
 
 	return callback(null);
 }

@@ -1,3 +1,4 @@
+import { Logs } from "services/logs";
 import type { SMTPServerAddress, SMTPServerSession } from "smtp-server";
 import { client } from "@/lib/client";
 
@@ -14,6 +15,8 @@ export async function handleMailFrom(
 	if (res.status !== 200) {
 		return callback(new Error("Failed to handle mail from address"));
 	}
+
+	Logs.log(`MAIL FROM accepted: ${address.address}`);
 
 	return callback(null); // continue
 }

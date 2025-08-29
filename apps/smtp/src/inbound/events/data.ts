@@ -94,6 +94,8 @@ export async function handleData(
 
 		const parsed = await simpleParser(s);
 
+		Logs.log("Email parsed successfully");
+
 		const emailData = await Parse.inboundEmail(
 			parsed,
 			session.id,
@@ -108,19 +110,28 @@ export async function handleData(
 			return callback(new Error("No valid recipient address found"));
 		}
 
-		const res = await client.inbound.data.post({
-			attachments: createProperAttachments(emailData.attachments || []),
+		const data = {
+			attachments: await createProperAttachments(emailData.attachments || []),
 			mailFrom: fromAddress,
 			to: toAddress,
 			subject: emailData.subject,
 			text: emailData.text || "",
 			html: emailData.html || "",
-		});
+		};
+
+		const res = await client.inbound.data.post(data);
 
 		if (res.error) {
 			const errorMessage = extractErrorMessage(res.error);
+			Logs.error(
+				`Error processing email data with error message: ${errorMessage}`,
+			);
 			return callback(new Error(errorMessage));
 		}
+
+		Logs.log(
+			`Email from ${fromAddress} to ${toAddress} processed successfully`,
+		);
 
 		callback();
 	} catch (error) {
