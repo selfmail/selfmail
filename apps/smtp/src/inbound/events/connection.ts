@@ -29,6 +29,7 @@ export async function handleConnection(
 	}
 
 	// TODO: check for possible spam in the ip address of the sender
+
 	Logs.log(
 		`Connection accepted with hostname ${session.clientHostname || "unknown"}`,
 	);
