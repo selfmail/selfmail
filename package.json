@@ -8,8 +8,8 @@
 	"scripts": {
 		"check": "biome check --write .",
 		"prepare": "husky",
-		"dev": "infisical run --env=dev -- turbo dev --ui tui -F !smtp -F !smtp-api -F !relay",
-		"dev:smtp": "infisical run --env=dev -- turbo dev   -F smtp-api -F smtp -F relay -F queue",
+		"dev": "infisical run --env=dev -- turbo dev --ui tui -F !smtp -F !smtp-api -F !relay -F !queue -F !smtp-admin",
+		"dev:smtp": "infisical run --env=dev -- turbo dev   -F smtp-api -F smtp -F relay -F queue -F smtp-admin",
 		"build": "turbo build",
 		"check-types": "turbo check-types",
 		"dev:native": "turbo -F native dev",
