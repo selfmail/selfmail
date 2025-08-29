@@ -1,0 +1,22 @@
+{
+	"name": "queue",
+	"module": "index.ts",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "bun --hot src/index.ts"
+	},
+	"dependencies": {
+		"amqplib": "^0.10.9",
+		"nodemailer": "^7.0.5",
+		"services": "workspace:*"
+	},
+	"devDependencies": {
+		"@types/amqplib": "^0.10.7",
+		"@types/bun": "latest",
+		"@types/nodemailer": "^7.0.1"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	}
+}
