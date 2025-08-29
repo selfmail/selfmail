@@ -7,14 +7,16 @@
 	},
 	"devDependencies": {
 		"@types/bun": "1",
+		"@types/clamscan": "^2.4.1",
 		"@types/nodemailer": "^7.0.1",
 		"typescript": "5"
 	},
 	"dependencies": {
 		"@unkey/api": "latest",
-		"services": "workspace:*",
+		"clamscan": "^2.4.0",
 		"database": "workspace:*",
 		"elysia": "latest",
-		"nodemailer": "^7.0.5"
+		"nodemailer": "^7.0.5",
+		"services": "workspace:*"
 	}
 }

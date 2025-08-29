@@ -56,21 +56,11 @@ async function createProperAttachments(
 	});
 }
 
-const extractErrorMessage = (error: {
-	status: 422;
-	value: {
-		type: "validation";
-		on: string;
-		summary?: string | undefined;
-		message?: string | undefined;
-		found?: unknown;
-		property?: string | undefined;
-		expected?: string | undefined;
-	};
-}) => {
-	return typeof error.value === "string"
-		? error.value
-		: `Data processing failed: ${JSON.stringify(error)}`;
+const extractErrorMessage = (error: { status: number; value: unknown }) => {
+	if (typeof error.value === "string") {
+		return error.value;
+	}
+	return `Request failed: ${JSON.stringify(error)}`;
 };
 
 // 4. Handling function
@@ -110,8 +100,23 @@ export async function handleData(
 			return callback(new Error("No valid recipient address found"));
 		}
 
-		const data = {
-			attachments: await createProperAttachments(emailData.attachments || []),
+		const attachments = await createProperAttachments(
+			emailData.attachments || [],
+		);
+
+		// Data for spam checking
+		const spamData = {
+			body: emailData.text || "",
+			subject: emailData.subject,
+			html: emailData.html || "",
+			from: fromAddress,
+			to: toAddress,
+			attachments,
+		};
+
+		// Data for email storage
+		const emailStorageData = {
+			attachments,
 			mailFrom: fromAddress,
 			to: toAddress,
 			subject: emailData.subject,
@@ -119,7 +124,25 @@ export async function handleData(
 			html: emailData.html || "",
 		};
 
-		const res = await client.inbound.data.post(data);
+		const spam = await client.inbound.spam.post(spamData);
+
+		if (spam.error) {
+			const errorMessage = extractErrorMessage(spam.error);
+			Logs.error(`Spam check failed: ${errorMessage}`);
+			return callback(new Error(errorMessage));
+		}
+
+		if (spam.data) {
+			// If email is marked as spam/rejected, reject it
+			if (spam.data.action === "reject" || spam.data.score > 5) {
+				const err = Object.assign(new Error("Email rejected by spam filter"), {
+					responseCode: 550,
+				});
+				return callback(err);
+			}
+		}
+
+		const res = await client.inbound.data.post(emailStorageData);
 
 		if (res.error) {
 			const errorMessage = extractErrorMessage(res.error);
@@ -138,44 +161,3 @@ export async function handleData(
 		callback(error instanceof Error ? error : new Error(String(error)));
 	}
 }
-
-// const spam = await client.inbound.spam.post({
-// 	body: emailData.text || "",
-// 	subject: emailData.subject,
-// 	html: emailData.html || "",
-// 	from: fromAddress,
-// 	to: toAddress,
-// 	attachments:
-// 		emailData.attachments?.map((att) => {
-// 			// Create a proper File object from the attachment for spam checking
-// 			if (!att.content) {
-// 				return new File([], att.filename || "unknown", {
-// 					type: att.contentType || "application/octet-stream",
-// 				});
-// 			}
-
-// 			const buffer = Buffer.from(att.content, "base64");
-// 			const file = new File([buffer], att.filename || "unknown", {
-// 				type: att.contentType || "application/octet-stream",
-// 			});
-// 			return file;
-// 		}) || [],
-// });
-
-// if (spam.error) {
-// 	const errorMessage =
-// 		typeof spam.error.value === "string"
-// 			? spam.error.value
-// 			: `Spam check failed: ${JSON.stringify(spam.error)}`;
-// 	return callback(new Error(errorMessage));
-// }
-
-// if (spam.data) {
-// 	// If email is marked as spam/rejected, reject it
-// 	if (spam.data.action === "reject" || spam.data.score > 5) {
-// 		const err = Object.assign(new Error("Email rejected by spam filter"), {
-// 			responseCode: 550,
-// 		});
-// 		return callback(err);
-// 	}
-// }
