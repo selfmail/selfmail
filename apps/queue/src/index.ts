@@ -1,36 +1,20 @@
-import amqplib from "amqplib";
+import amqlib from "amqplib";
+import { inboundListener } from "./listeners/inbound";
+import { outboundListener } from "./listeners/outbound";
 
-(async () => {
-	const queue = "tasks";
-	const EXCHANGE = "delayed-tasks";
-	const conn = await amqplib.connect("amqp://admin:secret@localhost:5672");
+const exchange = "email";
 
-	const ch1 = await conn.createChannel();
-	await ch1.assertQueue(queue);
+const conn = await amqlib.connect("amqp://admin:secret@localhost:5672");
+const channel = await conn.createChannel();
 
-	await ch1.assertExchange(EXCHANGE, "x-delayed-message", {
-		durable: false,
-		arguments: { "x-delayed-type": "direct" },
-	});
+await channel.assertExchange(exchange, "direct", { durable: true });
 
-	ch1.bindQueue(queue, EXCHANGE, queue);
+await inboundListener(channel);
+await outboundListener(channel);
 
-	// Listener
-	ch1.consume(queue, (msg) => {
-		if (msg !== null) {
-			console.log("Received:", msg.content.toString());
-			ch1.ack(msg);
-		} else {
-			console.log("Consumer cancelled by server");
-		}
-	});
+process.on("SIGINT", async () => {
+	await channel.close();
+	await conn.close();
 
-	// Sender
-	const ch2 = await conn.createChannel();
-
-	for (let i = 1; i <= 5; i++) {
-		ch2.publish(EXCHANGE, queue, Buffer.from("something to do"), {
-			headers: { "x-delay": 1000 * i },
-		});
-	}
-})();
+	process.exit();
+});

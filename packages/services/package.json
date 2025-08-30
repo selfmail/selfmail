@@ -26,6 +26,10 @@
 		"./activity": {
 			"import": "./src/activity.ts",
 			"types": "./src/activity.ts"
+		},
+		"./queue": {
+			"import": "./src/queue.ts",
+			"types": "./src/queue.ts"
 		}
 	},
 	"peerDependencies": {

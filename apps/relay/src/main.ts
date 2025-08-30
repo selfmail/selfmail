@@ -1,10 +1,30 @@
-import { Elysia, status, t } from "elysia";
+import { Elysia, t } from "elysia";
+import { Queue } from "services/queue";
 
 const app = new Elysia()
 	.post(
 		"/send",
 		async ({ body: { from, subject, text, to, html } }) => {
-			// TODO: integrate queue
+			console.log("Received relay connection");
+			try {
+				await Queue.processOutbound({
+					from,
+					subject,
+					body: text,
+					html,
+					to,
+
+					delay: 0,
+				});
+				return {
+					success: true,
+				};
+			} catch (error) {
+				console.error("Error processing outbound email:", error);
+				return {
+					success: false,
+				};
+			}
 		},
 		{
 			body: t.Object({

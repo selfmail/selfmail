@@ -9,7 +9,8 @@
 	"dependencies": {
 		"amqplib": "^0.10.9",
 		"nodemailer": "^7.0.5",
-		"services": "workspace:*"
+		"services": "workspace:*",
+		"zod": "^4.1.5"
 	},
 	"devDependencies": {
 		"@types/amqplib": "^0.10.7",
