@@ -12,17 +12,20 @@ services:
       - ./rspamd/var:/var/lib/rspamd
     environment:
       - TZ=Europe/Berlin
+
   clamav:
     image: clamav/clamav:latest
     container_name: clamav
     restart: unless-stopped
     ports:
       - "3310:3310"
+
   rabbitmq:
     build:
       context: .
       dockerfile: Dockerfile.rabbitmq
     container_name: rabbitmq
+    restart: unless-stopped
     ports:
       - "5672:5672"    # AMQP
       - "15672:15672"  # Management UI
@@ -32,5 +35,30 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
+  postgres:
+    image: postgres:18
+    container_name: selfmail-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: selfmail
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: selfmaildb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      
+  redis:
+    image: redis:7
+    container_name: selfmail-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+
 volumes:
   rabbitmq_data:
+  postgres_data:
+  redis_data:

@@ -9,6 +9,7 @@ export async function outboundListener(channel: amqplib.Channel) {
 
 	await channel.assertQueue(queue, { durable: true });
 	await channel.bindQueue(queue, exchange, queue);
+	await channel.prefetch(5);
 
 	// Send emails with delay
 	channel.consume(queue, async (msg) => {
