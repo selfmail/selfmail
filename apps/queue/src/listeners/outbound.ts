@@ -1,4 +1,5 @@
 import type amqplib from "amqplib";
+import type { ParsedMail } from "mailparser";
 import { Logs } from "services/logs";
 import { Spam } from "services/spam";
 import { outboundSchema } from "../schema/outbound";
@@ -13,7 +14,6 @@ export async function outboundListener(channel: amqplib.Channel) {
 	await channel.bindQueue(queue, exchange, queue);
 	await channel.prefetch(5);
 
-	// Send emails with delay
 	channel.consume(queue, async (msg) => {
 		if (msg) {
 			Logs.log("Received outbound email to send.");
@@ -29,7 +29,21 @@ export async function outboundListener(channel: amqplib.Channel) {
 
 			const mail = parse.data;
 
-			const host = mail.to.split("@")[1];
+			// Extract recipient email address - handle both single and array formats
+			let recipientEmail: string;
+			if (mail.to) {
+				if (Array.isArray(mail.to)) {
+					recipientEmail = mail.to[0]?.value[0]?.address || "";
+				} else {
+					recipientEmail = mail.to.value[0]?.address || "";
+				}
+			} else {
+				Logs.error("No recipient address found in email!");
+				channel.nack(msg, false, false);
+				return;
+			}
+
+			const host = recipientEmail.split("@")[1];
 
 			if (!host) {
 				Logs.error("Extracting host from email address went wrong!");
@@ -37,10 +51,9 @@ export async function outboundListener(channel: amqplib.Channel) {
 				return;
 			}
 
-			// Check for Spam
-			const spamResult = await Spam.check(mail);
-			if (!spamResult.allow) {
-				Logs.error(`Outbound email blocked: ${spamResult.warning}`);
+			const spamResult = await Spam.check(mail as unknown as ParsedMail);
+			if (spamResult.allow === false) {
+				Logs.error("Outbound email blocked due to spam!");
 				channel.nack(msg, false, false);
 				return;
 			}
@@ -53,18 +66,18 @@ export async function outboundListener(channel: amqplib.Channel) {
 				return;
 			}
 
-			await Send.mail({
+			const messageId = await Send.mail({
+				...mail,
 				records: mxRecords,
-
-				from: mail.from,
-				to: mail.to,
-				subject: mail.subject,
-				text: mail.body,
-				html: mail.html,
+				msg,
+				channel,
 			});
 
-			Logs.log(`Sent outbound email: ${mail.subject}`);
-			channel.ack(msg);
+			if (messageId) {
+				Logs.log(
+					`Sent outbound email: ${mail.subject} (Message ID: ${messageId})`,
+				);
+			}
 		}
 	});
 }

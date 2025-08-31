@@ -6,6 +6,7 @@ import type {
 	ParsedMail,
 } from "mailparser";
 import MailComposer from "nodemailer/lib/mail-composer";
+import { Logs } from "services/logs";
 
 type Contact = {
 	name: string | null;
@@ -50,6 +51,7 @@ export abstract class Inbound {
 
 		return contacts;
 	}
+
 	static async saveMailToS3(mail: ParsedMail) {
 		const compose = new MailComposer(mail as any);
 
@@ -153,10 +155,10 @@ export abstract class Inbound {
 				},
 			});
 
-			console.log(`Email saved successfully: ${savedEmail.id}`);
+			Logs.log(`Email saved successfully: ${savedEmail.id}`);
 			return savedEmail;
 		} catch (error) {
-			console.error("Error saving email:", error);
+			Logs.error(`Error saving email: ${error}`);
 
 			// Try to save a minimal version if the full save fails
 			try {
@@ -185,10 +187,10 @@ export abstract class Inbound {
 					},
 				});
 
-				console.log(`Fallback email saved: ${fallbackEmail.id}`);
+				Logs.log(`Fallback email saved: ${fallbackEmail.id}`);
 				return fallbackEmail;
 			} catch (fallbackError) {
-				console.error("Failed to save even fallback email:", fallbackError);
+				Logs.error(`Failed to save even fallback email: ${fallbackError}`);
 				throw error;
 			}
 		}
