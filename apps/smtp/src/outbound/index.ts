@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { SMTPServer } from "smtp-server";
 import { auth } from "./events/auth";
 import { close } from "./events/close";
@@ -8,29 +8,33 @@ import { mailFrom } from "./events/mail-from";
 import { recipient } from "./events/recipient";
 
 const options = {
-	key: await readFile(
-		"/etc/letsencrypt/live/mail.selfmail.app/privkey.pem" as string,
+	key: readFileSync(
+		"/etc/letsencrypt/live/mail.selfmail.app/privkey.pem",
+		"utf8",
 	),
-	cert: await readFile("/etc/letsencrypt/live/mail.selfmail.app/fullchain.pem"),
+	cert: readFileSync(
+		"/etc/letsencrypt/live/mail.selfmail.app/fullchain.pem",
+		"utf8",
+	),
 };
 
 export const outboundServer = new SMTPServer({
-	name: "Selfmail Outbound SMTP Server",
-	banner: "Welcome to Selfmail Outbound SMTP Server",
-	secure: false, // false, because we use STARTTLS
-
+	name: "Selfmail",
 	cert: options.cert,
 	key: options.key,
 
 	allowInsecureAuth: false,
 	authMethods: ["PLAIN", "LOGIN", "CRAM-MD5"],
-	size: 25 * 1024 * 1024, // 25 MB
+	size: 10 * 1024 * 1024,
 	disableReverseLookup: true,
 	useXClient: false,
 	authOptional: false,
 	hidePIPELINING: true,
 	needsUpgrade: false,
 	useProxy: false,
+	handshakeTimeout: 60000,
+	socketTimeout: 60000, // Increase socket timeout to 60 seconds
+	closeTimeout: 60000, // Increase connection timeout to 60 seconds
 	maxClients: 1000,
 	enableTrace: true,
 
@@ -46,8 +50,8 @@ export const outboundServer = new SMTPServer({
 	 * 5. onData: Processes the email data, saves it to the database, and sends it to the recipient
 	 * 6. onClose: Cleans up the session and logs the closure
 	 */
-	onAuth: auth,
 	onConnect: connection,
+	onAuth: auth,
 	onMailFrom: mailFrom,
 	onRcptTo: recipient,
 	onData: data,

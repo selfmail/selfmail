@@ -8,8 +8,6 @@ export async function mailFrom(
 	session: SMTPServerSession,
 	callback: (err?: Error | null) => void,
 ): Promise<void> {
-	console.log(session.user);
-
 	if (!session.user) {
 		return callback(new Error("User is not authenticated"));
 	}
@@ -20,21 +18,21 @@ export async function mailFrom(
 			memberId: z.string(),
 			workspaceId: z.string(),
 		})
-		.safeParseAsync(JSON.parse(session.user));
+		.safeParseAsync(session.user);
 
 	if (!parse.success) {
 		return callback(new Error("User session is invalid"));
 	}
 
-	const res = await client.outbound["mail-from"].post({
-		from: address.address,
-		addressId: parse.data?.addressId,
-	});
-
-	if (res.error) {
-		Logs.log("Error while verifying the MAIL FROM command");
-		return callback(new Error("MAIL FROM command failed"));
-	}
+	const res = await client.outbound["mail-from"]
+		.post({
+			from: address.address,
+			addressId: parse.data.addressId,
+		})
+		.catch((err) => {
+			Logs.log("Error while verifying the MAIL FROM command");
+			if (err) throw callback(new Error("API Error!"));
+		});
 
 	return callback();
 }

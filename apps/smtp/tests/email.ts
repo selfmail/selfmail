@@ -1,13 +1,13 @@
 import nodemailer from "nodemailer";
 
 const transport = nodemailer.createTransport({
-	host: "localhost",
+	host: "152.53.207.118",
 	port: 587,
 
 	auth: {
-		user: "henri@selfmail.app",
+		user: "henri",
 		method: "PLAIN",
-		pass: "selfmail_password", // Ensure this matches your SMTP server password
+		pass: "secret", // Ensure this matches your SMTP server password
 	},
 
 	secure: false, // Use STARTTLS
@@ -23,7 +23,7 @@ const transport = nodemailer.createTransport({
 });
 const mail = await transport.sendMail({
 	from: "Henri <henri@selfmail.app>",
-	to: "henri.gg@icloud.com",
+	to: "test-62gmtoycn@srv1.mail-tester.com",
 	subject: "Test Email from selfmail.app",
 	text: "This is a test email sent through the selfmail.app SMTP server.",
 	html: "<p>This is a <strong>test email</strong> sent through the selfmail.app SMTP server.</p>",

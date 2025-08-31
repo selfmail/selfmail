@@ -115,10 +115,10 @@ export abstract class OutboundService {
 	 * Handle the RCPT TO command of the SMTP server. This method will check if the recipient email address is valid and that the contact exists in the database
 	 * for the recipient's address. If not, a new contact will be created.
 	 */
-	static async handleRcptTo({ to }: OutboundModule.RcptToBody) {
+	static async handleRcptTo({ to, addressId }: OutboundModule.RcptToBody) {
 		const address = await db.address.findUnique({
 			where: {
-				email: to,
+				id: addressId,
 			},
 		});
 

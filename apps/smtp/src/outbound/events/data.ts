@@ -30,8 +30,9 @@ export async function data(
 
 		if (!spam.allow) {
 			Logs.error("Message flagged as spam.");
-			callback(new Error("Mail was flagged as spam. Sending not possible."));
-			return;
+			return callback(
+				new Error("Mail was flagged as spam. Sending not possible."),
+			);
 		}
 
 		await Queue.processOutbound(parsed);

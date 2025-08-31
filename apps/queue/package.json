@@ -4,7 +4,7 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"dev": "bun --hot src/index.ts"
+		"dev": "bun --watch src/index.ts"
 	},
 	"dependencies": {
 		"amqplib": "^0.10.9",

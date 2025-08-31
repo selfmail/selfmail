@@ -11,3 +11,11 @@ inboundServer.listen(25, () => {
 outboundServer.listen(587, () => {
 	consola.ready("Outbound SMTP server listening on port 587");
 });
+
+outboundServer.on("error", (err) => {
+	consola.error("Outbound SMTP server error:", err);
+});
+
+inboundServer.on("error", (err) => {
+	consola.error("Inbound SMTP server error:", err);
+});

@@ -2,6 +2,7 @@ import type amqplib from "amqplib";
 import type { ParsedMail } from "mailparser";
 import { Logs } from "services/logs";
 import { Spam } from "services/spam";
+import z from "zod/v4";
 import { outboundSchema } from "../schema/outbound";
 import { DNS } from "../services/dns";
 import { Send } from "../services/send";
@@ -22,6 +23,7 @@ export async function outboundListener(channel: amqplib.Channel) {
 			);
 
 			if (!parse.success) {
+				console.error(z.prettifyError(parse.error));
 				Logs.error("Parsing outbound email went wrong!");
 				channel.nack(msg, false, false);
 				return;

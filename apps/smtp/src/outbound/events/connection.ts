@@ -12,9 +12,12 @@ export async function connection(
 		`smtp-outbound-connection-${session.remoteAddress}`,
 	);
 
+	Logs.log("Limiting!");
 	if (!limit.success) {
 		return callback(new Error("Rate limit exceeded"));
 	}
+
+	Logs.log("Not limited!");
 
 	Analytics.trackEvent("smtp_outbound_connection_attempt", {
 		remoteAddress: session.remoteAddress,
@@ -53,6 +56,8 @@ export async function connection(
 		secure: session.secure,
 		timestamp: new Date().toISOString(),
 	});
+
+	Logs.log("Proceeding with auth!");
 
 	return callback();
 }

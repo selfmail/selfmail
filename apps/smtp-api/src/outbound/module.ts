@@ -42,6 +42,9 @@ export namespace OutboundModule {
 			format: "email",
 			description: "The email address of the recipient",
 		}),
+		addressId: t.String({
+			format: "uuid",
+		}),
 	});
 	export type RcptToBody = typeof RcptToBody.static;
 

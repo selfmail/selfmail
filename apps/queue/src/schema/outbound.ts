@@ -46,7 +46,7 @@ export const outboundSchema = z.object({
 	references: z.union([z.string(), z.array(z.string())]).optional(),
 
 	// Date and priority
-	date: z.date().optional(),
+	date: z.string().optional(),
 	priority: z.enum(["normal", "low", "high"]).optional(),
 
 	// Content formatting
@@ -54,7 +54,7 @@ export const outboundSchema = z.object({
 
 	// Attachments and headers
 	attachments: z.array(attachmentSchema),
-	headers: z.map(z.string(), headerValueSchema),
+	headers: z.union([z.map(z.string(), headerValueSchema), z.object()]),
 	headerLines: z.array(
 		z.object({
 			key: z.string(),

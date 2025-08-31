@@ -1,5 +1,6 @@
 import amqlib from "amqplib";
 import type { ParsedMail } from "mailparser";
+import { Logs } from "./logs";
 
 export abstract class Queue {
 	static async retreiveChannel() {
@@ -33,5 +34,7 @@ export abstract class Queue {
 				},
 			},
 		);
+
+		Logs.log("Add new email to outbound-queue!");
 	}
 }
