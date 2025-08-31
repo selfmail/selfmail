@@ -1,6 +1,5 @@
 import amqlib from "amqplib";
 import { Logs } from "services/logs";
-import { inboundListener } from "./listeners/inbound";
 import { outboundListener } from "./listeners/outbound";
 
 const exchange = "email-queue";
@@ -10,7 +9,6 @@ const channel = await conn.createChannel();
 
 await channel.assertExchange(exchange, "direct", { durable: true });
 
-await inboundListener(channel);
 await outboundListener(channel);
 
 Logs.log("Inbound and Outbound Queue are listening!");

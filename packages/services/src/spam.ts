@@ -2,6 +2,7 @@ import { unlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import Clam from "clamscan";
+import type { ParsedMail } from "mailparser";
 import MailComposer from "nodemailer/lib/mail-composer";
 import sanitize from "sanitize-html";
 
@@ -182,7 +183,33 @@ export abstract class Spam {
 		}
 	}
 
-	static async check(emailData: Schema): Promise<{
+	static async createProperAttachments(
+		attachments: {
+			filename?: string | undefined;
+			contentType?: string | undefined;
+			size?: number | undefined;
+			content?: string | undefined;
+			cid?: string | undefined;
+			securityThreats?: string[] | undefined;
+			isSecure?: boolean | undefined;
+		}[],
+	) {
+		// Create proper File objects for the attachments
+		return attachments.map((att) => {
+			if (!att.content) {
+				return new File([], att.filename || "unknown", {
+					type: att.contentType || "application/octet-stream",
+				});
+			}
+
+			const buffer = Buffer.from(att.content, "base64");
+			return new File([buffer], att.filename || "unknown", {
+				type: att.contentType || "application/octet-stream",
+			});
+		});
+	}
+
+	static async check(emailData: ParsedMail): Promise<{
 		allow: boolean;
 		warning: string | null;
 	}> {
@@ -190,7 +217,16 @@ export abstract class Spam {
 
 		// checking for any viruses
 		if (emailData.attachments && emailData.attachments.length > 0) {
-			const hasVirus = await Spam.virus(emailData.attachments);
+			const attachments = await Spam.createProperAttachments(
+				emailData.attachments.map((att) => ({
+					filename: att.filename,
+					contentType: att.contentType,
+					size: att.size,
+					content: att.content?.toString("base64"),
+					cid: att.cid,
+				})),
+			);
+			const hasVirus = await Spam.virus(attachments);
 			if (hasVirus) {
 				return {
 					allow: false,
@@ -209,7 +245,29 @@ export abstract class Spam {
 		}
 
 		// Check with Rspamd for spam detection
-		const rspamdResult = await Spam.checkRspamd(emailData);
+		const rspamdData: Schema = {
+			to: Array.isArray(emailData.to)
+				? emailData.to.map((addr) => addr.text).join(", ")
+				: emailData.to?.text || "",
+			from: Array.isArray(emailData.from)
+				? emailData.from.map((addr) => addr.text).join(", ")
+				: emailData.from?.text || "",
+			subject: emailData.subject || "",
+			body: emailData.text || "",
+			html: emailData.html || "",
+			attachments: emailData.attachments
+				? await Spam.createProperAttachments(
+						emailData.attachments.map((att) => ({
+							filename: att.filename,
+							contentType: att.contentType,
+							size: att.size,
+							content: att.content?.toString("base64"),
+							cid: att.cid,
+						})),
+					)
+				: undefined,
+		};
+		const rspamdResult = await Spam.checkRspamd(rspamdData);
 
 		if (rspamdResult.isSpam) {
 			return {

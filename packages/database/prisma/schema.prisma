@@ -237,21 +237,55 @@ model Contact {
 model Email {
     id String @id @default(uuid())
 
-    // email data
-    subject     String
-    body        String
-    html        String?
-    attachments String[] // array of attachment IDs
+    // email metadata
+    messageId String? // RFC Message-ID header
+    subject   String
+    date      DateTime @default(now())
 
-    // instead of referencing the address directly, we reference the contact
-    contact   Contact @relation(fields: [contactId], references: [id])
-    contactId String
+    // sender and recipient information
+    from    Json // EmailAddress[] from mailparser (name, address)
+    to      Json // EmailAddress[] from mailparser (name, address)
+    cc      Json? // EmailAddress[] - optional
+    bcc     Json? // EmailAddress[] - optional
+    replyTo Json? // EmailAddress[] - optional
 
-    // the recipient of the email
+    // email content
+    text String? // plain text version
+    html String? // HTML version
+
+    // headers and technical data
+    headers Json? // all email headers as JSON
+
+    // attachments information
+    attachments Json? // attachment metadata (filename, contentType, size, etc.)
+
+    // security and filtering
+    warning     String? // spam/security warnings
+    spamScore   Float? // spam score from filtering
+    virusStatus String? // virus scan result
+
+    // processing status
+    processed       Boolean @default(false)
+    processingError String? // any errors during processing
+
+    // raw email data
+    rawEmail String? // original EML content (optional, for debugging)
+
+    // the recipient address (our address that received this email)
     addressId String
     address   Address @relation(fields: [addressId], references: [id])
 
-    date DateTime @default(now())
+    // contact relationship (sender)
+    contact   Contact? @relation(fields: [contactId], references: [id])
+    contactId String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([addressId])
+    @@index([contactId])
+    @@index([date])
+    @@index([processed])
 }
 
 model OutgoingEmail {
