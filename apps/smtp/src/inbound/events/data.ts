@@ -24,11 +24,18 @@ export async function handleData(
 			}
 		});
 
+		Logs.log("Stream ended, Message not too long.");
+
 		const parsed = await simpleParser(s);
+
+		Logs.log("Email parsed successfully.");
+
+		if (!session.envelope.rcptTo[0])
+			return callback(new Error("Address could not be parsed!"));
 
 		const addressId = await db.address.findUnique({
 			where: {
-				email: parsed?.from?.text || "",
+				email: session.envelope.rcptTo[0].address,
 			},
 			select: {
 				id: true,
@@ -37,11 +44,15 @@ export async function handleData(
 
 		if (!addressId) return callback(new Error("Address not found"));
 
+		Logs.log("AddressId found!");
+
 		const spam = await Spam.check(parsed);
 
 		if (!spam.allow) {
 			return callback(new Error("Email marked as spam"));
 		}
+
+		Logs.log("Email does not contain any spam.");
 
 		const save = await Inbound.save(
 			parsed,
@@ -49,6 +60,8 @@ export async function handleData(
 			spam.warning ?? undefined,
 		);
 		const saveToS3 = await Inbound.saveMailToS3(parsed);
+
+		Logs.log("Email saved to database and S3.");
 		callback();
 	} catch (error) {
 		callback(error instanceof Error ? error : new Error(String(error)));

@@ -12,14 +12,14 @@ export async function handleRcptTo(
 		return callback(new Error("No MAIL FROM address set"));
 	}
 
-	// const res = await client.inbound["rcpt-to"].post({
-	// 	to: address.address,
-	// 	mailFrom: session.envelope.mailFrom.address,
-	// });
+	const res = await client.inbound["rcpt-to"].post({
+		to: address.address,
+		mailFrom: session.envelope.mailFrom.address,
+	});
 
-	// if (res.error) {
-	// 	return callback(new Error("Failed to handle recipient address"));
-	// }
+	if (res.error) {
+		return callback(new Error("Failed to handle recipient address"));
+	}
 
 	Logs.log(`Recipient ${address.address} accepted`);
 
