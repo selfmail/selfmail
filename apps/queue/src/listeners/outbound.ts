@@ -1,4 +1,6 @@
 import type amqplib from "amqplib";
+import { Logs } from "services/logs";
+import { Spam } from "services/spam";
 import { outboundSchema } from "../schema/outbound";
 import { DNS } from "../services/dns";
 import { Send } from "../services/send";
@@ -14,13 +16,13 @@ export async function outboundListener(channel: amqplib.Channel) {
 	// Send emails with delay
 	channel.consume(queue, async (msg) => {
 		if (msg) {
-			console.log("Receiving outbound email:", msg.content.toString());
+			Logs.log("Received outbound email to send.");
 			const parse = await outboundSchema.safeParseAsync(
 				JSON.parse(msg.content.toString()),
 			);
 
 			if (!parse.success) {
-				console.log("Parse went wrong!");
+				Logs.error("Parsing outbound email went wrong!");
 				channel.nack(msg, false, false);
 				return;
 			}
@@ -30,6 +32,15 @@ export async function outboundListener(channel: amqplib.Channel) {
 			const host = mail.to.split("@")[1];
 
 			if (!host) {
+				Logs.error("Extracting host from email address went wrong!");
+				channel.nack(msg, false, false);
+				return;
+			}
+
+			// Check for Spam
+			const spamResult = await Spam.check(mail);
+			if (!spamResult.allow) {
+				Logs.error(`Outbound email blocked: ${spamResult.warning}`);
 				channel.nack(msg, false, false);
 				return;
 			}
@@ -37,6 +48,7 @@ export async function outboundListener(channel: amqplib.Channel) {
 			const mxRecords = await DNS.resolveMX(host);
 
 			if (!mxRecords || mxRecords.length === 0) {
+				Logs.error(`No MX records found for host ${host}`);
 				channel.nack(msg, false, false);
 				return;
 			}
@@ -51,14 +63,8 @@ export async function outboundListener(channel: amqplib.Channel) {
 				html: mail.html,
 			});
 
-			console.log("Received outbound email:", mail);
+			Logs.log(`Sent outbound email: ${mail.subject}`);
 			channel.ack(msg);
 		}
 	});
-
-	channel.publish(
-		exchange,
-		queue,
-		Buffer.from(JSON.stringify({ subject: "Test inbound email" })),
-	);
 }

@@ -30,6 +30,10 @@
 		"./queue": {
 			"import": "./src/queue.ts",
 			"types": "./src/queue.ts"
+		},
+		"./spam": {
+			"import": "./src/spam.ts",
+			"types": "./src/spam.ts"
 		}
 	},
 	"peerDependencies": {

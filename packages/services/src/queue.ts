@@ -2,7 +2,7 @@ import amqlib from "amqplib";
 
 export abstract class Queue {
 	static async retreiveChannel() {
-		const exchange = "email";
+		const exchange = "email-queue";
 
 		const conn = await amqlib.connect("amqp://admin:secret@localhost:5672");
 		const channel = await conn.createChannel();

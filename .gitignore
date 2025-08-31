@@ -2,6 +2,9 @@ node_modules
 .turbo
 .vercel
 
+# Environment variables
+.env
+
 # Rspamd stuff
 rspamd/var
 rspamd/etc/maps.d
