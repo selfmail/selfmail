@@ -6,10 +6,52 @@ import z from "zod/v4";
 import { outboundSchema } from "../schema/outbound";
 import { DNS } from "../services/dns";
 import { Send } from "../services/send";
+import { calculateNextDelay } from "../utils/delay";
+
+async function retryWithDelay(
+	channel: amqplib.Channel,
+	msg: amqplib.ConsumeMessage,
+	exchange: string,
+	queue: string,
+	reason: string,
+) {
+	const currentDelay = Number(msg.properties.headers?.["x-delay"]) || 0;
+	const nextDelay = calculateNextDelay(currentDelay);
+
+	if (nextDelay === undefined) {
+		Logs.error(
+			`${reason} - Maximum retries exceeded, permanently rejecting message`,
+		);
+		channel.nack(msg, false, false);
+		return;
+	}
+
+	Logs.log(
+		`${reason} - Retrying in ${nextDelay}ms (attempt after ${currentDelay}ms delay)`,
+	);
+
+	// Republish with delay over the delayed exchange
+	channel.publish(exchange, queue, msg.content, {
+		headers: {
+			...msg.properties.headers,
+			"x-delay": nextDelay,
+		},
+		persistent: true,
+		contentType: msg.properties.contentType,
+	});
+
+	channel.ack(msg);
+}
 
 export async function outboundListener(channel: amqplib.Channel) {
 	const queue = "outbound-emails";
-	const exchange = "email-queue";
+	const exchange = "email-exchange"; // delayed exchange
+
+	// delayed exchange deklarieren
+	await channel.assertExchange(exchange, "x-delayed-message", {
+		durable: true,
+		arguments: { "x-delayed-type": "direct" },
+	});
 
 	await channel.assertQueue(queue, { durable: true });
 	await channel.bindQueue(queue, exchange, queue);
@@ -25,13 +67,18 @@ export async function outboundListener(channel: amqplib.Channel) {
 			if (!parse.success) {
 				console.error(z.prettifyError(parse.error));
 				Logs.error("Parsing outbound email went wrong!");
-				channel.nack(msg, false, false);
+				await retryWithDelay(
+					channel,
+					msg,
+					exchange,
+					queue,
+					"Parsing outbound email failed",
+				);
 				return;
 			}
 
 			const mail = parse.data;
 
-			// Extract recipient email address - handle both single and array formats
 			let recipientEmail: string;
 			if (mail.to) {
 				if (Array.isArray(mail.to)) {
@@ -41,7 +88,13 @@ export async function outboundListener(channel: amqplib.Channel) {
 				}
 			} else {
 				Logs.error("No recipient address found in email!");
-				channel.nack(msg, false, false);
+				await retryWithDelay(
+					channel,
+					msg,
+					exchange,
+					queue,
+					"No recipient address found",
+				);
 				return;
 			}
 
@@ -49,14 +102,26 @@ export async function outboundListener(channel: amqplib.Channel) {
 
 			if (!host) {
 				Logs.error("Extracting host from email address went wrong!");
-				channel.nack(msg, false, false);
+				await retryWithDelay(
+					channel,
+					msg,
+					exchange,
+					queue,
+					"Failed to extract host from email address",
+				);
 				return;
 			}
 
 			const spamResult = await Spam.check(mail as unknown as ParsedMail);
 			if (spamResult.allow === false) {
 				Logs.error("Outbound email blocked due to spam!");
-				channel.nack(msg, false, false);
+				await retryWithDelay(
+					channel,
+					msg,
+					exchange,
+					queue,
+					"Email blocked due to spam",
+				);
 				return;
 			}
 
@@ -64,7 +129,13 @@ export async function outboundListener(channel: amqplib.Channel) {
 
 			if (!mxRecords || mxRecords.length === 0) {
 				Logs.error(`No MX records found for host ${host}`);
-				channel.nack(msg, false, false);
+				await retryWithDelay(
+					channel,
+					msg,
+					exchange,
+					queue,
+					`No MX records found for host ${host}`,
+				);
 				return;
 			}
 
@@ -79,6 +150,7 @@ export async function outboundListener(channel: amqplib.Channel) {
 				Logs.log(
 					`Sent outbound email: ${mail.subject} (Message ID: ${messageId})`,
 				);
+				channel.ack(msg);
 			}
 		}
 	});
