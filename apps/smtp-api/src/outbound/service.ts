@@ -115,12 +115,19 @@ export abstract class OutboundService {
 	 * Handle the RCPT TO command of the SMTP server. This method will check if the recipient email address is valid and that the contact exists in the database
 	 * for the recipient's address. If not, a new contact will be created.
 	 */
-	static async handleRcptTo({ addressId, to }: OutboundModule.RcptToBody) {
+	static async handleRcptTo({ to }: OutboundModule.RcptToBody) {
+		const address = await db.address.findUnique({
+			where: {
+				email: to,
+			},
+		});
+
+		if (!address) throw status(404, "Not Found");
 		const contact = await db.contact.findUnique({
 			where: {
 				email_addressId: {
 					email: to,
-					addressId,
+					addressId: address.id,
 				},
 			},
 		});
@@ -130,48 +137,13 @@ export abstract class OutboundService {
 			await db.contact.create({
 				data: {
 					email: to,
-					addressId,
+					addressId: address.id,
 				},
 			});
 		}
 
 		return {
 			valid: true,
-		};
-	}
-
-	/**
-	 * Handle the DATA command, checking for spam with rspamd and forwarding the email to the relay server.
-	 */
-	static async handleData({
-		addressId,
-		body,
-		from,
-		subject,
-		to,
-		attachements,
-		html,
-		preview,
-	}: OutboundModule.DataBody) {
-		const address = await db.address.findUnique({
-			where: {
-				id: addressId,
-			},
-		});
-
-		if (!address) {
-			throw status(404, {
-				valid: false,
-				message: "Address not found.",
-			});
-		}
-
-		// Here you would typically process the email data, e.g., send it to a relay server or store it in the database.
-		// For this example, we will just return a success response.
-
-		return {
-			valid: true,
-			message: "Email data processed successfully.",
 		};
 	}
 }

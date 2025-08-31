@@ -1,4 +1,5 @@
 import amqlib from "amqplib";
+import type { ParsedMail } from "mailparser";
 
 export abstract class Queue {
 	static async retreiveChannel() {
@@ -14,20 +15,10 @@ export abstract class Queue {
 		return channel;
 	}
 	static async processOutbound({
-		subject,
-		to,
-		from,
-		body,
-		html,
-
 		delay = 0,
-	}: {
-		subject: string;
-		to: string;
-		from: string;
-		body: string;
-		html: string | undefined;
 
+		...mail
+	}: ParsedMail & {
 		delay?: number;
 	}) {
 		const channel = await Queue.retreiveChannel();
@@ -35,17 +26,7 @@ export abstract class Queue {
 		channel.publish(
 			"email-queue",
 			"outbound-emails",
-			Buffer.from(
-				JSON.stringify({
-					subject,
-					to,
-					from,
-					body,
-					html,
-
-					attachments: [],
-				}),
-			),
+			Buffer.from(JSON.stringify(mail)),
 			{
 				headers: {
 					"x-delay": delay,

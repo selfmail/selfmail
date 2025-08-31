@@ -30,5 +30,11 @@ export async function mailFrom(
 		from: address.address,
 		addressId: parse.data?.addressId,
 	});
+
+	if (res.error) {
+		Logs.log("Error while verifying the MAIL FROM command");
+		return callback(new Error("MAIL FROM command failed"));
+	}
+
 	return callback();
 }

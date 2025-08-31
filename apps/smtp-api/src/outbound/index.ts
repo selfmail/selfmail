@@ -53,15 +53,4 @@ export const outboundSmtp = new Elysia({
 			description:
 				"Handle the RCPT TO command of the SMTP server. You need to pass the email address of the recipient.",
 		},
-	)
-	.post(
-		"/data",
-		async ({ body }) => {
-			return await OutboundService.handleData(body);
-		},
-		{
-			body: OutboundModule.DataBody,
-			description:
-				"Handle the DATA command of the SMTP server. You need to pass the email data.",
-		},
 	);

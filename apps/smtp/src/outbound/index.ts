@@ -24,7 +24,7 @@ export const outboundServer = new SMTPServer({
 
 	allowInsecureAuth: false,
 	authMethods: ["PLAIN", "LOGIN", "CRAM-MD5"],
-	size: 10 * 1024 * 1024,
+	size: 25 * 1024 * 1024, // 25 MB
 	disableReverseLookup: true,
 	useXClient: false,
 	authOptional: false,
