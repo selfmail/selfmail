@@ -43,4 +43,33 @@ export const dashboard = new Elysia({
 	)
 	.get("/addresses", async ({ member }) => {
 		return await DashboardService.userAddresses(member.id);
-	});
+	})
+	.patch(
+		"/emails/:id/read",
+		async ({ params, body, member, workspace }) => {
+			if (!member || !workspace) {
+				throw status(401, "Authentication required");
+			}
+			return await DashboardService.markEmailAsRead(
+				params.id,
+				body.read,
+				member.id,
+				workspace.id,
+			);
+		},
+		{
+			params: t.Object({
+				id: t.String({
+					description: "Email ID",
+				}),
+			}),
+			body: t.Object({
+				read: t.Boolean({
+					description: "Whether the email should be marked as read",
+				}),
+			}),
+			detail: {
+				description: "Mark an email as read or unread",
+			},
+		},
+	);

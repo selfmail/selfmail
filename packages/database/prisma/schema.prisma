@@ -242,6 +242,10 @@ model Email {
     subject   String
     date      DateTime @default(now())
 
+    // read status
+    read   Boolean   @default(false)
+    readAt DateTime? // when the email was marked as read
+
     // sender and recipient information
     from    Json // EmailAddress[] from mailparser (name, address)
     to      Json // EmailAddress[] from mailparser (name, address)
@@ -286,6 +290,7 @@ model Email {
     @@index([contactId])
     @@index([date])
     @@index([processed])
+    @@index([read])
 }
 
 model OutgoingEmail {

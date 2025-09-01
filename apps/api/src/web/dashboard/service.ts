@@ -11,12 +11,6 @@ export abstract class DashboardService {
 		page = Number(page) || 1;
 		limit = Number(limit) || 20;
 
-		const workspace = await db.workspace.findUnique({
-			where: {
-				id: workspaceId,
-			},
-		});
-
 		// Get user's accessible addresses through member addresses
 		const memberAddresses = await db.memberAddress.findMany({
 			where: {
@@ -148,5 +142,59 @@ export abstract class DashboardService {
 				profileName: ma.member.profileName,
 			})),
 		}));
+	}
+
+	static async markEmailAsRead(
+		emailId: string,
+		read: boolean,
+		memberId: string,
+		workspaceId: string,
+	) {
+		// Get user's accessible addresses through member addresses
+		const memberAddresses = await db.memberAddress.findMany({
+			where: {
+				member: {
+					id: memberId,
+					workspaceId,
+				},
+			},
+			select: { addressId: true },
+		});
+
+		const addressIds = memberAddresses.map((ma) => ma.addressId);
+
+		// First verify the user has access to this email
+		const email = await db.email.findFirst({
+			where: {
+				id: emailId,
+				addressId: {
+					in: addressIds,
+				},
+			},
+		});
+
+		if (!email) {
+			throw status(404, "Email not found or access denied");
+		}
+
+		// Update the read status
+		const updatedEmail = await db.email.update({
+			where: {
+				id: emailId,
+			},
+			data: {
+				read,
+				readAt: read ? new Date() : null,
+			},
+		});
+
+		return {
+			success: true,
+			email: {
+				id: updatedEmail.id,
+				read: updatedEmail.read,
+				readAt: updatedEmail.readAt,
+			},
+		};
 	}
 }

@@ -18,6 +18,8 @@ export interface ApiEmailData {
 	contactId: string;
 	addressId: string;
 	date: Date;
+	read: boolean;
+	readAt: Date | null;
 }
 
 // Transform API data to EmailData format
@@ -28,7 +30,7 @@ export function transformApiEmail(apiEmail: ApiEmailData): EmailData {
 		subject: apiEmail.subject,
 		content: apiEmail.body,
 		date: new Date(apiEmail.date).toISOString(),
-		unread: Math.random() > 0.7, // Random unread status as placeholder
+		unread: !apiEmail.read, // Use real read status from database
 		avatar: `U${apiEmail.contactId.slice(-2)}`, // Generate avatar from contactId
 	};
 }

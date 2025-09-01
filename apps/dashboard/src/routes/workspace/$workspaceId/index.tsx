@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import EmailList from "@/components/dashboard/email-list";
 import EmailViewer from "@/components/dashboard/email-viewer";
 import DashboardHeader from "@/components/dashboard/header";
 import DashboardNavigation from "@/components/dashboard/navigation";
 import { RequireAuth } from "@/lib/auth";
-import { RequireWorkspace } from "@/lib/workspace";
+import { RequireWorkspace, useWorkspace } from "@/lib/workspace";
 import type { EmailData } from "@/types/email";
 
 export const Route = createFileRoute("/workspace/$workspaceId/")({
@@ -27,6 +27,25 @@ function RouteComponent() {
 function WorkspaceDashboard({ workspaceId }: { workspaceId: string }) {
 	const [open, setOpen] = useState(true);
 	const [selectedEmail, setSelectedEmail] = useState<EmailData | null>(null);
+
+	const workspaceData = useWorkspace(workspaceId);
+
+	const workspaceName = useMemo(() => {
+		return workspaceData?.workspace?.name;
+	}, [workspaceData?.workspace?.name]);
+
+	useEffect(() => {
+		if (workspaceName) {
+			document.title = `${workspaceName} - Selfmail`;
+		} else {
+			document.title = "Selfmail - Dashboard";
+		}
+
+		// Cleanup function to reset title when component unmounts
+		return () => {
+			document.title = "Selfmail";
+		};
+	}, [workspaceName]);
 
 	const handleEmailClick = (email: EmailData) => {
 		setSelectedEmail(email);

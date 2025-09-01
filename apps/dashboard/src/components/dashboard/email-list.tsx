@@ -1,7 +1,10 @@
 import { useIntersection } from "@mantine/hooks";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+	useInfiniteQuery,
+	useMutation,
+	useQueryClient,
+} from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
-import { toast } from "sonner";
 import { client } from "@/lib/client";
 import type { ApiEmailData, EmailData } from "@/types/email";
 import { transformApiEmail } from "@/types/email";
@@ -27,10 +30,93 @@ export default function EmailList({
 	clickRef,
 }: EmailListProps) {
 	const loadMoreRef = useRef<HTMLDivElement>(null);
+	const queryClient = useQueryClient();
 
 	const { entry, ref } = useIntersection({
 		threshold: 0.1,
 	});
+
+	// Mutation for marking emails as read/unread
+	const markEmailAsReadMutation = useMutation({
+		mutationFn: async ({
+			emailId,
+			read,
+		}: {
+			emailId: string;
+			read: boolean;
+		}) => {
+			const response = await client.v1.web.dashboard
+				.emails({ id: emailId })
+				.read.patch(
+					{
+						read,
+					},
+					{
+						query: {
+							workspaceId: workspace,
+						},
+					},
+				);
+
+			if (response.error) {
+				throw new Error(
+					response.error.value?.message || "Failed to update email status",
+				);
+			}
+
+			return response.data;
+		},
+		onMutate: async ({ emailId, read }) => {
+			// Cancel outgoing refetches so they don't overwrite our optimistic update
+			await queryClient.cancelQueries({
+				queryKey: ["emails", workspace],
+			});
+
+			// Snapshot the previous value
+			const previousEmails = queryClient.getQueryData(["emails", workspace]);
+
+			// Optimistically update the cache
+			queryClient.setQueryData(["emails", workspace], (old: unknown) => {
+				if (!old || typeof old !== "object") return old;
+				const typedOld = old as { pages: { emails: ApiEmailData[] }[] };
+
+				return {
+					...typedOld,
+					pages: typedOld.pages.map((page) => ({
+						...page,
+						emails: page.emails.map((email: ApiEmailData) =>
+							email.id === emailId
+								? { ...email, read, readAt: read ? new Date() : null }
+								: email,
+						),
+					})),
+				};
+			});
+
+			return { previousEmails };
+		},
+		onError: (_err, _variables, context) => {
+			// If the mutation fails, use the context to roll back
+			if (context?.previousEmails) {
+				queryClient.setQueryData(["emails", workspace], context.previousEmails);
+			}
+		},
+		onSettled: () => {
+			// Always refetch after error or success to ensure we have the latest data
+			queryClient.invalidateQueries({
+				queryKey: ["emails", workspace],
+			});
+		},
+	});
+
+	// Function to handle email click with automatic mark as read
+	const handleEmailClick = (email: EmailData) => {
+		// If email is unread, mark it as read optimistically
+		if (email.unread) {
+			markEmailAsReadMutation.mutate({ emailId: email.id, read: true });
+		}
+		onEmailClick(email);
+	};
 
 	const {
 		data,
@@ -41,7 +127,7 @@ export default function EmailList({
 		hasNextPage,
 		isFetchingNextPage,
 	} = useInfiniteQuery({
-		queryKey: ["emails"],
+		queryKey: ["emails", workspace], // Include workspace in queryKey for proper caching
 		queryFn: async ({ pageParam = 1 }): Promise<EmailResponse> => {
 			const res = await client.v1.web.dashboard.emails.get({
 				query: {
@@ -57,16 +143,43 @@ export default function EmailList({
 			}
 
 			const data = res.data;
-			return data;
+
+			// Transform the API response to match our expected structure
+			const transformedEmails = data.emails.map(
+				(email: Record<string, unknown>): ApiEmailData => ({
+					id: String(email.id),
+					subject: String(email.subject || ""),
+					body: String(email.text || email.html || ""), // Use text or html as body
+					html: email.html ? String(email.html) : null,
+					attachments: Array.isArray(email.attachments)
+						? email.attachments.map(String)
+						: [],
+					contactId: String(email.contactId || email.id), // fallback to email id
+					addressId: String(email.addressId || ""),
+					date:
+						email.date instanceof Date
+							? email.date
+							: new Date(String(email.date)),
+					read: Boolean(email.read), // Add read status
+					readAt: email.readAt instanceof Date ? email.readAt : null,
+				}),
+			);
+			return {
+				...data,
+				emails: transformedEmails,
+			};
 		},
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => {
-			return lastPage.totalCount !== lastPage.page
+			// Fix: Check if current page is less than total pages
+			return lastPage.page < lastPage.totalPages
 				? lastPage.page + 1
 				: undefined;
 		},
 		retry: 3,
 		retryDelay: 1000,
+		staleTime: 2 * 60 * 1000, // 2 minutes - emails change more frequently
+		gcTime: 5 * 60 * 1000, // 5 minutes cache time
 	});
 
 	const allEmails =
@@ -119,9 +232,10 @@ export default function EmailList({
 				if (index === allEmails.length - 1) {
 					return (
 						<Email
+							key={email.id}
 							ref={ref}
 							email={email}
-							onClick={() => onEmailClick(email)}
+							onClick={() => handleEmailClick(email)}
 						/>
 					);
 				}
@@ -129,7 +243,7 @@ export default function EmailList({
 					<Email
 						key={email.id}
 						email={email}
-						onClick={() => onEmailClick(email)}
+						onClick={() => handleEmailClick(email)}
 					/>
 				);
 			})}
@@ -140,9 +254,9 @@ export default function EmailList({
 					<div className="text-neutral-500">Loading more emails...</div>
 				) : hasNextPage ? (
 					<div className="text-neutral-400">Scroll to load more</div>
-				) : (
+				) : allEmails.length > 0 ? (
 					<div className="text-neutral-400">No more emails</div>
-				)}
+				) : null}
 			</div>
 		</div>
 	);

@@ -74,8 +74,6 @@ function LoginComponent() {
 
 		const workspace = await client.v1.web.workspace.user.get();
 
-		console.log(workspace);
-
 		if (workspace.error) {
 			console.log("Error occured!");
 			setError("An error occurred while fetching workspace");
@@ -89,14 +87,6 @@ function LoginComponent() {
 				to: "/workspace/create",
 			});
 		}
-
-		if (searchParams.redirectTo) {
-			throw navigate({
-				to: searchParams.redirectTo as string,
-			});
-		}
-
-		console.log("Login successful, redirecting to home page");
 
 		navigate({
 			to: "/",
@@ -116,10 +106,8 @@ function LoginComponent() {
 								to={"/"}
 								className="flex flex-col space-y-2 rounded-md border border-neutral-100 bg-neutral-50 p-4"
 							>
-								<h2 className="font-medium text-lg">
-									Welcome back, {auth.user?.name}!
-								</h2>
-								<p>You can go ahead, and access your dashboard!</p>
+								<h2>Welcome Back!</h2>
+								<p>Click here to access the dashboard!</p>
 							</Link>
 						)}
 						<h1 className={"font-bold text-2xl tracking-tight"}>Login</h1>

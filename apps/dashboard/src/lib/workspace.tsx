@@ -47,6 +47,8 @@ export const useWorkspaceMember = (
 		},
 		retry: false,
 		enabled: !!workspaceId, // Only run if workspaceId exists
+		staleTime: 5 * 60 * 1000, // 5 minutes - data is considered fresh for 5 minutes
+		gcTime: 10 * 60 * 1000, // 10 minutes - data stays in cache for 10 minutes when unused
 	});
 
 	const hasAccess = !isLoading && !!data;
