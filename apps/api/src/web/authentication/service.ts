@@ -41,12 +41,12 @@ export abstract class AuthenticationService {
 			throw status(500, "Failed to create user. Please try again later.");
 
 		// create OTP
-		const otpToken = Math.floor(100000 + Math.random() * 900000).toString();
+		const otpToken = Math.floor(100000 + Math.random() * 900000);
 
 		// Save OTP to database
 		await db.emailVerification.create({
 			data: {
-				token: otpToken,
+				token: otpToken.toString(),
 				email: user.email,
 				userId: user.id,
 				expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes from now

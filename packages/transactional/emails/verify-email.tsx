@@ -16,7 +16,7 @@ const EmailVerification = ({
 	token,
 }: {
 	name: string;
-	token: string;
+	token: number;
 }) => {
 	return (
 		<Html lang="en" dir="ltr">
@@ -45,29 +45,27 @@ const EmailVerification = ({
 							<Text className="m-0 mb-[40px] text-[18px] text-black leading-[26px]">
 								Thanks for signing up! To ensure the security of your account
 								and enable all features, please verify your email address by
-								clicking the button below.
+								copying the code below and pasting it to the verification page.
 							</Text>
 
 							{/* Verification Button */}
-							<Section className="mb-[40px] text-left">
-								<Button
-									href={`https://dashboard.selfmail.app/verify?token=${token}`}
-									className="rounded-lg bg-black px-[15px] py-[8px] text-white no-underline"
-								>
-									Verify Email Address
-								</Button>
+							<Section className="mb-[40px] rounded-lg bg-black text-left">
+								<Text className="text-center font-mono text-[18px] text-white leading-[26px]">
+									{token}
+								</Text>
 							</Section>
 
 							<Text className="m-0 mb-[16px] text-[12px] text-gray-600 leading-[18px]">
-								If the button above doesn't work, you can also copy and paste
-								this link into your browser:
+								If you have closed the tab, you can copy the link below. If you
+								encounter any issues on the path, please contact us at
+								contact@selfmail.app!
 							</Text>
 							<Text className="m-0 mb-[40px] break-all text-[12px] text-gray-500 leading-[18px]">
-								{`https://dashboard.selfmail.app/verify?token=${token}`}
+								{"https://dashboard.selfmail.app/auth/verify"}
 							</Text>
 
 							<Text className="m-0 text-[12px] text-gray-600 leading-[18px]">
-								This verification link will expire in 24 hours for security
+								The verification code will expire in 24 hours for security
 								purposes. If you didn't create an account, you can safely ignore
 								this email.
 							</Text>
@@ -98,8 +96,8 @@ const EmailVerification = ({
 };
 
 EmailVerification.PreviewProps = {
-	firstName: "John",
-	verificationUrl: "https://example.com/verify?token=abc123def456",
+	name: "Henri",
+	token: 111111,
 };
 
 export default EmailVerification;

@@ -114,6 +114,7 @@ export const authentication = new Elysia({
 				request.headers.get("x-real-ip") ||
 				"unknown";
 			const result = await AuthenticationService.handleLogin(body, clientIp);
+
 			if (!("sessionToken" in result)) {
 				// result is a status() response
 				if (

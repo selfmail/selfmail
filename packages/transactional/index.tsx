@@ -6,7 +6,7 @@ export async function generateVerifyEmailTemplate({
 	token,
 }: {
 	name: string;
-	token: string;
+	token: number;
 }) {
 	const html = await pretty(
 		await render(<VerifyEmailTemplate name={name} token={token} />),
