@@ -4,6 +4,7 @@ import { address } from "./address";
 import { authentication } from "./authentication";
 import { dashboard } from "./dashboard";
 import { payments } from "./payments";
+import { smtpCredentials } from "./smtp";
 import { workspace } from "./workspace";
 
 export const web = new Elysia({ name: "Web", prefix: "/web" })
@@ -21,4 +22,5 @@ export const web = new Elysia({ name: "Web", prefix: "/web" })
 	.use(workspace)
 	.use(authentication)
 	.use(payments)
-	.use(address);
+	.use(address)
+	.use(smtpCredentials);

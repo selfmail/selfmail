@@ -17,9 +17,6 @@
 		"dev:server": "turbo -F server dev",
 		"db:push": "turbo -F database db:push"
 	},
-	"dependencies": {
-		"undici": "^7.13.0"
-	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.1.4",
 		"husky": "^9.1.7",
