@@ -314,22 +314,19 @@ export abstract class AddressService {
 		};
 	}
 
-	static async getAddressEmailsById({
+	static async getAddressDetails({
 		addressId,
 		workspaceId,
-		page = 1,
-		limit = 20,
-		search,
+		memberId,
 	}: {
 		addressId: string;
 		workspaceId: string;
-		page?: number;
-		limit?: number;
-		search?: string;
+		memberId: string;
 	}) {
-		// Verify that the address belongs to a member of this workspace
+		// Check if member has access to this address
 		const memberAddress = await db.memberAddress.findFirst({
 			where: {
+				memberId,
 				addressId,
 				member: {
 					workspaceId,
@@ -337,9 +334,49 @@ export abstract class AddressService {
 			},
 			include: {
 				address: {
-					select: {
-						id: true,
-						email: true,
+					include: {
+						SmtpCredentials: {
+							where: {
+								workspaceId,
+							},
+							select: {
+								id: true,
+								title: true,
+								description: true,
+								username: true,
+								createdAt: true,
+								updatedAt: true,
+								activeUntil: true,
+								member: {
+									select: {
+										profileName: true,
+										user: {
+											select: {
+												name: true,
+											},
+										},
+									},
+								},
+							},
+							orderBy: {
+								createdAt: "desc",
+							},
+						},
+						MemberAddress: {
+							include: {
+								member: {
+									select: {
+										id: true,
+										profileName: true,
+										user: {
+											select: {
+												name: true,
+											},
+										},
+									},
+								},
+							},
+						},
 					},
 				},
 			},
@@ -349,72 +386,26 @@ export abstract class AddressService {
 			return status(404, "Address not found or access denied");
 		}
 
-		// Build the where clause for emails
-		const whereClause: {
-			addressId: string;
-			OR?: Array<{
-				subject?: { contains: string; mode: "insensitive" };
-				fromEmail?: { contains: string; mode: "insensitive" };
-				fromName?: { contains: string; mode: "insensitive" };
-			}>;
-		} = {
-			addressId,
-		};
-
-		// Add search functionality if provided
-		if (search) {
-			whereClause.OR = [
-				{
-					subject: {
-						contains: search,
-						mode: "insensitive",
-					},
-				},
-				{
-					fromEmail: {
-						contains: search,
-						mode: "insensitive",
-					},
-				},
-				{
-					fromName: {
-						contains: search,
-						mode: "insensitive",
-					},
-				},
-			];
-		}
-
-		// Get emails for this specific address
-		const emails = await db.email.findMany({
-			where: whereClause,
-			take: limit,
-			skip: (page - 1) * limit,
-			orderBy: {
-				date: "desc",
-			},
-			include: {
-				address: {
-					select: {
-						id: true,
-						email: true,
-					},
-				},
-			},
-		});
-
-		// Get total count for pagination
-		const totalCount = await db.email.count({
-			where: whereClause,
-		});
-
 		return {
-			emails,
-			totalCount,
-			page,
-			limit,
-			totalPages: Math.ceil(totalCount / limit),
-			address: memberAddress.address,
+			address: {
+				id: memberAddress.address.id,
+				email: memberAddress.address.email,
+				smtpCredentials: memberAddress.address.SmtpCredentials.map((cred) => ({
+					id: cred.id,
+					title: cred.title,
+					description: cred.description,
+					username: cred.username,
+					createdAt: cred.createdAt,
+					updatedAt: cred.updatedAt,
+					activeUntil: cred.activeUntil,
+					isExpired: cred.activeUntil ? new Date() > cred.activeUntil : false,
+					createdBy: cred.member.profileName || cred.member.user.name,
+				})),
+				members: memberAddress.address.MemberAddress.map((ma) => ({
+					id: ma.member.id,
+					name: ma.member.profileName || ma.member.user.name,
+				})),
+			},
 		};
 	}
 }

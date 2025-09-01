@@ -1,0 +1,29 @@
+{
+	"name": "transactional",
+	"module": "index.ts",
+	"type": "module",
+	"private": true,
+	"exports": {
+		".": {
+			"import": "./index.ts",
+			"types": "./index.ts"
+		}
+	},
+	"scripts": {
+		"dev": "email dev"
+	},
+	"devDependencies": {
+		"@react-email/preview-server": "4.2.8",
+		"@types/bun": "latest",
+		"react-email": "4.2.8"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"@react-email/components": "0.5.1",
+		"@react-email/render": "1.2.1",
+		"react": "19.1.1",
+		"react-dom": "19.1.1"
+	}
+}
