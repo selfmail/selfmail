@@ -2,11 +2,10 @@
 	"name": "transactional",
 	"module": "index.ts",
 	"type": "module",
-	"private": true,
 	"exports": {
 		".": {
-			"import": "./index.ts",
-			"types": "./index.ts"
+			"import": "./index.tsx",
+			"types": "./index.tsx"
 		}
 	},
 	"scripts": {

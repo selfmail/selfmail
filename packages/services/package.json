@@ -34,6 +34,10 @@
 		"./spam": {
 			"import": "./src/spam.ts",
 			"types": "./src/spam.ts"
+		},
+		"./mail": {
+			"import": "./src/mail.ts",
+			"types": "./src/mail.ts"
 		}
 	},
 	"peerDependencies": {

@@ -2,7 +2,6 @@
 	"name": "api",
 	"version": "1.0.50",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "infisical  run --watch --env=dev -- bun run --watch src/index.ts"
 	},
 	"dependencies": {
@@ -18,6 +17,7 @@
 		"better-auth": "^1.2.12",
 		"database": "workspace:*",
 		"services": "workspace:*",
+		"transactional": "workspace:*",
 		"drizzle-kit": "^0.31.4",
 		"drizzle-orm": "^0.44.2",
 		"elysia": "latest",

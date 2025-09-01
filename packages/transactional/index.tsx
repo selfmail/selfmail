@@ -1,4 +1,4 @@
-import { pretty, render } from "@react-email/render";
+import { pretty, render, toPlainText } from "@react-email/render";
 import VerifyEmailTemplate from "./emails/verify-email";
 
 export async function generateVerifyEmailTemplate({
@@ -8,7 +8,11 @@ export async function generateVerifyEmailTemplate({
 	name: string;
 	token: string;
 }) {
-	return await pretty(
+	const html = await pretty(
 		await render(<VerifyEmailTemplate name={name} token={token} />),
 	);
+	return {
+		html,
+		text: toPlainText(html),
+	};
 }

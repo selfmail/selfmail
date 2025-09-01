@@ -1,5 +1,7 @@
 import { db } from "database";
 import { status } from "elysia";
+import { Mail } from "services/mail";
+import { generateVerifyEmailTemplate } from "transactional";
 import { rateLimitMiddleware } from "../../lib/auth-middleware";
 import type { AuthenticationModule } from "./module";
 
@@ -50,6 +52,30 @@ export abstract class AuthenticationService {
 				expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes from now
 			},
 		});
+
+		// send verify token to user
+		const mail = await Mail.sendHtmlEmail({
+			to: user.email,
+			from: "noreply@selfmail.app",
+			subject: "Verify your email for Selfmail",
+
+			html: (
+				await generateVerifyEmailTemplate({
+					name: user.name,
+					token: otpToken,
+				})
+			).html,
+			text: (
+				await generateVerifyEmailTemplate({
+					name: user.name,
+					token: otpToken,
+				})
+			).text,
+		});
+
+		if (!mail.success) {
+			throw status(500, "Failed to send verification email");
+		}
 
 		// Create session token
 		const sessionToken = crypto.randomUUID();
