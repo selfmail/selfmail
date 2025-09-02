@@ -326,6 +326,9 @@ model SmtpCredentials {
     username String
     password String
 
+    // Security: Track when password was last viewed
+    passwordViewedAt DateTime?
+
     // created by the user
     memberId String
     member   Member @relation(fields: [memberId], references: [id])

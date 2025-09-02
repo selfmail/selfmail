@@ -70,6 +70,7 @@ export namespace SMTPModule {
 				description: "Number of items per page",
 			}),
 		),
+		workspaceId: t.String(),
 		addressId: t.Optional(
 			t.String({
 				format: "uuid",

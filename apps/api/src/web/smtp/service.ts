@@ -123,6 +123,7 @@ export abstract class SMTPService {
 				description: cred.description,
 				username: cred.username,
 				// Don't expose password in list view
+				passwordViewed: !!cred.passwordViewedAt,
 				addressEmail: cred.address.email,
 				createdBy: cred.member.profileName || cred.member.user.name,
 				createdAt: cred.createdAt,
@@ -174,12 +175,28 @@ export abstract class SMTPService {
 			throw status(404, "SMTP credentials not found");
 		}
 
+		// Check if password has already been viewed
+		const canViewPassword = !credentials.passwordViewedAt;
+
+		// If password can be viewed, mark it as viewed
+		if (canViewPassword) {
+			await db.smtpCredentials.update({
+				where: {
+					id: credentialsId,
+				},
+				data: {
+					passwordViewedAt: new Date(),
+				},
+			});
+		}
+
 		return {
 			id: credentials.id,
 			title: credentials.title,
 			description: credentials.description,
 			username: credentials.username,
-			password: credentials.password, // Include password in single view
+			password: canViewPassword ? credentials.password : null, // Only show password if not viewed before
+			passwordViewed: !!credentials.passwordViewedAt,
 			addressEmail: credentials.address.email,
 			createdBy: credentials.member.profileName || credentials.member.user.name,
 			createdAt: credentials.createdAt,
@@ -303,13 +320,14 @@ export abstract class SMTPService {
 		// Generate new password
 		const newPassword = SMTPService.generatePassword();
 
-		// Update the credentials with new password
+		// Update the credentials with new password and reset passwordViewedAt
 		const updatedCredentials = await db.smtpCredentials.update({
 			where: {
 				id: credentialsId,
 			},
 			data: {
 				password: newPassword,
+				passwordViewedAt: null, // Reset so password can be viewed again
 			},
 			include: {
 				address: {

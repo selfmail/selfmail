@@ -1,5 +1,6 @@
 import Elysia from "elysia";
 import { requireWorkspaceMember } from "../authentication";
+import { requirePermissions } from "../permissions";
 import { SMTPModule } from "./module";
 import { SMTPService } from "./service";
 
@@ -8,6 +9,7 @@ export const smtpCredentials = new Elysia({
 	prefix: "/credentials",
 })
 	.use(requireWorkspaceMember)
+	.use(requirePermissions)
 	.post(
 		"/",
 		async ({ body, workspace, member }) => {
@@ -19,6 +21,7 @@ export const smtpCredentials = new Elysia({
 		},
 		{
 			body: SMTPModule.smtpCredentialsBody,
+			permissions: ["credentials:create"],
 			detail: {
 				description: "Generate new SMTP credentials for an address",
 				tags: ["SMTP Credentials"],
@@ -36,6 +39,7 @@ export const smtpCredentials = new Elysia({
 		},
 		{
 			query: SMTPModule.credentialsQuery,
+			permissions: ["credentials:read"],
 			detail: {
 				description: "List SMTP credentials with pagination and filtering",
 				tags: ["SMTP Credentials"],
@@ -53,6 +57,7 @@ export const smtpCredentials = new Elysia({
 		},
 		{
 			params: SMTPModule.credentialsParams,
+			permissions: ["credentials:read"],
 			detail: {
 				description: "Get a specific SMTP credential by ID",
 				tags: ["SMTP Credentials"],
@@ -72,6 +77,7 @@ export const smtpCredentials = new Elysia({
 		{
 			params: SMTPModule.credentialsParams,
 			body: SMTPModule.updateSmtpCredentialsBody,
+			permissions: ["credentials:edit"],
 			detail: {
 				description: "Update SMTP credentials",
 				tags: ["SMTP Credentials"],
@@ -89,6 +95,7 @@ export const smtpCredentials = new Elysia({
 		},
 		{
 			params: SMTPModule.credentialsParams,
+			permissions: ["credentials:delete"],
 			detail: {
 				description: "Delete SMTP credentials",
 				tags: ["SMTP Credentials"],
@@ -106,6 +113,7 @@ export const smtpCredentials = new Elysia({
 		},
 		{
 			params: SMTPModule.credentialsParams,
+			permissions: ["credentials:edit"],
 			detail: {
 				description: "Regenerate password for existing SMTP credentials",
 				tags: ["SMTP Credentials"],
