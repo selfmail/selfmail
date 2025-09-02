@@ -1,21 +1,28 @@
-import amqlib from "amqplib";
-import { Logs } from "services/logs";
-import { outboundListener } from "./listeners/outbound";
+import { Queue, Worker } from "bullmq";
+import consola from "consola";
+import IORedis from "ioredis";
+import { outbound } from "./outbound";
+import type { OutboundEmail } from "./schema/outbound";
 
-const exchange = "email-queue";
+const connection = new IORedis({
+	maxRetriesPerRequest: null,
+	host: "127.0.0.1",
+	port: 6379,
+});
 
-const conn = await amqlib.connect("amqp://admin:secret@localhost:5672");
-const channel = await conn.createChannel();
+const outboundWorker = new Worker<OutboundEmail, void>(
+	"emails-outbound",
+	async (job) => await outbound(job),
+	{ connection, concurrency: 50 },
+);
 
-await channel.assertExchange(exchange, "direct", { durable: true });
+outboundWorker.on("completed", (job) => {
+	consola.success(`Job ${job.id} completed`);
+});
 
-await outboundListener(channel);
-
-Logs.log("Inbound and Outbound Queue are listening!");
-
-process.on("SIGINT", async () => {
-	await channel.close();
-	await conn.close();
-
-	process.exit();
+outboundWorker.on("failed", (job, err) => {
+	consola.error(
+		`Job ${job?.id} failed after attempt ${job?.attemptsMade}:`,
+		err,
+	);
 });

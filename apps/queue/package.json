@@ -1,26 +1,23 @@
 {
 	"name": "queue",
-	"module": "index.ts",
+	"module": "src/index.ts",
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"dev": "bun --watch src/index.ts"
-	},
-	"dependencies": {
-		"amqplib": "^0.10.9",
-		"clamscan": "^2.4.0",
-		"nodemailer": "^7.0.5",
-		"sanitize-html": "^2.17.0",
-		"services": "workspace:*",
-		"zod": "^4.1.5"
+		"dev": "bun run --watch src/index.ts"
 	},
 	"devDependencies": {
-		"@types/amqplib": "^0.10.7",
 		"@types/bun": "latest",
-		"@types/nodemailer": "^7.0.1",
-		"@types/sanitize-html": "^2.16.0"
+		"@types/nodemailer": "^7.0.1"
 	},
 	"peerDependencies": {
 		"typescript": "^5"
+	},
+	"dependencies": {
+		"bullmq": "^5.58.4",
+		"consola": "^3.4.2",
+		"nodemailer": "^7.0.6",
+		"services": "workspace:*",
+		"zod": "^4.1.5"
 	}
 }

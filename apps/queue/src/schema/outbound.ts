@@ -4,7 +4,7 @@ import z from "zod";
 const addressObjectSchema = z.object({
 	value: z.array(
 		z.object({
-			address: z.string().email(),
+			address: z.email(),
 			name: z.string().optional(),
 		}),
 	),

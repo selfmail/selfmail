@@ -1,40 +1,26 @@
-import amqlib from "amqplib";
+import { Queue } from "bullmq";
+import IORedis from "ioredis";
 import type { ParsedMail } from "mailparser";
-import { Logs } from "./logs";
 
-export abstract class Queue {
-	static async retreiveChannel() {
-		const exchange = "email-queue";
-
-		const conn = await amqlib.connect("amqp://admin:secret@localhost:5672");
-		const channel = await conn.createChannel();
-
-		await channel.assertExchange(exchange, "direct", {
-			durable: true,
-		});
-
-		return channel;
-	}
-	static async processOutbound({
-		delay = 0,
-
-		...mail
-	}: ParsedMail & {
-		delay?: number;
-	}) {
-		const channel = await Queue.retreiveChannel();
-
-		channel.publish(
-			"email-queue",
-			"outbound-emails",
-			Buffer.from(JSON.stringify(mail)),
-			{
-				headers: {
-					"x-delay": delay,
-				},
+export abstract class EmailQueue {
+	static connection = new IORedis({
+		maxRetriesPerRequest: null,
+		host: "127.0.0.1",
+		port: 6379,
+	});
+	static queue = new Queue<ParsedMail>("emails-outbound", {
+		connection: EmailQueue.connection,
+		defaultJobOptions: {
+			attempts: 5,
+			backoff: {
+				type: "exponential",
+				delay: 1000,
 			},
-		);
-
-		Logs.log("Add new email to outbound-queue!");
+			removeOnComplete: true,
+			removeOnFail: false,
+		},
+	});
+	static async processOutbound(data: ParsedMail & { delay?: number }) {
+		await EmailQueue.queue.add("emails-outbound", data, { delay: data.delay });
 	}
 }

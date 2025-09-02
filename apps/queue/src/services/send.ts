@@ -1,44 +1,7 @@
 import type { MxRecord } from "node:dns";
-import type amqplib from "amqplib";
 import nodemailer from "nodemailer";
 import { Logs } from "services/logs";
 import type { OutboundEmail } from "../schema/outbound";
-import { calculateNextDelay } from "../utils/delay";
-
-async function retryWithDelay(
-	channel: amqplib.Channel,
-	msg: amqplib.ConsumeMessage,
-	reason: string,
-) {
-	const currentDelay = Number(msg.properties.headers?.["x-delay"]) || 0;
-	const nextDelay = calculateNextDelay(currentDelay);
-
-	if (nextDelay === undefined) {
-		Logs.error(
-			`${reason} - Maximum retries exceeded, permanently rejecting message`,
-		);
-		channel.nack(msg, false, false);
-		return;
-	}
-
-	Logs.log(
-		`${reason} - Retrying in ${nextDelay}ms (attempt after ${currentDelay}ms delay)`,
-	);
-
-	const exchange = "email-exchange";
-	const queue = "outbound-emails";
-
-	channel.publish(exchange, queue, msg.content, {
-		headers: {
-			...msg.properties.headers,
-			"x-delay": nextDelay,
-		},
-		persistent: true,
-		contentType: msg.properties.contentType,
-	});
-
-	channel.ack(msg);
-}
 
 export abstract class Send {
 	static async mail({
@@ -57,12 +20,8 @@ export abstract class Send {
 		references,
 		date,
 		priority,
-		msg,
-		channel,
 	}: OutboundEmail & {
 		records: MxRecord[];
-		msg: amqplib.ConsumeMessage;
-		channel: amqplib.Channel;
 	}) {
 		const host = records[0]?.exchange;
 
@@ -104,8 +63,6 @@ export abstract class Send {
 
 		if (!host) {
 			Logs.error("No SMTP host found in MX records");
-			await retryWithDelay(channel, msg, "No SMTP host found in MX records");
-			return;
 		}
 
 		const transporter = nodemailer.createTransport({
@@ -117,11 +74,6 @@ export abstract class Send {
 			const verify = await transporter.verify();
 
 			if (!verify) {
-				await retryWithDelay(
-					channel,
-					msg,
-					"SMTP connection verification failed",
-				);
 				return;
 			}
 
@@ -151,11 +103,7 @@ export abstract class Send {
 
 			if (!send.messageId) {
 				Logs.error("Email sending failed - no messageId received");
-				await retryWithDelay(
-					channel,
-					msg,
-					"Email sending failed - no messageId received",
-				);
+
 				return;
 			}
 
@@ -167,11 +115,7 @@ export abstract class Send {
 			Logs.error(
 				`Email sending failed: ${error instanceof Error ? error.message : "Unknown error"}`,
 			);
-			await retryWithDelay(
-				channel,
-				msg,
-				`Email sending failed: ${error instanceof Error ? error.message : "Unknown error"}`,
-			);
+
 			return;
 		}
 	}

@@ -42,5 +42,9 @@
 	},
 	"peerDependencies": {
 		"typescript": "^5"
+	},
+	"dependencies": {
+		"bullmq": "^5.58.4",
+		"ioredis": "^5.7.0"
 	}
 }
