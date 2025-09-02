@@ -231,6 +231,7 @@ export abstract class AuthenticationService {
 			user,
 		};
 	}
+
 	static async hasPermissions(memberId: string, permissions: string[]) {
 		// If no permissions to check, return early
 		if (!permissions || permissions.length === 0) {

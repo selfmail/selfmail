@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { SettingsIcon } from "lucide-react";
 import { useState } from "react";
 import AddressEmailList from "@/components/dashboard/address-email-list";
 import EmailViewer from "@/components/dashboard/email-viewer";
@@ -100,6 +101,16 @@ function AddressDashboard({
 									? `Address has ${addressData.totalCount} email${addressData.totalCount !== 1 ? "s" : ""}`
 									: "Email count unavailable"}
 						</p>
+					</div>
+					<div>
+						<Link
+							to="/workspace/$workspaceId/address/$addressId/settings"
+							params={{ addressId, workspaceId }}
+							className="flex items-center space-x-2"
+						>
+							<SettingsIcon className="h-4 w-4 cursor-pointer text-neutral-600" />
+							<p>Address Settings</p>
+						</Link>
 					</div>
 				</div>
 

@@ -1,4 +1,4 @@
-import Elysia from "elysia";
+import Elysia, { t } from "elysia";
 import { requirePermissions } from "../permissions";
 import { AddressModule } from "./module";
 import { AddressService } from "./service";
@@ -60,17 +60,24 @@ export const address = new Elysia({
 		},
 	)
 	.get(
-		"/:addressId/details",
-		async ({ params, workspace, member }) => {
+		"/details",
+		async ({ query, workspace, member }) => {
 			return await AddressService.getAddressDetails({
-				addressId: params.addressId,
+				addressId: query.addressId,
 				workspaceId: workspace.id,
 				memberId: member.id,
 			});
 		},
 		{
 			permissions: ["addresses:view"],
-			params: AddressModule.addressParamsSchema,
+			query: t.Object({
+				addressId: t.String({
+					format: "uuid",
+				}),
+				workspaceId: t.String({
+					format: "uuid",
+				}),
+			}),
 		},
 	)
 	.get(

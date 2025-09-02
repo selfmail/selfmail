@@ -1,3 +1,4 @@
+import { Link, Navigate } from "@tanstack/react-router";
 import { PlusIcon, SettingsIcon } from "lucide-react";
 import {
 	DropdownMenu,
@@ -13,17 +14,23 @@ export default function DashboardHeader({
 	workspaceId: string;
 }) {
 	const { workspace } = useWorkspaceMember(workspaceId);
+
+	if (!workspace) return <Navigate to="/" />;
 	return (
 		<header className="flex items-center justify-between px-4 py-5 sm:px-6 lg:px-26 xl:px-32">
 			<DropdownMenu>
 				<DropdownMenuTrigger>
 					<div className="rouded-md flex cursor-pointer flex-row items-center space-x-3 rounded-md bg-transparent outline-none ring-neutral-100 transition-all hover:bg-neutral-100 hover:ring-4">
-						<img
-							src="https://avatars.githubusercontent.com/u/178011817?s=200&v=4"
-							alt="Selfmail Logo"
-							className="h-5 w-5 rounded-md"
-						/>
-						<p className="font-medium">Selfmail</p>
+						{workspace.workspace.image ? (
+							<img
+								src={workspace.workspace.image ?? ""}
+								alt="Selfmail Logo"
+								className="h-5 w-5 rounded-md"
+							/>
+						) : (
+							<div className="h-5 w-5 rounded-md bg-blue-300" />
+						)}
+						<p className="font-medium">{workspace.workspace.name}</p>
 					</div>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent>
@@ -48,9 +55,18 @@ export default function DashboardHeader({
 					<DropdownMenuItem>Settings</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
-			<div className="flex items-center space-x-3">
-				<SettingsIcon className="h-4 w-4 rounded-md bg-transparent text-neutral-700 transition-colors hover:bg-neutral-100" />
-			</div>
+			<Link
+				to="/workspace/$workspaceId/settings"
+				params={{
+					workspaceId,
+				}}
+				className="group flex cursor-pointer items-center space-x-1 rounded-sm transition hover:bg-neutral-100 hover:ring-4 hover:ring-neutral-100"
+			>
+				<SettingsIcon className="h-4 w-4 rounded-md bg-transparent text-neutral-700 transition-colors hover:bg-neutral-100 group-hover:text-neutral-900" />
+				<span className="font-medium text-neutral-700 text-sm group-hover:text-neutral-900">
+					Workspace Settings
+				</span>
+			</Link>
 		</header>
 	);
 }

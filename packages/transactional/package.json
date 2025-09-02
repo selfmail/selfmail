@@ -9,7 +9,7 @@
 		}
 	},
 	"scripts": {
-		"dev": "email dev"
+		"dev": "email dev --port=3002"
 	},
 	"devDependencies": {
 		"@react-email/preview-server": "4.2.8",
