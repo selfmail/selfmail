@@ -91,13 +91,15 @@ export abstract class OutboundService {
 		const address = await db.address.findUnique({
 			where: {
 				email: from,
+				id: addressId,
 			},
 		});
 
 		if (!address)
 			throw status(404, {
 				valid: false,
-				message: "Address not found.",
+				message:
+					"Address not found or address does not belong to user or credentials.",
 			});
 
 		if (address.email !== from)

@@ -24,15 +24,13 @@ export async function mailFrom(
 		return callback(new Error("User session is invalid"));
 	}
 
-	const res = await client.outbound["mail-from"]
-		.post({
-			from: address.address,
-			addressId: parse.data.addressId,
-		})
-		.catch((err) => {
-			Logs.log("Error while verifying the MAIL FROM command");
-			if (err) throw callback(new Error("API Error!"));
-		});
+	const res = await client.outbound["mail-from"].post({
+		from: address.address,
+		addressId: parse.data.addressId,
+	});
+	if (res.error) {
+		return callback(new Error("Mail FROM could not be verified!"));
+	}
 
 	return callback();
 }

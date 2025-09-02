@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { UsersIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { RequireAuth, useUser } from "@/lib/auth";
@@ -77,11 +78,17 @@ function WorkspaceSelector() {
 								key === workspaces.length - 1 && "rounded-b-lg",
 							)}
 						>
-							<img
-								className="h-9 w-9 rounded-md border border-neutral-100"
-								src={workspace.image ?? "/placeholder.png"}
-								alt={workspace.name}
-							/>
+							{workspace.image ? (
+								<img
+									className="h-9 w-9 rounded-md border border-neutral-100"
+									src={workspace.image ?? "/placeholder.png"}
+									alt={workspace.name}
+								/>
+							) : (
+								<div className="flex h-9 w-9 items-center justify-center rounded-md border border-neutral-100 bg-neutral-200">
+									<UsersIcon className="h-4 w-4 text-neutral-400" />
+								</div>
+							)}
 							<h3 className="font-medium text-lg">{workspace.name}</h3>
 						</Link>
 					))}
