@@ -1,4 +1,4 @@
-import { Queue, Worker } from "bullmq";
+import { Worker } from "bullmq";
 import consola from "consola";
 import IORedis from "ioredis";
 import { outbound } from "./outbound";

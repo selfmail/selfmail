@@ -1,20 +1,30 @@
 import { Elysia, t } from "elysia";
-import type { AddressObject, Attachment, HeaderValue } from "mailparser";
-import { Queue } from "services/queue";
+import type { Attachment } from "mailparser";
+import { EmailQueue } from "services/queue";
 
-// Helper function to convert email string to AddressObject
-function createAddressObject(email: string, name?: string): AddressObject {
+// Define the address object structure that matches OutboundEmail schema
+type OutboundAddressObject = {
+	value: { address: string; name?: string }[];
+	text: string;
+	html: string;
+};
+
+// Helper function to convert email string to OutboundAddressObject
+function createAddressObject(
+	email: string,
+	name?: string,
+): OutboundAddressObject {
 	return {
-		value: [{ address: email, name: name || "" }],
+		value: [{ address: email, name }],
 		text: name ? `${name} <${email}>` : email,
 		html: name ? `${name} &lt;${email}&gt;` : email,
 	};
 }
 
-// Helper function to convert mixed array of emails to AddressObject array
+// Helper function to convert mixed array of emails to OutboundAddressObject array
 function createAddressObjects(
 	emails: (string | { email: string; name?: string })[],
-): AddressObject[] {
+): OutboundAddressObject[] {
 	return emails.map((item) => {
 		if (typeof item === "string") {
 			return createAddressObject(item);
@@ -108,33 +118,31 @@ const app = new Elysia()
 					checksum: "",
 				}));
 
-				// Convert headers to Map with proper types
-				const headerMap = new Map<string, HeaderValue>();
+				// Convert headers to a Map for compatibility with OutboundEmail schema
+				const headerMap = new Map<string, string>();
 				for (const [key, value] of Object.entries(headers)) {
-					headerMap.set(key, value as HeaderValue);
+					// Ensure header values are strings
+					headerMap.set(key, typeof value === "string" ? value : String(value));
 				}
 
-				await Queue.processOutbound({
-					from: fromAddress,
+				// Create properly structured OutboundEmail object
+				const outboundEmail = {
 					subject,
 					text,
-					html: html || false,
-					to: toAddresses.length === 1 ? toAddresses[0] : toAddresses,
-					cc:
-						ccAddresses && ccAddresses.length === 1
-							? ccAddresses[0]
-							: ccAddresses,
-					bcc:
-						bccAddresses && bccAddresses.length === 1
-							? bccAddresses[0]
-							: bccAddresses,
+					html,
+					to: toAddresses,
+					from: fromAddress,
+					cc: ccAddresses,
+					bcc: bccAddresses,
 					replyTo: replyToAddress,
 					priority,
 					attachments: processedAttachments,
 					headers: headerMap,
 					headerLines: [],
-					delay: body.delay || 0,
-				});
+					delay: body.delay,
+				};
+
+				await EmailQueue.processOutbound(outboundEmail);
 
 				return {
 					success: true,

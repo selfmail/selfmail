@@ -1,6 +1,6 @@
 import { Queue } from "bullmq";
 import IORedis from "ioredis";
-import type { ParsedMail } from "mailparser";
+import type { OutboundEmail } from "../../../apps/queue/src/schema/outbound";
 
 export abstract class EmailQueue {
 	static connection = new IORedis({
@@ -8,7 +8,8 @@ export abstract class EmailQueue {
 		host: "127.0.0.1",
 		port: 6379,
 	});
-	static queue = new Queue<ParsedMail>("emails-outbound", {
+
+	static queue = new Queue<OutboundEmail>("emails-outbound", {
 		connection: EmailQueue.connection,
 		defaultJobOptions: {
 			attempts: 5,
@@ -20,7 +21,10 @@ export abstract class EmailQueue {
 			removeOnFail: false,
 		},
 	});
-	static async processOutbound(data: ParsedMail & { delay?: number }) {
-		await EmailQueue.queue.add("emails-outbound", data, { delay: data.delay });
+
+	static async processOutbound(data: OutboundEmail & { delay?: number }) {
+		await EmailQueue.queue.add("emails-outbound", data, {
+			delay: data.delay,
+		});
 	}
 }
