@@ -1,6 +1,4 @@
-import OptimizedVideo from "../../components/OptimizedVideo";
-
-export default function Home() {
+export default function Roadmap() {
 	return (
 		<div className="flex min-h-screen w-full flex-col bg-white px-5 text-black lg:flex-row">
 			<div className="flex w-full flex-col space-y-5 py-5 lg:w-[30%] lg:px-5">
