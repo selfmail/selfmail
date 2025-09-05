@@ -4,6 +4,7 @@ export default function Home() {
 	return (
 		<div className="flex w-full flex-col">
 			<Header />
+			I'm another element
 		</div>
 	);
 }
