@@ -48,6 +48,9 @@ export default function DashboardNavigation({
 		<div className="flex w-full flex-row items-start justify-between px-4 py-5 sm:px-6 lg:px-26 xl:px-32">
 			<div className="flex flex-col space-y-2">
 				<p className="font-medium">Mail</p>
+				<NavLink href={`/workspace/${workspaceId}/compose`}>
+					Compose Email
+				</NavLink>
 				{data?.map((address) => (
 					<NavLink
 						key={address.id}

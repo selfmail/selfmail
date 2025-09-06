@@ -1,18 +1,30 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useIsMobile from "@/hooks/useIsMobile";
 
 export default function Header() {
 	const [show, setShow] = useState(false);
+	const [showBorder, setShowBorder] = useState(false);
+	// TODO: hide border when scrolling to top, show border when showing menu
 
 	const isMobile = useIsMobile();
+
+	useEffect(() => {
+		if (window.scrollY > 50) {
+			setShowBorder(false);
+		} else {
+			setShowBorder(true);
+		}
+	});
 
 	return (
 		// biome-ignore lint/a11y/noStaticElementInteractions: <header> is used to open the dropdown menu on hover
 		<header
 			onMouseEnter={() => !isMobile && setShow(true)}
 			onMouseLeave={() => !isMobile && setShow(false)}
-			className="absolute top-0 right-0 left-0 border-b border-b-neutral-100 bg-white px-5 py-3"
+			className={
+				"absolute top-0 right-0 left-0 z-90 border-b border-b-neutral-100 bg-white px-5 py-3"
+			}
 		>
 			<div className="z-50 mx-auto max-w-7xl">
 				<div className="flex items-center justify-between">

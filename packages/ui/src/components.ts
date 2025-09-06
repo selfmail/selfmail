@@ -63,6 +63,8 @@ export {
 	SelectTrigger,
 	SelectValue,
 } from "./components/ui/select";
+export { Separator } from "./components/ui/separator";
 export { Toaster } from "./components/ui/sonner";
+export { Textarea } from "./components/ui/textarea";
 // Utility exports
 export { cn } from "./lib/utils";

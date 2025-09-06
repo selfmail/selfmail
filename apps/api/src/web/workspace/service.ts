@@ -80,4 +80,139 @@ export class WorkspaceService {
 			slug: member.workspace.slug,
 		}));
 	}
+
+	static async getAddresses(workspaceId: string, userId: string) {
+		// First verify the user has access to this workspace
+		const member = await db.member.findFirst({
+			where: {
+				userId,
+				workspaceId,
+			},
+		});
+
+		if (!member) {
+			return status(403, "Access denied to workspace");
+		}
+
+		// Get all addresses that this member has access to
+		const memberAddresses = await db.memberAddress.findMany({
+			where: {
+				memberId: member.id,
+			},
+			include: {
+				address: {
+					select: {
+						id: true,
+						email: true,
+					},
+				},
+			},
+		});
+
+		// Transform to the expected format and add isDefault field
+		return memberAddresses.map((memberAddress, index) => ({
+			id: memberAddress.address.id,
+			email: memberAddress.address.email,
+			name: undefined, // Address model doesn't have a name field
+			isDefault: index === 0, // First address is default for now
+		}));
+	}
+
+	static async sendEmail(
+		workspaceId: string,
+		userId: string,
+		emailData: {
+			from: string;
+			to: string[];
+			cc?: string[];
+			bcc?: string[];
+			subject: string;
+			text: string;
+			html?: string;
+			workspaceId: string;
+		},
+	) {
+		// Verify user access to workspace
+		const member = await db.member.findFirst({
+			where: {
+				userId,
+				workspaceId,
+			},
+		});
+
+		if (!member) {
+			return status(403, "Access denied to workspace");
+		}
+
+		// Verify the from address belongs to this workspace and user has access
+		const fromAddress = await db.memberAddress.findFirst({
+			where: {
+				memberId: member.id,
+				address: {
+					email: emailData.from,
+				},
+			},
+			include: {
+				address: true,
+			},
+		});
+
+		if (!fromAddress) {
+			return status(400, "Invalid sender address or access denied");
+		}
+
+		// Prepare the relay data
+		const relayData = {
+			from: emailData.from,
+			to: emailData.to,
+			cc: emailData.cc,
+			bcc: emailData.bcc,
+			subject: emailData.subject,
+			text: emailData.text,
+			html: emailData.html,
+		};
+
+		try {
+			// Send to relay service
+			const relayResponse = await fetch("http://localhost:4000/send", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(relayData),
+			});
+
+			if (!relayResponse.ok) {
+				const errorText = await relayResponse.text();
+				throw new Error(`Relay service error: ${errorText}`);
+			}
+
+			const result = await relayResponse.json();
+
+			// Log the email sending activity
+			await db.activity.create({
+				data: {
+					title: "Email Sent",
+					description: `Email sent to ${emailData.to.join(", ")}`,
+					color: "positive",
+					type: "event",
+					workspaceId,
+					userId,
+				},
+			});
+
+			return {
+				success: true,
+				messageId: result.messageId,
+				message: "Email sent successfully",
+			};
+		} catch (error) {
+			console.error("Email sending failed:", error);
+			return status(500, {
+				success: false,
+				message:
+					error instanceof Error ? error.message : "Failed to send email",
+			});
+		}
+	}
 }

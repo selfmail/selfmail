@@ -63,4 +63,72 @@ export const workspace = new Elysia({
 	})
 	.post("/kick", async ({ body, user }) => {}, {
 		permissions: ["workspace:kick"],
-	});
+	})
+	.get(
+		"/:workspaceId/addresses",
+		async ({ params, user }) => {
+			return await WorkspaceService.getAddresses(params.workspaceId, user.id);
+		},
+		{
+			params: t.Object({
+				workspaceId: t.String({
+					description: "The workspace ID",
+				}),
+			}),
+			detail: {
+				description: "Get available email addresses for the workspace",
+			},
+		},
+	)
+	.post(
+		"/:workspaceId/send-email",
+		async ({ params, body, user }) => {
+			return await WorkspaceService.sendEmail(
+				params.workspaceId,
+				user.id,
+				body,
+			);
+		},
+		{
+			params: t.Object({
+				workspaceId: t.String({
+					description: "The workspace ID",
+				}),
+			}),
+			body: t.Object({
+				from: t.String({
+					description: "Sender email address",
+				}),
+				to: t.Array(t.String(), {
+					description: "Recipient email addresses",
+				}),
+				cc: t.Optional(
+					t.Array(t.String(), {
+						description: "CC email addresses",
+					}),
+				),
+				bcc: t.Optional(
+					t.Array(t.String(), {
+						description: "BCC email addresses",
+					}),
+				),
+				subject: t.String({
+					description: "Email subject",
+				}),
+				text: t.String({
+					description: "Plain text email body",
+				}),
+				html: t.Optional(
+					t.String({
+						description: "HTML email body",
+					}),
+				),
+				workspaceId: t.String({
+					description: "Workspace ID",
+				}),
+			}),
+			detail: {
+				description: "Send an email through the relay service",
+			},
+		},
+	);
