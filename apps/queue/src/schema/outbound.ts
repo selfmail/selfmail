@@ -54,7 +54,10 @@ export const outboundSchema = z.object({
 
 	// Attachments and headers
 	attachments: z.array(attachmentSchema),
-	headers: z.union([z.map(z.string(), headerValueSchema), z.object()]),
+	headers: z.union([
+		z.map(z.string(), headerValueSchema),
+		z.record(z.string(), z.string()),
+	]),
 	headerLines: z.array(
 		z.object({
 			key: z.string(),

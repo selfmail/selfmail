@@ -9,12 +9,16 @@ import { Send } from "./services/send";
 
 export async function outbound(job: Job<OutboundEmail, void, string>) {
 	Logs.log("Received outbound email to send.");
-	const parse = await outboundSchema.safeParseAsync(
-		JSON.parse(job.data.toString()),
-	);
+
+	// Add debugging to see the actual data structure
+	console.log("Job data type:", typeof job.data);
+	console.log("Job data:", JSON.stringify(job.data, null, 2));
+
+	const parse = await outboundSchema.safeParseAsync(job.data);
 
 	if (!parse.success) {
-		console.error(z.prettifyError(parse.error));
+		console.error("Validation errors:", z.prettifyError(parse.error));
+		console.error("Raw data that failed validation:", job.data);
 		Logs.error("Parsing outbound email went wrong!");
 
 		return;
@@ -63,9 +67,9 @@ export async function outbound(job: Job<OutboundEmail, void, string>) {
 		records: mxRecords,
 	});
 
-	await job.moveToFailed(new Error("Failed to send email."), "sdfsdf");
-
 	if (messageId) {
 		Logs.log(`Sent outbound email: ${mail.subject} (Message ID: ${messageId})`);
+	} else {
+		throw new Error("Failed to send email - no message ID returned");
 	}
 }

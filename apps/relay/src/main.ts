@@ -118,11 +118,11 @@ const app = new Elysia()
 					checksum: "",
 				}));
 
-				// Convert headers to a Map for compatibility with OutboundEmail schema
-				const headerMap = new Map<string, string>();
+				// Convert headers to a plain object for JSON serialization
+				const headerObject: Record<string, string> = {};
 				for (const [key, value] of Object.entries(headers)) {
 					// Ensure header values are strings
-					headerMap.set(key, typeof value === "string" ? value : String(value));
+					headerObject[key] = typeof value === "string" ? value : String(value);
 				}
 
 				// Create properly structured OutboundEmail object
@@ -137,7 +137,7 @@ const app = new Elysia()
 					replyTo: replyToAddress,
 					priority,
 					attachments: processedAttachments,
-					headers: headerMap,
+					headers: headerObject, // Use plain object instead of Map
 					headerLines: [],
 					delay: body.delay,
 				};
