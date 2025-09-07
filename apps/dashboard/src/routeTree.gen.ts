@@ -21,6 +21,7 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as WorkspaceCreateIndexRouteImport } from './routes/workspace/create/index'
 import { Route as WorkspaceWorkspaceIdIndexRouteImport } from './routes/workspace/$workspaceId/index'
 import { Route as WorkspaceWorkspaceIdComposeRouteImport } from './routes/workspace/$workspaceId/compose'
+import { Route as WorkspaceWorkspaceIdActivityRouteImport } from './routes/workspace/$workspaceId/activity'
 import { Route as WorkspaceWorkspaceIdSettingsIndexRouteImport } from './routes/workspace/$workspaceId/settings/index'
 import { Route as WorkspaceWorkspaceIdMembersIndexRouteImport } from './routes/workspace/$workspaceId/members/index'
 import { Route as WorkspaceWorkspaceIdSettingsUserRouteImport } from './routes/workspace/$workspaceId/settings/user'
@@ -94,6 +95,12 @@ const WorkspaceWorkspaceIdComposeRoute =
     path: '/workspace/$workspaceId/compose',
     getParentRoute: () => rootRouteImport,
   } as any)
+const WorkspaceWorkspaceIdActivityRoute =
+  WorkspaceWorkspaceIdActivityRouteImport.update({
+    id: '/workspace/$workspaceId/activity',
+    path: '/workspace/$workspaceId/activity',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const WorkspaceWorkspaceIdSettingsIndexRoute =
   WorkspaceWorkspaceIdSettingsIndexRouteImport.update({
     id: '/workspace/$workspaceId/settings/',
@@ -165,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/legal/tos': typeof LegalTosRoute
   '/mail/$mailId': typeof MailMailIdRoute
   '/onboarding/workspace': typeof OnboardingWorkspaceRoute
+  '/workspace/$workspaceId/activity': typeof WorkspaceWorkspaceIdActivityRoute
   '/workspace/$workspaceId/compose': typeof WorkspaceWorkspaceIdComposeRoute
   '/workspace/$workspaceId': typeof WorkspaceWorkspaceIdIndexRoute
   '/workspace/create': typeof WorkspaceCreateIndexRoute
@@ -189,6 +197,7 @@ export interface FileRoutesByTo {
   '/legal/tos': typeof LegalTosRoute
   '/mail/$mailId': typeof MailMailIdRoute
   '/onboarding/workspace': typeof OnboardingWorkspaceRoute
+  '/workspace/$workspaceId/activity': typeof WorkspaceWorkspaceIdActivityRoute
   '/workspace/$workspaceId/compose': typeof WorkspaceWorkspaceIdComposeRoute
   '/workspace/$workspaceId': typeof WorkspaceWorkspaceIdIndexRoute
   '/workspace/create': typeof WorkspaceCreateIndexRoute
@@ -214,6 +223,7 @@ export interface FileRoutesById {
   '/legal/tos': typeof LegalTosRoute
   '/mail/$mailId': typeof MailMailIdRoute
   '/onboarding/workspace': typeof OnboardingWorkspaceRoute
+  '/workspace/$workspaceId/activity': typeof WorkspaceWorkspaceIdActivityRoute
   '/workspace/$workspaceId/compose': typeof WorkspaceWorkspaceIdComposeRoute
   '/workspace/$workspaceId/': typeof WorkspaceWorkspaceIdIndexRoute
   '/workspace/create/': typeof WorkspaceCreateIndexRoute
@@ -240,6 +250,7 @@ export interface FileRouteTypes {
     | '/legal/tos'
     | '/mail/$mailId'
     | '/onboarding/workspace'
+    | '/workspace/$workspaceId/activity'
     | '/workspace/$workspaceId/compose'
     | '/workspace/$workspaceId'
     | '/workspace/create'
@@ -264,6 +275,7 @@ export interface FileRouteTypes {
     | '/legal/tos'
     | '/mail/$mailId'
     | '/onboarding/workspace'
+    | '/workspace/$workspaceId/activity'
     | '/workspace/$workspaceId/compose'
     | '/workspace/$workspaceId'
     | '/workspace/create'
@@ -288,6 +300,7 @@ export interface FileRouteTypes {
     | '/legal/tos'
     | '/mail/$mailId'
     | '/onboarding/workspace'
+    | '/workspace/$workspaceId/activity'
     | '/workspace/$workspaceId/compose'
     | '/workspace/$workspaceId/'
     | '/workspace/create/'
@@ -313,6 +326,7 @@ export interface RootRouteChildren {
   LegalTosRoute: typeof LegalTosRoute
   MailMailIdRoute: typeof MailMailIdRoute
   OnboardingWorkspaceRoute: typeof OnboardingWorkspaceRoute
+  WorkspaceWorkspaceIdActivityRoute: typeof WorkspaceWorkspaceIdActivityRoute
   WorkspaceWorkspaceIdComposeRoute: typeof WorkspaceWorkspaceIdComposeRoute
   WorkspaceWorkspaceIdIndexRoute: typeof WorkspaceWorkspaceIdIndexRoute
   WorkspaceCreateIndexRoute: typeof WorkspaceCreateIndexRoute
@@ -414,6 +428,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkspaceWorkspaceIdComposeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/workspace/$workspaceId/activity': {
+      id: '/workspace/$workspaceId/activity'
+      path: '/workspace/$workspaceId/activity'
+      fullPath: '/workspace/$workspaceId/activity'
+      preLoaderRoute: typeof WorkspaceWorkspaceIdActivityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/workspace/$workspaceId/settings/': {
       id: '/workspace/$workspaceId/settings/'
       path: '/workspace/$workspaceId/settings'
@@ -497,6 +518,7 @@ const rootRouteChildren: RootRouteChildren = {
   LegalTosRoute: LegalTosRoute,
   MailMailIdRoute: MailMailIdRoute,
   OnboardingWorkspaceRoute: OnboardingWorkspaceRoute,
+  WorkspaceWorkspaceIdActivityRoute: WorkspaceWorkspaceIdActivityRoute,
   WorkspaceWorkspaceIdComposeRoute: WorkspaceWorkspaceIdComposeRoute,
   WorkspaceWorkspaceIdIndexRoute: WorkspaceWorkspaceIdIndexRoute,
   WorkspaceCreateIndexRoute: WorkspaceCreateIndexRoute,

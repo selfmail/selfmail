@@ -48,6 +48,7 @@ export default function DashboardNavigation({
 		<div className="flex w-full flex-row items-start justify-between px-4 py-5 sm:px-6 lg:px-26 xl:px-32">
 			<div className="flex flex-col space-y-2">
 				<p className="font-medium">Mail</p>
+				<NavLink href={`/workspace/${workspaceId}`}>Unified Inbox</NavLink>
 				<NavLink href={`/workspace/${workspaceId}/compose`}>
 					Compose Email
 				</NavLink>
@@ -81,14 +82,24 @@ export default function DashboardNavigation({
 			</div>
 			<div className="flex flex-col space-y-2">
 				<p className="font-medium">Workspace</p>
-				<NavLink href="/workflows">Workflows</NavLink>
-				<NavLink href="/members">Members</NavLink>
+				<NavLink href={`/workspace/${workspaceId}/activity`}>Activity</NavLink>
+				<NavLink href={`/workspace/${workspaceId}/members`}>Members</NavLink>
+				<NavLink href={`/workspace/${workspaceId}/workflows`}>
+					Workflows
+				</NavLink>
+				<NavLink href={`/workspace/${workspaceId}/billing`}>Billing</NavLink>
 			</div>
 			<div className="flex flex-col space-y-2">
 				<p className="font-medium">Settings</p>
-				<NavLink href="/settings/workspace">Workspace Settings</NavLink>
-				<NavLink href="/settings/profile">Profile Settings</NavLink>
-				<NavLink href="/settings/user">User Settings</NavLink>
+				<NavLink href={`/workspace/${workspaceId}/settings/workspace`}>
+					Workspace Settings
+				</NavLink>
+				<NavLink href={`/workspace/${workspaceId}/settings/profile`}>
+					Profile Settings
+				</NavLink>
+				<NavLink href={`/workspace/${workspaceId}/settings/user`}>
+					User Settings
+				</NavLink>
 				<div className="flex w-min flex-row items-center space-x-0.5 rounded-md bg-transparent p-2 ring-neutral-100 transition-all hover:bg-neutral-100 hover:ring-4">
 					<span className="h-1 w-1 rounded-full bg-neutral-600" />
 					<span className="h-1 w-1 rounded-full bg-neutral-600" />
