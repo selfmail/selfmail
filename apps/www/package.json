@@ -16,6 +16,7 @@
 		"motion": "^12.23.12",
 		"react": "^19",
 		"react-dom": "^19",
+		"concurrently": "^8.2.2",
 		"tailwindcss": "^4.1.11"
 	},
 	"devDependencies": {

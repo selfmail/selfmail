@@ -18,10 +18,10 @@
 		"db:push": "turbo -F database db:push"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.1.4",
+		"@biomejs/biome": "^2.2.3",
 		"husky": "^9.1.7",
 		"lint-staged": "^15.5.2",
-		"turbo": "^2.5.5"
+		"turbo": "^2.5.6"
 	},
 	"lint-staged": {
 		"*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
