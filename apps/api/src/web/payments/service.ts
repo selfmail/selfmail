@@ -148,4 +148,8 @@ export abstract class PaymentsService {
 
 		throw redirect(url.url);
 	}
+
+	static async getCurrentPlan({
+		workspaceId,
+	}: PaymentsModule.getCurrentPlanQuery) {}
 }

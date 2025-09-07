@@ -34,4 +34,12 @@ export namespace PaymentsModule {
 		}),
 	});
 	export type CustomerPortalParams = typeof customerPortalParams.static;
+
+	export const getCurrentPlanQuery = t.Object({
+		workspaceId: t.String({
+			description: "The ID of the workspace to get the current plan for.",
+			format: "uuid",
+		}),
+	});
+	export type getCurrentPlanQuery = typeof getCurrentPlanQuery.static;
 }

@@ -18,8 +18,6 @@ export const useWorkspaceMember = (
 				},
 			});
 
-			console.log(workspace);
-
 			if (permissions) {
 				const hasPermissionsForAction =
 					await client.v1.web.authentication.me.workspace.permissions.get({

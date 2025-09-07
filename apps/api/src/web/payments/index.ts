@@ -25,7 +25,6 @@ export const payments = new Elysia({
 					"Redirect to the customer portal for managing subscriptions and payments.",
 			},
 			params: PaymentsModule.customerPortalParams,
-			isSignIn: true,
 			permissions: ["payments:manage"],
 		},
 	)
@@ -34,6 +33,5 @@ export const payments = new Elysia({
 			description: "Redirect to the checkout page for creating a new payment.",
 		},
 		params: PaymentsModule.checkoutParams,
-		isSignIn: true,
 		permissions: ["payments:create"],
 	});
