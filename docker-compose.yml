@@ -20,21 +20,7 @@ services:
     ports:
       - "3310:3310"
 
-  rabbitmq:
-    build:
-      context: .
-      dockerfile: Dockerfile.rabbitmq
-    container_name: rabbitmq
-    restart: unless-stopped
-    ports:
-      - "5672:5672"    # AMQP
-      - "15672:15672"  # UI
-    environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-
+  
   postgres:
     image: postgres:16
     container_name: selfmail-postgres
@@ -58,6 +44,5 @@ services:
       - redis_data:/data
 
 volumes:
-  rabbitmq_data:
   postgres_data:
   redis_data:

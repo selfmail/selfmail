@@ -149,7 +149,8 @@ model Workspace {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    billingPlan BillingPlan @default(free)
+    billingPlan   BillingPlan @default(free)
+    planChangedAt DateTime    @default(now())
 
     slug            String            @unique @default(uuid())
     ownerId         String
