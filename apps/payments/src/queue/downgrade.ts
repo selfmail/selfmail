@@ -19,6 +19,8 @@ export async function downgrade(job: Job<DowngradeJobData, void, string>) {
 
 	if (!workspace) throw new Error("Workspace not found");
 
+	// check for used resources
+
 	const update = await db.workspace.update({
 		where: {
 			id: workspace.id,

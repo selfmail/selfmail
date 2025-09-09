@@ -82,7 +82,6 @@ model Member {
     workspace        Workspace          @relation(fields: [workspaceId], references: [id])
     MemberPermission MemberPermission[]
     MemberAddress    MemberAddress[]
-    OutgoingEmail    OutgoingEmail[]
     roles            Role[]
     SmtpCredentials  SmtpCredentials[]
 
@@ -196,7 +195,6 @@ model Address {
     // multiple members can access the same address (e.g. shared addresses)
     MemberAddress   MemberAddress[]
     Email           Email[]
-    OutgoingEmail   OutgoingEmail[]
     SmtpCredentials SmtpCredentials[]
     Contact         Contact[]
 }
@@ -240,9 +238,8 @@ model Contact {
      */
     additionalInformation Json[]
 
-    email         String
-    Email         Email[]
-    OutgoingEmail OutgoingEmail[]
+    email String
+    Email Email[]
 
     @@unique([email, addressId])
 }
@@ -254,6 +251,9 @@ model Email {
     messageId String? // RFC Message-ID header
     subject   String
     date      DateTime @default(now())
+
+    // size of the bytes to keep in track with the storage
+    sizeBytes BigInt
 
     // read status
     read   Boolean   @default(false)
@@ -299,6 +299,8 @@ model Email {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
+    sort Sort
+
     @@index([addressId])
     @@index([contactId])
     @@index([date])
@@ -306,27 +308,12 @@ model Email {
     @@index([read])
 }
 
-model OutgoingEmail {
-    id String @id @default(uuid())
-
-    // email data
-    subject String
-    body    String
-    html    String?
-
-    // the sender of the email
-    addressId String
-    address   Address @relation(fields: [addressId], references: [id])
-
-    // the user which sent the email
-    memberId String
-    member   Member @relation(fields: [memberId], references: [id])
-
-    // the recipient of the email
-    contact   Contact @relation(fields: [contactId], references: [id])
-    contactId String
-
-    date DateTime @default(now())
+enum Sort {
+    normal
+    important
+    spam
+    trash
+    sent
 }
 
 model SmtpCredentials {
