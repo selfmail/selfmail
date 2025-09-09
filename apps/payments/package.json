@@ -1,0 +1,17 @@
+{
+  "name": "payments",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "bullmq": "^5.58.5",
+    "consola": "^3.4.2",
+    "ioredis": "^5.7.0"
+  }
+}

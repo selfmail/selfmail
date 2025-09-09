@@ -146,6 +146,11 @@ model Workspace {
     description String?
     image       String? // url to image (hosted on selfmail r2) or undefined for no image
 
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    billingPlan BillingPlan @default(free)
+
     slug            String            @unique @default(uuid())
     ownerId         String
     owner           User              @relation(fields: [ownerId], references: [id])
@@ -156,6 +161,13 @@ model Workspace {
     Activity        Activity[]
 
     @@index([ownerId])
+}
+
+enum BillingPlan {
+    free
+    pro
+    premium
+    // TODO: create enterprise plan with custom pricing
 }
 
 model Domain {
