@@ -1,92 +1,92 @@
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 // Authentication
 model User {
-    id       String @id @default(uuid())
-    name     String
-    password String
-    email    String @unique
+  id       String @id @default(uuid())
+  name     String
+  password String
+  email    String @unique
 
-    // Two-factor authentication fields
-    twoFactorEnabled Boolean @default(false)
-    twoFactorSecret  String?
-    backupCodes      String? // JSON array of hashed backup codes
+  // Two-factor authentication fields
+  twoFactorEnabled Boolean @default(false)
+  twoFactorSecret  String?
+  backupCodes      String? // JSON array of hashed backup codes
 
-    emailVerified DateTime?
+  emailVerified DateTime?
 
-    // a single user can be member of different workspaces
-    member            Member[]
-    EmailVerification EmailVerification[]
-    Session           Session[]
-    SmtpCredentials   SmtpCredentials[]
-    Activity          Activity[]
-    TwoFactorToken    TwoFactorToken[]
-    Workspace         Workspace[]
+  // a single user can be member of different workspaces
+  member            Member[]
+  EmailVerification EmailVerification[]
+  Session           Session[]
+  SmtpCredentials   SmtpCredentials[]
+  Activity          Activity[]
+  TwoFactorToken    TwoFactorToken[]
+  Workspace         Workspace[]
 
-    @@unique([id, email])
+  @@unique([id, email])
 }
 
 model EmailVerification {
-    id String @id @default(uuid())
+  id String @id @default(uuid())
 
-    // the user that is being verified
-    userId String
-    user   User   @relation(fields: [userId, email], references: [id, email])
+  // the user that is being verified
+  userId String
+  user   User   @relation(fields: [userId, email], references: [id, email])
 
-    email String
+  email String
 
-    // the verification token
-    token String @unique
+  // the verification token
+  token String @unique
 
-    // the date when the verification was created
-    expiresAt DateTime
+  // the date when the verification was created
+  expiresAt DateTime
 
-    @@unique([email, userId])
+  @@unique([email, userId])
 }
 
 model Session {
-    id String @id @default(uuid())
+  id String @id @default(uuid())
 
-    // the user that is being verified
-    userId String
-    user   User   @relation(fields: [userId], references: [id])
+  // the user that is being verified
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-    // the session token
-    token String @unique
+  // the session token
+  token String @unique
 
-    // the date when the session was created
-    createdAt DateTime @default(now())
+  // the date when the session was created
+  createdAt DateTime @default(now())
 }
 
 model Member {
-    id String @id @default(uuid())
+  id String @id @default(uuid())
 
-    userId String
-    user   User   @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-    // profile configuration
-    profileName String? // by default it's the name of the user
-    description String?
-    image       String? // url to image (hosted on selfmail r2) or undefined for no image
+  // profile configuration
+  profileName String? // by default it's the name of the user
+  description String?
+  image       String? // url to image (hosted on selfmail r2) or undefined for no image
 
-    // permissions
+  // permissions
 
-    workspaceId      String
-    workspace        Workspace          @relation(fields: [workspaceId], references: [id])
-    MemberPermission MemberPermission[]
-    MemberAddress    MemberAddress[]
-    roles            Role[]
-    SmtpCredentials  SmtpCredentials[]
+  workspaceId      String
+  workspace        Workspace          @relation(fields: [workspaceId], references: [id])
+  MemberPermission MemberPermission[]
+  MemberAddress    MemberAddress[]
+  roles            Role[]
+  SmtpCredentials  SmtpCredentials[]
 
-    @@unique([workspaceId, userId])
-    @@index([userId])
+  @@unique([workspaceId, userId])
+  @@index([userId])
 }
 
 // permissions
@@ -94,309 +94,321 @@ model Member {
 // A role is just a set of editable permissions that can be assigned to users. These roles are editable
 // by the owner of the workspace. The owner can create, update, and delete roles, and assign them to users.
 model Role {
-    id          String  @id @default(uuid())
-    name        String
-    description String?
+  id          String  @id @default(uuid())
+  name        String
+  description String?
 
-    workspaceId    String
-    workspace      Workspace        @relation(fields: [workspaceId], references: [id])
-    member         Member[]
-    RolePermission RolePermission[]
+  workspaceId    String
+  workspace      Workspace        @relation(fields: [workspaceId], references: [id])
+  member         Member[]
+  RolePermission RolePermission[]
 }
 
 model RolePermission {
-    roleId String
-    role   Role   @relation(fields: [roleId], references: [id])
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [id])
 
-    permissionId String
-    permission   Permission @relation(fields: [permissionId], references: [id])
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id])
 
-    @@id([roleId, permissionId])
+  @@id([roleId, permissionId])
 }
 
 model MemberPermission {
-    memberId String
-    member   Member @relation(fields: [memberId], references: [id])
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id])
 
-    permissionId String
-    permission   Permission @relation(fields: [permissionId], references: [id])
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id])
 
-    givenAt DateTime @default(now())
+  givenAt DateTime @default(now())
 
-    @@id([memberId, permissionId])
+  @@id([memberId, permissionId])
 }
 
 // Permissions are the actual actions that a user can perform in a workspace. These permissions
 // are not editable by the owner of the workspace, he can only assign them to roles and users.
 model Permission {
-    id          String  @id @default(uuid())
-    name        String  @unique
-    description String?
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
 
-    RolePermission    RolePermission[]
-    MemberPermissions MemberPermission[]
+  RolePermission    RolePermission[]
+  MemberPermissions MemberPermission[]
 }
 
 // Workspaces
 
 model Workspace {
-    id          String  @id @default(uuid())
-    name        String
-    description String?
-    image       String? // url to image (hosted on selfmail r2) or undefined for no image
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  image       String? // url to image (hosted on selfmail r2) or undefined for no image
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    billingPlan   BillingPlan @default(free)
-    planChangedAt DateTime    @default(now())
+  billingPlan   BillingPlan @default(free)
+  planChangedAt DateTime    @default(now())
 
-    slug            String            @unique @default(uuid())
-    ownerId         String
-    owner           User              @relation(fields: [ownerId], references: [id])
-    Member          Member[]
-    Role            Role[]
-    Domain          Domain[]
-    SmtpCredentials SmtpCredentials[]
-    Activity        Activity[]
+  slug            String            @unique @default(uuid())
+  ownerId         String
+  owner           User              @relation(fields: [ownerId], references: [id])
+  Member          Member[]
+  Role            Role[]
+  Domain          Domain[]
+  SmtpCredentials SmtpCredentials[]
+  Activity        Activity[]
 
-    @@index([ownerId])
+  @@index([ownerId])
+}
+
+model Plan {
+  id String @id @default(uuid())
+
+  name                 BillingPlan @unique
+  maxMembers           Int // max number of members in the workspace
+  softBytesMemberLimit BigInt
+
+  priceEuroCents Int // price in cents for euro
+
+  storageBytes BigInt // storage in bytes
 }
 
 enum BillingPlan {
-    free
-    pro
-    premium
-    // TODO: create enterprise plan with custom pricing
+  free
+  pro
+  premium
+  // TODO: create enterprise plan with custom pricing
 }
 
 model Domain {
-    id String @id @default(uuid())
+  id String @id @default(uuid())
 
-    domain String @unique
+  domain String @unique
 
-    workspaceId String
-    workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
 
-    verified   Boolean   @default(false)
-    verifiedAt DateTime?
+  verified   Boolean   @default(false)
+  verifiedAt DateTime?
 
-    // a verification token must be a txt record for the domain
-    // it is used to verify that the user owns the domain
-    verificationToken String
+  // a verification token must be a txt record for the domain
+  // it is used to verify that the user owns the domain
+  verificationToken String
 }
 
 // addresses
 model Address {
-    id String @id @default(uuid())
+  id String @id @default(uuid())
 
-    email String @unique
+  email String @unique
 
-    // multiple members can access the same address (e.g. shared addresses)
-    MemberAddress   MemberAddress[]
-    Email           Email[]
-    SmtpCredentials SmtpCredentials[]
-    Contact         Contact[]
+  // multiple members can access the same address (e.g. shared addresses)
+  MemberAddress   MemberAddress[]
+  Email           Email[]
+  SmtpCredentials SmtpCredentials[]
+  Contact         Contact[]
 }
 
 model MemberAddress {
-    memberId String
-    member   Member @relation(fields: [memberId], references: [id])
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id])
 
-    addressId String
-    address   Address @relation(fields: [addressId], references: [id])
+  addressId String
+  address   Address @relation(fields: [addressId], references: [id])
 
-    @@id([memberId, addressId])
+  @@id([memberId, addressId])
 }
 
 model Contact {
-    id String @id @default(uuid())
+  id String @id @default(uuid())
 
-    name        String?
-    description String?
-    image       String? // url to image (hosted on selfmail r2) or undefined
+  name        String?
+  description String?
+  image       String? // url to image (hosted on selfmail r2) or undefined
 
-    blocked Boolean @default(false)
+  blocked Boolean @default(false)
 
-    addressId String
-    address   Address @relation(fields: [addressId], references: [id])
+  addressId String
+  address   Address @relation(fields: [addressId], references: [id])
 
-    // Expecting addiotional information to be stored as JSON as the following schema:
+  // Expecting addiotional information to be stored as JSON as the following schema:
 
-    /**
-     * (pretty weird formatting from vscode and prisma :/ )
-     * [
-     * {
-     * "key": "phone",
-     * "value": "+1234567890"
-     * },
-     * {
-     * "key": "address",
-     * "value": "123 Main St, Anytown, USA"
-     * }
-     * ]
-     */
-    additionalInformation Json[]
+  /**
+   * (pretty weird formatting from vscode and prisma :/ )
+   * [
+   * {
+   * "key": "phone",
+   * "value": "+1234567890"
+   * },
+   * {
+   * "key": "address",
+   * "value": "123 Main St, Anytown, USA"
+   * }
+   * ]
+   */
+  additionalInformation Json[]
 
-    email String
-    Email Email[]
+  email String
+  Email Email[]
 
-    @@unique([email, addressId])
+  @@unique([email, addressId])
 }
 
 model Email {
-    id String @id @default(uuid())
+  id String @id @default(uuid())
 
-    // email metadata
-    messageId String? // RFC Message-ID header
-    subject   String
-    date      DateTime @default(now())
+  // email metadata
+  messageId String? // RFC Message-ID header
+  subject   String
+  date      DateTime @default(now())
 
-    // size of the bytes to keep in track with the storage
-    sizeBytes BigInt
+  // size of the bytes to keep in track with the storage
+  sizeBytes BigInt
 
-    // read status
-    read   Boolean   @default(false)
-    readAt DateTime? // when the email was marked as read
+  // read status
+  read   Boolean   @default(false)
+  readAt DateTime? // when the email was marked as read
 
-    // sender and recipient information
-    from    Json // EmailAddress[] from mailparser (name, address)
-    to      Json // EmailAddress[] from mailparser (name, address)
-    cc      Json? // EmailAddress[] - optional
-    bcc     Json? // EmailAddress[] - optional
-    replyTo Json? // EmailAddress[] - optional
+  // sender and recipient information
+  from    Json // EmailAddress[] from mailparser (name, address)
+  to      Json // EmailAddress[] from mailparser (name, address)
+  cc      Json? // EmailAddress[] - optional
+  bcc     Json? // EmailAddress[] - optional
+  replyTo Json? // EmailAddress[] - optional
 
-    // email content
-    text String? // plain text version
-    html String? // HTML version
+  // email content
+  text String? // plain text version
+  html String? // HTML version
 
-    // headers and technical data
-    headers Json? // all email headers as JSON
+  // headers and technical data
+  headers Json? // all email headers as JSON
 
-    // attachments information
-    attachments Json? // attachment metadata (filename, contentType, size, etc.)
+  // attachments information
+  attachments Json? // attachment metadata (filename, contentType, size, etc.)
 
-    // security and filtering
-    warning     String? // spam/security warnings
-    spamScore   Float? // spam score from filtering
-    virusStatus String? // virus scan result
+  // security and filtering
+  warning     String? // spam/security warnings
+  spamScore   Float? // spam score from filtering
+  virusStatus String? // virus scan result
 
-    // processing status
-    processed       Boolean @default(false)
-    processingError String? // any errors during processing
+  // processing status
+  processed       Boolean @default(false)
+  processingError String? // any errors during processing
 
-    // raw email data
-    rawEmail String? // original EML content (optional, for debugging)
+  // raw email data
+  rawEmail String? // original EML content (optional, for debugging)
 
-    // the recipient address (our address that received this email)
-    addressId String
-    address   Address @relation(fields: [addressId], references: [id])
+  // the recipient address (our address that received this email)
+  addressId String
+  address   Address @relation(fields: [addressId], references: [id])
 
-    // contact relationship (sender)
-    contact   Contact? @relation(fields: [contactId], references: [id])
-    contactId String?
+  // contact relationship (sender)
+  contact   Contact? @relation(fields: [contactId], references: [id])
+  contactId String?
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    sort Sort
+  sort Sort
 
-    @@index([addressId])
-    @@index([contactId])
-    @@index([date])
-    @@index([processed])
-    @@index([read])
+  @@index([addressId])
+  @@index([contactId])
+  @@index([date])
+  @@index([processed])
+  @@index([read])
 }
 
 enum Sort {
-    normal
-    important
-    spam
-    trash
-    sent
+  normal
+  important
+  spam
+  trash
+  sent
 }
 
 model SmtpCredentials {
-    id String @id @default(uuid())
+  id String @id @default(uuid())
 
-    title       String
-    description String?
+  title       String
+  description String?
 
-    // actual credentials
-    username String
-    password String
+  // actual credentials
+  username String
+  password String
 
-    // Security: Track when password was last viewed
-    passwordViewedAt DateTime?
+  // Security: Track when password was last viewed
+  passwordViewedAt DateTime?
 
-    // created by the user
-    memberId String
-    member   Member @relation(fields: [memberId], references: [id])
+  // created by the user
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id])
 
-    // the workspace this credentials are used for
-    workspaceId String
-    workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  // the workspace this credentials are used for
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
 
-    // the address of the crendentials
-    addressId String
-    address   Address @relation(fields: [addressId], references: [id])
+  // the address of the crendentials
+  addressId String
+  address   Address @relation(fields: [addressId], references: [id])
 
-    createdAt   DateTime  @default(now())
-    updatedAt   DateTime  @updatedAt
-    activeUntil DateTime?
-    User        User?     @relation(fields: [userId], references: [id])
-    userId      String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  activeUntil DateTime?
+  User        User?     @relation(fields: [userId], references: [id])
+  userId      String?
 
-    @@unique([username, password])
+  @@unique([username, password])
 }
 
 // Activity Log
 model Activity {
-    id String @id @default(uuid())
+  id String @id @default(uuid())
 
-    title       String
-    description String?
-    color       ActivityColor
-    type        ActivityType
+  title       String
+  description String?
+  color       ActivityColor
+  type        ActivityType
 
-    // Relations
-    workspaceId String
-    workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  // Relations
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
 
-    userId String?
-    user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    @@index([workspaceId])
-    @@index([userId])
-    @@index([createdAt])
-    @@index([type])
+  @@index([workspaceId])
+  @@index([userId])
+  @@index([createdAt])
+  @@index([type])
 }
 
 enum ActivityColor {
-    neutral
-    positive
-    negative
+  neutral
+  positive
+  negative
 }
 
 enum ActivityType {
-    task
-    note
-    event
-    reminder
+  task
+  note
+  event
+  reminder
 }
 
 // Two-Factor Authentication
 model TwoFactorToken {
-    id        String   @id @default(uuid())
-    token     String   @unique
-    userId    String
-    user      User     @relation(fields: [userId], references: [id])
-    createdAt DateTime @default(now())
-    expiresAt DateTime
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  expiresAt DateTime
 
-    @@index([userId])
-    @@index([token])
+  @@index([userId])
+  @@index([token])
 }
