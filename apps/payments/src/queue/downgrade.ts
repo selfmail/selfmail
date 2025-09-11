@@ -1,5 +1,6 @@
 import type { Job } from "bullmq";
 import { db } from "database";
+import { Logs } from "services/logs";
 
 export interface DowngradeJobData {
 	workspaceId: string;
@@ -37,7 +38,9 @@ export async function downgrade(job: Job<DowngradeJobData, void, string>) {
 		}
 	});
 
-	if (!workspaceUsedBytes?._sum) throw new Error("Could not calculate used resources");
+	if (!workspaceUsedBytes?._sum) {
+		Logs.error("Failed to get used storage for workspace")
+	}
 
 	const newPlan = await db.plan.findUnique({
 		where: {

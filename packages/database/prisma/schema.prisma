@@ -151,6 +151,9 @@ model Workspace {
   billingPlan   BillingPlan @default(free)
   planChangedAt DateTime    @default(now())
 
+  overlimit   Boolean   @default(false)
+  overlimitAt DateTime?
+
   slug            String            @unique @default(uuid())
   ownerId         String
   owner           User              @relation(fields: [ownerId], references: [id])

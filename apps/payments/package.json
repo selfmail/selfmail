@@ -13,6 +13,7 @@
 		"bullmq": "^5.58.5",
 		"database": "workspace:*",
 		"consola": "^3.4.2",
+		"services": "workspace:*",
 		"ioredis": "^5.7.0"
 	}
 }
