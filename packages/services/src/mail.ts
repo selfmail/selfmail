@@ -1,13 +1,16 @@
+import { EmailQueue } from "./queue";
+
 type EmailAddress = string | { email: string; name?: string };
 
 type EmailAttachment = {
 	filename?: string;
 	contentType?: string;
-	content: string; // Base64 or plain text
-	encoding?: "base64" | "utf8";
+	content?: Buffer;
 	size?: number;
 	cid?: string;
 	contentId?: string;
+	checksum?: string;
+	related?: boolean;
 };
 
 type SendMailOptions = {
@@ -35,22 +38,49 @@ export abstract class Mail {
 	private static readonly RELAY_API_URL =
 		process.env.RELAY_API_URL || "http://localhost:4000";
 
+	private static convertEmailAddress(address: EmailAddress) {
+		if (typeof address === "string") {
+			return {
+				value: [{ address, name: undefined }],
+				text: address,
+				html: address,
+			};
+		}
+		return {
+			value: [{ address: address.email, name: address.name }],
+			text: address.name ? `${address.name} <${address.email}>` : address.email,
+			html: address.name ? `${address.name} &lt;${address.email}&gt;` : address.email,
+		};
+	}
+
+	private static convertEmailAddresses(addresses: EmailAddress | EmailAddress[]) {
+		if (Array.isArray(addresses)) {
+			return addresses.map(addr => Mail.convertEmailAddress(addr));
+		}
+		return Mail.convertEmailAddress(addresses);
+	}
+
 	static async sendMail(options: SendMailOptions): Promise<SendMailResponse> {
 		try {
-			const response = await fetch(`${Mail.RELAY_API_URL}/send`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(options),
+			await EmailQueue.processOutbound({
+				subject: options.subject,
+				text: options.text,
+				html: options.html,
+				to: options.to ? Mail.convertEmailAddresses(options.to) : undefined,
+				from: Mail.convertEmailAddress(options.from),
+				cc: options.cc ? Mail.convertEmailAddresses(options.cc) : undefined,
+				bcc: options.bcc ? Mail.convertEmailAddresses(options.bcc) : undefined,
+				replyTo: options.replyTo ? Mail.convertEmailAddress(options.replyTo) : undefined,
+				priority: options.priority,
+				attachments: options.attachments || [],
+				headers: options.headers || {},
+				headerLines: [],
+				delay: options.delay || 0,
 			});
-
-			if (!response.ok) {
-				throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-			}
-
-			const result = (await response.json()) as SendMailResponse;
-			return result;
+			return {
+				success: true,
+				message: "Email queued successfully",
+			};
 		} catch (error) {
 			console.error("Failed to send email:", error);
 			return {

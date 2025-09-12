@@ -28,6 +28,11 @@ export const payments = new Elysia({
 			permissions: ["payments:manage"],
 		},
 	)
+	.get("authenticate", async () => {
+		return { authenticated: true };
+	}, {
+		permissions: ["payments:manage"],
+	})
 	.get("/checkout", async ({ params }) => PaymentsService.checkout(params), {
 		detail: {
 			description: "Redirect to the checkout page for creating a new payment.",

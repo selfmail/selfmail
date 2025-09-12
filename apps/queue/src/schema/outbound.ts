@@ -64,6 +64,11 @@ export const outboundSchema = z.object({
 			line: z.string(),
 		}),
 	),
+
+	// information for error returns and user notifications
+	sendByUser: z.optional(z.boolean().default(false)),
+	memberId: z.string().optional(),
 });
 
 export type OutboundEmail = z.infer<typeof outboundSchema>;
+

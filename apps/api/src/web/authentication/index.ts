@@ -27,16 +27,17 @@ export const requireAuthentication = new Elysia({
 	.resolve(async ({ cookie, ip }) => {
 		Logs.log("Authentication attempt");
 
-		const limit = await Ratelimit.limit(ip);
-		Logs.log(`Rate limit status: ${JSON.stringify(limit)}`);
+		const limit = await Ratelimit.limit(ip, {
+			max: 30,
+			windowInSeconds: 30,
+		});
+
 		if (!limit.success) {
 			Logs.error(`Rate limit exceeded for IP: ${ip}`);
-			throw status(429, "Rate limit exceeded");
+			return status(429, "Rate limit exceeded");
 		}
 
 		const sessionToken = cookie["session-token"]?.value;
-
-		Logs.log(`Session token: ${sessionToken}`);
 
 		const user = await sessionAuthMiddleware({
 			cookie: `session-token=${sessionToken}`,
@@ -44,13 +45,15 @@ export const requireAuthentication = new Elysia({
 
 		if (!user) {
 			Logs.error("User not found");
-			throw status(401, "Authentication required");
+			return status(401, "Authentication required");
 		}
 
 		if (!user.emailVerified) {
 			Logs.error("Email not verified.");
-			throw status(403, "Email not verified");
+			return status(403, "Email not verified");
 		}
+
+		Logs.log("User authenticated successfully");
 
 		return { user };
 	})
@@ -69,8 +72,14 @@ export const requireWorkspaceMember = new Elysia({
 		cookie: "session",
 	})
 	.resolve(async ({ cookie, query: { workspaceId }, user }) => {
-		if (cookie["temp-session-token"].value) {
+		if (cookie["temp-session-token"].value && !cookie["session-token"].value) {
 			throw status(403, "User is not verified. Please try to login.");
+		}
+		if (!cookie["session-token"].value) {
+			throw status(401, "Authentication required");
+		}
+		if (cookie["temp-session-token"].value) {
+			cookie["temp-session-token"].remove();
 		}
 
 		const workspace = await db.workspace.findUnique({
@@ -79,7 +88,7 @@ export const requireWorkspaceMember = new Elysia({
 			},
 		});
 		if (!workspace) {
-			throw status(500, "Internal Server Error");
+			return status(500, "Internal Server Error");
 		}
 
 		const member = await db.member.findUnique({
@@ -92,7 +101,7 @@ export const requireWorkspaceMember = new Elysia({
 		});
 
 		if (!member) {
-			throw status(403, "User is not a member of the workspace");
+			return status(403, "User is not a member of the workspace");
 		}
 
 		return { member, workspace };

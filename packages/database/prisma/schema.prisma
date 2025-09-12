@@ -415,3 +415,13 @@ model TwoFactorToken {
   @@index([userId])
   @@index([token])
 }
+
+model Error {
+  id String @id @default(uuid())
+
+  message String
+  stack   String?
+  context Json?
+
+  createdAt DateTime @default(now())
+}

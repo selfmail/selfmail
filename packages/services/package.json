@@ -38,6 +38,10 @@
 		"./mail": {
 			"import": "./src/mail.ts",
 			"types": "./src/mail.ts"
+		},
+		"./notify": {
+			"import": "./src/notify.ts",
+			"types": "./src/notify.ts"
 		}
 	},
 	"peerDependencies": {

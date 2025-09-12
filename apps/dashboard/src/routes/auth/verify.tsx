@@ -1,5 +1,4 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
 import { toast } from "sonner";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "ui";
 import z from "zod";
@@ -10,20 +9,17 @@ export const Route = createFileRoute("/auth/verify")({
 });
 
 function RouteComponent() {
-	const [error, setError] = useState<string | null>(null);
 	const handleEmailComplete = (value: string) => {
 		verifyEmail(value);
 	};
 
 	const handleEmailVerificationError = (m: string) => {
 		toast.error(m);
-		setError(m);
 	};
 
 	const navigate = useNavigate();
 
 	const verifyEmail = async (token: string) => {
-		setError(null);
 		const parse = await z
 			.number()
 			.min(10000)

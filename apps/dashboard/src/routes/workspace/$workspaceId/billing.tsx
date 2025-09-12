@@ -1,7 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import DashboardHeader from "@/components/dashboard/header";
 import DashboardNavigation from "@/components/dashboard/navigation";
 import { RequireAuth } from "@/lib/auth";
+import { client } from "@/lib/client";
 import { RequireWorkspace } from "@/lib/workspace";
 
 export const Route = createFileRoute("/workspace/$workspaceId/billing")({
@@ -20,6 +22,26 @@ function App() {
 }
 
 function BillingPage({ workspaceId }: { workspaceId: string }) {
+	const navigate = useNavigate();
+
+	// check whether the user has access to see/manage payments
+	useQuery({
+		queryKey: ["payments-authenticate", workspaceId],
+		queryFn: async () => {
+			const res = await client.v1.web.payments.authenticate.get({
+				query: {
+					workspaceId,
+				},
+			});
+			if (res.error || res.status !== 200) {
+				return navigate({
+					to: "/workspace/$workspaceId/billing",
+					params: { workspaceId },
+				});
+			}
+		},
+	});
+
 	return (
 		<div className="flex min-h-screen flex-col bg-white text-black">
 			<DashboardHeader workspaceId={workspaceId} />

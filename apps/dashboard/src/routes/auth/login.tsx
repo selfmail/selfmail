@@ -17,11 +17,6 @@ import { client } from "@/lib/client";
 
 export const Route = createFileRoute("/auth/login")({
 	component: LoginComponent,
-	validateSearch: (search: Record<string, unknown>) => {
-		return {
-			redirectTo: (search.redirectTo as string) || undefined,
-		};
-	},
 });
 
 // Define the form data structure
@@ -36,8 +31,6 @@ function LoginComponent() {
 	const auth = useAuth();
 
 	const navigate = useNavigate();
-
-	const searchParams = Route.useSearch();
 
 	const form = useForm<FormData>({
 		defaultValues: {
@@ -57,10 +50,13 @@ function LoginComponent() {
 
 		// Handle response
 		if (res.error) {
+			console.log(JSON.stringify(res.error, null, 2));
 			setError(
 				typeof res.error.value === "string"
 					? res.error.value
-					: "An error occurred during login",
+					: (res.error.value?.message ??
+							res.error.value?.summary ??
+							"An error occurred during login"),
 			);
 			setIsLoading(false);
 			return;

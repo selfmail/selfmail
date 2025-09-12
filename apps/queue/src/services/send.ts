@@ -28,15 +28,15 @@ export abstract class Send {
 		const extractEmails = (
 			addressObj:
 				| {
-						value: { address: string; name?: string }[];
-						text: string;
-						html: string;
-				  }
+					value: { address: string; name?: string }[];
+					text: string;
+					html: string;
+				}
 				| {
-						value: { address: string; name?: string }[];
-						text: string;
-						html: string;
-				  }[]
+					value: { address: string; name?: string }[];
+					text: string;
+					html: string;
+				}[]
 				| undefined,
 		): string | undefined => {
 			if (!addressObj) return undefined;
@@ -68,6 +68,7 @@ export abstract class Send {
 		const transporter = nodemailer.createTransport({
 			host,
 			port: 25,
+			secure: false,
 		});
 
 		try {
