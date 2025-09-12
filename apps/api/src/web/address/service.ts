@@ -196,6 +196,11 @@ export abstract class AddressService {
 			},
 		});
 
+		const serializedEmails = emails.map((e) => ({
+			...e,
+			sizeBytes: e.sizeBytes.toString(),
+		}));
+
 		const totalCount = await db.email.count({
 			where: {
 				addressId: {
@@ -205,7 +210,7 @@ export abstract class AddressService {
 		});
 
 		return {
-			emails,
+			emails: serializedEmails,
 			totalCount,
 		};
 	}
@@ -299,13 +304,18 @@ export abstract class AddressService {
 			},
 		});
 
+		const serializedEmails = emails.map((e) => ({
+			...e,
+			sizeBytes: e.sizeBytes.toString(),
+		}));
+
 		// Get total count for pagination
 		const totalCount = await db.email.count({
 			where: whereClause,
 		});
 
 		return {
-			emails,
+			emails: serializedEmails,
 			totalCount,
 			page,
 			limit,

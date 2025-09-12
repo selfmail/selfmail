@@ -67,8 +67,65 @@ export default function AddressEmailList({
 				throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
 			}
 
-			const data = res.data;
-			return data;
+			type RawAddressEmailResponse = {
+				emails: Array<Record<string, unknown>>;
+				totalCount: number;
+				page: number;
+				limit: number;
+				totalPages: number;
+				address: { id: string; email: string };
+			};
+
+			const api = res.data as RawAddressEmailResponse;
+
+			// Normalize server emails into ApiEmailData shape
+			const transformedEmails: ApiEmailData[] = api.emails.map(
+				(email: Record<string, unknown>): ApiEmailData => {
+					const id = String(email.id);
+					const subject = String(email.subject ?? "");
+					const text = email.text;
+					const html = email.html;
+					const attachmentsRaw = email.attachments;
+					const contactIdRaw = email.contactId;
+					const addressIdRaw = email.addressId;
+					const dateRaw = email.date;
+					const readRaw = email.read;
+					const readAtRaw = email.readAt;
+
+					return {
+						id,
+						subject,
+						body: String(
+							(text as string | undefined) ??
+								(html as string | undefined) ??
+								"",
+						),
+						html: typeof html === "string" ? html : null,
+						attachments: Array.isArray(attachmentsRaw)
+							? (attachmentsRaw as unknown[]).map((a) => String(a))
+							: [],
+						contactId: typeof contactIdRaw === "string" ? contactIdRaw : id,
+						addressId: typeof addressIdRaw === "string" ? addressIdRaw : "",
+						date: dateRaw instanceof Date ? dateRaw : new Date(String(dateRaw)),
+						read: Boolean(readRaw),
+						readAt:
+							readAtRaw instanceof Date
+								? readAtRaw
+								: readAtRaw
+									? new Date(String(readAtRaw))
+									: null,
+					};
+				},
+			);
+
+			return {
+				emails: transformedEmails,
+				totalCount: api.totalCount,
+				page: api.page,
+				limit: api.limit,
+				totalPages: api.totalPages,
+				address: api.address,
+			};
 		},
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => {

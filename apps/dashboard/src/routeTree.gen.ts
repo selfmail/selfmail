@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ThirdInboxRouteImport } from './routes/third-inbox'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OnboardingWorkspaceRouteImport } from './routes/onboarding/workspace'
-import { Route as MailMailIdRouteImport } from './routes/mail/$mailId'
 import { Route as LegalTosRouteImport } from './routes/legal/tos'
 import { Route as AuthVerifyRouteImport } from './routes/auth/verify'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
@@ -47,11 +46,6 @@ const IndexRoute = IndexRouteImport.update({
 const OnboardingWorkspaceRoute = OnboardingWorkspaceRouteImport.update({
   id: '/onboarding/workspace',
   path: '/onboarding/workspace',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MailMailIdRoute = MailMailIdRouteImport.update({
-  id: '/mail/$mailId',
-  path: '/mail/$mailId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LegalTosRoute = LegalTosRouteImport.update({
@@ -177,7 +171,6 @@ export interface FileRoutesByFullPath {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/verify': typeof AuthVerifyRoute
   '/legal/tos': typeof LegalTosRoute
-  '/mail/$mailId': typeof MailMailIdRoute
   '/onboarding/workspace': typeof OnboardingWorkspaceRoute
   '/workspace/$workspaceId/activity': typeof WorkspaceWorkspaceIdActivityRoute
   '/workspace/$workspaceId/billing': typeof WorkspaceWorkspaceIdBillingRoute
@@ -203,7 +196,6 @@ export interface FileRoutesByTo {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/verify': typeof AuthVerifyRoute
   '/legal/tos': typeof LegalTosRoute
-  '/mail/$mailId': typeof MailMailIdRoute
   '/onboarding/workspace': typeof OnboardingWorkspaceRoute
   '/workspace/$workspaceId/activity': typeof WorkspaceWorkspaceIdActivityRoute
   '/workspace/$workspaceId/billing': typeof WorkspaceWorkspaceIdBillingRoute
@@ -230,7 +222,6 @@ export interface FileRoutesById {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/verify': typeof AuthVerifyRoute
   '/legal/tos': typeof LegalTosRoute
-  '/mail/$mailId': typeof MailMailIdRoute
   '/onboarding/workspace': typeof OnboardingWorkspaceRoute
   '/workspace/$workspaceId/activity': typeof WorkspaceWorkspaceIdActivityRoute
   '/workspace/$workspaceId/billing': typeof WorkspaceWorkspaceIdBillingRoute
@@ -258,7 +249,6 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/auth/verify'
     | '/legal/tos'
-    | '/mail/$mailId'
     | '/onboarding/workspace'
     | '/workspace/$workspaceId/activity'
     | '/workspace/$workspaceId/billing'
@@ -284,7 +274,6 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/auth/verify'
     | '/legal/tos'
-    | '/mail/$mailId'
     | '/onboarding/workspace'
     | '/workspace/$workspaceId/activity'
     | '/workspace/$workspaceId/billing'
@@ -310,7 +299,6 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/auth/verify'
     | '/legal/tos'
-    | '/mail/$mailId'
     | '/onboarding/workspace'
     | '/workspace/$workspaceId/activity'
     | '/workspace/$workspaceId/billing'
@@ -337,7 +325,6 @@ export interface RootRouteChildren {
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   AuthVerifyRoute: typeof AuthVerifyRoute
   LegalTosRoute: typeof LegalTosRoute
-  MailMailIdRoute: typeof MailMailIdRoute
   OnboardingWorkspaceRoute: typeof OnboardingWorkspaceRoute
   WorkspaceWorkspaceIdActivityRoute: typeof WorkspaceWorkspaceIdActivityRoute
   WorkspaceWorkspaceIdBillingRoute: typeof WorkspaceWorkspaceIdBillingRoute
@@ -377,13 +364,6 @@ declare module '@tanstack/react-router' {
       path: '/onboarding/workspace'
       fullPath: '/onboarding/workspace'
       preLoaderRoute: typeof OnboardingWorkspaceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mail/$mailId': {
-      id: '/mail/$mailId'
-      path: '/mail/$mailId'
-      fullPath: '/mail/$mailId'
-      preLoaderRoute: typeof MailMailIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/legal/tos': {
@@ -537,7 +517,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   AuthVerifyRoute: AuthVerifyRoute,
   LegalTosRoute: LegalTosRoute,
-  MailMailIdRoute: MailMailIdRoute,
   OnboardingWorkspaceRoute: OnboardingWorkspaceRoute,
   WorkspaceWorkspaceIdActivityRoute: WorkspaceWorkspaceIdActivityRoute,
   WorkspaceWorkspaceIdBillingRoute: WorkspaceWorkspaceIdBillingRoute,

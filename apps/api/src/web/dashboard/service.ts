@@ -48,19 +48,25 @@ export abstract class DashboardService {
 			},
 		});
 
+		// Serialize BigInt fields to avoid JSON serialization errors
+		const serializedEmails = emails.map((e) => ({
+			...e,
+			sizeBytes: e.sizeBytes.toString(),
+		}));
+
 		const totalCount = await db.email.count({
 			where:
 				addressIds.length > 0
 					? {
-							addressId: {
-								in: addressIds,
-							},
-						}
+						addressId: {
+							in: addressIds,
+						},
+					}
 					: undefined,
 		});
 
 		return {
-			emails,
+			emails: serializedEmails,
 			totalCount,
 			page,
 			limit,
@@ -89,10 +95,10 @@ export abstract class DashboardService {
 				id,
 				...(addressIds.length > 0
 					? {
-							addressId: {
-								in: addressIds,
-							},
-						}
+						addressId: {
+							in: addressIds,
+						},
+					}
 					: {}),
 			},
 		});
@@ -101,7 +107,11 @@ export abstract class DashboardService {
 			throw status(404, "Email not found");
 		}
 
-		return email;
+		// Serialize BigInt field before returning
+		return {
+			...email,
+			sizeBytes: email.sizeBytes.toString(),
+		};
 	}
 
 	static async userAddresses(memberId: string) {
