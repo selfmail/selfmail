@@ -29,6 +29,7 @@ model User {
   Activity          Activity[]
   TwoFactorToken    TwoFactorToken[]
   Workspace         Workspace[]
+  Notification      Notification[]
 
   @@unique([id, email])
 }
@@ -84,6 +85,7 @@ model Member {
   MemberAddress    MemberAddress[]
   roles            Role[]
   SmtpCredentials  SmtpCredentials[]
+  Notification     Notification[]
 
   @@unique([workspaceId, userId])
   @@index([userId])
@@ -424,4 +426,30 @@ model Error {
   context Json?
 
   createdAt DateTime @default(now())
+}
+
+model Notification {
+  id String @id @default(uuid())
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  memberId String?
+  member   Member? @relation(fields: [memberId], references: [id])
+
+  type NotificationType @default(info)
+
+  title   String
+  message String
+
+  read   Boolean   @default(false)
+  readAt DateTime?
+
+  createdAt DateTime @default(now())
+}
+
+enum NotificationType {
+  info
+  warning
+  error
 }

@@ -60,7 +60,7 @@ export abstract class Mail {
 		return Mail.convertEmailAddress(addresses);
 	}
 
-	static async sendMail(options: SendMailOptions): Promise<SendMailResponse> {
+	static async sendMail(options: SendMailOptions & { sendByMemberId?: string }): Promise<SendMailResponse> {
 		try {
 			await EmailQueue.processOutbound({
 				subject: options.subject,
@@ -76,6 +76,9 @@ export abstract class Mail {
 				headers: options.headers || {},
 				headerLines: [],
 				delay: options.delay || 0,
+
+				sendByUser: options.sendByMemberId ? false : true,
+				memberId: options.sendByMemberId || undefined,
 			});
 			return {
 				success: true,

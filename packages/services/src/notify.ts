@@ -1,17 +1,38 @@
+import { db } from "database"
+import { Logs } from "./logs"
+
 export abstract class Notify {
     static async notifyUser({
         title,
-        description,
+        message,
         type,
         ...userOrMember
     }: {
         title: string,
-        description?: string,
+        message: string,
         type: "info" | "warning" | "error"
     } & (
-            | { userId: string; memberId?: never }
-            | { memberId: string; userId?: never }
+            | { userId: string }
+            | { memberId: string }
         )) {
-
+        await db.notification.create({
+            data: {
+                title,
+                message,
+                type,
+                ...userOrMember
+            }
+        }).catch(async (err) => {
+            if (err) {
+                await Logs.error("Failed to create notification", {
+                    title,
+                    message,
+                    type,
+                    ...userOrMember,
+                    error: err?.message,
+                    stack: err?.stack,
+                })
+            }
+        })
     }
 }
