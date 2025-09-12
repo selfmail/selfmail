@@ -7,6 +7,67 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// Admin models
+model AdminUser {
+  id            String         @id
+  name          String
+  email         String
+  emailVerified Boolean        @default(false)
+  image         String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+  sessions      AdminSession[]
+  accounts      AdminAccount[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model AdminSession {
+  id        String    @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model AdminAccount {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("account")
+}
+
+model AdminVerification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  @@map("verification")
+}
+
 // Authentication
 model User {
   id       String @id @default(uuid())
