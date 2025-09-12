@@ -8,101 +8,49 @@ export abstract class Send {
 		records,
 		subject,
 		to,
-		cc,
-		bcc,
-		replyTo,
 		html,
 		text,
 		attachments,
-		messageId,
-		inReplyTo,
-		references,
-		date,
-		priority,
 	}: OutboundEmail & {
 		records: MxRecord[];
 	}) {
-		const host = records[0]?.exchange;
+		for await (const record of records) {
+			const host = record.exchange;
 
-		const extractEmails = (
-			addressObj:
-				| {
-					value: { address: string; name?: string }[];
-					text: string;
-					html: string;
-				}
-				| {
-					value: { address: string; name?: string }[];
-					text: string;
-					html: string;
-				}[]
-				| undefined,
-		): string | undefined => {
-			if (!addressObj) return undefined;
-			if (Array.isArray(addressObj)) {
-				return addressObj
-					.map((addr) => addr.value.map((v) => v.address).join(", "))
-					.join(", ");
+			if (!host) {
+				continue
 			}
-			return addressObj.value?.map((v) => v.address).join(", ");
-		};
 
-		const emailData = {
-			to: extractEmails(to),
-			from: extractEmails(from),
-			cc: extractEmails(cc),
-			bcc: extractEmails(bcc),
-			replyTo: extractEmails(replyTo),
-			subject: subject || "",
-			html: html && typeof html === "string" ? html : undefined,
-			text: text || "",
-		};
+			const transporter = nodemailer.createTransport({
+				host,
+				port: 25,
+				secure: false,
+			});
 
+			const verify = await transporter.verify();
 
-		if (!host) {
-			throw new Error("No MX records found for domain");
+			if (!verify) {
+				continue;
+			}
+
+			const send = await transporter.sendMail({
+				to: to,
+				from: from,
+				subject: subject,
+				html: html,
+				text: text,
+				attachments: attachments?.map((att) => ({
+					filename: att.filename,
+					content: att.content,
+					contentType: att.contentType,
+				})),
+			});
+
+			if (!send.messageId) {
+				throw new Error("Failed to send email, no messageId returned");
+			}
+
+			return send.messageId;
 		}
-
-		const transporter = nodemailer.createTransport({
-			host,
-			port: 25,
-			secure: false,
-		});
-
-		const verify = await transporter.verify();
-
-		if (!verify) {
-			return;
-		}
-
-		const send = await transporter.sendMail({
-			to: emailData.to,
-			from: emailData.from,
-			cc: emailData.cc,
-			bcc: emailData.bcc,
-			replyTo: emailData.replyTo,
-			subject: emailData.subject,
-			html: emailData.html,
-			text: emailData.text,
-			attachments: attachments?.map((att) => ({
-				filename: att.filename,
-				content: att.content,
-				contentType: att.contentType,
-				cid: att.cid,
-			})),
-			messageId: messageId,
-			inReplyTo: inReplyTo,
-			references: Array.isArray(references)
-				? references.join(" ")
-				: references,
-			date: date || new Date(),
-			priority: priority || "normal",
-		});
-
-		if (!send.messageId) {
-			throw new Error("Failed to send email, no messageId returned");
-		}
-
-		return send.messageId;
 	}
 }

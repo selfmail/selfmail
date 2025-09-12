@@ -1,6 +1,6 @@
-**Queue**
+**Transactional Queue**
 
-The queue works with [bullmq](https://bullmq.io/). After a new email is added to the `outbound queue`, we'll check for the Mail Server, cache the results and send an email to the mail server. If the endpoint in the mx record is failing, we'll try again with the endpoint in a lower record. If the recipients smtp server throw an error, the mail gets added to a queue and after some time tried again.
+This is the package for transactional emails (authentication, updates and security informations). All emails will be send through noreply@transaction.selfmail.app or updates@transaction.selfmail.app. The queue works with [bullmq](https://bullmq.io/). After a new email is added to the `outbound queue`, we'll check for the Mail Server, cache the results and send an email to the mail server. If the endpoint in the mx record is failing, we'll try again with the endpoint in a lower record. If the recipients smtp server throw an error, the mail gets added to a queue and after some time tried again.
 
 **Times**:
 - 0: first try

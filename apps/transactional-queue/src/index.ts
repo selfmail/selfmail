@@ -1,8 +1,7 @@
 import { Worker } from "bullmq";
 import consola from "consola";
-import { Logs } from "services/logs";
 import { connection } from "./config/connection";
-import { outbound } from "./outbound";
+import { transactionalOutbound } from "./outbound";
 import type { OutboundEmail } from "./schema/outbound";
 
 const retryDelays = [
@@ -15,11 +14,15 @@ const retryDelays = [
 	5 * 24 * 60 * 60 * 1000, // 5 days (last attempt)
 ];
 
-const outboundWorker = new Worker<OutboundEmail, void>(
+const transactionalWorker = new Worker<OutboundEmail, void>(
 	"emails-outbound",
-	async (job) => await outbound(job),
+	async (job) => await transactionalOutbound(job),
 	{
 		connection,
+		limiter: {
+			max: 10,
+			duration: 1000 // 10 per second
+		},
 		concurrency: 5,
 		settings: {
 			backoffStrategy: (attemptsMade: number) => {
@@ -30,19 +33,10 @@ const outboundWorker = new Worker<OutboundEmail, void>(
 	}
 );
 
-outboundWorker.on("failed", async (job, err: Error & { failedReason?: string }) => {
-	consola.warn(`Job ${job?.id} failed: ${err?.message}`);
-	await Logs.error("Outbound job failed", {
-		jobId: job?.id,
-		queue: job?.queueName,
-		name: job?.name,
-		attemptsMade: job?.attemptsMade,
-		failedReason: err?.failedReason,
-		stack: err?.stack,
-		data: job?.data,
-	});
+transactionalWorker.on("failed", async (job, err: Error & { failedReason?: string }) => {
+	consola.warn(`Transactional job ${job?.id} failed: ${err?.message}`);
 });
 
-outboundWorker.on("completed", job => {
-	consola.log(`Job ${job.id} completed`);
+transactionalWorker.on("completed", job => {
+	consola.log(`Transactional job ${job.id} completed`);
 });
