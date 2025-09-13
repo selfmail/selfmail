@@ -42,6 +42,10 @@
 		"./notify": {
 			"import": "./src/notify.ts",
 			"types": "./src/notify.ts"
+		},
+		"./transactional": {
+			"import": "./src/transactional.ts",
+			"types": "./src/transactional.ts"
 		}
 	},
 	"peerDependencies": {

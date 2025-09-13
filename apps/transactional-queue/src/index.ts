@@ -15,7 +15,7 @@ const retryDelays = [
 ];
 
 const transactionalWorker = new Worker<OutboundEmail, void>(
-	"emails-outbound",
+	"transactional-outbound",
 	async (job) => await transactionalOutbound(job),
 	{
 		connection,

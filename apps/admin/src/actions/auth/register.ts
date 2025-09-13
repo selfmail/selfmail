@@ -11,7 +11,7 @@ const schema = z.object({
 	name: z.string().min(2)
 });
 
-export const register = requireUnauthenticated
+export const registµer = requireUnauthenticated
 	.inputSchema(schema)
 	.action(async ({ parsedInput }) => {
 		const user = await auth.api.signUpEmail({
@@ -23,7 +23,7 @@ export const register = requireUnauthenticated
 			},
 		});
 
-		if (!user.user) throw new Error("Failed to login user.");
+		if (!user.user) throw new Error("Failed to register user.");
 
 		return redirect("/");
 	});
