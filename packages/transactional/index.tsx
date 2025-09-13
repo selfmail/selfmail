@@ -1,5 +1,6 @@
 import { pretty, render, toPlainText } from "@react-email/render";
 import DowngradeTemplate from "./emails/billing-downgrade";
+import OverlimitTemplate from "./emails/downgrade-overlimit";
 import VerifyEmailTemplate from "./emails/verify-email";
 
 export async function generateVerifyEmailTemplate({
@@ -32,6 +33,32 @@ export async function generateBillingDowngradeTemplate({
 	const html = await pretty(
 		await render(
 			<DowngradeTemplate
+				oldPlan={oldPlan}
+				newPlan={newPlan}
+				workspaceName={workspaceName}
+				name={name}
+			/>,
+		),
+	);
+	return {
+		html,
+		text: toPlainText(html),
+	};
+}
+export async function generateOverlimitTemplate({
+	oldPlan,
+	newPlan,
+	workspaceName,
+	name,
+}: {
+	oldPlan: string;
+	newPlan: string;
+	name: string;
+	workspaceName: string;
+}) {
+	const html = await pretty(
+		await render(
+			<OverlimitTemplate
 				oldPlan={oldPlan}
 				newPlan={newPlan}
 				workspaceName={workspaceName}
