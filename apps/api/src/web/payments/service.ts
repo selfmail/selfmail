@@ -3,7 +3,7 @@ import { db } from "database";
 import { redirect, status } from "elysia";
 import { Activity } from "services/activity";
 import { Analytics } from "services/analytics";
-import { polar } from "../../lib/payments";
+import { polar } from "payments";
 import type { PaymentsModule } from "./module";
 
 const products = {
@@ -19,7 +19,7 @@ export abstract class PaymentsService {
 
 		return Webhooks({
 			webhookSecret: process.env.POLAR_WEBHOOK_SECRET,
-			onPayload: async () => {},
+			onPayload: async () => { },
 		});
 	}
 	static async customerPortal({
@@ -151,5 +151,5 @@ export abstract class PaymentsService {
 
 	static async getCurrentPlan({
 		workspaceId,
-	}: PaymentsModule.getCurrentPlanQuery) {}
+	}: PaymentsModule.getCurrentPlanQuery) { }
 }

@@ -9,11 +9,15 @@
 	"peerDependencies": {
 		"typescript": "^5"
 	},
+	"exports": {
+		".": "./src/index.ts"
+	},
 	"dependencies": {
+		"@polar-sh/sdk": "^0.34.16",
 		"bullmq": "^5.58.5",
-		"database": "workspace:*",
 		"consola": "^3.4.2",
-		"services": "workspace:*",
-		"ioredis": "^5.7.0"
+		"database": "workspace:*",
+		"ioredis": "^5.7.0",
+		"services": "workspace:*"
 	}
 }
