@@ -1,9 +1,9 @@
 import { Webhooks } from "@polar-sh/elysia";
 import { db } from "database";
 import { redirect, status } from "elysia";
+import { polar } from "payments";
 import { Activity } from "services/activity";
 import { Analytics } from "services/analytics";
-import { polar } from "payments";
 import type { PaymentsModule } from "./module";
 
 const products = {

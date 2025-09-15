@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import DashboardHeader from "@/components/dashboard/header";
+import { RequireAuth } from "@/lib/auth";
+import { RequireWorkspace } from "@/lib/workspace";
 
 export const Route = createFileRoute("/workspace/$workspaceId/settings/")({
 	component: RouteComponent,
@@ -7,9 +9,20 @@ export const Route = createFileRoute("/workspace/$workspaceId/settings/")({
 
 function RouteComponent() {
 	const { workspaceId } = Route.useParams();
+
+	return (
+		<RequireAuth>
+			<RequireWorkspace workspaceId={workspaceId}>
+				<Settings workspaceId={workspaceId} />
+			</RequireWorkspace>
+		</RequireAuth>
+	);
+}
+
+function Settings({ workspaceId }: { workspaceId: string }) {
 	return (
 		<div>
-			<DashboardHeader />
+			<DashboardHeader workspaceId={workspaceId} />
 			<div className="mx-4 flex flex-col space-x-3 rounded-md border border-accent p-4 sm:mx-6 lg:mx-26 lg:flex-row lg:rounded-none lg:border-none lg:p-0 xl:mx-32">
 				{/* Settings content goes here */}
 				<Link
