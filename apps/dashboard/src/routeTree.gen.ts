@@ -19,6 +19,7 @@ import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as WorkspaceCreateIndexRouteImport } from './routes/workspace/create/index'
 import { Route as WorkspaceWorkspaceIdIndexRouteImport } from './routes/workspace/$workspaceId/index'
+import { Route as WorkspaceWorkspaceIdWorkflowsRouteImport } from './routes/workspace/$workspaceId/workflows'
 import { Route as WorkspaceWorkspaceIdComposeRouteImport } from './routes/workspace/$workspaceId/compose'
 import { Route as WorkspaceWorkspaceIdBillingRouteImport } from './routes/workspace/$workspaceId/billing'
 import { Route as WorkspaceWorkspaceIdActivityRouteImport } from './routes/workspace/$workspaceId/activity'
@@ -82,6 +83,12 @@ const WorkspaceWorkspaceIdIndexRoute =
   WorkspaceWorkspaceIdIndexRouteImport.update({
     id: '/workspace/$workspaceId/',
     path: '/workspace/$workspaceId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkspaceWorkspaceIdWorkflowsRoute =
+  WorkspaceWorkspaceIdWorkflowsRouteImport.update({
+    id: '/workspace/$workspaceId/workflows',
+    path: '/workspace/$workspaceId/workflows',
     getParentRoute: () => rootRouteImport,
   } as any)
 const WorkspaceWorkspaceIdComposeRoute =
@@ -175,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/workspace/$workspaceId/activity': typeof WorkspaceWorkspaceIdActivityRoute
   '/workspace/$workspaceId/billing': typeof WorkspaceWorkspaceIdBillingRoute
   '/workspace/$workspaceId/compose': typeof WorkspaceWorkspaceIdComposeRoute
+  '/workspace/$workspaceId/workflows': typeof WorkspaceWorkspaceIdWorkflowsRoute
   '/workspace/$workspaceId': typeof WorkspaceWorkspaceIdIndexRoute
   '/workspace/create': typeof WorkspaceCreateIndexRoute
   '/workspace/$workspaceId/address/create': typeof WorkspaceWorkspaceIdAddressCreateRoute
@@ -200,6 +208,7 @@ export interface FileRoutesByTo {
   '/workspace/$workspaceId/activity': typeof WorkspaceWorkspaceIdActivityRoute
   '/workspace/$workspaceId/billing': typeof WorkspaceWorkspaceIdBillingRoute
   '/workspace/$workspaceId/compose': typeof WorkspaceWorkspaceIdComposeRoute
+  '/workspace/$workspaceId/workflows': typeof WorkspaceWorkspaceIdWorkflowsRoute
   '/workspace/$workspaceId': typeof WorkspaceWorkspaceIdIndexRoute
   '/workspace/create': typeof WorkspaceCreateIndexRoute
   '/workspace/$workspaceId/address/create': typeof WorkspaceWorkspaceIdAddressCreateRoute
@@ -226,6 +235,7 @@ export interface FileRoutesById {
   '/workspace/$workspaceId/activity': typeof WorkspaceWorkspaceIdActivityRoute
   '/workspace/$workspaceId/billing': typeof WorkspaceWorkspaceIdBillingRoute
   '/workspace/$workspaceId/compose': typeof WorkspaceWorkspaceIdComposeRoute
+  '/workspace/$workspaceId/workflows': typeof WorkspaceWorkspaceIdWorkflowsRoute
   '/workspace/$workspaceId/': typeof WorkspaceWorkspaceIdIndexRoute
   '/workspace/create/': typeof WorkspaceCreateIndexRoute
   '/workspace/$workspaceId/address/create': typeof WorkspaceWorkspaceIdAddressCreateRoute
@@ -253,6 +263,7 @@ export interface FileRouteTypes {
     | '/workspace/$workspaceId/activity'
     | '/workspace/$workspaceId/billing'
     | '/workspace/$workspaceId/compose'
+    | '/workspace/$workspaceId/workflows'
     | '/workspace/$workspaceId'
     | '/workspace/create'
     | '/workspace/$workspaceId/address/create'
@@ -278,6 +289,7 @@ export interface FileRouteTypes {
     | '/workspace/$workspaceId/activity'
     | '/workspace/$workspaceId/billing'
     | '/workspace/$workspaceId/compose'
+    | '/workspace/$workspaceId/workflows'
     | '/workspace/$workspaceId'
     | '/workspace/create'
     | '/workspace/$workspaceId/address/create'
@@ -303,6 +315,7 @@ export interface FileRouteTypes {
     | '/workspace/$workspaceId/activity'
     | '/workspace/$workspaceId/billing'
     | '/workspace/$workspaceId/compose'
+    | '/workspace/$workspaceId/workflows'
     | '/workspace/$workspaceId/'
     | '/workspace/create/'
     | '/workspace/$workspaceId/address/create'
@@ -329,6 +342,7 @@ export interface RootRouteChildren {
   WorkspaceWorkspaceIdActivityRoute: typeof WorkspaceWorkspaceIdActivityRoute
   WorkspaceWorkspaceIdBillingRoute: typeof WorkspaceWorkspaceIdBillingRoute
   WorkspaceWorkspaceIdComposeRoute: typeof WorkspaceWorkspaceIdComposeRoute
+  WorkspaceWorkspaceIdWorkflowsRoute: typeof WorkspaceWorkspaceIdWorkflowsRoute
   WorkspaceWorkspaceIdIndexRoute: typeof WorkspaceWorkspaceIdIndexRoute
   WorkspaceCreateIndexRoute: typeof WorkspaceCreateIndexRoute
   WorkspaceWorkspaceIdAddressCreateRoute: typeof WorkspaceWorkspaceIdAddressCreateRoute
@@ -413,6 +427,13 @@ declare module '@tanstack/react-router' {
       path: '/workspace/$workspaceId'
       fullPath: '/workspace/$workspaceId'
       preLoaderRoute: typeof WorkspaceWorkspaceIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/$workspaceId/workflows': {
+      id: '/workspace/$workspaceId/workflows'
+      path: '/workspace/$workspaceId/workflows'
+      fullPath: '/workspace/$workspaceId/workflows'
+      preLoaderRoute: typeof WorkspaceWorkspaceIdWorkflowsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/workspace/$workspaceId/compose': {
@@ -521,6 +542,7 @@ const rootRouteChildren: RootRouteChildren = {
   WorkspaceWorkspaceIdActivityRoute: WorkspaceWorkspaceIdActivityRoute,
   WorkspaceWorkspaceIdBillingRoute: WorkspaceWorkspaceIdBillingRoute,
   WorkspaceWorkspaceIdComposeRoute: WorkspaceWorkspaceIdComposeRoute,
+  WorkspaceWorkspaceIdWorkflowsRoute: WorkspaceWorkspaceIdWorkflowsRoute,
   WorkspaceWorkspaceIdIndexRoute: WorkspaceWorkspaceIdIndexRoute,
   WorkspaceCreateIndexRoute: WorkspaceCreateIndexRoute,
   WorkspaceWorkspaceIdAddressCreateRoute:

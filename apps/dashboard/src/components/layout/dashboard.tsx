@@ -1,3 +1,5 @@
+import { useNavigate } from "@tanstack/react-router";
+import { ChevronLeft } from "lucide-react";
 import DashboardHeader from "../dashboard/header";
 import DashboardNavigation from "../dashboard/navigation";
 
@@ -6,12 +8,15 @@ export default function DashboardLayout({
 	workspaceId,
 	title,
 	showNav = true,
+	showBackButton = false,
 }: {
 	children: React.ReactNode;
 	workspaceId: string;
 	title?: string;
 	showNav?: boolean;
+	showBackButton?: boolean;
 }) {
+	const navigate = useNavigate();
 	return (
 		<div className="flex min-h-screen flex-col bg-white text-black">
 			<DashboardHeader workspaceId={workspaceId} />
@@ -22,9 +27,27 @@ export default function DashboardLayout({
 				{/* Page header */}
 				{title && (
 					<div className="flex items-center justify-between py-6">
-						<div>
-							<h1 className="font-semibold text-2xl tracking-tight">{title}</h1>
-						</div>
+						<h1 className="flex items-center font-semibold text-2xl tracking-tight">
+							{showBackButton && (
+								<ChevronLeft
+									className="mr-2 inline-block h-6 w-6 cursor-pointer text-neutral-700"
+									type="button"
+									onClick={() => {
+										if (window.history.length > 1) {
+											window.history.back();
+										} else {
+											navigate({
+												to: "/workspace/$workspaceId",
+												params: {
+													workspaceId,
+												},
+											});
+										}
+									}}
+								/>
+							)}
+							<span>{title}</span>
+						</h1>
 					</div>
 				)}
 
