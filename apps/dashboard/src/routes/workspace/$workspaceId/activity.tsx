@@ -1,10 +1,28 @@
+import { useIntersection } from "@mantine/hooks";
+import { type InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo } from "react";
-import ActivityList from "@/components/dashboard/activity-list";
-import DashboardHeader from "@/components/dashboard/header";
-import DashboardNavigation from "@/components/dashboard/navigation";
+import DashboardLayout from "@/components/layout/dashboard";
+import { useTitle } from "@/hooks/useTitle";
 import { RequireAuth } from "@/lib/auth";
+import { client } from "@/lib/client";
 import { RequireWorkspace, useWorkspace } from "@/lib/workspace";
+
+// Type for a single activity (inspired by ActivityList)
+interface Activity {
+	id: string;
+	title: string;
+	type: string;
+	description?: string;
+	createdAt: string | Date;
+}
+
+interface ActivityPageResponse {
+	activities: Activity[];
+	totalCount: number;
+	page: number;
+	limit: number;
+	totalPages: number;
+}
 
 export const Route = createFileRoute("/workspace/$workspaceId/activity")({
 	component: RouteComponent,
@@ -23,54 +41,112 @@ function RouteComponent() {
 }
 
 function ActivityPage({ workspaceId }: { workspaceId: string }) {
-	const workspaceData = useWorkspace(workspaceId);
+	const workspace = useWorkspace(workspaceId);
 
-	const workspaceName = useMemo(() => {
-		return workspaceData?.workspace?.name;
-	}, [workspaceData?.workspace?.name]);
-
-	useEffect(() => {
-		if (workspaceName) {
-			document.title = `Activity - ${workspaceName} - Selfmail`;
-		} else {
-			document.title = "Activity - Selfmail";
-		}
-
-		// Cleanup function to reset title when component unmounts
-		return () => {
-			document.title = "Selfmail";
-		};
-	}, [workspaceName]);
+	useTitle(
+		`${workspace?.workspace.name || "Workspace"} - Activity`,
+		"Activity - Selfmail",
+	);
 
 	return (
-		<div className="flex min-h-screen flex-col bg-white text-black">
-			<DashboardHeader workspaceId={workspaceId} />
-			<DashboardNavigation workspaceId={workspaceId} />
+		<DashboardLayout
+			title="Activity of your Workspace"
+			workspaceId={workspaceId}
+			showNav={false}
+			showBackButton={true}
+		>
+			<ActivityList workspaceId={workspaceId} />
+		</DashboardLayout>
+	);
+}
 
-			{/* Page container */}
-			<div className="mx-auto w-full px-4 sm:px-6 lg:px-26 xl:px-32">
-				{/* Page header */}
-				<div className="flex items-center justify-between py-6">
-					<div>
-						<h1 className="font-semibold text-2xl tracking-tight">
-							Activity Log
-						</h1>
-						<p className="mt-1 text-gray-600 text-sm">
-							Track all activities and events in your workspace
-						</p>
-					</div>
+function ActivityList({ workspaceId }: { workspaceId: string }) {
+	const { entry, ref } = useIntersection({ threshold: 0.1 });
+	const {
+		data,
+		isPending,
+		fetchNextPage,
+		hasNextPage,
+		isFetchingNextPage,
+		status,
+		error,
+	} = useInfiniteQuery<
+		ActivityPageResponse,
+		Error,
+		InfiniteData<ActivityPageResponse>,
+		[string, string],
+		number
+	>({
+		queryKey: ["activities", workspaceId],
+		queryFn: async ({ pageParam }) => {
+			const page = (pageParam as number) ?? 1;
+			const response = await client.v1.web.activity.many.get({
+				query: { page, limit: 20, workspaceId },
+			});
+			if (response.error) {
+				const errorMessage =
+					typeof response.error.value === "string"
+						? response.error.value
+						: response.error.value?.message || "Failed to fetch activities";
+				throw new Error(errorMessage);
+			}
+			return response.data as ActivityPageResponse;
+		},
+		getNextPageParam: (lastPage: ActivityPageResponse) => {
+			if (lastPage.page < lastPage.totalPages) {
+				return lastPage.page + 1;
+			}
+			return undefined;
+		},
+		initialPageParam: 1,
+		refetchOnWindowFocus: false,
+	});
+
+	// Auto-fetch next page when intersection observed
+	if (entry?.isIntersecting && hasNextPage && !isFetchingNextPage) {
+		fetchNextPage();
+	}
+
+	if (isPending) {
+		return <div>Loading activities...</div>;
+	}
+	if (status === "error") {
+		return (
+			<div>Error loading activities: {error?.message || "Unknown error"}</div>
+		);
+	}
+
+	const allActivities: Activity[] =
+		data?.pages?.flatMap((page: ActivityPageResponse) => page.activities) ?? [];
+
+	return (
+		<div>
+			{allActivities.length === 0 ? (
+				<div>No activities found.</div>
+			) : (
+				<div className="divide-y divide-gray-200">
+					{allActivities.map((activity) => (
+						<div
+							className="flex items-center justify-between py-2"
+							key={activity.id}
+						>
+							<div className="flex flex-col space-y-1">
+								<h2 className="font-normal text-lg">{activity.title}</h2>
+								<div>{activity.description}</div>
+							</div>
+							<div>
+								{new Date(activity.createdAt).toLocaleDateString()}:{" "}
+								{new Date(activity.createdAt).toLocaleTimeString()}
+							</div>
+						</div>
+					))}
 				</div>
-
-				{/* Activity List */}
-				<div className="pb-8">
-					<div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-[#E2E8F0]">
-						<ActivityList workspace={workspaceId} />
-					</div>
+			)}
+			{hasNextPage && (
+				<div ref={ref}>
+					{isFetchingNextPage ? "Loading more..." : "Scroll to load more..."}
 				</div>
-			</div>
-
-			{/* Bottom spacing */}
-			<div className="h-8" />
+			)}
 		</div>
 	);
 }

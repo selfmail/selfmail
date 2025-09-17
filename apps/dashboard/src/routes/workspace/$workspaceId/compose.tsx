@@ -1,4 +1,9 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { ChevronLeft } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import {
 	Button,
 	Form,
@@ -9,16 +14,11 @@ import {
 	FormMessage,
 	Input,
 } from "ui";
-import DashboardLayout from "@/components/layout/dashboard";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { RequireAuth } from "@/lib/auth";
-import { RequireWorkspace, useWorkspace } from "@/lib/workspace";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ChevronLeft } from "lucide-react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import DashboardLayout from "@/components/layout/dashboard";
+import { RequireAuth } from "@/lib/auth";
 import { client } from "@/lib/client";
-import { toast } from "sonner";
+import { RequireWorkspace, useWorkspace } from "@/lib/workspace";
 
 export const Route = createFileRoute("/workspace/$workspaceId/compose")({
 	component: AuthComponent,
@@ -41,11 +41,11 @@ const schema = z.object({
 	bcc: z.string().optional(),
 	subject: z.string().min(1, { message: "Subject is required" }),
 	body: z.string().min(1, { message: "Body is required" }),
-	address: z.email({ message: "Invalid email address" })
-})
+	address: z.email({ message: "Invalid email address" }),
+});
 
 function ComposeEmail({ workspaceId }: { workspaceId: string }) {
-	const navigate = Route.useNavigate()
+	const navigate = Route.useNavigate();
 
 	const form = useForm<z.infer<typeof schema>>({
 		resolver: zodResolver(schema),
@@ -55,53 +55,56 @@ function ComposeEmail({ workspaceId }: { workspaceId: string }) {
 			cc: "",
 			to: "",
 			subject: "",
-			body: ""
+			body: "",
 		},
-	})
+	});
 
-	const workspace = useWorkspace(workspaceId)
+	const workspace = useWorkspace(workspaceId);
 
 	const { data: addresses } = useQuery({
 		queryKey: ["addresses", workspace?.member.id],
 		queryFn: async () => {
 			const addresses = await client.v1.web.dashboard.addresses.get({
 				query: {
-					workspaceId
-				}
-			})
+					workspaceId,
+				},
+			});
 
-			return addresses
-		}
-	})
+			return addresses;
+		},
+	});
 
 	const { mutate } = useMutation({
 		mutationKey: ["sendEmail", workspace?.member.id],
 		mutationFn: async (data: z.infer<typeof schema>) => {
-			await client.v1.web.workspace({ workspaceId })["send-email"].post({
-				from: data.address,
-				to: data.to.split(",").map(email => email.trim()),
-				subject: data.subject,
-				text: data.body,
-				workspaceId,
-			}, {
-				query: {
-					workspaceId
-				}
-			})
-		}
-	})
+			await client.v1.web.workspace({ workspaceId })["send-email"].post(
+				{
+					from: data.address,
+					to: data.to.split(",").map((email) => email.trim()),
+					subject: data.subject,
+					text: data.body,
+					workspaceId,
+				},
+				{
+					query: {
+						workspaceId,
+					},
+				},
+			);
+		},
+	});
 
 	function onSubmit(values: z.infer<typeof schema>) {
 		mutate(values, {
 			onSuccess: () => {
-				toast.success("Email sent successfully")
-			}
-		})
+				toast.success("Email sent successfully");
+			},
+		});
 	}
 
 	return (
 		<DashboardLayout workspaceId={workspaceId} showNav={false}>
-			<h2 className="text-lg space-x-1 flex items-center">
+			<h2 className="flex items-center space-x-1 text-lg">
 				<ChevronLeft
 					onClick={() => {
 						if (window.history.length > 1) {
@@ -109,30 +112,38 @@ function ComposeEmail({ workspaceId }: { workspaceId: string }) {
 						}
 
 						navigate({
-							to: `/workspace/$workspaceId`,
+							to: "/workspace/$workspaceId",
 							params: {
 								workspaceId
 							}
 						})
 					}}
-					className="h-5 cursor-pointer w-5 text-neutral-700"
+					className="h-5 w-5 cursor-pointer text-neutral-700"
 					aria-label="Go back"
 				/>
 				<span>Compose new Email</span>
 			</h2>
-			{
-				addresses?.data ? <Form {...form}>
-					<form className="space-y-3 first-of-type:mt-6" onSubmit={form.handleSubmit(onSubmit)}>
+			{addresses?.data ? (
+				<Form {...form}>
+					<form
+						className="space-y-3 first-of-type:mt-6"
+						onSubmit={form.handleSubmit(onSubmit)}
+					>
 						<FormField
 							name="address"
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>From</FormLabel>
 									<FormControl>
-										<select aria-placeholder="Select sender address" className="flex w-full rounded-md border pr-4 border-neutral-100 bg-neutral-100 px-3 py-2 text-sm outline-none ring-offset-background transition-colors file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground hover:bg-neutral-200 focus-visible:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 disabled:cursor-not-allowed disabled:opacity-50" {...field}>
+										<select
+											className="flex w-full rounded-md border border-neutral-100 bg-neutral-100 px-3 py-2 pr-4 text-sm outline-none ring-offset-background transition-colors file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground hover:bg-neutral-200 focus-visible:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 disabled:cursor-not-allowed disabled:opacity-50"
+											{...field}
+										>
 											<option value="">Select sender address</option>
 											{addresses?.data.map((addr) => (
-												<option key={addr.id} value={addr.email}>{addr.email}</option>
+												<option key={addr.id} value={addr.email}>
+													{addr.email}
+												</option>
 											))}
 										</select>
 									</FormControl>
@@ -147,7 +158,10 @@ function ComposeEmail({ workspaceId }: { workspaceId: string }) {
 								<FormItem>
 									<FormLabel>To</FormLabel>
 									<FormControl>
-										<Input placeholder="Enter recipient email, separate with comma for multiple contacts" {...field} />
+										<Input
+											placeholder="Enter recipient email, separate with comma for multiple contacts"
+											{...field}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -159,7 +173,10 @@ function ComposeEmail({ workspaceId }: { workspaceId: string }) {
 								<FormItem>
 									<FormLabel>CC</FormLabel>
 									<FormControl>
-										<Input placeholder="Enter CC emails (optional)" {...field} />
+										<Input
+											placeholder="Enter CC emails (optional)"
+											{...field}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -171,7 +188,10 @@ function ComposeEmail({ workspaceId }: { workspaceId: string }) {
 								<FormItem>
 									<FormLabel>BCC</FormLabel>
 									<FormControl>
-										<Input placeholder="Enter BCC emails (optional)" {...field} />
+										<Input
+											placeholder="Enter BCC emails (optional)"
+											{...field}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -195,7 +215,12 @@ function ComposeEmail({ workspaceId }: { workspaceId: string }) {
 								<FormItem>
 									<FormLabel>Body</FormLabel>
 									<FormControl>
-										<textarea className="flex w-full rounded-md border border-neutral-100 bg-neutral-100 px-3 py-2 text-sm outline-none ring-offset-background transition-colors file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground hover:bg-neutral-200 focus-visible:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Enter email body" rows={8} {...field} />
+										<textarea
+											className="flex w-full rounded-md border border-neutral-100 bg-neutral-100 px-3 py-2 text-sm outline-none ring-offset-background transition-colors file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground hover:bg-neutral-200 focus-visible:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 disabled:cursor-not-allowed disabled:opacity-50"
+											placeholder="Enter email body"
+											rows={8}
+											{...field}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -203,10 +228,10 @@ function ComposeEmail({ workspaceId }: { workspaceId: string }) {
 						/>
 						<Button type="submit">Send Email</Button>
 					</form>
-				</Form> : (
-					<div>Loading sender addresses...</div>
-				)
-			}
+				</Form>
+			) : (
+				<div>Loading sender addresses...</div>
+			)}
 		</DashboardLayout>
 	);
 }
