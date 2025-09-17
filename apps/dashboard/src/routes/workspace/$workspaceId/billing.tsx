@@ -24,6 +24,7 @@ function BillingPage({ workspaceId }: { workspaceId: string }) {
 	return (
 		<DashboardLayout
 			showNav={false}
+			showBackButton={true}
 			workspaceId={workspaceId}
 			title="Billing"
 		>

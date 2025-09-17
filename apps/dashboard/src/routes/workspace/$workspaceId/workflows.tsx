@@ -20,7 +20,7 @@ function RouteComponent() {
 
 function Workflows({ workspaceId }: { workspaceId: string }) {
   return (
-    <DashboardLayout title="Workflows" workspaceId={workspaceId} showNav={false}>
+    <DashboardLayout showBackButton={true} title="Workflows" workspaceId={workspaceId} showNav={false}>
       <div>Workflows content goes here</div>
     </DashboardLayout>
   );
