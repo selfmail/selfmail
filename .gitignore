@@ -10,3 +10,7 @@ rspamd/var
 rspamd/etc/maps.d
 rspamd/etc/override.d
 rspamd/etc/local.d/worker-controller.inc
+
+# Keys for DKIM
+/keys
+/keys/*.pem

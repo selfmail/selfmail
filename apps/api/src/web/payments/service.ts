@@ -19,7 +19,7 @@ export abstract class PaymentsService {
 
 		return Webhooks({
 			webhookSecret: process.env.POLAR_WEBHOOK_SECRET,
-			onPayload: async () => { },
+			onPayload: async () => {},
 		});
 	}
 	static async customerPortal({
@@ -44,7 +44,7 @@ export abstract class PaymentsService {
 			throw status(404, "User not found");
 		}
 
-		// check for required permissions to manage payments
+		//Check for required permissions to manage payments
 		const hasPermission = await db.memberPermission.findUnique({
 			where: {
 				memberId_permissionId: {
@@ -77,6 +77,7 @@ export abstract class PaymentsService {
 
 		throw redirect(`https://polar.sh/${process.env.POLAR_ORG_SLUG}/portal`);
 	}
+
 	static async checkout({
 		workspaceId,
 		userId,
@@ -151,5 +152,39 @@ export abstract class PaymentsService {
 
 	static async getCurrentPlan({
 		workspaceId,
-	}: PaymentsModule.getCurrentPlanQuery) { }
+	}: PaymentsModule.getCurrentPlanQuery) {
+		const workspace = await db.workspace.findUnique({
+			where: { id: workspaceId },
+		});
+
+		if (!workspace) {
+			return status(404, "Workspace not found");
+		}
+
+		const plan = workspace.billingPlan || "free";
+
+		// Calculate the current usage of the workspace
+		const workspaceUsedBytes = await db.email.aggregate({
+			_sum: { sizeBytes: true },
+			where: {
+				address: {
+					MemberAddress: {
+						some: {
+							member: {
+								workspaceId: workspace.id,
+							},
+						},
+					},
+				},
+			},
+		});
+
+		return {
+			plan,
+			planChangedAt: workspace.planChangedAt || null,
+			overlimit: workspace.overlimit || false,
+			overlimitAt: workspace.overlimitAt || null,
+			usedBytes: Number(workspaceUsedBytes?._sum?.sizeBytes || 0),
+		};
+	}
 }

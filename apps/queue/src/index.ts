@@ -7,9 +7,9 @@ import type { OutboundEmail } from "./schema/outbound";
 
 const retryDelays = [
 	0,
-	10 * 60 * 1000,      // 10 min
-	2 * 60 * 60 * 1000,  // 2 h
-	8 * 60 * 60 * 1000,  // 8 h
+	10 * 60 * 1000, // 10 min
+	2 * 60 * 60 * 1000, // 2 h
+	8 * 60 * 60 * 1000, // 8 h
 	24 * 60 * 60 * 1000, // 1 day
 	3 * 24 * 60 * 60 * 1000, // 3 days
 	5 * 24 * 60 * 60 * 1000, // 5 days (last attempt)
@@ -27,22 +27,26 @@ const outboundWorker = new Worker<OutboundEmail, void>(
 				return retryDelays[idx] ?? 0;
 			},
 		},
-	}
+	},
 );
 
-outboundWorker.on("failed", async (job, err: Error & { failedReason?: string }) => {
-	consola.warn(`Job ${job?.id} failed: ${err?.message}`);
-	await Logs.error("Outbound job failed", {
-		jobId: job?.id,
-		queue: job?.queueName,
-		name: job?.name,
-		attemptsMade: job?.attemptsMade,
-		failedReason: err?.failedReason,
-		stack: err?.stack,
-		data: job?.data,
-	});
-});
+outboundWorker.on(
+	"failed",
+	async (job, err: Error & { failedReason?: string }) => {
+		console.log(JSON.stringify(err));
+		consola.warn(`Job ${job?.id} failed: ${err?.message}`);
+		await Logs.error("Outbound job failed", {
+			jobId: job?.id,
+			queue: job?.queueName,
+			name: job?.name,
+			attemptsMade: job?.attemptsMade,
+			failedReason: err?.failedReason,
+			stack: err?.stack,
+			data: job?.data,
+		});
+	},
+);
 
-outboundWorker.on("completed", job => {
+outboundWorker.on("completed", (job) => {
 	consola.log(`Job ${job.id} completed`);
 });

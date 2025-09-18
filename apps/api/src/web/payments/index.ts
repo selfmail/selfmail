@@ -28,15 +28,30 @@ export const payments = new Elysia({
 			permissions: ["payments:manage"],
 		},
 	)
-	.get("authenticate", async () => {
-		return { authenticated: true };
-	}, {
-		permissions: ["payments:manage"],
-	})
+	.get(
+		"authenticate",
+		async () => {
+			return { authenticated: true };
+		},
+		{
+			permissions: ["payments:manage"],
+		},
+	)
 	.get("/checkout", async ({ params }) => PaymentsService.checkout(params), {
 		detail: {
 			description: "Redirect to the checkout page for creating a new payment.",
 		},
 		params: PaymentsModule.checkoutParams,
 		permissions: ["payments:create"],
-	});
+	})
+	.get(
+		"/currentPlan",
+		async ({ query }) => await PaymentsService.getCurrentPlan(query),
+		{
+			detail: {
+				description: "Get the current plan for a workspace.",
+			},
+			query: PaymentsModule.getCurrentPlanQuery,
+			permissions: ["payments:manage"],
+		},
+	);

@@ -8,7 +8,13 @@ import { type OutboundEmail, outboundSchema } from "./schema/outbound";
 import { DNS } from "./services/dns";
 import { Send } from "./services/send";
 
-export async function outbound(job: Job<OutboundEmail & { sendByUser?: boolean, memberId?: string }, void, string>) {
+export async function outbound(
+	job: Job<
+		OutboundEmail & { sendByUser?: boolean; memberId?: string },
+		void,
+		string
+	>,
+) {
 	const parse = await outboundSchema.safeParseAsync(job.data);
 
 	if (!parse.success) {
@@ -21,7 +27,7 @@ export async function outbound(job: Job<OutboundEmail & { sendByUser?: boolean, 
 		if (job.data.sendByUser && job.data.memberId) {
 			await Notify.notifyUser({
 				title: "Failed to send email",
-				description: `We had an error while trying to send your email ${job.data.subject ? `with subject "${job.data.subject}" ` : ""} ${Array.isArray(job.data.to) && job.data.to.length > 0 && "to"} ${Array.isArray(job.data.to) ? job.data.to.map(t => t.value.map(v => v.address).join(", ")).join(", ") : ""}. Please try again later or contact support if the issue persists.`,
+				message: `We had an error while trying to send your email ${job.data.subject ? `with subject "${job.data.subject}" ` : ""} ${Array.isArray(job.data.to) && job.data.to.length > 0 && "to"} ${Array.isArray(job.data.to) ? job.data.to.map((t) => t.value.map((v) => v.address).join(", ")).join(", ") : ""}. Please try again later or contact support if the issue persists.`,
 				type: "error",
 				memberId: job.data.memberId,
 			});
@@ -65,15 +71,17 @@ export async function outbound(job: Job<OutboundEmail & { sendByUser?: boolean, 
 		);
 	}
 
-	const spamResult = await Spam.check(mail as unknown as ParsedMail).catch(async (err) => {
-		await Logs.error("Spam check failed!", {
-			jobId: job.id,
-			error: err,
-			data: mail,
-		});
+	const spamResult = await Spam.check(mail as unknown as ParsedMail).catch(
+		async (err) => {
+			await Logs.error("Spam check failed!", {
+				jobId: job.id,
+				error: err,
+				data: mail,
+			});
 
-		throw new Error(`Spam check failed for mail with mail-id: ${job.id}`);
-	});
+			throw new Error(`Spam check failed for mail with mail-id: ${job.id}`);
+		},
+	);
 
 	if (spamResult.allow === false) {
 		await Logs.error("Outbound email blocked due to spam!", {

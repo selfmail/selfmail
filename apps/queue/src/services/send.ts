@@ -1,4 +1,5 @@
 import type { MxRecord } from "node:dns";
+import { UnrecoverableError } from "bullmq";
 import nodemailer from "nodemailer";
 import type { OutboundEmail } from "../schema/outbound";
 
@@ -27,15 +28,15 @@ export abstract class Send {
 		const extractEmails = (
 			addressObj:
 				| {
-					value: { address: string; name?: string }[];
-					text: string;
-					html: string;
-				}
+						value: { address: string; name?: string }[];
+						text: string;
+						html: string;
+				  }
 				| {
-					value: { address: string; name?: string }[];
-					text: string;
-					html: string;
-				}[]
+						value: { address: string; name?: string }[];
+						text: string;
+						html: string;
+				  }[]
 				| undefined,
 		): string | undefined => {
 			if (!addressObj) return undefined;
@@ -58,15 +59,29 @@ export abstract class Send {
 			text: text || "",
 		};
 
-
 		if (!host) {
 			throw new Error("No MX records found for domain");
 		}
 
+		const dkimPrivateKey = await Bun.file(
+			"../../../../keys/dkim-private.pem",
+		).text();
+
+		if (!dkimPrivateKey) {
+			throw new UnrecoverableError("No DKIM private key found");
+		}
+
 		const transporter = nodemailer.createTransport({
 			host,
+			name: "mail.selfmail.app",
 			port: 25,
 			secure: false,
+			dkim: {
+				domainName: "selfmail.app",
+				keySelector: "default",
+				privateKey: dkimPrivateKey,
+				headerFieldNames: "from:to:subject:date:message-id",
+			},
 		});
 
 		const verify = await transporter.verify();
@@ -92,9 +107,7 @@ export abstract class Send {
 			})),
 			messageId: messageId,
 			inReplyTo: inReplyTo,
-			references: Array.isArray(references)
-				? references.join(" ")
-				: references,
+			references: Array.isArray(references) ? references.join(" ") : references,
 			date: date || new Date(),
 			priority: priority || "normal",
 		});
