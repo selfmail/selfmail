@@ -2,6 +2,8 @@ import type { MxRecord } from "node:dns";
 import { UnrecoverableError } from "bullmq";
 import nodemailer from "nodemailer";
 import type { OutboundEmail } from "../schema/outbound";
+import consola from "consola";
+import { $ } from "bun";
 
 export abstract class Send {
 	static async mail({
@@ -63,11 +65,14 @@ export abstract class Send {
 			throw new Error("No MX records found for domain");
 		}
 
+		console.log(await $`ls`)
+
 		const dkimPrivateKey = await Bun.file(
-			"../../../../keys/dkim-private.pem",
+			"../../keys/dkim-private.pem",
 		).text();
 
 		if (!dkimPrivateKey) {
+			console.log("No DKIM private key found");
 			throw new UnrecoverableError("No DKIM private key found");
 		}
 
@@ -87,7 +92,8 @@ export abstract class Send {
 		const verify = await transporter.verify();
 
 		if (!verify) {
-			return;
+			consola.error("Failed to verify transporter");
+			throw new Error("Failed to verify transporter");
 		}
 
 		const send = await transporter.sendMail({

@@ -7,10 +7,12 @@ export default function DashboardLayout({
 	children,
 	workspaceId,
 	title,
+	className,
 	showNav = true,
 	showBackButton = false,
 }: {
 	children: React.ReactNode;
+	className?: string;
 	workspaceId: string;
 	title?: string;
 	showNav?: boolean;
@@ -23,7 +25,7 @@ export default function DashboardLayout({
 			{showNav && <DashboardNavigation workspaceId={workspaceId} />}
 
 			{/* Page container */}
-			<div className="mx-auto w-full px-4 sm:px-6 lg:px-26 xl:px-32">
+			<div className={`mx-auto w-full px-4 sm:px-6 lg:px-26 xl:px-32 ${className}`}>
 				{/* Page header */}
 				{title && (
 					<div className="flex items-center justify-between py-6">

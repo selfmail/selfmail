@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import UnderConstruction from "@/components/contruction";
 import DashboardLayout from "@/components/layout/dashboard";
 import { RequireAuth } from "@/lib/auth";
 import { RequireWorkspace } from "@/lib/workspace";
@@ -11,7 +12,10 @@ function RouteComponent() {
   const { workspaceId } = Route.useParams();
   return (
     <RequireAuth>
-      <RequireWorkspace permissions={["payments:manage"]} workspaceId={workspaceId}>
+      <RequireWorkspace
+        permissions={["payments:manage"]}
+        workspaceId={workspaceId}
+      >
         <Workflows workspaceId={workspaceId} />
       </RequireWorkspace>
     </RequireAuth>
@@ -20,8 +24,13 @@ function RouteComponent() {
 
 function Workflows({ workspaceId }: { workspaceId: string }) {
   return (
-    <DashboardLayout showBackButton={true} title="Workflows" workspaceId={workspaceId} showNav={false}>
-      <div>Workflows content goes here</div>
+    <DashboardLayout
+      showBackButton={true}
+      title="Workflows"
+      workspaceId={workspaceId}
+      showNav={false}
+    >
+      <UnderConstruction />
     </DashboardLayout>
   );
 }

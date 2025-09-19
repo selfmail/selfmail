@@ -1,4 +1,5 @@
 import { type Job, UnrecoverableError } from "bullmq";
+import { consola } from "consola";
 import type { ParsedMail } from "mailparser";
 import { Logs } from "services/logs";
 import { Notify } from "services/notify";
@@ -107,7 +108,7 @@ export async function outbound(
 		...mail,
 		records: mxRecords,
 	}).catch(async (err) => {
-		await Logs.error("Sending email failed!", {
+		consola.error("Sending email failed!", {
 			jobId: job.id,
 			error: err,
 			data: mail,

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "ui";
+import UnderConstruction from "@/components/contruction";
 import DashboardLayout from "@/components/layout/dashboard";
 import { useTitle } from "@/hooks/useTitle";
 import { RequireAuth } from "@/lib/auth";
@@ -49,6 +50,7 @@ function BillingPage({ workspaceId }: { workspaceId: string }) {
 	return (
 		<DashboardLayout
 			showNav={false}
+			className="flex flex-1 flex-col"
 			showBackButton={true}
 			workspaceId={workspaceId}
 			title="Billing"
@@ -87,11 +89,12 @@ function BillingPage({ workspaceId }: { workspaceId: string }) {
 							{data.plan === "premium" ? (
 								<p>You are currently on the Selfmail Plus plan.</p>
 							) : (
-								<a
-									href={`https://selfmail.com/checkout?workspaceId=${workspaceId}&product=selfmail-plus`}
-								>
-									<Button>Upgrade to Selfmail Plus</Button>
-								</a>
+								// <a
+								// 	href={`https://selfmail.com/checkout?workspaceId=${workspaceId}&product=selfmail-plus`}
+								// >
+								// 	<Button>Upgrade to Selfmail Plus</Button>
+								// </a>
+								<p>Upgrades are coming soon to selfmail!</p>
 							)}
 						</div>
 						<div className="flex flex-col justify-between rounded-md bg-neutral-100 p-4">
@@ -104,23 +107,30 @@ function BillingPage({ workspaceId }: { workspaceId: string }) {
 									<li>Up to 10 Members</li>
 									<li>Early Access to new features</li>
 									<li>Priority support with Email</li>
-									<li>Possibility to increase limit (in this case, please contact us)</li>
+									<li>
+										Possibility to increase limit (in this case, please contact
+										us)
+									</li>
 								</ul>
 							</div>
 							{data.plan === "premium" ? (
 								<p>You are currently on the Selfmail Premium plan.</p>
 							) : (
-								<a
-									className="mt-4"
-									href={`https://selfmail.com/checkout?workspaceId=${workspaceId}&product=selfmail-premium`}
-								>
-									<Button>Upgrade to Selfmail Plus</Button>
-								</a>
+								// <a
+								// 	className="mt-4"
+								// 	href={`https://selfmail.com/checkout?workspaceId=${workspaceId}&product=selfmail-premium`}
+								// >
+								// 	<Button>Upgrade to Selfmail Plus</Button>
+								// </a>
+								<p>Upgrades are coming soon to selfmail!</p>
 							)}
 						</div>
 					</div>
 				</div>
 			)}
+			<div className="mt-8 flex h-full items-center justify-center">
+				<UnderConstruction />
+			</div>
 		</DashboardLayout>
 	);
 }

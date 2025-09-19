@@ -3,6 +3,7 @@ import DashboardLayout from "@/components/layout/dashboard";
 import { useTitle } from "@/hooks/useTitle";
 import { RequireAuth } from "@/lib/auth";
 import { RequireWorkspace, useWorkspace } from "@/lib/workspace";
+import UnderConstruction from "@/components/contruction";
 
 export const Route = createFileRoute(
   "/workspace/$workspaceId/members/",
@@ -35,7 +36,7 @@ function Members({ workspaceId }: { workspaceId: string }) {
       title={`Members of ${workspace?.workspace?.name || "Workspace"}`}
       workspaceId={workspaceId}
     >
-      A list of your members 💀
+      <UnderConstruction />
     </DashboardLayout>
   );
 }
