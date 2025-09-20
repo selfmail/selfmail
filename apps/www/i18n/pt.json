@@ -5,6 +5,44 @@
       "sendEmails": "Enviar emails",
       "templates": "Templates e fluxos de trabalho inteligentes",
       "ai": "IA para toda a sua equipe"
+    },
+    "waitlist": {
+      "heading": "Junte-se à lista de espera",
+      "description": "Enviaremos um email quando lançarmos!",
+      "placeholder": "Seu email",
+      "button": "Entrar na lista de espera"
+    }
+  },
+  "roadmap": {
+    "title": "Roteiro",
+    "description": "O Selfmail atualmente não está aberto ao público. Estou documentando no roteiro quais recursos estão atualmente em desenvolvimento.",
+    "items": {
+      "infrastructure": {
+        "title": "Infraestrutura principal",
+        "description": "Configuração do monorepo Turborepo com TypeScript, Astro e arquitetura de banco de dados concluída."
+      },
+      "smtp": {
+        "title": "Servidor SMTP",
+        "description": "Servidor SMTP totalmente funcional para enviar e receber emails com gerenciamento de fila."
+      },
+      "dashboard": {
+        "title": "Painel web",
+        "description": "Construção da interface do usuário para gerenciamento de emails, análises e configurações de conta."
+      },
+      "templates": {
+        "title": "Modelos de email",
+        "description": "Sistema rico de modelos com editor de arrastar e soltar e designs pré-construídos."
+      },
+      "ai": {
+        "title": "Integração com IA",
+        "description": "Composição inteligente de emails, otimização de linhas de assunto e respostas automatizadas."
+      }
+    }
+  },
+  "waitlist": {
+    "success": {
+      "title": "Sucesso!",
+      "description": "Você foi adicionado à lista de espera. Iremos notificá-lo quando lançarmos."
     }
   }
 }

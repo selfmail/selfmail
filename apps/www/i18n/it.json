@@ -5,6 +5,44 @@
       "sendEmails": "Invia email",
       "templates": "Template e flussi di lavoro intelligenti",
       "ai": "IA per tutto il tuo team"
+    },
+    "waitlist": {
+      "heading": "Iscriviti alla lista d'attesa",
+      "description": "Ti invieremo un'email quando lanceremo!",
+      "placeholder": "La tua email",
+      "button": "Iscriviti alla lista d'attesa"
+    }
+  },
+  "roadmap": {
+    "title": "Roadmap",
+    "description": "Selfmail non è attualmente aperto al pubblico. Sto documentando nella roadmap quali funzionalità sono attualmente in fase di sviluppo.",
+    "items": {
+      "infrastructure": {
+        "title": "Infrastruttura Core",
+        "description": "Setup del monorepo Turborepo con TypeScript, Astro e architettura del database completata."
+      },
+      "smtp": {
+        "title": "Server SMTP",
+        "description": "Server SMTP completamente funzionale per l'invio e la ricezione di email con gestione delle code."
+      },
+      "dashboard": {
+        "title": "Dashboard Web",
+        "description": "Sviluppo dell'interfaccia utente per la gestione delle email, analisi e impostazioni dell'account."
+      },
+      "templates": {
+        "title": "Template Email",
+        "description": "Sistema avanzato di template con editor drag-and-drop e design preimpostati."
+      },
+      "ai": {
+        "title": "Integrazione AI",
+        "description": "Composizione intelligente delle email, ottimizzazione dell'oggetto e risposte automatizzate."
+      }
+    }
+  },
+  "waitlist": {
+    "success": {
+      "title": "Operazione riuscita!",
+      "description": "Sei stato aggiunto alla lista d'attesa. Ti avviseremo quando lanceremo il prodotto."
     }
   }
 }

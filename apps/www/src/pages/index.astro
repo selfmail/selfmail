@@ -1,12 +1,11 @@
 ---
 import "../styles/global.css";
 import Layout from "../layouts/Layout.astro";
-import { getLocaleByPath } from 'astro:i18n';
 
 export const prerender = false;
 
 const currentLocale = Astro.preferredLocale || Astro.currentLocale || 'en';
-console.log("Current Locale:", currentLocale);
+
 let translations = {};
 try {
   translations = await import(`../../i18n/${currentLocale}.json`);
@@ -37,12 +36,100 @@ const t = (key: string, fallback?: string): string => {
         <span class="animate-font" style="animation-delay: 0s">S</span><span class="animate-font" style="animation-delay: 0.1s">e</span><span class="animate-font" style="animation-delay: 0.2s">l</span><span class="animate-font" style="animation-delay: 0.3s">f</span><span class="animate-font" style="animation-delay: 0.4s">m</span><span class="animate-font" style="animation-delay: 0.5s">a</span><span class="animate-font" style="animation-delay: 0.6s">i</span><span class="animate-font" style="animation-delay: 0.7s">l</span>
       </h1>
 		</div>
+
+    <div class="col-span-2 border flex flex-col space-y-2 border-neutral-200 p-2" id="waitlist-form">
+      <h3 class="text-lg font-medium">{t("home.waitlist.heading")}</h3>
+      <p>{t("home.waitlist.description")}</p>
+      
+      <form class="flex gap-2">
+        <input 
+          type="email" 
+          name="email" 
+          required
+          class="flex-1 ring-0 focus-visible:ring-2 ring-neutral-200 border-neutral-200 bg-neutral-100 rounded-xl transition-colors text-black outline-none px-2 py-1" 
+          placeholder={t("home.waitlist.placeholder")} 
+        />
+        <button 
+          type="submit" 
+          class="btn btn-primary btn-md rounded-xl"
+          id="waitlist-submit"
+        >
+          {t("home.waitlist.button", "Join Waitlist")}
+        </button>
+      </form>
+      
+      <div id="waitlist-message" class="hidden text-sm"></div>
+    </div>
+
 		<div class="col-span-1 md:col-span-2">
 			<div class="grid grid-cols-1 md:grid-cols-3 gap-0">
 				<div class="p-2 border border-neutral-200 bg-neutral-100">{t("home.features.sendEmails")}</div>
 				<div class="p-2 border border-neutral-200 bg-neutral-100">{t("home.features.templates")}</div>
 				<div class="p-2 border border-neutral-200 bg-neutral-100">{t("home.features.ai")}</div>
 			</div>
-		</div>	
+		</div>
+
+    <div class="col-span-2 p-2 border border-neutral-200 flex flex-col space-y-2">
+      <h2 class="text-2xl font-medium">
+        {t("roadmap.title")}
+      </h2>
+      <p>{t("roadmap.description")}</p>
+      
+      <!-- Roadmap Timeline -->
+      <div class="mt-4 space-y-3">
+        <div class="flex items-center space-x-3">
+          <div class="w-4 h-4 bg-green-500 rounded-full flex-shrink-0"></div>
+          <div class="flex-1">
+            <h4 class="font-medium text-green-700">{t("roadmap.items.infrastructure.title")}</h4>
+            <p class="text-sm text-gray-600">{t("roadmap.items.infrastructure.description")}</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+          <div class="w-4 h-4 bg-green-500 rounded-full flex-shrink-0"></div>
+          <div class="flex-1">
+            <h4 class="font-medium text-green-700">{t("roadmap.items.smtp.title")}</h4>
+            <p class="text-sm text-gray-600">{t("roadmap.items.smtp.description")}</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+          <div class="w-4 h-4 bg-yellow-500 rounded-full flex-shrink-0 animate-pulse"></div>
+          <div class="flex-1">
+            <h4 class="font-medium text-yellow-700">{t("roadmap.items.dashboard.title")}</h4>
+            <p class="text-sm text-gray-600">{t("roadmap.items.dashboard.description")}</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+          <div class="w-4 h-4 bg-gray-300 rounded-full flex-shrink-0"></div>
+          <div class="flex-1">
+            <h4 class="font-medium text-gray-500">{t("roadmap.items.templates.title")}</h4>
+            <p class="text-sm text-gray-600">{t("roadmap.items.templates.description")}</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+          <div class="w-4 h-4 bg-gray-300 rounded-full flex-shrink-0"></div>
+          <div class="flex-1">
+            <h4 class="font-medium text-gray-500">{t("roadmap.items.ai.title")}</h4>
+            <p class="text-sm text-gray-600">{t("roadmap.items.ai.description")}</p>
+          </div>
+        </div>
+      </div>
+    </div>
 	</div>
 </Layout>
+
+<script>
+  import { actions } from 'astro:actions';
+  import { navigate } from 'astro:transitions/client';
+
+  const form = document.querySelector('form');
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const { error } = await actions.signWaitlist(formData);
+    if (!error) navigate('/success');
+  })
+</script>

@@ -5,6 +5,44 @@
       "sendEmails": "メール送信",
       "templates": "テンプレート＆スマートワークフロー",
       "ai": "チーム全体のためのAI"
+    },
+    "waitlist": {
+      "heading": "ウェイトリストに参加する",
+      "description": "ローンチ時にメールでお知らせします！",
+      "placeholder": "メールアドレス",
+      "button": "ウェイトリストに参加"
+    }
+  },
+  "roadmap": {
+    "title": "ロードマップ",
+    "description": "Selfmailは現在一般公開されていません。ロードマップでは、現在開発中の機能を記録しています。",
+    "items": {
+      "infrastructure": {
+        "title": "コアインフラストラクチャ",
+        "description": "TypeScript、Astro、データベースアーキテクチャを完備したTurborepoモノレポセットアップが完了。"
+      },
+      "smtp": {
+        "title": "SMTPサーバー",
+        "description": "キュー管理機能を備えた、メールの送受信が可能な完全機能のSMTPサーバー。"
+      },
+      "dashboard": {
+        "title": "ウェブダッシュボード",
+        "description": "メール管理、分析、アカウント設定のためのユーザーインターフェースの構築。"
+      },
+      "templates": {
+        "title": "メールテンプレート",
+        "description": "ドラッグ＆ドロップエディターと事前構築されたデザインを備えた豊富なテンプレートシステム。"
+      },
+      "ai": {
+        "title": "AI統合",
+        "description": "スマートなメール作成、件名の最適化、自動返信機能。"
+      }
+    }
+  },
+  "waitlist": {
+    "success": {
+      "title": "成功！",
+      "description": "ウェイトリストに追加されました。サービス開始時にお知らせします。"
     }
   }
 }

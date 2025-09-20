@@ -5,6 +5,44 @@
 			"sendEmails": "Send Emails",
 			"templates": "Templates & Smart Workflows",
 			"ai": "AI for Your Entire Team"
+		},
+		"waitlist": {
+			"heading": "Join the waitlist",
+			"description": "We will send you an email, when we launch!",
+			"placeholder": "Your Email",
+			"button": "Join Waitlist"
+		}
+	},
+	"roadmap": {
+		"title": "Roadmap",
+		"description": "Selfmail is currently not open to the public. I am documenting in the roadmap which features are currently in development.",
+		"items": {
+			"infrastructure": {
+				"title": "Core Infrastructure",
+				"description": "Turborepo monorepo setup with TypeScript, Astro, and database architecture completed."
+			},
+			"smtp": {
+				"title": "SMTP Server",
+				"description": "Fully functional SMTP server for sending and receiving emails with queue management."
+			},
+			"dashboard": {
+				"title": "Web Dashboard",
+				"description": "Building the user interface for email management, analytics, and account settings."
+			},
+			"templates": {
+				"title": "Email Templates",
+				"description": "Rich template system with drag-and-drop editor and pre-built designs."
+			},
+			"ai": {
+				"title": "AI Integration",
+				"description": "Smart email composition, subject line optimization, and automated responses."
+			}
+		}
+	},
+	"waitlist": {
+		"success": {
+			"title": "Success!",
+			"description": "You have been added to the waitlist. We will notify you when we launch."
 		}
 	}
 }

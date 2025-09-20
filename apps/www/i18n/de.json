@@ -3,8 +3,46 @@
     "title": "Selfmail",
     "features": {
       "sendEmails": "E-Mails senden",
-      "templates": "Vorlagen & intelligente Arbeitsabläufe",
+      "templates": "Vorlagen & smarte Workflows",
       "ai": "KI für Ihr gesamtes Team"
+    },
+    "waitlist": {
+      "heading": "Trage dich in die Warteliste ein",
+      "description": "Wir senden dir eine E-Mail, wenn wir starten!",
+      "placeholder": "Deine E-Mail",
+      "button": "Warteliste beitreten"
+    }
+  },
+  "roadmap": {
+    "title": "Roadmap",
+    "description": "Selfmail ist derzeit nicht öffentlich zugänglich. In der Roadmap dokumentiere ich, welche Funktionen sich aktuell in der Entwicklung befinden.",
+    "items": {
+      "infrastructure": {
+        "title": "Kerninfrastruktur",
+        "description": "Turborepo-Monorepo-Setup mit TypeScript, Astro und Datenbankarchitektur abgeschlossen."
+      },
+      "smtp": {
+        "title": "SMTP-Server",
+        "description": "Voll funktionsfähiger SMTP-Server zum Senden und Empfangen von E-Mails mit Warteschlangenverwaltung."
+      },
+      "dashboard": {
+        "title": "Web-Dashboard",
+        "description": "Entwicklung der Benutzeroberfläche für E-Mail-Verwaltung, Analytik und Kontoeinstellungen."
+      },
+      "templates": {
+        "title": "E-Mail-Vorlagen",
+        "description": "Umfangreiches Vorlagensystem mit Drag-and-Drop-Editor und vorgefertigten Designs."
+      },
+      "ai": {
+        "title": "KI-Integration",
+        "description": "Intelligente E-Mail-Erstellung, Optimierung von Betreffzeilen und automatisierte Antworten."
+      }
+    }
+  },
+  "waitlist": {
+    "success": {
+      "title": "Erfolg!",
+      "description": "Du wurdest zur Warteliste hinzugefügt. Wir werden dich benachrichtigen, wenn wir starten."
     }
   }
 }

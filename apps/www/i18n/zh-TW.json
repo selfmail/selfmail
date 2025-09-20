@@ -5,6 +5,44 @@
       "sendEmails": "寄送電子郵件",
       "templates": "範本與智慧工作流程",
       "ai": "為整個團隊提供的 AI"
+    },
+    "waitlist": {
+      "heading": "加入候補名單",
+      "description": "我們將在推出時發送電子郵件給您！",
+      "placeholder": "您的電子郵件",
+      "button": "加入候補名單"
+    }
+  },
+  "roadmap": {
+    "title": "路線圖",
+    "description": "Selfmail 目前尚未向公眾開放。我正在路線圖中記錄目前正在開發的功能。",
+    "items": {
+      "infrastructure": {
+        "title": "核心基礎架構",
+        "description": "已完成使用 TypeScript、Astro 和資料庫架構的 Turborepo 單一代碼庫設置。"
+      },
+      "smtp": {
+        "title": "SMTP 伺服器",
+        "description": "具備完整功能的 SMTP 伺服器，可用於發送和接收電子郵件，並具備佇列管理功能。"
+      },
+      "dashboard": {
+        "title": "網頁儀表板",
+        "description": "構建用於電子郵件管理、分析和帳戶設定的使用者介面。"
+      },
+      "templates": {
+        "title": "電子郵件範本",
+        "description": "豐富的範本系統，包含拖放編輯器和預建設計。"
+      },
+      "ai": {
+        "title": "AI 整合",
+        "description": "智慧電子郵件撰寫、主題行優化和自動回覆功能。"
+      }
+    }
+  },
+  "waitlist": {
+    "success": {
+      "title": "成功！",
+      "description": "您已成功加入候補名單。我們將在推出時通知您。"
     }
   }
 }

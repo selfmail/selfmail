@@ -5,3 +5,21 @@ checksums:
     home/features/sendEmails: 3b74caeba40c3ba4ee44a1d0ba12a6d2
     home/features/templates: 1f49eb9263159c60bc7c35d0151a2ac1
     home/features/ai: a388bda3db2b6e9fbf7b7096ae74b19d
+    home/waitlist/heading: 170dc60e8427e47999c00c4921364429
+    home/waitlist/description: 8f82f3a73665558fc3147cf266677b06
+    home/waitlist/placeholder: a8dc76bfa7ea911bfcbe4775ae53c208
+    home/waitlist/button: 391d2d5110cde46e1b053c109fc7754e
+    roadmap/title: c60f4a1acf30e566861bf130f13b9ae7
+    roadmap/description: d5b926671c9f4440f026b50926a7921b
+    roadmap/items/infrastructure/title: 055839e3127e7a691af64527f76dda0a
+    roadmap/items/infrastructure/description: d5c81fdbee1812aa14375c1743750ef9
+    roadmap/items/smtp/title: cf40ba88d65893b9c1cee253a5b8e644
+    roadmap/items/smtp/description: 45b87580fff1486cbaab6f4b8a4508fc
+    roadmap/items/dashboard/title: d0a89465328439fd258569c78d71f62e
+    roadmap/items/dashboard/description: 684291f359b02861083cd2d062a23a28
+    roadmap/items/templates/title: 3bbb446fb9976e398b376d5266972d57
+    roadmap/items/templates/description: bd5aa9b924469c51c03966e834315af2
+    roadmap/items/ai/title: 01a1a508c624fed8392b76ed462eec8d
+    roadmap/items/ai/description: 5e8be21242b4663404f119ed5f825e5d
+    waitlist/success/title: e7c9fe48ac87b4a2fbf184d02f06d798
+    waitlist/success/description: 7ce22de073000a5348aa0799a5966a38

@@ -509,6 +509,15 @@ model Notification {
   createdAt DateTime @default(now())
 }
 
+model Waitlist {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("waitlist")
+}
+
 enum NotificationType {
   info
   warning

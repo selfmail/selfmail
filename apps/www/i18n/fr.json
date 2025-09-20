@@ -5,6 +5,44 @@
       "sendEmails": "Envoyer des emails",
       "templates": "Modèles & flux de travail intelligents",
       "ai": "IA pour toute votre équipe"
+    },
+    "waitlist": {
+      "heading": "Rejoindre la liste d'attente",
+      "description": "Nous vous enverrons un e-mail lors de notre lancement !",
+      "placeholder": "Votre e-mail",
+      "button": "Rejoindre la liste d'attente"
+    }
+  },
+  "roadmap": {
+    "title": "Feuille de route",
+    "description": "Selfmail n'est actuellement pas ouvert au public. Je documente dans la feuille de route les fonctionnalités qui sont en cours de développement.",
+    "items": {
+      "infrastructure": {
+        "title": "Infrastructure de base",
+        "description": "Configuration du monorepo Turborepo avec TypeScript, Astro et architecture de base de données terminée."
+      },
+      "smtp": {
+        "title": "Serveur SMTP",
+        "description": "Serveur SMTP entièrement fonctionnel pour l'envoi et la réception d'emails avec gestion de file d'attente."
+      },
+      "dashboard": {
+        "title": "Tableau de bord web",
+        "description": "Construction de l'interface utilisateur pour la gestion des emails, l'analytique et les paramètres du compte."
+      },
+      "templates": {
+        "title": "Modèles d'emails",
+        "description": "Système de modèles avancé avec éditeur glisser-déposer et designs préconçus."
+      },
+      "ai": {
+        "title": "Intégration IA",
+        "description": "Composition intelligente d'emails, optimisation des lignes d'objet et réponses automatisées."
+      }
+    }
+  },
+  "waitlist": {
+    "success": {
+      "title": "Succès !",
+      "description": "Vous avez été ajouté à la liste d'attente. Nous vous informerons lors du lancement."
     }
   }
 }
