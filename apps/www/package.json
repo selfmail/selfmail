@@ -9,6 +9,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/node": "^9.4.3",
     "@neondatabase/serverless": "^1.0.1",
     "@tailwindcss/vite": "^4.1.13",
     "@upstash/ratelimit": "^2.0.6",
