@@ -1,29 +1,14 @@
 {
-	"name": "www",
-	"version": "0.1.0",
-	"private": true,
-	"type": "module",
-	"scripts": {
-		"dev": "concurrently \"bun run watch\" \"bun --hot src/index.ts\"",
-		"watch": "bun watch.ts",
-		"build": "bun run build.ts",
-		"start": "NODE_ENV=production bun run build && bun src/index.ts",
-		"server": "bun --hot src/index.ts"
-	},
-	"dependencies": {
-		"@tailwindcss/cli": "^4.1.12",
-		"bun-plugin-tailwind": "^0.0.15",
-		"motion": "^12.23.12",
-		"react": "^19",
-		"react-dom": "^19",
-		"concurrently": "^8.2.2",
-		"tailwindcss": "^4.1.11"
-	},
-	"devDependencies": {
-		"@parcel/watcher": "^2.5.1",
-		"@types/bun": "latest",
-		"@types/react": "^19",
-		"@types/react-dom": "^19",
-		"nodemon": "^3.1.10"
-	}
+  "name": "www",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.13.9"
+  }
 }
