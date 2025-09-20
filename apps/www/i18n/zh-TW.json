@@ -1,0 +1,10 @@
+{
+  "home": {
+    "title": "Selfmail",
+    "features": {
+      "sendEmails": "寄送電子郵件",
+      "templates": "範本與智慧工作流程",
+      "ai": "為整個團隊提供的 AI"
+    }
+  }
+}

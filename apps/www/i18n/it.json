@@ -1,0 +1,10 @@
+{
+  "home": {
+    "title": "Selfmail",
+    "features": {
+      "sendEmails": "Invia email",
+      "templates": "Template e flussi di lavoro intelligenti",
+      "ai": "IA per tutto il tuo team"
+    }
+  }
+}

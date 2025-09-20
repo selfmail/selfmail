@@ -1,0 +1,10 @@
+{
+  "home": {
+    "title": "Selfmail",
+    "features": {
+      "sendEmails": "メール送信",
+      "templates": "テンプレート＆スマートワークフロー",
+      "ai": "チーム全体のためのAI"
+    }
+  }
+}

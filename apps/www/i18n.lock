@@ -1,0 +1,7 @@
+version: 1
+checksums:
+  4188a166aad2705b4f09401f924502ed:
+    home/title: 9d88dfdd6c94ec9a6e2447754a0907fb
+    home/features/sendEmails: 3b74caeba40c3ba4ee44a1d0ba12a6d2
+    home/features/templates: 1f49eb9263159c60bc7c35d0151a2ac1
+    home/features/ai: a388bda3db2b6e9fbf7b7096ae74b19d

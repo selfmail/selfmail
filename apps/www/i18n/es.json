@@ -1,0 +1,10 @@
+{
+  "home": {
+    "title": "Selfmail",
+    "features": {
+      "sendEmails": "Enviar correos electrónicos",
+      "templates": "Plantillas y flujos de trabajo inteligentes",
+      "ai": "IA para todo tu equipo"
+    }
+  }
+}

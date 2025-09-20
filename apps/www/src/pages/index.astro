@@ -1,11 +1,48 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+import { getLocaleByPath } from 'astro:i18n';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+export const prerender = false;
+
+const currentLocale = Astro.preferredLocale || Astro.currentLocale || 'en';
+console.log("Current Locale:", currentLocale);
+let translations = {};
+try {
+  translations = await import(`../../i18n/${currentLocale}.json`);
+} catch (error) {
+  // Fallback to English if translation file doesn't exist
+  try {
+    translations = await import(`../../i18n/en.json`);
+  } catch (fallbackError) {
+    console.warn(`No translation file found for locale: ${currentLocale}`);
+  }
+}
+
+// Translation function
+const t = (key: string, fallback?: string): string => {
+  const keys = key.split('.');
+  let value: any = (translations as any).default || translations;
+  for (const k of keys) {
+    value = value?.[k];
+  }
+  return value || fallback || key;
+};
 ---
 
 <Layout>
-	<Welcome />
+	<div class="grid w-full p-5 md:w-[700px] lg:w-[800px] h-min grid-cols-1 md:grid-cols-2 gap-0">
+		<div class="col-span-1 p-2 md:col-span-2 border h-min border-neutral-200">
+			<h1 class=" text-9xl">
+        <span class="animate-font" style="animation-delay: 0s">S</span><span class="animate-font" style="animation-delay: 0.1s">e</span><span class="animate-font" style="animation-delay: 0.2s">l</span><span class="animate-font" style="animation-delay: 0.3s">f</span><span class="animate-font" style="animation-delay: 0.4s">m</span><span class="animate-font" style="animation-delay: 0.5s">a</span><span class="animate-font" style="animation-delay: 0.6s">i</span><span class="animate-font" style="animation-delay: 0.7s">l</span>
+      </h1>
+		</div>
+		<div class="col-span-1 md:col-span-2">
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-0">
+				<div class="p-2 border border-neutral-200 bg-neutral-100">{t("home.features.sendEmails")}</div>
+				<div class="p-2 border border-neutral-200 bg-neutral-100">{t("home.features.templates")}</div>
+				<div class="p-2 border border-neutral-200 bg-neutral-100">{t("home.features.ai")}</div>
+			</div>
+		</div>	
+	</div>
 </Layout>

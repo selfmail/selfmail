@@ -14,3 +14,4 @@ rspamd/etc/local.d/worker-controller.inc
 # Keys for DKIM
 /keys
 /keys/*.pem
+i18n.cache

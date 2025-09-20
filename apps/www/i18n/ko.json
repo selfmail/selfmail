@@ -1,0 +1,10 @@
+{
+  "home": {
+    "title": "셀프메일",
+    "features": {
+      "sendEmails": "이메일 보내기",
+      "templates": "템플릿 및 스마트 워크플로우",
+      "ai": "팀 전체를 위한 AI"
+    }
+  }
+}
