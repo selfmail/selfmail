@@ -44,6 +44,7 @@ function WorkspaceDashboard({ workspaceId }: { workspaceId: string }) {
 	return (
 		<DashboardLayout workspaceId={workspaceId} title="Unified Inbox">
 			<EmailViewer
+				workspaceId={workspaceId}
 				setOpen={setOpen}
 				open={open}
 				selectedEmail={selectedEmail}
