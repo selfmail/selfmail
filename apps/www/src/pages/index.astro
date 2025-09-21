@@ -30,28 +30,28 @@ const t = (key: string, fallback?: string): string => {
 ---
 
 <Layout>
-	<div class="grid w-full p-5 md:w-[700px] lg:w-[800px] h-min grid-cols-1 md:grid-cols-2 gap-0">
+	<div class="grid w-full p-3 sm:p-5 max-w-full sm:max-w-[700px] lg:max-w-[800px] h-min grid-cols-1 md:grid-cols-2 gap-0 mx-auto">
 		<div class="col-span-1 p-2 md:col-span-2 border h-min border-neutral-200">
-			<h1 class=" text-9xl">
+			<h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-9xl break-words">
         <span class="animate-font" style="animation-delay: 0s">S</span><span class="animate-font" style="animation-delay: 0.1s">e</span><span class="animate-font" style="animation-delay: 0.2s">l</span><span class="animate-font" style="animation-delay: 0.3s">f</span><span class="animate-font" style="animation-delay: 0.4s">m</span><span class="animate-font" style="animation-delay: 0.5s">a</span><span class="animate-font" style="animation-delay: 0.6s">i</span><span class="animate-font" style="animation-delay: 0.7s">l</span>
       </h1>
 		</div>
 
-    <div class="col-span-2 border flex flex-col space-y-2 border-neutral-200 p-2" id="waitlist-form">
+    <div class="col-span-1 md:col-span-2 border flex flex-col space-y-3 sm:space-y-2 border-neutral-200 p-3 sm:p-2" id="waitlist-form">
       <h3 class="text-lg font-medium">{t("home.waitlist.heading")}</h3>
-      <p>{t("home.waitlist.description")}</p>
+      <p class="text-sm sm:text-base">{t("home.waitlist.description")}</p>
       
-      <form class="flex gap-2">
+      <form class="flex flex-col sm:flex-row gap-2">
         <input 
           type="email" 
           name="email" 
           required
-          class="flex-1 ring-0 focus-visible:ring-2 ring-neutral-200 border-neutral-200 bg-neutral-100 rounded-xl transition-colors text-black outline-none px-2 py-1" 
+          class="flex-1 ring-0 focus-visible:ring-2 ring-neutral-200 border-neutral-200 bg-neutral-100 rounded-xl transition-colors text-black outline-none px-3 py-2 text-sm sm:text-base" 
           placeholder={t("home.waitlist.placeholder")} 
         />
         <button 
           type="submit" 
-          class="btn btn-primary btn-md rounded-xl"
+          class="btn btn-primary btn-md rounded-xl w-full sm:w-auto whitespace-nowrap"
           id="waitlist-submit"
         >
           {t("home.waitlist.button", "Join Waitlist")}
@@ -62,58 +62,58 @@ const t = (key: string, fallback?: string): string => {
     </div>
 
 		<div class="col-span-1 md:col-span-2">
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-0">
-				<div class="p-2 border border-neutral-200 bg-neutral-100">{t("home.features.sendEmails")}</div>
-				<div class="p-2 border border-neutral-200 bg-neutral-100">{t("home.features.templates")}</div>
-				<div class="p-2 border border-neutral-200 bg-neutral-100">{t("home.features.ai")}</div>
+			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0">
+				<div class="p-3 sm:p-2 border border-neutral-200 bg-neutral-100 text-sm sm:text-base">{t("home.features.sendEmails")}</div>
+				<div class="p-3 sm:p-2 border border-neutral-200 bg-neutral-100 text-sm sm:text-base">{t("home.features.templates")}</div>
+				<div class="p-3 sm:p-2 border border-neutral-200 bg-neutral-100 text-sm sm:text-base">{t("home.features.ai")}</div>
 			</div>
 		</div>
 
-    <div class="col-span-2 p-2 border border-neutral-200 flex flex-col space-y-2">
-      <h2 class="text-2xl font-medium">
+    <div class="col-span-1 md:col-span-2 p-3 sm:p-2 border border-neutral-200 flex flex-col space-y-3 sm:space-y-2">
+      <h2 class="text-xl sm:text-2xl font-medium">
         {t("roadmap.title")}
       </h2>
-      <p>{t("roadmap.description")}</p>
+      <p class="text-sm sm:text-base">{t("roadmap.description")}</p>
       
       <!-- Roadmap Timeline -->
-      <div class="mt-4 space-y-3">
-        <div class="flex items-center space-x-3">
-          <div class="w-4 h-4 bg-green-500 rounded-full flex-shrink-0"></div>
+      <div class="mt-3 sm:mt-4 space-y-3">
+        <div class="flex items-start sm:items-center space-x-3">
+          <div class="w-4 h-4 bg-green-500 rounded-full flex-shrink-0 mt-1 sm:mt-0"></div>
           <div class="flex-1">
-            <h4 class="font-medium text-green-700">{t("roadmap.items.infrastructure.title")}</h4>
-            <p class="text-sm text-gray-600">{t("roadmap.items.infrastructure.description")}</p>
+            <h4 class="font-medium text-green-700 text-sm sm:text-base">{t("roadmap.items.infrastructure.title")}</h4>
+            <p class="text-xs sm:text-sm text-gray-600 mt-1">{t("roadmap.items.infrastructure.description")}</p>
           </div>
         </div>
         
-        <div class="flex items-center space-x-3">
-          <div class="w-4 h-4 bg-green-500 rounded-full flex-shrink-0"></div>
+        <div class="flex items-start sm:items-center space-x-3">
+          <div class="w-4 h-4 bg-green-500 rounded-full flex-shrink-0 mt-1 sm:mt-0"></div>
           <div class="flex-1">
-            <h4 class="font-medium text-green-700">{t("roadmap.items.smtp.title")}</h4>
-            <p class="text-sm text-gray-600">{t("roadmap.items.smtp.description")}</p>
+            <h4 class="font-medium text-green-700 text-sm sm:text-base">{t("roadmap.items.smtp.title")}</h4>
+            <p class="text-xs sm:text-sm text-gray-600 mt-1">{t("roadmap.items.smtp.description")}</p>
           </div>
         </div>
         
-        <div class="flex items-center space-x-3">
-          <div class="w-4 h-4 bg-yellow-500 rounded-full flex-shrink-0 animate-pulse"></div>
+        <div class="flex items-start sm:items-center space-x-3">
+          <div class="w-4 h-4 bg-yellow-500 rounded-full flex-shrink-0 animate-pulse mt-1 sm:mt-0"></div>
           <div class="flex-1">
-            <h4 class="font-medium text-yellow-700">{t("roadmap.items.dashboard.title")}</h4>
-            <p class="text-sm text-gray-600">{t("roadmap.items.dashboard.description")}</p>
+            <h4 class="font-medium text-yellow-700 text-sm sm:text-base">{t("roadmap.items.dashboard.title")}</h4>
+            <p class="text-xs sm:text-sm text-gray-600 mt-1">{t("roadmap.items.dashboard.description")}</p>
           </div>
         </div>
         
-        <div class="flex items-center space-x-3">
-          <div class="w-4 h-4 bg-gray-300 rounded-full flex-shrink-0"></div>
+        <div class="flex items-start sm:items-center space-x-3">
+          <div class="w-4 h-4 bg-gray-300 rounded-full flex-shrink-0 mt-1 sm:mt-0"></div>
           <div class="flex-1">
-            <h4 class="font-medium text-gray-500">{t("roadmap.items.templates.title")}</h4>
-            <p class="text-sm text-gray-600">{t("roadmap.items.templates.description")}</p>
+            <h4 class="font-medium text-gray-500 text-sm sm:text-base">{t("roadmap.items.templates.title")}</h4>
+            <p class="text-xs sm:text-sm text-gray-600 mt-1">{t("roadmap.items.templates.description")}</p>
           </div>
         </div>
         
-        <div class="flex items-center space-x-3">
-          <div class="w-4 h-4 bg-gray-300 rounded-full flex-shrink-0"></div>
+        <div class="flex items-start sm:items-center space-x-3">
+          <div class="w-4 h-4 bg-gray-300 rounded-full flex-shrink-0 mt-1 sm:mt-0"></div>
           <div class="flex-1">
-            <h4 class="font-medium text-gray-500">{t("roadmap.items.ai.title")}</h4>
-            <p class="text-sm text-gray-600">{t("roadmap.items.ai.description")}</p>
+            <h4 class="font-medium text-gray-500 text-sm sm:text-base">{t("roadmap.items.ai.title")}</h4>
+            <p class="text-xs sm:text-sm text-gray-600 mt-1">{t("roadmap.items.ai.description")}</p>
           </div>
         </div>
       </div>
