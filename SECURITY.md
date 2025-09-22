@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Because we don't have currently any versions of selfmail, we'll support every version with security updates.
+Because we don't have currently any versions of Selfmail, we'll support every version with security updates.
 
 
 ## Reporting a Vulnerability

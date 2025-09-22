@@ -4,6 +4,7 @@ import { useEmailDetails } from "@/hooks/useEmailDetails";
 
 export default function EmailViewer({
 	open,
+	setOpen,
 	selectedEmail,
 	workspaceId,
 }: {
@@ -27,12 +28,23 @@ export default function EmailViewer({
 			<div className="flex flex-col h-full">
 				{/* Header */}
 				<div className="border-b border-neutral-200 pb-4 mb-4">
-					<h2 className="text-xl font-semibold text-neutral-900 mb-2">
-						{emailDetails?.subject || selectedEmail.subject}
-					</h2>
+					<div className="flex items-start justify-between mb-2">
+						<h2 className="text-xl font-semibold text-neutral-900 flex-1 pr-4">
+							{emailDetails?.subject || selectedEmail.subject}
+						</h2>
+						<button
+							onClick={() => setOpen(false)}
+							className="flex-shrink-0 cursor-pointer p-1 text-neutral-400 hover:text-neutral-600 transition-colors"
+							aria-label="Close email"
+						>
+							<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+							</svg>
+						</button>
+					</div>
 					<div className="text-sm text-neutral-600">
 						<p className="mb-1">
-							<span className="font-medium">From:</span> {selectedEmail.from}
+							<span className="font-medium">From:</span> {emailDetails?.contact?.email ?? selectedEmail.from}
 						</p>
 						<p>
 							<span className="font-medium">Date:</span>{" "}
@@ -57,7 +69,6 @@ export default function EmailViewer({
 							{emailDetails.html ? (
 								<div className="space-y-4">
 									<div className="bg-white border border-neutral-200 rounded-lg p-4">
-										<h3 className="font-medium text-neutral-900 mb-2">HTML Content</h3>
 										<div
 											className="prose prose-sm max-w-none"
 											dangerouslySetInnerHTML={{ __html: emailDetails.html }}
@@ -65,7 +76,6 @@ export default function EmailViewer({
 									</div>
 									{emailDetails.text && (
 										<div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4">
-											<h3 className="font-medium text-neutral-900 mb-2">Plain Text</h3>
 											<pre className="whitespace-pre-wrap text-sm text-neutral-700 font-mono">
 												{emailDetails.text}
 											</pre>
@@ -75,7 +85,6 @@ export default function EmailViewer({
 							) : (
 								/* Show plain text content */
 								<div className="bg-white border border-neutral-200 rounded-lg p-4">
-									<h3 className="font-medium text-neutral-900 mb-2">Content</h3>
 									<pre className="whitespace-pre-wrap text-sm text-neutral-700">
 										{emailDetails.text || selectedEmail.content}
 									</pre>
@@ -84,7 +93,6 @@ export default function EmailViewer({
 						</div>
 					) : (
 						<div className="bg-white border border-neutral-200 rounded-lg p-4">
-							<h3 className="font-medium text-neutral-900 mb-2">Content</h3>
 							<pre className="whitespace-pre-wrap text-sm text-neutral-700">
 								{selectedEmail.content}
 							</pre>

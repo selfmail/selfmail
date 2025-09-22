@@ -58,10 +58,10 @@ export abstract class DashboardService {
 			where:
 				addressIds.length > 0
 					? {
-						addressId: {
-							in: addressIds,
-						},
-					}
+							addressId: {
+								in: addressIds,
+							},
+						}
 					: undefined,
 		});
 
@@ -95,11 +95,19 @@ export abstract class DashboardService {
 				id,
 				...(addressIds.length > 0
 					? {
-						addressId: {
-							in: addressIds,
-						},
-					}
+							addressId: {
+								in: addressIds,
+							},
+						}
 					: {}),
+			},
+			include: {
+				contact: {
+					select: {
+						id: true,
+						email: true,
+					},
+				},
 			},
 		});
 
