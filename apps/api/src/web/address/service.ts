@@ -23,6 +23,22 @@ export abstract class AddressService {
 			return status(429, "Rate limit exceeded");
 		}
 
+		// check workspace address limit (1)
+		const addressCount = await db.memberAddress.count({
+			where: {
+				member: {
+					workspaceId,
+				},
+			},
+		});
+
+		if (addressCount >= 1) {
+			return status(
+				403,
+				"Workspace address limit reached. Please contact support to increase your limit.",
+			);
+		}
+
 		// Special handling for selfmail.app domain
 		const isSelfmailDomain = domain === "selfmail.app";
 
@@ -99,6 +115,13 @@ export abstract class AddressService {
 		memberId: string;
 		memberName: string;
 	}) {
+		// Ratelimiting
+		const isLimited = await Ratelimit.limit(
+			`address:delete:${workspaceId}:${memberId}`,
+		);
+		if (!isLimited.success) {
+			return status(429, "Rate limit exceeded");
+		}
 		// Check if member has access to this address
 		const memberAddress = await db.memberAddress.findFirst({
 			where: {

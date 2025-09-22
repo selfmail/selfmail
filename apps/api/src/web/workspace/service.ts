@@ -20,6 +20,21 @@ export class WorkspaceService {
 		if (!allowed)
 			return status(429, "Too many requests. Please try again later.");
 
+		// fetch workspaces by user (user can only create 2 workspaces for now)
+		// TODO: increase number
+		const existingWorkspaces = await db.workspace.count({
+			where: {
+				ownerId: userId,
+			},
+		});
+
+		if (existingWorkspaces >= 2) {
+			return status(
+				403,
+				"You have reached the maximum number of workspaces allowed.",
+			);
+		}
+
 		let imageUrl: string | undefined;
 
 		if (image) {
@@ -29,6 +44,8 @@ export class WorkspaceService {
 				bucket: "workspace-icons",
 			});
 		}
+
+
 
 		const workspace = await db.workspace.create({
 			data: {
@@ -132,6 +149,11 @@ export class WorkspaceService {
 			workspaceId: string;
 		},
 	) {
+		// Ratelimiting
+		const allowed = await Ratelimit.limit(`${userId}:${workspaceId}:send-email`);
+		if (!allowed)
+			return status(429, "Too many requests. Please try again later.");
+
 		// Verify user access to workspace
 		const member = await db.member.findFirst({
 			where: {

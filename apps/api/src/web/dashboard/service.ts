@@ -1,5 +1,6 @@
 import { db } from "database";
 import { status } from "elysia";
+import { Ratelimit } from "services/ratelimit";
 import type { DashboardModule } from "./module";
 
 export abstract class DashboardService {
@@ -8,6 +9,13 @@ export abstract class DashboardService {
 		memberId: string,
 		workspaceId: string,
 	) {
+		// Ratelimiting
+		const allowed = await Ratelimit.limit(
+			`${memberId}:${workspaceId}:multiple-emails`,
+		);
+		if (!allowed)
+			return status(429, "Too many requests. Please try again later.");
+
 		page = Number(page) || 1;
 		limit = Number(limit) || 20;
 
@@ -78,6 +86,11 @@ export abstract class DashboardService {
 		{ id }: DashboardModule.SingleEmailParams,
 		userId: string,
 	) {
+		// Ratelimiting
+		const allowed = await Ratelimit.limit(`${userId}:single-email`);
+		if (!allowed)
+			return status(429, "Too many requests. Please try again later.");
+
 		// Get user's accessible addresses through member addresses
 		const memberAddresses = await db.memberAddress.findMany({
 			where: {
@@ -123,6 +136,12 @@ export abstract class DashboardService {
 	}
 
 	static async userAddresses(memberId: string) {
+		// Ratelimiting
+		const allowed = await Ratelimit.limit(`${memberId}:user-addresses`);
+		if (!allowed)
+			return status(429, "Too many requests. Please try again later.");
+
+		// Fetch addresses associated with the member
 		const addresses = await db.memberAddress.findMany({
 			where: {
 				memberId,
@@ -168,6 +187,12 @@ export abstract class DashboardService {
 		memberId: string,
 		workspaceId: string,
 	) {
+		// Ratelimiting
+		const allowed = await Ratelimit.limit(
+			`${memberId}:${workspaceId}:mark-email-as-read`,
+		);
+		if (!allowed)
+			return status(429, "Too many requests. Please try again later.");
 		// Get user's accessible addresses through member addresses
 		const memberAddresses = await db.memberAddress.findMany({
 			where: {
