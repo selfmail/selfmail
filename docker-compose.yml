@@ -43,6 +43,27 @@ services:
     volumes:
       - redis_data:/data
 
+  queue:
+    build:
+      context: .
+      dockerfile: apps/queue/Dockerfile
+    container_name: selfmail-queue
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - postgres
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=selfmail-redis
+      - REDIS_PORT=6379
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@selfmail-postgres:5432/${POSTGRES_DB}
+      - TZ=${TZ}
+    networks:
+      - default
+
 volumes:
   postgres_data:
   redis_data:
