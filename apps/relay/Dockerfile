@@ -4,22 +4,19 @@ FROM oven/bun:1 AS base
 # Set working directory
 WORKDIR /app
 
-# Copy package.json files
+# Copy package.json files for dependency resolution
 COPY package.json bun.lock* ./
-COPY apps/queue/package.json ./apps/queue/
+COPY apps/relay/package.json ./apps/relay/
 COPY packages/services/package.json ./packages/services/
-COPY packages/database/package.json ./packages/database/
 
 # Install dependencies
-RUN bun install
+RUN bun install --frozen-lockfile
 
 # Copy source code
-COPY apps/queue/src ./apps/queue/src
-COPY apps/queue/tsconfig.json ./apps/queue/
+COPY apps/relay/src ./apps/relay/src
+COPY apps/relay/tsconfig.json ./apps/relay/
 COPY packages/services/src ./packages/services/src
 COPY packages/services/tsconfig.json ./packages/services/
-COPY packages/database/src ./packages/database/src
-COPY packages/database/tsconfig.json ./packages/database/
 
 # Production stage
 FROM oven/bun:1-slim AS production
@@ -31,22 +28,24 @@ COPY --from=base /app ./
 
 # Create non-root user
 RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 bun
 
 # Change ownership of the app directory
 RUN chown -R bun:nodejs /app
 USER bun
 
+# Expose the relay API port
+EXPOSE 3001
 
 # Set environment variables
 ENV NODE_ENV=production
+ENV PORT=3001
 ENV REDIS_HOST=redis
 ENV REDIS_PORT=6379
 
-RUN bun build apps/queue/src/index.ts --outfile=app --target=bun --compile
-
 # Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD bun --version || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+  CMD curl -f http://localhost:3001/health || exit 1
 
-# Start the application
-CMD ["./app"]
+# Start the relay service
+CMD ["bun", "run", "apps/relay/src/main.ts"]

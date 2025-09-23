@@ -4,22 +4,23 @@ FROM oven/bun:1 AS base
 # Set working directory
 WORKDIR /app
 
-# Copy package.json files
+# Copy package.json files for dependency resolution
 COPY package.json bun.lock* ./
-COPY apps/queue/package.json ./apps/queue/
-COPY packages/services/package.json ./packages/services/
+COPY apps/payments/package.json ./apps/payments/
 COPY packages/database/package.json ./packages/database/
+COPY packages/services/package.json ./packages/services/
 
 # Install dependencies
-RUN bun install
+RUN bun install --frozen-lockfile
 
 # Copy source code
-COPY apps/queue/src ./apps/queue/src
-COPY apps/queue/tsconfig.json ./apps/queue/
-COPY packages/services/src ./packages/services/src
-COPY packages/services/tsconfig.json ./packages/services/
+COPY apps/payments/src ./apps/payments/src
+COPY apps/payments/tsconfig.json ./apps/payments/
 COPY packages/database/src ./packages/database/src
 COPY packages/database/tsconfig.json ./packages/database/
+COPY packages/database/prisma ./packages/database/prisma
+COPY packages/services/src ./packages/services/src
+COPY packages/services/tsconfig.json ./packages/services/
 
 # Production stage
 FROM oven/bun:1-slim AS production
@@ -31,22 +32,20 @@ COPY --from=base /app ./
 
 # Create non-root user
 RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 bun
 
 # Change ownership of the app directory
 RUN chown -R bun:nodejs /app
 USER bun
-
 
 # Set environment variables
 ENV NODE_ENV=production
 ENV REDIS_HOST=redis
 ENV REDIS_PORT=6379
 
-RUN bun build apps/queue/src/index.ts --outfile=app --target=bun --compile
-
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD bun --version || exit 1
 
-# Start the application
-CMD ["./app"]
+# Start the payment worker
+CMD ["bun", "run", "apps/payments/src/queue/index.ts"]
