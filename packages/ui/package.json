@@ -13,8 +13,7 @@
 	"exports": {
 		".": "./src/components.ts",
 		"./components/*": "./src/components/ui/*",
-		"./styles.css": "./styles/globals.css",
-		"./tailwind.config": "./tailwind.config.js"
+		"./styles.css": "./styles/globals.css"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^4.1.0",

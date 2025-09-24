@@ -11,7 +11,7 @@ COPY packages/database/package.json ./packages/database/
 COPY packages/services/package.json ./packages/services/
 
 # Install dependencies
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Copy source code
 COPY apps/payments/src ./apps/payments/src

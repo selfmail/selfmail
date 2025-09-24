@@ -193,6 +193,22 @@ services:
     networks:
       - default
 
+  dashboard:
+    build:
+      context: .
+      dockerfile: apps/dashboard/Dockerfile
+    container_name: selfmail-dashboard
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    environment:
+      - NODE_ENV=production
+      - TZ=${TZ}
+    networks:
+      - default
+
 volumes:
   postgres_data:
   redis_data:
