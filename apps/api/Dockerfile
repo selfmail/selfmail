@@ -13,7 +13,7 @@ COPY packages/transactional/package.json ./packages/transactional/
 COPY apps/payments/package.json ./apps/payments/
 
 # Install dependencies
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Copy source code
 COPY apps/api/src ./apps/api/src
@@ -27,6 +27,17 @@ COPY packages/transactional ./packages/transactional/
 COPY apps/payments/src ./apps/payments/src
 COPY apps/payments/tsconfig.json ./apps/payments/
 
+# Install OpenSSL for certificate generation, in order to run Prisma generate
+RUN apt-get update -y && apt-get install -y openssl
+
+WORKDIR /app/packages/database
+RUN bun run generate
+
+WORKDIR /app/apps/api
+
+RUN bun run build
+
+
 # Production stage
 FROM oven/bun:1-slim AS production
 
@@ -35,12 +46,7 @@ WORKDIR /app
 # Copy built application from base stage
 COPY --from=base /app ./
 
-# Create non-root user
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 bun
-
-# Change ownership of the app directory
-RUN chown -R bun:nodejs /app
+RUN chown -R bun:bun /app
 USER bun
 
 # Expose the API port
@@ -54,5 +60,7 @@ ENV PORT=3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
   CMD curl -f http://localhost:3000/v1/health || exit 1
 
+WORKDIR /app/apps/api
+
 # Start the application
-CMD ["bun", "run", "apps/api/src/index.ts"]
+CMD ["bun", "run", "production:start"]

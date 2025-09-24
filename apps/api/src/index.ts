@@ -13,7 +13,7 @@ const app = new Elysia({
 })
 	.use(ip())
 	.use(swagger())
-	.use(publicElysia) // the public api for the users to automate stuff with selfmail
+	.use(publicElysia) // The public API for the users to automate stuff with Selfmail
 	.use(web)
 	.listen(3000);
 
