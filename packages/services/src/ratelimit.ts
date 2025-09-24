@@ -12,7 +12,11 @@ export interface RateLimitResult {
 }
 
 export class Ratelimit {
-	private static redis = new RedisClient("redis://localhost:6379");
+	private static redis = new RedisClient(
+		process.env.REDIS_RATELIMIT_URL ||
+			process.env.REDIS_URL ||
+			"redis://localhost:6379",
+	);
 
 	private static defaultOptions: RateLimitOptions = {
 		max: 100,

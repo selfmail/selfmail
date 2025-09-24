@@ -15,3 +15,6 @@ rspamd/etc/local.d/worker-controller.inc
 /keys
 /keys/*.pem
 i18n.cache
+
+# Infisical
+.infisical.json

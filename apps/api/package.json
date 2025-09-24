@@ -3,7 +3,8 @@
 	"version": "1.0.50",
 	"scripts": {
 		"production:start": "./dist/app",
-		"dev": "infisical  run --watch --env=dev -- bun run --watch src/index.ts",
+		"dev": "bun run --watch src/index.ts",
+		"dev:infisical": "infisical  run --watch --env=dev -- bun run --watch src/index.ts",
 		"build": "bun build src/index.ts --outfile=./dist/app --compile --target=bun"
 	},
 	"dependencies": {

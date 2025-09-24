@@ -1,9 +1,6 @@
 {
 	"name": "api",
 	"version": "1.0.50",
-	"scripts": {
-		"dev": "infisical  run --watch --env=dev -- bun run --watch src/index.ts"
-	},
 	"dependencies": {
 		"elysia": "latest"
 	},

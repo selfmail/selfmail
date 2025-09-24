@@ -1,8 +1,8 @@
 import { db } from "database";
 import { status } from "elysia";
 import { Mail } from "services/mail";
+import { Ratelimit } from "services/ratelimit";
 import { generateVerifyEmailTemplate } from "transactional";
-import { rateLimitMiddleware } from "../../lib/auth-middleware";
 import type { AuthenticationModule } from "./module";
 
 export abstract class AuthenticationService {
@@ -11,7 +11,10 @@ export abstract class AuthenticationService {
 		clientIp: string,
 	) {
 		// Rate limiting for registration
-		const rateLimit = await rateLimitMiddleware(clientIp, "auth");
+		const rateLimit = await Ratelimit.limit(`register:${clientIp}`, {
+			max: 5,
+			windowInSeconds: 60 * 60,
+		});
 		if (!rateLimit.success) {
 			return status(429, "Too many requests. Please try again later.");
 		}
@@ -160,7 +163,11 @@ export abstract class AuthenticationService {
 		clientIp: string,
 	) {
 		// Rate limiting for login
-		const rateLimit = await rateLimitMiddleware(clientIp, "auth");
+		const rateLimit = await Ratelimit.limit(`login:${clientIp}`, {
+			max: 10,
+			windowInSeconds: 60 * 60,
+		});
+
 		if (!rateLimit.success) {
 			return status(429, "Too many requests. Please try again later.");
 		}

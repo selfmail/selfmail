@@ -1,0 +1,2 @@
+# Docker Compose file which expects that api, webservices and payments queue is running in the cloud.
+# That means, we have only the smtp stuff left.

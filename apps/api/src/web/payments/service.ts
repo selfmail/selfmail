@@ -127,7 +127,8 @@ export abstract class PaymentsService {
 		const url = await polar.checkoutLinks.create({
 			productId: products[product],
 			paymentProcessor: "stripe",
-			successUrl: `${process.env.SELFMAIL_URL}/payments/success`,
+			// TODO: add success URL
+			successUrl: `${process.env.POLAR_SUCCESS_BASE_URL?.endsWith("/") ? `${process.env.POLAR_SUCCESS_BASE_URL}payments/success` : `${process.env.POLAR_SUCCESS_BASE_URL}/payments/success`}`,
 		});
 
 		Analytics.trackEvent("payments.checkoutLinkCreated", {

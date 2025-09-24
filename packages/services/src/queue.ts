@@ -3,11 +3,11 @@ import IORedis from "ioredis";
 import type { OutboundEmail } from "../../../apps/queue/src/schema/outbound";
 
 export abstract class EmailQueue {
-	static connection = new IORedis({
-		maxRetriesPerRequest: null,
-		host: "127.0.0.1",
-		port: 6379,
-	});
+	static connection = new IORedis(
+		process.env.REDIS_OUTBOUND_QUEUE ||
+			process.env.REDIS_URL ||
+			"redis://localhost:6379",
+	);
 
 	static queue = new Queue<OutboundEmail>("emails-outbound", {
 		connection: EmailQueue.connection,
