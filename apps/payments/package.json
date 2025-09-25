@@ -12,6 +12,10 @@
 	"exports": {
 		".": "./src/index.ts"
 	},
+	"scripts": {
+		"build": "bun build src/queue/index.ts --compile --outfile=app",
+		"dev": "bun run --watch src/queue/index.ts"
+	},
 	"dependencies": {
 		"@polar-sh/sdk": "^0.34.16",
 		"bullmq": "^5.58.5",

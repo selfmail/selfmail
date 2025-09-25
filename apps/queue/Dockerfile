@@ -26,6 +26,7 @@ FROM oven/bun:1-slim AS production
 
 WORKDIR /app
 
+
 # Copy built application from base stage
 COPY --from=base /app ./
 

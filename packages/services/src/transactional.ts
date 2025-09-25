@@ -1,6 +1,6 @@
 import { Queue } from "bullmq";
 import IORedis from "ioredis";
-import { z } from "zod";
+import { z } from "zod/v4";
 import { Logs } from "./logs";
 
 export abstract class Transactional {

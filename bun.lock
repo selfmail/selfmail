@@ -269,10 +269,14 @@
       "name": "services",
       "dependencies": {
         "bullmq": "^5.58.4",
+        "clamscan": "^2.4.0",
         "ioredis": "^5.7.0",
+        "nodemailer": "^7.0.6",
+        "sanitize-html": "^2.17.0",
       },
       "devDependencies": {
         "@types/bun": "latest",
+        "@types/clamscan": "^2.4.1",
       },
       "peerDependencies": {
         "typescript": "^5",
