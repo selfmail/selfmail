@@ -47,9 +47,6 @@ USER bun
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV REDIS_HOST=redis
-ENV REDIS_PORT=6379
-
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \

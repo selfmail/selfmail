@@ -3,7 +3,8 @@
 	"version": "1.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "bun --hot run src/main.ts"
+		"dev": "bun --hot run src/main.ts",
+		"build": "bun build src/main.ts --outfile=app --compile --target=bun"
 	},
 	"devDependencies": {
 		"@types/bun": "1",
@@ -12,7 +13,8 @@
 	},
 	"dependencies": {
 		"elysia": "1",
-		"services": "workspace:*",
-		"nodemailer": "^7.0.5"
+		"mailparser": "^3.7.4",
+		"nodemailer": "^7.0.5",
+		"services": "workspace:*"
 	}
 }
