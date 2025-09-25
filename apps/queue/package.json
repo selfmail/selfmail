@@ -4,7 +4,8 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"dev": "bun run --watch src/index.ts"
+		"dev": "bun run --watch src/index.ts",
+		"build": "bun build src/index.ts --outfile=app --target=bun --compile"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
