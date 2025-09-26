@@ -5,6 +5,7 @@
 	"private": true,
 	"scripts": {
 		"build": "bun build --target=node src/index.ts --outdir dist",
+		"build:docker": "bun build --target=node src/index.ts --outfile=app --compile",
 		"start": "sudo env \"PATH=$PATH\" node dist/index.js",
 		"dev": "nodemon -e .ts,.json --ignore dist --exec \"clear && sudo env \"PATH=$PATH\" bun run build && sudo env \"PATH=$PATH\" node dist/index.js\""
 	},

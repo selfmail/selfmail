@@ -3,7 +3,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "bun --watch run src/index.ts",
-		"typecheck": "tsc"
+		"typecheck": "tsc",
+		"build": "bun build src/index.ts --outfile=app --compile"
 	},
 	"devDependencies": {
 		"@types/bun": "1",

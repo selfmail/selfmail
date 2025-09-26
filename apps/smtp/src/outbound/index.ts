@@ -8,14 +8,8 @@ import { mailFrom } from "./events/mail-from";
 import { recipient } from "./events/recipient";
 
 const options = {
-	key: readFileSync(
-		"/etc/letsencrypt/live/mail.selfmail.app/privkey.pem",
-		"utf8",
-	),
-	cert: readFileSync(
-		"/etc/letsencrypt/live/mail.selfmail.app/fullchain.pem",
-		"utf8",
-	),
+	key: readFileSync(`${process.env.CERTIFICATE_PATH}/privkey.pem`, "utf8"),
+	cert: readFileSync(`${process.env.CERTIFICATE_PATH}/fullchain.pem`, "utf8"),
 };
 
 export const outboundServer = new SMTPServer({
