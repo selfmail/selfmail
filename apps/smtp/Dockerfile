@@ -36,11 +36,15 @@ RUN bun run build:docker
 # Production stage
 FROM oven/bun:1-slim AS production
 
+# Install OpenSSL in production stage for Prisma runtime
+RUN apt-get update -y && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 # Copy built application from base stage
 COPY --from=base /app ./
 
+RUN mkdir -p /app/certs
 RUN chown -R bun:bun /app
 USER bun
 

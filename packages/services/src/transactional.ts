@@ -44,14 +44,15 @@ export abstract class Transactional {
 
 	static async send(params: {
 		to: string;
-		from: string;
 		subject: string;
 		text: string;
 		html: string;
 	}) {
 		// parse the provided values
-		const { success, data, error } =
-			await Transactional.schema.safeParseAsync(params);
+		const { success, data, error } = await Transactional.schema.safeParseAsync({
+			...params,
+			from: process.env.TRANSACTIONAL_EMAIL_FROM,
+		});
 
 		if (!success) {
 			await Logs.error(

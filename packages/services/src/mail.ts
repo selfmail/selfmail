@@ -49,18 +49,24 @@ export abstract class Mail {
 		return {
 			value: [{ address: address.email, name: address.name }],
 			text: address.name ? `${address.name} <${address.email}>` : address.email,
-			html: address.name ? `${address.name} &lt;${address.email}&gt;` : address.email,
+			html: address.name
+				? `${address.name} &lt;${address.email}&gt;`
+				: address.email,
 		};
 	}
 
-	private static convertEmailAddresses(addresses: EmailAddress | EmailAddress[]) {
+	private static convertEmailAddresses(
+		addresses: EmailAddress | EmailAddress[],
+	) {
 		if (Array.isArray(addresses)) {
-			return addresses.map(addr => Mail.convertEmailAddress(addr));
+			return addresses.map((addr) => Mail.convertEmailAddress(addr));
 		}
 		return Mail.convertEmailAddress(addresses);
 	}
 
-	static async sendMail(options: SendMailOptions & { sendByMemberId?: string }): Promise<SendMailResponse> {
+	static async sendMail(
+		options: SendMailOptions & { sendByMemberId?: string },
+	): Promise<SendMailResponse> {
 		try {
 			await EmailQueue.processOutbound({
 				subject: options.subject,
@@ -70,7 +76,9 @@ export abstract class Mail {
 				from: Mail.convertEmailAddress(options.from),
 				cc: options.cc ? Mail.convertEmailAddresses(options.cc) : undefined,
 				bcc: options.bcc ? Mail.convertEmailAddresses(options.bcc) : undefined,
-				replyTo: options.replyTo ? Mail.convertEmailAddress(options.replyTo) : undefined,
+				replyTo: options.replyTo
+					? Mail.convertEmailAddress(options.replyTo)
+					: undefined,
 				priority: options.priority,
 				attachments: options.attachments || [],
 				headers: options.headers || {},
@@ -149,25 +157,5 @@ export abstract class Mail {
 		attachments: EmailAttachment[];
 	}): Promise<SendMailResponse> {
 		return Mail.sendMail({ to, from, subject, text, html, attachments });
-	}
-
-	/**
-	 * Send a transactional email (useful for system notifications)
-	 */
-	static async sendTransactionalEmail({
-		to,
-		subject,
-		text,
-		html,
-		priority = "high",
-	}: {
-		to: EmailAddress;
-		subject: string;
-		text: string;
-		html?: string;
-		priority?: "normal" | "low" | "high";
-	}): Promise<SendMailResponse> {
-		const from = process.env.TRANSACTIONAL_EMAIL_FROM || "noreply@selfmail.app";
-		return Mail.sendMail({ to, from, subject, text, html, priority });
 	}
 }

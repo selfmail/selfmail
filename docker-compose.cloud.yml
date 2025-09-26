@@ -1,2 +1,128 @@
 # Docker Compose file which expects that api, webservices and payments queue is running in the cloud.
 # That means, we have only the smtp stuff left.
+
+services:
+  smtp:
+    build:
+      context: .
+      dockerfile: apps/smtp/Dockerfile
+      args:
+        - CERTIFICATE_PATH=${CERTIFICATE_PATH}
+    container_name: selfmail-smtp
+    restart: unless-stopped
+    ports:
+      - "25:25"   # SMTP inbound
+      - "587:587" # SMTP outbound (submission)
+    depends_on:
+      - rspamd
+      - clamav
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=${REDIS_URL}
+      - SMTP_API_URL=${SMTP_API_URL}
+      - RSPAMD_HOST=rspamd
+      - RSPAMD_PORT=11332
+      - CERTIFICATE_PATH=${CERTIFICATE_PATH}
+      - CLAMAV_HOST=clamav
+      - CLAMAV_PORT=3310
+      - DATABASE_URL=${DATABASE_URL}
+      # For example Europe/Berlin
+      - TZ=${TZ}
+    networks:
+      - default
+    # Required for binding to privileged ports
+    privileged: false
+    cap_add:
+      - NET_BIND_SERVICE
+    volumes:
+      - ./certs:${CERTIFICATE_PATH}:ro
+
+  relay:
+    build:
+      context: .
+      dockerfile: apps/relay/Dockerfile
+    container_name: selfmail-relay
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    depends_on:
+      - queue
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - REDIS_URL=${REDIS_URL}
+      - TZ=${TZ}
+    networks:
+      - default
+
+  smtp-api:
+    build:
+      context: .
+      dockerfile: apps/smtp-api/Dockerfile
+    container_name: selfmail-smtp-api
+    restart: unless-stopped
+    ports:
+      - "4001:4001"
+    depends_on:
+      - clamav
+    environment:
+      - NODE_ENV=production
+      - PORT=4001
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - CLAMAV_HOST=clamav
+      - CLAMAV_PORT=3310
+      - TZ=${TZ}
+    networks:
+      - default
+
+  transactional-queue:
+    build:
+      context: .
+      dockerfile: apps/transactional-queue/Dockerfile
+    container_name: selfmail-transactional-queue
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=${REDIS_URL}
+      - TZ=${TZ}
+    networks:
+      - default
+  queue:
+    build:
+      context: .
+      dockerfile: apps/queue/Dockerfile
+    container_name: selfmail-queue
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=${REDIS_URL}
+      - DATABASE_URL=${DATABASE_URL}
+      - TZ=${TZ}
+    networks:
+      - default
+  rspamd:
+    image: rspamd/rspamd:latest
+    container_name: rspamd
+    restart: unless-stopped
+    ports:
+      - "11332:11332" # Proxy/Milter
+      - "11333:11333" # HTTP/JSON API
+      - "11334:11334" # Web UI
+    volumes:
+      - ./rspamd/etc:/etc/rspamd
+      - ./rspamd/var:/var/lib/rspamd
+    environment:
+      - TZ=${TZ}
+
+  clamav:
+    image: clamav/clamav:latest
+    container_name: clamav
+    restart: unless-stopped
+    ports:
+      - "3310:3310"
+
+volumes:
+  rspamd-var:
+  rspamd-etc:
+  certs:

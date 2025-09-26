@@ -7,11 +7,9 @@ import { data } from "./events/data";
 import { mailFrom } from "./events/mail-from";
 import { recipient } from "./events/recipient";
 
-const certificatePath = process.env.CERTIFICATE_PATH || "/app/certs";
-
 const options = {
-	key: readFileSync(`${certificatePath}/privkey.pem`, "utf8"),
-	cert: readFileSync(`${certificatePath}/fullchain.pem`, "utf8"),
+	key: readFileSync("/app/certs/privkey.pem", "utf8"),
+	cert: readFileSync("/app/certs/fullchain.pem", "utf8"),
 };
 
 export const outboundServer = new SMTPServer({

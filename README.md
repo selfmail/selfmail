@@ -1,27 +1,21 @@
-**Selfmail**
+# Selfmail
 
 The open-source and privacy first email provider for your company. A simple and easy-to-use interface, custom addresses, own domains, a free starting plan and more in the first version coming soon.
 
-**Documentation**
+## Documentation
 
-*Selfhosting*
+### Selfhosting
 
-Selfmail is easy to selfhost, you need a vps with access to port 25 and 587 (some providers may block these ports, due to spam abusing). You can clone the repo:
+> [!NOTE]
+> Selfmail does not have an installation script for speeding up the process. Contributions are welcomed for a selfhosting script.
 
-```bash
-git clone https://github.com/selfmail/selfmail
-```
+**Prerequisite:**
 
-Make sure to have docker and docker-compose installed. After that, just hit
+- [Docker](https://docker.com)
+- Docker Compose
+- A Reverse Proxy (for example [Caddy](https://caddyserver.com))
+- [Git](https://git-scm.com/)
 
-```bash
-docker-compose up -d
-```
 
-to start the production server. The following ports are getting exposed:
-
-- 25 (Incoming SMTP traffic)
-- 587 (Outbound SMTP traffic)
-- 3000 (Api)
-- 3001 (Dashboard)
+You also need a **Server** (for example an VPS) with **access** to **port 25** and **port 587**. Both ports are often abused for spamming attacks, please ask your provider, whether they can enable you the ports, if they are blocked.
 

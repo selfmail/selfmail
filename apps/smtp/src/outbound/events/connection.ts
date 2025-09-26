@@ -1,4 +1,3 @@
-import { resolve4 } from "node:dns/promises";
 import { Analytics } from "services/analytics";
 import { Logs } from "services/logs";
 import type { SMTPServerSession } from "smtp-server";
