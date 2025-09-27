@@ -13,8 +13,8 @@ export abstract class AuthenticationService {
 		console.log("Register attempt from IP:", clientIp);
 		// Rate limiting for registration
 		const rateLimit = await Ratelimit.limit(`register:${clientIp}`, {
-			max: 5,
-			windowInSeconds: 60 * 60,
+			max: 15,
+			windowInSeconds: 60,
 		});
 		if (!rateLimit.success) {
 			console.log("Rate limit exceeded for IP:", clientIp);
