@@ -54,7 +54,7 @@ export abstract class Transactional {
 			...params,
 			from:
 				process.env.TRANSACTIONAL_EMAIL_FROM ||
-				"noreply@transaction.selfmail.app",
+				"noreply@transactional.selfmail.app",
 		});
 
 		if (!success) {
