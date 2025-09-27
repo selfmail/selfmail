@@ -22,6 +22,6 @@ export default defineConfig({
 		allowedHosts: ["selfmail.app", "www.selfmail.app"],
 	},
 	devToolbar: {
-		enabled: true,
+		enabled: false,
 	},
 });
