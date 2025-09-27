@@ -1,48 +1,80 @@
 {
 	"home": {
 		"title": "Selfmail",
+		"subtitle": "Open-source email infrastructure for modern applications",
+		"description": "Send transactional emails, manage templates, and scale your email delivery with our self-hosted solution.",
 		"features": {
-			"sendEmails": "Send Emails",
-			"templates": "Templates & Smart Workflows",
-			"ai": "AI for Your Entire Team"
+			"sendEmails": "Send Transactional Emails",
+			"templates": "Smart Templates & Workflows", 
+			"ai": "API-First Architecture"
 		},
-		"waitlist": {
-			"heading": "Join the waitlist",
-			"description": "We will send you an email, when we launch!",
-			"placeholder": "Your Email",
-			"button": "Join Waitlist"
+		"cta": {
+			"primary": "Get Started",
+			"secondary": "View Documentation",
+			"github": "Star on GitHub"
 		}
 	},
-	"roadmap": {
-		"title": "Roadmap",
-		"description": "Selfmail is currently not open to the public. I am documenting in the roadmap which features are currently in development.",
+	"features": {
+		"title": "Everything you need for email delivery",
+		"smtp": {
+			"title": "SMTP Server",
+			"description": "Full-featured SMTP server with queue management and delivery tracking."
+		},
+		"api": {
+			"title": "REST API", 
+			"description": "Simple HTTP API for sending emails programmatically from any language."
+		},
+		"dashboard": {
+			"title": "Web Dashboard",
+			"description": "Manage emails, view analytics, and configure settings through our web interface."
+		},
+		"templates": {
+			"title": "Template Engine",
+			"description": "Create and manage email templates with variables and conditional logic."
+		},
+		"opensource": {
+			"title": "Open Source",
+			"description": "Self-hosted solution with full control over your email infrastructure."
+		},
+		"monitoring": {
+			"title": "Monitoring & Analytics",
+			"description": "Track delivery rates, bounces, and engagement metrics in real-time."
+		}
+	},
+	"status": {
+		"title": "Current Status",
+		"description": "Selfmail is now available! Here's what's ready and what's coming next.",
 		"items": {
 			"infrastructure": {
 				"title": "Core Infrastructure",
-				"description": "Turborepo monorepo setup with TypeScript, Astro, and database architecture completed."
+				"description": "Turborepo monorepo setup with TypeScript, Astro, and database architecture completed.",
+				"status": "complete"
 			},
 			"smtp": {
 				"title": "SMTP Server",
-				"description": "Fully functional SMTP server for sending and receiving emails with queue management."
+				"description": "Fully functional SMTP server for sending and receiving emails with queue management.",
+				"status": "complete"
+			},
+			"api": {
+				"title": "REST API",
+				"description": "HTTP API for sending emails programmatically with rate limiting and authentication.",
+				"status": "complete"
 			},
 			"dashboard": {
 				"title": "Web Dashboard",
-				"description": "Building the user interface for email management, analytics, and account settings."
+				"description": "User interface for email management, analytics, and account settings.",
+				"status": "progress"
 			},
 			"templates": {
 				"title": "Email Templates",
-				"description": "Rich template system with drag-and-drop editor and pre-built designs."
+				"description": "Rich template system with drag-and-drop editor and pre-built designs.",
+				"status": "planned"
 			},
-			"ai": {
-				"title": "AI Integration",
-				"description": "Smart email composition, subject line optimization, and automated responses."
+			"monitoring": {
+				"title": "Advanced Analytics",
+				"description": "Detailed email tracking, delivery reports, and engagement metrics.",
+				"status": "planned"
 			}
-		}
-	},
-	"waitlist": {
-		"success": {
-			"title": "Success!",
-			"description": "You have been added to the waitlist. We will notify you when we launch."
 		}
 	}
 }
