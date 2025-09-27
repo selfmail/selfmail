@@ -102,13 +102,16 @@ cd selfmail
 ### 3. Environment Configuration
 
 ```bash
-# Copy example environment files
+# Copy the main environment template
+cp .env.example .env
+
+# Or copy individual service examples
 cp apps/api/.env.example apps/api/.env
 cp apps/dashboard/.env.example apps/dashboard/.env
 cp apps/smtp/.env.example apps/smtp/.env
 
-# Generate secure passwords and tokens
-# Edit each .env file with your configuration
+# Edit .env with your configuration
+nano .env
 ```
 
 ### 4. SSL Certificates
@@ -237,9 +240,14 @@ cd selfmail
 # Install dependencies
 bun install
 
-# Set up environment files
+# Set up environment files  
+cp .env.example .env
+# Or set up individual service environment files:
 find apps -name ".env.example" -exec sh -c 'cp "$1" "${1%.example}"' _ {} \;
 find packages -name ".env.example" -exec sh -c 'cp "$1" "${1%.example}"' _ {} \;
+
+# Edit .env with your local configuration
+nano .env
 ```
 
 ### 3. Database Setup (Development)
@@ -275,17 +283,22 @@ bun run check-types
 
 # Lint code
 bun run check
+
+# Run tests (where available)
+bun test              # Run tests with Bun
+vitest run            # Run tests for dashboard
 ```
 
 ### 5. Development Ports
 
 | Service | Port | URL |
 |---------|------|-----|
-| Dashboard | 5173 | http://localhost:5173 |
+| Dashboard | 3001 | http://localhost:3001 |
 | API | 3000 | http://localhost:3000 |
 | WWW | 4321 | http://localhost:4321 |
 | SMTP-API | 4001 | http://localhost:4001 |
 | Relay | 4000 | http://localhost:4000 |
+| SMTP | 25, 587 | N/A (email protocols) |
 
 ## ⚙️ Environment Configuration
 
@@ -304,17 +317,20 @@ ENABLE_DOCKER_VOLUME_UPLOAD=true
 
 #### SMTP Service (`apps/smtp/.env`)
 ```bash
+# Path to SSL certificates directory
+CERTIFICATE_PATH=/path/to/certs
+
+# SMTP API service URL (optional, default: http://localhost:4001)
+SMTP_API_URL=http://localhost:4001
+
+# Database and Redis (usually same as API)
 DATABASE_URL=postgresql://user:password@localhost:5432/selfmail
 REDIS_URL=redis://localhost:6379
-CERTIFICATE_PATH=/app/certs
-RSPAMD_HOST=localhost
-RSPAMD_PORT=11332
-CLAMAV_HOST=localhost
-CLAMAV_PORT=3310
 ```
 
 #### Dashboard (`apps/dashboard/.env`)
 ```bash
+# API base URL - point to your API service
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
