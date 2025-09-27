@@ -7,9 +7,9 @@ export abstract class EmailQueue {
 		process.env.REDIS_OUTBOUND_QUEUE ||
 			process.env.REDIS_URL ||
 			"redis://localhost:6379",
-			{
-				maxRetriesPerRequest: null,
-			}
+		{
+			maxRetriesPerRequest: null,
+		},
 	);
 
 	static queue = new Queue<OutboundEmail>("emails-outbound", {

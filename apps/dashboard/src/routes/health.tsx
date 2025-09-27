@@ -1,12 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/health")({
-    component: IndexComponent,
+	component: IndexComponent,
 });
 function IndexComponent() {
-    return (
-        <div>
-            OK
-        </div>
-    )
+	return <div>OK</div>;
 }

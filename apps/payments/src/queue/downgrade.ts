@@ -3,7 +3,10 @@ import { db } from "database";
 import { Logs } from "services/logs";
 import { Notify } from "services/notify";
 import { Transactional } from "services/transactional";
-import { generateBillingDowngradeTemplate, generateOverlimitTemplate } from "transactional"
+import {
+	generateBillingDowngradeTemplate,
+	generateOverlimitTemplate,
+} from "transactional";
 
 export interface DowngradeJobData {
 	workspaceId: string;
@@ -14,7 +17,6 @@ export interface DowngradeJobData {
 
 	downgradeAt: Date;
 }
-
 
 // TODO: add logs to keep track of errors
 export async function downgrade(job: Job<DowngradeJobData, void, string>) {
@@ -31,10 +33,10 @@ export async function downgrade(job: Job<DowngradeJobData, void, string>) {
 				select: {
 					email: true,
 					id: true,
-					name: true
-				}
-			}
-		}
+					name: true,
+				},
+			},
+		},
 	});
 
 	if (!workspace) throw new Error("Workspace not found");
@@ -47,45 +49,47 @@ export async function downgrade(job: Job<DowngradeJobData, void, string>) {
 				MemberAddress: {
 					some: {
 						member: {
-							workspaceId: workspace.id
-						}
-					}
-				}
-			}
-		}
+							workspaceId: workspace.id,
+						},
+					},
+				},
+			},
+		},
 	});
 
 	if (!workspaceUsedBytes?._sum) {
-		Logs.error("Failed to get used storage for workspace")
+		Logs.error("Failed to get used storage for workspace");
 	}
 
 	const newPlan = await db.plan.findUnique({
 		where: {
-			name: job.data.plan
-		}
-	})
+			name: job.data.plan,
+		},
+	});
 
-	if (!newPlan) throw new Error("Plan not found")
+	if (!newPlan) throw new Error("Plan not found");
 
-
-	if (workspaceUsedBytes._sum.sizeBytes && workspaceUsedBytes._sum.sizeBytes > newPlan.storageBytes) {
+	if (
+		workspaceUsedBytes._sum.sizeBytes &&
+		workspaceUsedBytes._sum.sizeBytes > newPlan.storageBytes
+	) {
 		await db.workspace.update({
 			where: {
-				id: workspace.id
+				id: workspace.id,
 			},
 			data: {
 				overlimit: true,
-				overlimitAt: new Date()
+				overlimitAt: new Date(),
 			},
-			select: {}
-		})
+			select: {},
+		});
 
 		await Notify.notifyUser({
 			memberId: workspace.owner.id,
 			title: "Workspace overlimit",
 			message: `Your workspace is over the storage limit for the ${newPlan.name} plan. Please upgrade your plan or delete some data. Your workspace can't accept new data in 7 days from today. You need to loose ${(Number(workspaceUsedBytes._sum.sizeBytes) - Number(newPlan.storageBytes)) / (1024 * 1024)} MB to fit the new plan.`,
-			type: "warning"
-		})
+			type: "warning",
+		});
 
 		// send transactional email to the owner of the workspace
 
@@ -94,17 +98,19 @@ export async function downgrade(job: Job<DowngradeJobData, void, string>) {
 			newPlan: newPlan.name,
 			workspaceName: workspace.name,
 			name: workspace.owner.name || "there",
-		})
+		});
 
 		await Transactional.send({
 			to: workspace.owner.email,
 			from: "no-reply@transactional.selfmail.app",
 			subject: `Overlimit for workspace ${workspace.name}`,
 			text,
-			html
+			html,
 		}).catch(async (err) => {
-			await Logs.error(`Failed to send overlimit email to workspace owner ${workspace.owner.id}: ${err.message}`);
-		})
+			await Logs.error(
+				`Failed to send overlimit email to workspace owner ${workspace.owner.id}: ${err.message}`,
+			);
+		});
 	}
 
 	await db.workspace.update({
@@ -113,8 +119,8 @@ export async function downgrade(job: Job<DowngradeJobData, void, string>) {
 		},
 		data: {
 			billingPlan: job.data.plan,
-		}
-	})
+		},
+	});
 
 	// notify the owner of the workspace that the downgrade was successful
 	const { text, html } = await generateBillingDowngradeTemplate({
@@ -122,15 +128,17 @@ export async function downgrade(job: Job<DowngradeJobData, void, string>) {
 		newPlan: newPlan.name,
 		workspaceName: workspace.name,
 		name: workspace.owner.name || "there",
-	})
+	});
 
 	await Transactional.send({
 		to: workspace.owner.email,
 		from: "no-reply@transactional.selfmail.app",
 		subject: `Billing downgrade for workspace ${workspace.name}`,
 		text,
-		html
+		html,
 	}).catch(async (err) => {
-		await Logs.error(`Failed to send downgrade email to workspace owner ${workspace.owner.id}: ${err.message}`);
-	})
+		await Logs.error(
+			`Failed to send downgrade email to workspace owner ${workspace.owner.id}: ${err.message}`,
+		);
+	});
 }

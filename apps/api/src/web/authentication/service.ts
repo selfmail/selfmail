@@ -20,7 +20,7 @@ export abstract class AuthenticationService {
 			console.log("Rate limit exceeded for IP:", clientIp);
 			return status(429, "Too many requests. Please try again later.");
 		}
-		console.log("Rate limit success")
+		console.log("Rate limit success");
 		// Check if the user already exists
 		const existingUser = await db.user.findUnique({
 			where: { email },
@@ -50,9 +50,9 @@ export abstract class AuthenticationService {
 			},
 		});
 
-		if (!user){
+		if (!user) {
 			console.log("Failed to create user in database for email:", email);
-			
+
 			return status(500, "Failed to create user. Please try again later.");
 		}
 

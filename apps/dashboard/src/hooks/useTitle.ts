@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 
 /**
@@ -8,14 +7,14 @@ import { useEffect } from "react";
  * @param fallbackTitle - The title to use if title is not provided. Defaults to "Selfmail".
  */
 export function useTitle(title?: string, fallbackTitle = "Selfmail") {
-    useEffect(() => {
-        if (title) {
-            document.title = title;
-        } else {
-            document.title = fallbackTitle;
-        }
-        return () => {
-            document.title = fallbackTitle;
-        };
-    }, [title, fallbackTitle]);
+	useEffect(() => {
+		if (title) {
+			document.title = title;
+		} else {
+			document.title = fallbackTitle;
+		}
+		return () => {
+			document.title = fallbackTitle;
+		};
+	}, [title, fallbackTitle]);
 }

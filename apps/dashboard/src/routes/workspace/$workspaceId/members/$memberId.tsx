@@ -7,47 +7,47 @@ import { RequireAuth } from "@/lib/auth";
 import { RequireWorkspace, useWorkspace } from "@/lib/workspace";
 
 export const Route = createFileRoute(
-  "/workspace/$workspaceId/members/$memberId",
+	"/workspace/$workspaceId/members/$memberId",
 )({
-  component: RouteComponent,
+	component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { workspaceId, memberId } = Route.useParams();
+	const { workspaceId, memberId } = Route.useParams();
 
-  return (
-    <RequireAuth>
-      <RequireWorkspace workspaceId={workspaceId}>
-        <Members workspaceId={workspaceId} memberId={memberId} />
-      </RequireWorkspace>
-    </RequireAuth>
-  );
+	return (
+		<RequireAuth>
+			<RequireWorkspace workspaceId={workspaceId}>
+				<Members workspaceId={workspaceId} memberId={memberId} />
+			</RequireWorkspace>
+		</RequireAuth>
+	);
 }
 
 function Members({
-  workspaceId,
-  memberId,
+	workspaceId,
+	memberId,
 }: {
-  workspaceId: string;
-  memberId: string;
+	workspaceId: string;
+	memberId: string;
 }) {
-  const workspace = useWorkspace(workspaceId);
+	const workspace = useWorkspace(workspaceId);
 
-  useTitle(
-    `${workspace?.workspace?.name || "Workspace"} - Members`,
-    "Members - Selfmail Dashboard",
-  );
+	useTitle(
+		`${workspace?.workspace?.name || "Workspace"} - Members`,
+		"Members - Selfmail Dashboard",
+	);
 
-  // const { data: member } = useQuery({
-  //   queryKey: ["member", memberId],
-  // });
+	// const { data: member } = useQuery({
+	//   queryKey: ["member", memberId],
+	// });
 
-  return (
-    <DashboardLayout
-      title={`Members of ${workspace?.workspace?.name || "Workspace"}`}
-      workspaceId={workspaceId}
-    >
-      <UnderConstruction />
-    </DashboardLayout>
-  );
+	return (
+		<DashboardLayout
+			title={`Members of ${workspace?.workspace?.name || "Workspace"}`}
+			workspaceId={workspaceId}
+		>
+			<UnderConstruction />
+		</DashboardLayout>
+	);
 }

@@ -4,63 +4,65 @@ import Layout from "../layouts/Layout.astro";
 
 export const prerender = false;
 
-const currentLocale = Astro.preferredLocale || Astro.currentLocale || 'en';
+const currentLocale = Astro.preferredLocale || Astro.currentLocale || "en";
 
 let translations = {};
 try {
-  translations = await import(`../../i18n/${currentLocale}.json`);
+	translations = await import(`../../i18n/${currentLocale}.json`);
 } catch (error) {
-  // Fallback to English if translation file doesn't exist
-  try {
-    translations = await import(`../../i18n/en.json`);
-  } catch (fallbackError) {
-    console.warn(`No translation file found for locale: ${currentLocale}`);
-  }
+	// Fallback to English if translation file doesn't exist
+	try {
+		translations = await import("../../i18n/en.json");
+	} catch (fallbackError) {
+		console.warn(`No translation file found for locale: ${currentLocale}`);
+	}
 }
 
 // Translation function
 const t = (key: string, fallback?: string): string => {
-  const keys = key.split('.');
-  let value: any = (translations as any).default || translations;
-  for (const k of keys) {
-    value = value?.[k];
-  }
-  return value || fallback || key;
+	const keys = key.split(".");
+	let value: any = (translations as any).default || translations;
+	for (const k of keys) {
+		value = value?.[k];
+	}
+	return value || fallback || key;
 };
 ---
 
 <Layout>
 	<div class="grid w-full p-3 sm:p-5 max-w-full sm:max-w-[700px] lg:max-w-[800px] h-min grid-cols-1 md:grid-cols-2 gap-0 mx-auto">
+		<!-- Logo/Title Section -->
 		<div class="col-span-1 p-2 md:col-span-2 border h-min border-neutral-200">
 			<h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-9xl break-words">
         <span class="animate-font" style="animation-delay: 0s">S</span><span class="animate-font" style="animation-delay: 0.1s">e</span><span class="animate-font" style="animation-delay: 0.2s">l</span><span class="animate-font" style="animation-delay: 0.3s">f</span><span class="animate-font" style="animation-delay: 0.4s">m</span><span class="animate-font" style="animation-delay: 0.5s">a</span><span class="animate-font" style="animation-delay: 0.6s">i</span><span class="animate-font" style="animation-delay: 0.7s">l</span>
       </h1>
 		</div>
 
-    <div class="col-span-1 md:col-span-2 border flex flex-col space-y-3 sm:space-y-2 border-neutral-200 p-3 sm:p-2" id="waitlist-form">
-      <h3 class="text-lg font-medium">{t("home.waitlist.heading")}</h3>
-      <p class="text-sm sm:text-base">{t("home.waitlist.description")}</p>
-      
-      <form class="flex flex-col sm:flex-row gap-2">
-        <input 
-          type="email" 
-          name="email" 
-          required
-          class="flex-1 ring-0 focus-visible:ring-2 ring-neutral-200 border-neutral-200 bg-neutral-100 rounded-xl transition-colors text-black outline-none px-3 py-2 text-sm sm:text-base" 
-          placeholder={t("home.waitlist.placeholder")} 
-        />
-        <button 
-          type="submit" 
-          class="btn btn-primary btn-md rounded-xl w-full sm:w-auto whitespace-nowrap"
-          id="waitlist-submit"
-        >
-          {t("home.waitlist.button", "Join Waitlist")}
-        </button>
-      </form>
-      
-      <div id="waitlist-message" class="hidden text-sm"></div>
-    </div>
+		<!-- Hero Section -->
+		<div class="col-span-1 md:col-span-2 border flex flex-col space-y-3 sm:space-y-2 border-neutral-200 p-3 sm:p-2">
+			<h2 class="text-xl sm:text-2xl font-medium">{t("home.subtitle")}</h2>
+			<p class="text-sm sm:text-base text-neutral-600">{t("home.description")}</p>
+			
+			<!-- CTA Buttons -->
+			<div class="flex flex-col sm:flex-row gap-2 pt-2">
+				<a 
+					href="https://github.com/selfmail/selfmail" 
+					class="flex-1 bg-neutral-900 hover:bg-neutral-800 text-white text-center px-4 py-2 rounded-xl text-sm sm:text-base font-medium transition-colors"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					{t("home.cta.github")}
+				</a>
+				<a 
+					href="/docs" 
+					class="flex-1 border border-neutral-200 hover:bg-neutral-50 text-neutral-900 text-center px-4 py-2 rounded-xl text-sm sm:text-base font-medium transition-colors"
+				>
+					{t("home.cta.secondary")}
+				</a>
+			</div>
+		</div>
 
+		<!-- Features Grid -->
 		<div class="col-span-1 md:col-span-2">
 			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0">
 				<div class="p-3 sm:p-2 border border-neutral-200 bg-neutral-100 text-sm sm:text-base">{t("home.features.sendEmails")}</div>
@@ -69,70 +71,98 @@ const t = (key: string, fallback?: string): string => {
 			</div>
 		</div>
 
-    <div class="col-span-1 md:col-span-2 p-3 sm:p-2 border border-neutral-200 flex flex-col space-y-3 sm:space-y-2">
-      <h2 class="text-xl sm:text-2xl font-medium">
-        {t("roadmap.title")}
-      </h2>
-      <p class="text-sm sm:text-base">{t("roadmap.description")}</p>
-      
-      <!-- Roadmap Timeline -->
-      <div class="mt-3 sm:mt-4 space-y-3">
-        <div class="flex items-start sm:items-center space-x-3">
-          <div class="w-4 h-4 bg-green-500 rounded-full flex-shrink-0 mt-1 sm:mt-0"></div>
-          <div class="flex-1">
-            <h4 class="font-medium text-green-700 text-sm sm:text-base">{t("roadmap.items.infrastructure.title")}</h4>
-            <p class="text-xs sm:text-sm text-gray-600 mt-1">{t("roadmap.items.infrastructure.description")}</p>
-          </div>
-        </div>
-        
-        <div class="flex items-start sm:items-center space-x-3">
-          <div class="w-4 h-4 bg-green-500 rounded-full flex-shrink-0 mt-1 sm:mt-0"></div>
-          <div class="flex-1">
-            <h4 class="font-medium text-green-700 text-sm sm:text-base">{t("roadmap.items.smtp.title")}</h4>
-            <p class="text-xs sm:text-sm text-gray-600 mt-1">{t("roadmap.items.smtp.description")}</p>
-          </div>
-        </div>
-        
-        <div class="flex items-start sm:items-center space-x-3">
-          <div class="w-4 h-4 bg-yellow-500 rounded-full flex-shrink-0 animate-pulse mt-1 sm:mt-0"></div>
-          <div class="flex-1">
-            <h4 class="font-medium text-yellow-700 text-sm sm:text-base">{t("roadmap.items.dashboard.title")}</h4>
-            <p class="text-xs sm:text-sm text-gray-600 mt-1">{t("roadmap.items.dashboard.description")}</p>
-          </div>
-        </div>
-        
-        <div class="flex items-start sm:items-center space-x-3">
-          <div class="w-4 h-4 bg-gray-300 rounded-full flex-shrink-0 mt-1 sm:mt-0"></div>
-          <div class="flex-1">
-            <h4 class="font-medium text-gray-500 text-sm sm:text-base">{t("roadmap.items.templates.title")}</h4>
-            <p class="text-xs sm:text-sm text-gray-600 mt-1">{t("roadmap.items.templates.description")}</p>
-          </div>
-        </div>
-        
-        <div class="flex items-start sm:items-center space-x-3">
-          <div class="w-4 h-4 bg-gray-300 rounded-full flex-shrink-0 mt-1 sm:mt-0"></div>
-          <div class="flex-1">
-            <h4 class="font-medium text-gray-500 text-sm sm:text-base">{t("roadmap.items.ai.title")}</h4>
-            <p class="text-xs sm:text-sm text-gray-600 mt-1">{t("roadmap.items.ai.description")}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-span-1 p-2 md:col-span-2 border h-min border-neutral-200">
-      This site was automatically translated to your language: {currentLocale}.
+		<!-- Detailed Features Section -->
+		<div class="col-span-1 md:col-span-2 p-3 sm:p-2 border border-neutral-200 flex flex-col space-y-3 sm:space-y-2">
+			<h2 class="text-xl sm:text-2xl font-medium">{t("features.title")}</h2>
+			
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-3">
+				<div class="space-y-2">
+					<h3 class="font-medium text-sm sm:text-base">{t("features.smtp.title")}</h3>
+					<p class="text-xs sm:text-sm text-neutral-600">{t("features.smtp.description")}</p>
+				</div>
+				<div class="space-y-2">
+					<h3 class="font-medium text-sm sm:text-base">{t("features.api.title")}</h3>
+					<p class="text-xs sm:text-sm text-neutral-600">{t("features.api.description")}</p>
+				</div>
+				<div class="space-y-2">
+					<h3 class="font-medium text-sm sm:text-base">{t("features.dashboard.title")}</h3>
+					<p class="text-xs sm:text-sm text-neutral-600">{t("features.dashboard.description")}</p>
+				</div>
+				<div class="space-y-2">
+					<h3 class="font-medium text-sm sm:text-base">{t("features.templates.title")}</h3>
+					<p class="text-xs sm:text-sm text-neutral-600">{t("features.templates.description")}</p>
+				</div>
+				<div class="space-y-2">
+					<h3 class="font-medium text-sm sm:text-base">{t("features.opensource.title")}</h3>
+					<p class="text-xs sm:text-sm text-neutral-600">{t("features.opensource.description")}</p>
+				</div>
+				<div class="space-y-2">
+					<h3 class="font-medium text-sm sm:text-base">{t("features.monitoring.title")}</h3>
+					<p class="text-xs sm:text-sm text-neutral-600">{t("features.monitoring.description")}</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Status/Roadmap Section -->
+		<div class="col-span-1 md:col-span-2 p-3 sm:p-2 border border-neutral-200 flex flex-col space-y-3 sm:space-y-2">
+			<h2 class="text-xl sm:text-2xl font-medium">{t("status.title")}</h2>
+			<p class="text-sm sm:text-base text-neutral-600">{t("status.description")}</p>
+			
+			<!-- Status Timeline -->
+			<div class="mt-3 sm:mt-4 space-y-3">
+				<div class="flex items-start sm:items-center space-x-3">
+					<div class="w-4 h-4 bg-green-500 rounded-full flex-shrink-0 mt-1 sm:mt-0"></div>
+					<div class="flex-1">
+						<h4 class="font-medium text-green-700 text-sm sm:text-base">{t("status.items.infrastructure.title")}</h4>
+						<p class="text-xs sm:text-sm text-gray-600 mt-1">{t("status.items.infrastructure.description")}</p>
+					</div>
+				</div>
+				
+				<div class="flex items-start sm:items-center space-x-3">
+					<div class="w-4 h-4 bg-green-500 rounded-full flex-shrink-0 mt-1 sm:mt-0"></div>
+					<div class="flex-1">
+						<h4 class="font-medium text-green-700 text-sm sm:text-base">{t("status.items.smtp.title")}</h4>
+						<p class="text-xs sm:text-sm text-gray-600 mt-1">{t("status.items.smtp.description")}</p>
+					</div>
+				</div>
+				
+				<div class="flex items-start sm:items-center space-x-3">
+					<div class="w-4 h-4 bg-green-500 rounded-full flex-shrink-0 mt-1 sm:mt-0"></div>
+					<div class="flex-1">
+						<h4 class="font-medium text-green-700 text-sm sm:text-base">{t("status.items.api.title")}</h4>
+						<p class="text-xs sm:text-sm text-gray-600 mt-1">{t("status.items.api.description")}</p>
+					</div>
+				</div>
+				
+				<div class="flex items-start sm:items-center space-x-3">
+					<div class="w-4 h-4 bg-yellow-500 rounded-full flex-shrink-0 animate-pulse mt-1 sm:mt-0"></div>
+					<div class="flex-1">
+						<h4 class="font-medium text-yellow-700 text-sm sm:text-base">{t("status.items.dashboard.title")}</h4>
+						<p class="text-xs sm:text-sm text-gray-600 mt-1">{t("status.items.dashboard.description")}</p>
+					</div>
+				</div>
+				
+				<div class="flex items-start sm:items-center space-x-3">
+					<div class="w-4 h-4 bg-gray-300 rounded-full flex-shrink-0 mt-1 sm:mt-0"></div>
+					<div class="flex-1">
+						<h4 class="font-medium text-gray-500 text-sm sm:text-base">{t("status.items.templates.title")}</h4>
+						<p class="text-xs sm:text-sm text-gray-600 mt-1">{t("status.items.templates.description")}</p>
+					</div>
+				</div>
+				
+				<div class="flex items-start sm:items-center space-x-3">
+					<div class="w-4 h-4 bg-gray-300 rounded-full flex-shrink-0 mt-1 sm:mt-0"></div>
+					<div class="flex-1">
+						<h4 class="font-medium text-gray-500 text-sm sm:text-base">{t("status.items.monitoring.title")}</h4>
+						<p class="text-xs sm:text-sm text-gray-600 mt-1">{t("status.items.monitoring.description")}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<div class="col-span-1 p-2 md:col-span-2 border h-min border-neutral-200 text-sm text-neutral-500">
+			Open-source email infrastructure • Built with Astro and TypeScript
 		</div>
 	</div>
 </Layout>
-
-<script>
-  import { actions } from 'astro:actions';
-  import { navigate } from 'astro:transitions/client';
-
-  const form = document.querySelector('form');
-  form?.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const formData = new FormData(form);
-    const { error } = await actions.signWaitlist(formData);
-    if (!error) navigate('/success');
-  })
-</script>
