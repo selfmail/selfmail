@@ -46,15 +46,15 @@ const t = (key: string, fallback?: string): string => {
 			<!-- CTA Buttons -->
 			<div class="flex flex-col sm:flex-row gap-2 pt-2">
 				<a 
-					href="https://github.com/selfmail/selfmail" 
+					href="https://dashboard.selfmail.app/auth/login" 
 					class="flex-1 bg-neutral-900 hover:bg-neutral-800 text-white text-center px-4 py-2 rounded-xl text-sm sm:text-base font-medium transition-colors"
-					target="_blank"
 					rel="noopener noreferrer"
 				>
-					{t("home.cta.github")}
+					{t("home.cta.primary")}
 				</a>
 				<a 
-					href="/docs" 
+					href="https://docs.selfmail.app"
+					target="_blank" 
 					class="flex-1 border border-neutral-200 hover:bg-neutral-50 text-neutral-900 text-center px-4 py-2 rounded-xl text-sm sm:text-base font-medium transition-colors"
 				>
 					{t("home.cta.secondary")}

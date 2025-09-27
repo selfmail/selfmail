@@ -1,48 +1,80 @@
 {
-	"home": {
-		"title": "Selfmail",
-		"features": {
-			"sendEmails": "Invia email",
-			"templates": "Template e flussi di lavoro intelligenti",
-			"ai": "IA per tutto il tuo team"
-		},
-		"waitlist": {
-			"heading": "Iscriviti alla lista d'attesa",
-			"description": "Ti invieremo un'email quando lanceremo!",
-			"placeholder": "La tua email",
-			"button": "Iscriviti alla lista d'attesa"
-		}
-	},
-	"roadmap": {
-		"title": "Roadmap",
-		"description": "Selfmail non è attualmente aperto al pubblico. Sto documentando nella roadmap quali funzionalità sono attualmente in fase di sviluppo.",
-		"items": {
-			"infrastructure": {
-				"title": "Infrastruttura Core",
-				"description": "Setup del monorepo Turborepo con TypeScript, Astro e architettura del database completata."
-			},
-			"smtp": {
-				"title": "Server SMTP",
-				"description": "Server SMTP completamente funzionale per l'invio e la ricezione di email con gestione delle code."
-			},
-			"dashboard": {
-				"title": "Dashboard Web",
-				"description": "Sviluppo dell'interfaccia utente per la gestione delle email, analisi e impostazioni dell'account."
-			},
-			"templates": {
-				"title": "Template Email",
-				"description": "Sistema avanzato di template con editor drag-and-drop e design preimpostati."
-			},
-			"ai": {
-				"title": "Integrazione AI",
-				"description": "Composizione intelligente delle email, ottimizzazione dell'oggetto e risposte automatizzate."
-			}
-		}
-	},
-	"waitlist": {
-		"success": {
-			"title": "Operazione riuscita!",
-			"description": "Sei stato aggiunto alla lista d'attesa. Ti avviseremo quando lanceremo il prodotto."
-		}
-	}
+  "home": {
+    "title": "Selfmail",
+    "subtitle": "Infrastruttura email open-source per applicazioni moderne",
+    "description": "Invia email transazionali, gestisci template e scala la tua distribuzione email con la nostra soluzione self-hosted.",
+    "features": {
+      "sendEmails": "Invia email transazionali",
+      "templates": "Template e workflow intelligenti",
+      "ai": "Architettura API-first"
+    },
+    "cta": {
+      "primary": "Inizia ora",
+      "secondary": "Visualizza documentazione",
+      "github": "Aggiungi una stella su GitHub"
+    }
+  },
+  "features": {
+    "title": "Tutto ciò che ti serve per la distribuzione email",
+    "smtp": {
+      "title": "Server SMTP",
+      "description": "Server SMTP completo con gestione delle code e tracciamento delle consegne."
+    },
+    "api": {
+      "title": "API REST",
+      "description": "API HTTP semplice per inviare email programmaticamente da qualsiasi linguaggio."
+    },
+    "dashboard": {
+      "title": "Dashboard web",
+      "description": "Gestisci email, visualizza analitiche e configura impostazioni attraverso la nostra interfaccia web."
+    },
+    "templates": {
+      "title": "Motore di template",
+      "description": "Crea e gestisci template email con variabili e logica condizionale."
+    },
+    "opensource": {
+      "title": "Open source",
+      "description": "Soluzione self-hosted con pieno controllo sulla tua infrastruttura email."
+    },
+    "monitoring": {
+      "title": "Monitoraggio e analitiche",
+      "description": "Traccia tassi di consegna, rimbalzi e metriche di coinvolgimento in tempo reale."
+    }
+  },
+  "status": {
+    "title": "Stato attuale",
+    "description": "Selfmail è ora disponibile! Ecco cosa è pronto e cosa arriverà prossimamente.",
+    "items": {
+      "infrastructure": {
+        "title": "Infrastruttura core",
+        "description": "Setup monorepo Turborepo con TypeScript, Astro e architettura del database completata.",
+        "status": "complete"
+      },
+      "smtp": {
+        "title": "Server SMTP",
+        "description": "Server SMTP completamente funzionale per l'invio e la ricezione di email con gestione delle code.",
+        "status": "complete"
+      },
+      "api": {
+        "title": "API REST",
+        "description": "API HTTP per l'invio programmatico di email con limitazione della frequenza e autenticazione.",
+        "status": "complete"
+      },
+      "dashboard": {
+        "title": "Dashboard web",
+        "description": "Interfaccia utente per la gestione delle email, analisi e impostazioni dell'account.",
+        "status": "progress"
+      },
+      "templates": {
+        "title": "Template email",
+        "description": "Sistema avanzato di template con editor drag-and-drop e design preimpostati.",
+        "status": "planned"
+      },
+      "monitoring": {
+        "title": "Analisi avanzate",
+        "description": "Monitoraggio dettagliato delle email, report di consegna e metriche di coinvolgimento.",
+        "status": "planned"
+      }
+    }
+  }
 }

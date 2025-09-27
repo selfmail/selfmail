@@ -1,48 +1,80 @@
 {
-	"home": {
-		"title": "Selfmail",
-		"features": {
-			"sendEmails": "Enviar correos electrónicos",
-			"templates": "Plantillas y flujos de trabajo inteligentes",
-			"ai": "IA para todo tu equipo"
-		},
-		"waitlist": {
-			"heading": "Únete a la lista de espera",
-			"description": "¡Te enviaremos un correo electrónico cuando lancemos!",
-			"placeholder": "Tu correo electrónico",
-			"button": "Unirse a la lista de espera"
-		}
-	},
-	"roadmap": {
-		"title": "Hoja de ruta",
-		"description": "Selfmail actualmente no está abierto al público. Estoy documentando en la hoja de ruta qué características están actualmente en desarrollo.",
-		"items": {
-			"infrastructure": {
-				"title": "Infraestructura central",
-				"description": "Configuración de monorepo Turborepo con TypeScript, Astro y arquitectura de base de datos completada."
-			},
-			"smtp": {
-				"title": "Servidor SMTP",
-				"description": "Servidor SMTP completamente funcional para enviar y recibir correos electrónicos con gestión de colas."
-			},
-			"dashboard": {
-				"title": "Panel web",
-				"description": "Construcción de la interfaz de usuario para gestión de correos electrónicos, análisis y configuración de cuentas."
-			},
-			"templates": {
-				"title": "Plantillas de correo electrónico",
-				"description": "Sistema de plantillas avanzado con editor de arrastrar y soltar y diseños predefinidos."
-			},
-			"ai": {
-				"title": "Integración de IA",
-				"description": "Composición inteligente de correos electrónicos, optimización de líneas de asunto y respuestas automatizadas."
-			}
-		}
-	},
-	"waitlist": {
-		"success": {
-			"title": "¡Éxito!",
-			"description": "Has sido añadido a la lista de espera. Te notificaremos cuando lancemos."
-		}
-	}
+  "home": {
+    "title": "Selfmail",
+    "subtitle": "Infraestructura de correo electrónico de código abierto para aplicaciones modernas",
+    "description": "Envía correos electrónicos transaccionales, gestiona plantillas y escala tu entrega de correos con nuestra solución autohospedada.",
+    "features": {
+      "sendEmails": "Envío de correos transaccionales",
+      "templates": "Plantillas y flujos de trabajo inteligentes",
+      "ai": "Arquitectura API-First"
+    },
+    "cta": {
+      "primary": "Comenzar",
+      "secondary": "Ver documentación",
+      "github": "Destacar en GitHub"
+    }
+  },
+  "features": {
+    "title": "Todo lo que necesitas para la entrega de correos electrónicos",
+    "smtp": {
+      "title": "Servidor SMTP",
+      "description": "Servidor SMTP completo con gestión de colas y seguimiento de entregas."
+    },
+    "api": {
+      "title": "API REST",
+      "description": "API HTTP simple para enviar correos electrónicos programáticamente desde cualquier lenguaje."
+    },
+    "dashboard": {
+      "title": "Panel web",
+      "description": "Gestiona correos, visualiza analíticas y configura ajustes a través de nuestra interfaz web."
+    },
+    "templates": {
+      "title": "Motor de plantillas",
+      "description": "Crea y gestiona plantillas de correo con variables y lógica condicional."
+    },
+    "opensource": {
+      "title": "Código abierto",
+      "description": "Solución autohospedada con control total sobre tu infraestructura de correo."
+    },
+    "monitoring": {
+      "title": "Monitorización y analíticas",
+      "description": "Realiza seguimiento de tasas de entrega, rebotes y métricas de engagement en tiempo real."
+    }
+  },
+  "status": {
+    "title": "Estado actual",
+    "description": "¡Selfmail ya está disponible! Esto es lo que está listo y lo que viene a continuación.",
+    "items": {
+      "infrastructure": {
+        "title": "Infraestructura central",
+        "description": "Configuración de monorepo Turborepo con TypeScript, Astro y arquitectura de base de datos completada.",
+        "status": "complete"
+      },
+      "smtp": {
+        "title": "Servidor SMTP",
+        "description": "Servidor SMTP completamente funcional para enviar y recibir correos electrónicos con gestión de colas.",
+        "status": "complete"
+      },
+      "api": {
+        "title": "API REST",
+        "description": "API HTTP para enviar correos electrónicos programáticamente con límites de velocidad y autenticación.",
+        "status": "complete"
+      },
+      "dashboard": {
+        "title": "Panel web",
+        "description": "Interfaz de usuario para gestión de correos electrónicos, análisis y configuración de cuentas.",
+        "status": "progress"
+      },
+      "templates": {
+        "title": "Plantillas de correo electrónico",
+        "description": "Sistema de plantillas avanzado con editor de arrastrar y soltar y diseños predefinidos.",
+        "status": "planned"
+      },
+      "monitoring": {
+        "title": "Análisis avanzados",
+        "description": "Seguimiento detallado de correos electrónicos, informes de entrega y métricas de participación.",
+        "status": "planned"
+      }
+    }
+  }
 }

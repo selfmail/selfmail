@@ -1,48 +1,80 @@
 {
-	"home": {
-		"title": "Selfmail",
-		"features": {
-			"sendEmails": "E-Mails senden",
-			"templates": "Vorlagen & smarte Workflows",
-			"ai": "KI für Ihr gesamtes Team"
-		},
-		"waitlist": {
-			"heading": "Trage dich in die Warteliste ein",
-			"description": "Wir senden dir eine E-Mail, wenn wir starten!",
-			"placeholder": "Deine E-Mail",
-			"button": "Warteliste beitreten"
-		}
-	},
-	"roadmap": {
-		"title": "Roadmap",
-		"description": "Selfmail ist derzeit nicht öffentlich zugänglich. In der Roadmap dokumentiere ich, welche Funktionen sich aktuell in der Entwicklung befinden.",
-		"items": {
-			"infrastructure": {
-				"title": "Kerninfrastruktur",
-				"description": "Turborepo-Monorepo-Setup mit TypeScript, Astro und Datenbankarchitektur abgeschlossen."
-			},
-			"smtp": {
-				"title": "SMTP-Server",
-				"description": "Voll funktionsfähiger SMTP-Server zum Senden und Empfangen von E-Mails mit Warteschlangenverwaltung."
-			},
-			"dashboard": {
-				"title": "Web-Dashboard",
-				"description": "Entwicklung der Benutzeroberfläche für E-Mail-Verwaltung, Analytik und Kontoeinstellungen."
-			},
-			"templates": {
-				"title": "E-Mail-Vorlagen",
-				"description": "Umfangreiches Vorlagensystem mit Drag-and-Drop-Editor und vorgefertigten Designs."
-			},
-			"ai": {
-				"title": "KI-Integration",
-				"description": "Intelligente E-Mail-Erstellung, Optimierung von Betreffzeilen und automatisierte Antworten."
-			}
-		}
-	},
-	"waitlist": {
-		"success": {
-			"title": "Erfolg!",
-			"description": "Du wurdest zur Warteliste hinzugefügt. Wir werden dich benachrichtigen, wenn wir starten."
-		}
-	}
+  "home": {
+    "title": "Selfmail",
+    "subtitle": "Open-Source-E-Mail-Infrastruktur für moderne Anwendungen",
+    "description": "Versenden Sie transaktionale E-Mails, verwalten Sie Vorlagen und skalieren Sie Ihren E-Mail-Versand mit unserer selbst gehosteten Lösung.",
+    "features": {
+      "sendEmails": "Transaktionale E-Mails versenden",
+      "templates": "Intelligente Vorlagen & Workflows",
+      "ai": "API-First-Architektur"
+    },
+    "cta": {
+      "primary": "Jetzt starten",
+      "secondary": "Dokumentation ansehen",
+      "github": "Auf GitHub mit Stern markieren"
+    }
+  },
+  "features": {
+    "title": "Alles, was Sie für den E-Mail-Versand benötigen",
+    "smtp": {
+      "title": "SMTP-Server",
+      "description": "Vollwertiger SMTP-Server mit Warteschlangenverwaltung und Zustellungsverfolgung."
+    },
+    "api": {
+      "title": "REST-API",
+      "description": "Einfache HTTP-API zum programmatischen Versenden von E-Mails aus jeder Programmiersprache."
+    },
+    "dashboard": {
+      "title": "Web-Dashboard",
+      "description": "Verwalten Sie E-Mails, sehen Sie Analysen ein und konfigurieren Sie Einstellungen über unsere Weboberfläche."
+    },
+    "templates": {
+      "title": "Template-Engine",
+      "description": "Erstellen und verwalten Sie E-Mail-Vorlagen mit Variablen und bedingter Logik."
+    },
+    "opensource": {
+      "title": "Open Source",
+      "description": "Selbst gehostete Lösung mit voller Kontrolle über Ihre E-Mail-Infrastruktur."
+    },
+    "monitoring": {
+      "title": "Überwachung & Analytik",
+      "description": "Verfolgen Sie Zustellraten, Bounces und Engagement-Metriken in Echtzeit."
+    }
+  },
+  "status": {
+    "title": "Aktueller Status",
+    "description": "Selfmail ist jetzt verfügbar! Hier ist, was bereit ist und was als nächstes kommt.",
+    "items": {
+      "infrastructure": {
+        "title": "Kerninfrastruktur",
+        "description": "Turborepo-Monorepo-Setup mit TypeScript, Astro und Datenbankarchitektur abgeschlossen.",
+        "status": "complete"
+      },
+      "smtp": {
+        "title": "SMTP-Server",
+        "description": "Voll funktionsfähiger SMTP-Server zum Senden und Empfangen von E-Mails mit Warteschlangenverwaltung.",
+        "status": "complete"
+      },
+      "api": {
+        "title": "REST-API",
+        "description": "HTTP-API zum programmatischen Versenden von E-Mails mit Ratenbegrenzung und Authentifizierung.",
+        "status": "complete"
+      },
+      "dashboard": {
+        "title": "Web-Dashboard",
+        "description": "Benutzeroberfläche für E-Mail-Verwaltung, Analytik und Kontoeinstellungen.",
+        "status": "progress"
+      },
+      "templates": {
+        "title": "E-Mail-Vorlagen",
+        "description": "Umfangreiches Vorlagensystem mit Drag-and-Drop-Editor und vorgefertigten Designs.",
+        "status": "planned"
+      },
+      "monitoring": {
+        "title": "Erweiterte Analytik",
+        "description": "Detaillierte E-Mail-Verfolgung, Zustellberichte und Engagement-Metriken.",
+        "status": "planned"
+      }
+    }
+  }
 }

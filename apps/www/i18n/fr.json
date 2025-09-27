@@ -1,48 +1,80 @@
 {
-	"home": {
-		"title": "Selfmail",
-		"features": {
-			"sendEmails": "Envoyer des emails",
-			"templates": "Modèles & flux de travail intelligents",
-			"ai": "IA pour toute votre équipe"
-		},
-		"waitlist": {
-			"heading": "Rejoindre la liste d'attente",
-			"description": "Nous vous enverrons un e-mail lors de notre lancement !",
-			"placeholder": "Votre e-mail",
-			"button": "Rejoindre la liste d'attente"
-		}
-	},
-	"roadmap": {
-		"title": "Feuille de route",
-		"description": "Selfmail n'est actuellement pas ouvert au public. Je documente dans la feuille de route les fonctionnalités qui sont en cours de développement.",
-		"items": {
-			"infrastructure": {
-				"title": "Infrastructure de base",
-				"description": "Configuration du monorepo Turborepo avec TypeScript, Astro et architecture de base de données terminée."
-			},
-			"smtp": {
-				"title": "Serveur SMTP",
-				"description": "Serveur SMTP entièrement fonctionnel pour l'envoi et la réception d'emails avec gestion de file d'attente."
-			},
-			"dashboard": {
-				"title": "Tableau de bord web",
-				"description": "Construction de l'interface utilisateur pour la gestion des emails, l'analytique et les paramètres du compte."
-			},
-			"templates": {
-				"title": "Modèles d'emails",
-				"description": "Système de modèles avancé avec éditeur glisser-déposer et designs préconçus."
-			},
-			"ai": {
-				"title": "Intégration IA",
-				"description": "Composition intelligente d'emails, optimisation des lignes d'objet et réponses automatisées."
-			}
-		}
-	},
-	"waitlist": {
-		"success": {
-			"title": "Succès !",
-			"description": "Vous avez été ajouté à la liste d'attente. Nous vous informerons lors du lancement."
-		}
-	}
+  "home": {
+    "title": "Selfmail",
+    "subtitle": "Infrastructure email open-source pour applications modernes",
+    "description": "Envoyez des emails transactionnels, gérez des modèles et développez votre distribution d'emails avec notre solution auto-hébergée.",
+    "features": {
+      "sendEmails": "Envoi d'emails transactionnels",
+      "templates": "Modèles intelligents et flux de travail",
+      "ai": "Architecture API-first"
+    },
+    "cta": {
+      "primary": "Commencer",
+      "secondary": "Voir la documentation",
+      "github": "Étoile sur GitHub"
+    }
+  },
+  "features": {
+    "title": "Tout ce dont vous avez besoin pour l'envoi d'emails",
+    "smtp": {
+      "title": "Serveur SMTP",
+      "description": "Serveur SMTP complet avec gestion des files d'attente et suivi de livraison."
+    },
+    "api": {
+      "title": "API REST",
+      "description": "API HTTP simple pour envoyer des emails par programmation depuis n'importe quel langage."
+    },
+    "dashboard": {
+      "title": "Tableau de bord web",
+      "description": "Gérez les emails, consultez les analyses et configurez les paramètres via notre interface web."
+    },
+    "templates": {
+      "title": "Moteur de modèles",
+      "description": "Créez et gérez des modèles d'email avec variables et logique conditionnelle."
+    },
+    "opensource": {
+      "title": "Open source",
+      "description": "Solution auto-hébergée avec contrôle total sur votre infrastructure email."
+    },
+    "monitoring": {
+      "title": "Surveillance et analytique",
+      "description": "Suivez les taux de livraison, les rebonds et les métriques d'engagement en temps réel."
+    }
+  },
+  "status": {
+    "title": "Statut actuel",
+    "description": "Selfmail est maintenant disponible ! Voici ce qui est prêt et ce qui arrive prochainement.",
+    "items": {
+      "infrastructure": {
+        "title": "Infrastructure de base",
+        "description": "Configuration du monorepo Turborepo avec TypeScript, Astro et architecture de base de données terminée.",
+        "status": "complete"
+      },
+      "smtp": {
+        "title": "Serveur SMTP",
+        "description": "Serveur SMTP entièrement fonctionnel pour l'envoi et la réception d'e-mails avec gestion des files d'attente.",
+        "status": "complete"
+      },
+      "api": {
+        "title": "API REST",
+        "description": "API HTTP pour l'envoi d'e-mails par programmation avec limitation de débit et authentification.",
+        "status": "complete"
+      },
+      "dashboard": {
+        "title": "Tableau de bord web",
+        "description": "Interface utilisateur pour la gestion des e-mails, l'analyse et les paramètres du compte.",
+        "status": "progress"
+      },
+      "templates": {
+        "title": "Modèles d'e-mail",
+        "description": "Système de modèles avancé avec éditeur glisser-déposer et designs préconçus.",
+        "status": "planned"
+      },
+      "monitoring": {
+        "title": "Analyses avancées",
+        "description": "Suivi détaillé des e-mails, rapports de livraison et métriques d'engagement.",
+        "status": "planned"
+      }
+    }
+  }
 }

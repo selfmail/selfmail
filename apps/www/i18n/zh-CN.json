@@ -1,48 +1,80 @@
 {
-	"home": {
-		"title": "Selfmail",
-		"features": {
-			"sendEmails": "发送邮件",
-			"templates": "模板与智能工作流程",
-			"ai": "为整个团队提供的AI"
-		},
-		"waitlist": {
-			"heading": "加入候补名单",
-			"description": "我们将在上线时给您发送电子邮件！",
-			"placeholder": "您的邮箱",
-			"button": "加入候补名单"
-		}
-	},
-	"roadmap": {
-		"title": "路线图",
-		"description": "Selfmail目前尚未向公众开放。我正在路线图中记录当前正在开发的功能。",
-		"items": {
-			"infrastructure": {
-				"title": "核心基础设施",
-				"description": "已完成包含 TypeScript、Astro 和数据库架构的 Turborepo 单体代码库设置。"
-			},
-			"smtp": {
-				"title": "SMTP 服务器",
-				"description": "功能齐全的 SMTP 服务器，用于发送和接收电子邮件，并支持队列管理。"
-			},
-			"dashboard": {
-				"title": "网页仪表板",
-				"description": "构建用于电子邮件管理、分析和账户设置的用户界面。"
-			},
-			"templates": {
-				"title": "电子邮件模板",
-				"description": "丰富的模板系统，配备拖放编辑器和预构建设计。"
-			},
-			"ai": {
-				"title": "AI 集成",
-				"description": "智能电子邮件撰写、主题行优化和自动回复功能。"
-			}
-		}
-	},
-	"waitlist": {
-		"success": {
-			"title": "成功！",
-			"description": "您已成功加入候补名单。我们将在上线时通知您。"
-		}
-	}
+  "home": {
+    "title": "Selfmail",
+    "subtitle": "为现代应用提供开源的邮件基础设施",
+    "description": "发送事务性邮件、管理模板，并通过我们的自托管解决方案扩展您的邮件发送能力。",
+    "features": {
+      "sendEmails": "发送事务性邮件",
+      "templates": "智能模板与工作流",
+      "ai": "API优先架构"
+    },
+    "cta": {
+      "primary": "开始使用",
+      "secondary": "查看文档",
+      "github": "在 GitHub 上加星"
+    }
+  },
+  "features": {
+    "title": "满足邮件发送需求的一切",
+    "smtp": {
+      "title": "SMTP 服务器",
+      "description": "功能齐全的 SMTP 服务器，支持队列管理和投递跟踪。"
+    },
+    "api": {
+      "title": "REST API",
+      "description": "简单的 HTTP API，可从任何语言以编程方式发送邮件。"
+    },
+    "dashboard": {
+      "title": "网页控制台",
+      "description": "通过我们的网页界面管理邮件、查看分析数据并配置设置。"
+    },
+    "templates": {
+      "title": "模板引擎",
+      "description": "使用变量和条件逻辑创建和管理邮件模板。"
+    },
+    "opensource": {
+      "title": "开源",
+      "description": "自托管解决方案，完全掌控您的邮件基础设施。"
+    },
+    "monitoring": {
+      "title": "监控与分析",
+      "description": "实时跟踪投递率、退信和参与度指标。"
+    }
+  },
+  "status": {
+    "title": "当前状态",
+    "description": "Selfmail 现已上线！以下是已完成和即将推出的功能。",
+    "items": {
+      "infrastructure": {
+        "title": "核心基础设施",
+        "description": "已完成 Turborepo monorepo 设置，包括 TypeScript、Astro 和数据库架构。",
+        "status": "完成"
+      },
+      "smtp": {
+        "title": "SMTP 服务器",
+        "description": "功能完善的 SMTP 服务器，用于发送和接收电子邮件，并支持队列管理。",
+        "status": "完成"
+      },
+      "api": {
+        "title": "REST API",
+        "description": "用于以编程方式发送电子邮件的 HTTP API，支持速率限制和身份验证。",
+        "status": "完成"
+      },
+      "dashboard": {
+        "title": "Web 仪表板",
+        "description": "用于电子邮件管理、分析和账户设置的用户界面。",
+        "status": "进行中"
+      },
+      "templates": {
+        "title": "电子邮件模板",
+        "description": "丰富的模板系统，配备拖放编辑器和预构建设计。",
+        "status": "计划中"
+      },
+      "monitoring": {
+        "title": "高级分析",
+        "description": "详细的电子邮件跟踪、投递报告和参与度指标。",
+        "status": "计划中"
+      }
+    }
+  }
 }
