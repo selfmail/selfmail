@@ -1,4 +1,5 @@
 import type { MxRecord } from "node:dns";
+import consola from "consola";
 import nodemailer from "nodemailer";
 import type { OutboundEmail } from "../schema/outbound";
 
@@ -30,6 +31,7 @@ export abstract class Send {
 			const verify = await transporter.verify();
 
 			if (!verify) {
+				consola.warn(`Could not verify connection to mail server ${host}`);
 				continue;
 			}
 
@@ -47,6 +49,7 @@ export abstract class Send {
 			});
 
 			if (!send.messageId) {
+				consola.error("Failed to send email, no messageId returned");
 				throw new Error("Failed to send email, no messageId returned");
 			}
 

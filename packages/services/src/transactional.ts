@@ -17,10 +17,6 @@ export abstract class Transactional {
 			connection: Transactional.connection,
 			defaultJobOptions: {
 				attempts: 5,
-				backoff: {
-					type: "exponential",
-					delay: 1000,
-				},
 				removeOnComplete: true,
 				removeOnFail: false,
 			},
