@@ -1,8 +1,8 @@
 import type { MxRecord } from "node:dns";
-import { RedisClient } from "bun";
+import IORedis from "ioredis";
 
 export abstract class Cache {
-	private static redis = new RedisClient(
+	private static redis = new IORedis(
 		process.env.REDIS_URL || "redis://localhost:6379",
 	);
 
