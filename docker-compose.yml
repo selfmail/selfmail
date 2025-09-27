@@ -1,4 +1,106 @@
+# Docker Compose file which expects that api, webservices and payments queue is running in the cloud.
+# That means, we have only the smtp stuff left.
+
 services:
+  smtp:
+    build:
+      context: .
+      dockerfile: apps/smtp/Dockerfile
+      args:
+        - CERTIFICATE_PATH=${CERTIFICATE_PATH}
+    container_name: selfmail-smtp
+    restart: unless-stopped
+    ports:
+      - "25:25"   # SMTP inbound
+      - "587:587" # SMTP outbound (submission)
+    depends_on:
+      - rspamd
+      - clamav
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=${REDIS_URL}
+      - SMTP_API_URL=http://selfmail-smtp-api:4001
+      - RSPAMD_HOST=rspamd
+      - RSPAMD_PORT=11332
+      - CERTIFICATE_PATH=${CERTIFICATE_PATH}
+      - CLAMAV_HOST=clamav
+      - CLAMAV_PORT=3310
+      - DATABASE_URL=${DATABASE_URL}
+      # For example Europe/Berlin
+      - TZ=${TZ}
+    networks:
+      - default
+    # Required for binding to privileged ports
+    privileged: false
+    cap_add:
+      - NET_BIND_SERVICE
+    volumes:
+      - ./certs:${CERTIFICATE_PATH}:ro
+
+  relay:
+    build:
+      context: .
+      dockerfile: apps/relay/Dockerfile
+    container_name: selfmail-relay
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    depends_on:
+      - queue
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - REDIS_URL=${REDIS_URL}
+      - TZ=${TZ}
+    networks:
+      - default
+
+  smtp-api:
+    build:
+      context: .
+      dockerfile: apps/smtp-api/Dockerfile
+    container_name: selfmail-smtp-api
+    restart: unless-stopped
+    ports:
+      - "4001:4001"
+    depends_on:
+      - clamav
+    environment:
+      - NODE_ENV=production
+      - PORT=4001
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - CLAMAV_HOST=clamav
+      - CLAMAV_PORT=3310
+      - TZ=${TZ}
+    networks:
+      - default
+
+  transactional-queue:
+    build:
+      context: .
+      dockerfile: apps/transactional-queue/Dockerfile
+    container_name: selfmail-transactional-queue
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=${REDIS_URL}
+      - TZ=${TZ}
+    networks:
+      - default
+  queue:
+    build:
+      context: .
+      dockerfile: apps/queue/Dockerfile
+    container_name: selfmail-queue
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=${REDIS_URL}
+      - DATABASE_URL=${DATABASE_URL}
+      - TZ=${TZ}
+    networks:
+      - default
   rspamd:
     image: rspamd/rspamd:latest
     container_name: rspamd
@@ -19,196 +121,51 @@ services:
     restart: unless-stopped
     ports:
       - "3310:3310"
-
-  
-  postgres:
-    image: postgres:16
-    container_name: selfmail-postgres
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      
-  redis:
-    image: redis:7
-    container_name: selfmail-redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-
-  queue:
-    build:
-      context: .
-      dockerfile: apps/queue/Dockerfile
-    container_name: selfmail-queue
-    restart: unless-stopped
-    depends_on:
-      - redis
-      - postgres
-    environment:
-      - NODE_ENV=production
-      - REDIS_HOST=selfmail-redis
-      - REDIS_PORT=6379
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@selfmail-postgres:5432/${POSTGRES_DB}
-      - TZ=${TZ}
-    networks:
-      - default
-
   api:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
     container_name: selfmail-api
     restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+
+      - ACTIVATE_PAYMENTS=${ACTIVATE_PAYMENTS}
+      - POLAR_SELFMAIL_PLUS_ID=${POLAR_SELFMAIL_PLUS_ID}
+      - POLAR_SELFMAIL_PREMIUM_ID=${POLAR_SELFMAIL_PREMIUM_ID}
+      - POLAR_WEBHOOK_SECRET=${POLAR_WEBHOOK_SECRET}
+      - POLAR_ORG_SLUG=${POLAR_ORG_SLUG}
+      - POLAR_SUCCESS_BASE_URL=${POLAR_SUCCESS_BASE_URL}
+
+      - ENABLE_S3_UPLOAD=${ENABLE_S3_UPLOAD}
+      - ENABLE_DOCKER_VOLUME_UPLOAD=${ENABLE_DOCKER_VOLUME_UPLOAD}
+
+      - AWS_ENDPOINT=${AWS_ENDPOINT}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - TZ=${TZ}
     ports:
-      - "3000:3000"
-    depends_on:
-      - postgres
-      - redis
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@selfmail-postgres:5432/${POSTGRES_DB}
-      - REDIS_HOST=selfmail-redis
-      - REDIS_PORT=6379
-      - TZ=${TZ}
+      - "3010:3000"
     networks:
       - default
-
-  payments:
-    build:
-      context: .
-      dockerfile: apps/payments/Dockerfile
-    container_name: selfmail-payments
-    restart: unless-stopped
-    depends_on:
-      - redis
-      - postgres
-    environment:
-      - NODE_ENV=production
-      - REDIS_HOST=selfmail-redis
-      - REDIS_PORT=6379
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@selfmail-postgres:5432/${POSTGRES_DB}
-      - POLAR_ACCESS_TOKEN=${POLAR_ACCESS_TOKEN}
-      - TZ=${TZ}
-    networks:
-      - default
-
-  smtp:
-    build:
-      context: .
-      dockerfile: apps/smtp/Dockerfile
-    container_name: selfmail-smtp
-    restart: unless-stopped
-    ports:
-      - "25:25"   # SMTP inbound
-      - "587:587" # SMTP outbound (submission)
-    depends_on:
-      - redis
-      - rspamd
-      - clamav
-    environment:
-      - NODE_ENV=production
-      - REDIS_HOST=selfmail-redis
-      - REDIS_PORT=6379
-      - RSPAMD_HOST=rspamd
-      - RSPAMD_PORT=11332
-      - CLAMAV_HOST=clamav
-      - CLAMAV_PORT=3310
-      - TZ=${TZ}
-    networks:
-      - default
-    # Required for binding to privileged ports
-    privileged: false
-    cap_add:
-      - NET_BIND_SERVICE
-
-  relay:
-    build:
-      context: .
-      dockerfile: apps/relay/Dockerfile
-    container_name: selfmail-relay
-    restart: unless-stopped
-    ports:
-      - "3001:3001"
-    depends_on:
-      - redis
-      - queue
-    environment:
-      - NODE_ENV=production
-      - PORT=3001
-      - REDIS_HOST=selfmail-redis
-      - REDIS_PORT=6379
-      - TZ=${TZ}
-    networks:
-      - default
-
-  smtp-api:
-    build:
-      context: .
-      dockerfile: apps/smtp-api/Dockerfile
-    container_name: selfmail-smtp-api
-    restart: unless-stopped
-    ports:
-      - "4001:4001"
-    depends_on:
-      - redis
-      - postgres
-      - clamav
-    environment:
-      - NODE_ENV=production
-      - PORT=4001
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@selfmail-postgres:5432/${POSTGRES_DB}
-      - REDIS_HOST=selfmail-redis
-      - REDIS_PORT=6379
-      - CLAMAV_HOST=clamav
-      - CLAMAV_PORT=3310
-      - TZ=${TZ}
-    networks:
-      - default
-
-  transactional-queue:
-    build:
-      context: .
-      dockerfile: apps/transactional-queue/Dockerfile
-    container_name: selfmail-transactional-queue
-    restart: unless-stopped
-    depends_on:
-      - redis
-    environment:
-      - NODE_ENV=production
-      - REDIS_HOST=selfmail-redis
-      - REDIS_PORT=6379
-      - TZ=${TZ}
-    networks:
-      - default
-
   dashboard:
     build:
       context: .
       dockerfile: apps/dashboard/Dockerfile
     container_name: selfmail-dashboard
     restart: unless-stopped
-    ports:
-      - "80:80"
-    depends_on:
-      - api
     environment:
       - NODE_ENV=production
-      - TZ=${TZ}
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+    ports:
+      - "4173:4173"
     networks:
       - default
 
 volumes:
-  postgres_data:
-  redis_data:
+  rspamd-var:
+  rspamd-etc:
+  certs:

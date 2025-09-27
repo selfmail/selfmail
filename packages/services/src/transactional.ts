@@ -4,11 +4,12 @@ import { z } from "zod/v4";
 import { Logs } from "./logs";
 
 export abstract class Transactional {
-	static connection = new IORedis({
-		maxRetriesPerRequest: null,
-		host: "127.0.0.1",
-		port: 6379,
-	});
+	static connection = new IORedis(
+		process.env.REDIS_URL || "redis://localhost:6379",
+		{
+			maxRetriesPerRequest: null,
+		},
+	);
 
 	static queue = new Queue<z.infer<typeof Transactional.schema>>(
 		"emails-outbound",

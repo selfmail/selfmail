@@ -41,6 +41,9 @@ RUN bun run build
 # Production stage
 FROM oven/bun:1-slim AS production
 
+# Install OpenSSL and curl in production stage for Prisma runtime and health checks
+RUN apt-get update -y && apt-get install -y openssl ca-certificates curl && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 # Copy built application from base stage
@@ -63,4 +66,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 WORKDIR /app/apps/api
 
 # Start the application
-CMD ["bun", "run", "production:start"]
+CMD ["./app"]

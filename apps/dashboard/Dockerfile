@@ -11,7 +11,6 @@ COPY packages/ui/package.json ./packages/ui/
 # Install dependencies
 RUN bun install
 
-
 COPY apps/api/package.build.json ./apps/api/package.json
 WORKDIR /app/apps/api
 RUN bun add elysia 
@@ -33,7 +32,6 @@ COPY apps/dashboard/tsconfig.json ./apps/dashboard/
 # Build the application for production
 WORKDIR /app/apps/dashboard
 
-RUN ls -la && cat index.html
 RUN bun run build
 
 # Production stage
@@ -49,16 +47,15 @@ RUN chown -R bun:bun /app
 USER bun
 
 # Expose the dashboard port
-EXPOSE 3001
+EXPOSE 4173
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV PORT=3001
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-  CMD curl -f http://localhost:3001/health || exit 1
+  CMD curl -f http://localhost:4173/health || exit 1
 
 # Start the dashboard service with production build
 WORKDIR /app/apps/dashboard
-CMD ["bun", "run", "serve"]
+CMD ["bun", "run", "serve", "--host"]

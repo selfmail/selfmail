@@ -11,6 +11,7 @@ const app = new Elysia({
 		description: "The main entry point for the selfmail api.",
 	},
 })
+	.get("/health", () => "OK")
 	.use(ip())
 	.use(swagger())
 	.use(publicElysia) // The public API for the users to automate stuff with Selfmail

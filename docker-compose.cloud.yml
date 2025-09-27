@@ -19,7 +19,7 @@ services:
     environment:
       - NODE_ENV=production
       - REDIS_URL=${REDIS_URL}
-      - SMTP_API_URL=${SMTP_API_URL}
+      - SMTP_API_URL=http://selfmail-smtp-api:4001
       - RSPAMD_HOST=rspamd
       - RSPAMD_PORT=11332
       - CERTIFICATE_PATH=${CERTIFICATE_PATH}

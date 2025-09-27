@@ -17,7 +17,9 @@
 		"dev:server": "turbo -F server dev",
 		"db:push": "turbo -F database db:push",
 
-		"cloud:infisical": "infisical run --env=prod --recursive --projectId=836adf6b-f5d6-4c95-a017-2382e0628c57 -- docker compose -f docker-compose.cloud.yml up  -d"
+		"cloud:infisical": "infisical run --env=prod --recursive --projectId=836adf6b-f5d6-4c95-a017-2382e0628c57 -- docker compose -f docker-compose.cloud.yml up  -d",
+
+		"vps:infisical": "infisical run --env=prod --recursive --projectId=836adf6b-f5d6-4c95-a017-2382e0628c57 -- docker compose -f docker-compose.yml up  -d"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.2.3",

@@ -16,4 +16,7 @@ export default defineConfig({
 			"@": resolve(__dirname, "./src"),
 		},
 	},
+	preview: {
+		allowedHosts: ["dashboard.selfmail.app"],
+	},
 });

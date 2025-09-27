@@ -2,7 +2,9 @@ import type { MxRecord } from "node:dns";
 import { RedisClient } from "bun";
 
 export abstract class Cache {
-	private static redis = new RedisClient("redis://localhost:6379");
+	private static redis = new RedisClient(
+		process.env.REDIS_URL || "redis://localhost:6379",
+	);
 
 	static async get(
 		key: string,
