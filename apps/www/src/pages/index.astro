@@ -4,28 +4,28 @@ import Layout from "../layouts/Layout.astro";
 
 export const prerender = false;
 
-const currentLocale = Astro.preferredLocale || Astro.currentLocale || 'en';
+const currentLocale = Astro.preferredLocale || Astro.currentLocale || "en";
 
 let translations = {};
 try {
-  translations = await import(`../../i18n/${currentLocale}.json`);
+	translations = await import(`../../i18n/${currentLocale}.json`);
 } catch (error) {
-  // Fallback to English if translation file doesn't exist
-  try {
-    translations = await import(`../../i18n/en.json`);
-  } catch (fallbackError) {
-    console.warn(`No translation file found for locale: ${currentLocale}`);
-  }
+	// Fallback to English if translation file doesn't exist
+	try {
+		translations = await import("../../i18n/en.json");
+	} catch (fallbackError) {
+		console.warn(`No translation file found for locale: ${currentLocale}`);
+	}
 }
 
 // Translation function
 const t = (key: string, fallback?: string): string => {
-  const keys = key.split('.');
-  let value: any = (translations as any).default || translations;
-  for (const k of keys) {
-    value = value?.[k];
-  }
-  return value || fallback || key;
+	const keys = key.split(".");
+	let value: any = (translations as any).default || translations;
+	for (const k of keys) {
+		value = value?.[k];
+	}
+	return value || fallback || key;
 };
 ---
 

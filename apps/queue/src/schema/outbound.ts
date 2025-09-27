@@ -71,4 +71,3 @@ export const outboundSchema = z.object({
 });
 
 export type OutboundEmail = z.infer<typeof outboundSchema>;
-

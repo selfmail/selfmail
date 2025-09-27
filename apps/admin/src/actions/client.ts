@@ -1,3 +1,3 @@
 import { createSafeActionClient } from "next-safe-action";
 
-export const client = createSafeActionClient({})
+export const client = createSafeActionClient({});

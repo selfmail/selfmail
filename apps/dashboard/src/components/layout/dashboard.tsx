@@ -25,7 +25,9 @@ export default function DashboardLayout({
 			{showNav && <DashboardNavigation workspaceId={workspaceId} />}
 
 			{/* Page container */}
-			<div className={`mx-auto w-full px-4 sm:px-6 lg:px-26 xl:px-32 ${className}`}>
+			<div
+				className={`mx-auto w-full px-4 sm:px-6 lg:px-26 xl:px-32 ${className}`}
+			>
 				{/* Page header */}
 				{title && (
 					<div className="flex items-center justify-between py-6">

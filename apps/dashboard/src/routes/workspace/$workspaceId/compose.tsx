@@ -114,9 +114,9 @@ function ComposeEmail({ workspaceId }: { workspaceId: string }) {
 						navigate({
 							to: "/workspace/$workspaceId",
 							params: {
-								workspaceId
-							}
-						})
+								workspaceId,
+							},
+						});
 					}}
 					className="h-5 w-5 cursor-pointer text-neutral-700"
 					aria-label="Go back"
