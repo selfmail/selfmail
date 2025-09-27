@@ -25,14 +25,16 @@ export async function upgrade(job: Job<UpgradeJobData, void, string>) {
 				select: {
 					email: true,
 					id: true,
-					name: true
-				}
-			}
-		}
+					name: true,
+				},
+			},
+		},
 	});
 
 	if (!workspace) {
-		await Logs.error(`Workspace not found for upgrade job: ${job.data.workspaceId}`);
+		await Logs.error(
+			`Workspace not found for upgrade job: ${job.data.workspaceId}`,
+		);
 		throw new Error("Workspace not found");
 	}
 
@@ -44,29 +46,28 @@ export async function upgrade(job: Job<UpgradeJobData, void, string>) {
 				MemberAddress: {
 					some: {
 						member: {
-							workspaceId: workspace.id
-						}
-					}
-				}
-			}
-		}
+							workspaceId: workspace.id,
+						},
+					},
+				},
+			},
+		},
 	});
 
 	if (!workspaceUsedBytes?._sum) {
-		Logs.error("Failed to get used storage for workspace")
+		Logs.error("Failed to get used storage for workspace");
 	}
 
 	const newPlan = await db.plan.findUnique({
 		where: {
-			name: job.data.plan
-		}
-	})
+			name: job.data.plan,
+		},
+	});
 
 	if (!newPlan) {
 		await Logs.error(`Plan not found for upgrade job: ${job.data.plan}`);
 		throw new Error("Plan not found");
 	}
-
 
 	await db.workspace.update({
 		where: {
@@ -74,8 +75,8 @@ export async function upgrade(job: Job<UpgradeJobData, void, string>) {
 		},
 		data: {
 			billingPlan: job.data.plan,
-		}
-	})
+		},
+	});
 
 	// notify the owner of the workspace that the upgrade was successful
 	const { text, html } = await generateBillingUpgradeTemplate({
@@ -83,15 +84,17 @@ export async function upgrade(job: Job<UpgradeJobData, void, string>) {
 		newPlan: newPlan.name,
 		workspaceName: workspace.name,
 		name: workspace.owner.name || "there",
-	})
+	});
 
 	await Transactional.send({
 		to: workspace.owner.email,
 		from: "no-reply@transactional.selfmail.app",
 		subject: `Billing upgrade for workspace ${workspace.name}`,
 		text,
-		html
+		html,
 	}).catch(async (err) => {
-		await Logs.error(`Failed to send upgrade email to workspace owner ${workspace.owner.id}: ${err.message}`);
-	})
+		await Logs.error(
+			`Failed to send upgrade email to workspace owner ${workspace.owner.id}: ${err.message}`,
+		);
+	});
 }

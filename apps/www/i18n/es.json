@@ -1,48 +1,48 @@
 {
-  "home": {
-    "title": "Selfmail",
-    "features": {
-      "sendEmails": "Enviar correos electrónicos",
-      "templates": "Plantillas y flujos de trabajo inteligentes",
-      "ai": "IA para todo tu equipo"
-    },
-    "waitlist": {
-      "heading": "Únete a la lista de espera",
-      "description": "¡Te enviaremos un correo electrónico cuando lancemos!",
-      "placeholder": "Tu correo electrónico",
-      "button": "Unirse a la lista de espera"
-    }
-  },
-  "roadmap": {
-    "title": "Hoja de ruta",
-    "description": "Selfmail actualmente no está abierto al público. Estoy documentando en la hoja de ruta qué características están actualmente en desarrollo.",
-    "items": {
-      "infrastructure": {
-        "title": "Infraestructura central",
-        "description": "Configuración de monorepo Turborepo con TypeScript, Astro y arquitectura de base de datos completada."
-      },
-      "smtp": {
-        "title": "Servidor SMTP",
-        "description": "Servidor SMTP completamente funcional para enviar y recibir correos electrónicos con gestión de colas."
-      },
-      "dashboard": {
-        "title": "Panel web",
-        "description": "Construcción de la interfaz de usuario para gestión de correos electrónicos, análisis y configuración de cuentas."
-      },
-      "templates": {
-        "title": "Plantillas de correo electrónico",
-        "description": "Sistema de plantillas avanzado con editor de arrastrar y soltar y diseños predefinidos."
-      },
-      "ai": {
-        "title": "Integración de IA",
-        "description": "Composición inteligente de correos electrónicos, optimización de líneas de asunto y respuestas automatizadas."
-      }
-    }
-  },
-  "waitlist": {
-    "success": {
-      "title": "¡Éxito!",
-      "description": "Has sido añadido a la lista de espera. Te notificaremos cuando lancemos."
-    }
-  }
+	"home": {
+		"title": "Selfmail",
+		"features": {
+			"sendEmails": "Enviar correos electrónicos",
+			"templates": "Plantillas y flujos de trabajo inteligentes",
+			"ai": "IA para todo tu equipo"
+		},
+		"waitlist": {
+			"heading": "Únete a la lista de espera",
+			"description": "¡Te enviaremos un correo electrónico cuando lancemos!",
+			"placeholder": "Tu correo electrónico",
+			"button": "Unirse a la lista de espera"
+		}
+	},
+	"roadmap": {
+		"title": "Hoja de ruta",
+		"description": "Selfmail actualmente no está abierto al público. Estoy documentando en la hoja de ruta qué características están actualmente en desarrollo.",
+		"items": {
+			"infrastructure": {
+				"title": "Infraestructura central",
+				"description": "Configuración de monorepo Turborepo con TypeScript, Astro y arquitectura de base de datos completada."
+			},
+			"smtp": {
+				"title": "Servidor SMTP",
+				"description": "Servidor SMTP completamente funcional para enviar y recibir correos electrónicos con gestión de colas."
+			},
+			"dashboard": {
+				"title": "Panel web",
+				"description": "Construcción de la interfaz de usuario para gestión de correos electrónicos, análisis y configuración de cuentas."
+			},
+			"templates": {
+				"title": "Plantillas de correo electrónico",
+				"description": "Sistema de plantillas avanzado con editor de arrastrar y soltar y diseños predefinidos."
+			},
+			"ai": {
+				"title": "Integración de IA",
+				"description": "Composición inteligente de correos electrónicos, optimización de líneas de asunto y respuestas automatizadas."
+			}
+		}
+	},
+	"waitlist": {
+		"success": {
+			"title": "¡Éxito!",
+			"description": "Has sido añadido a la lista de espera. Te notificaremos cuando lancemos."
+		}
+	}
 }

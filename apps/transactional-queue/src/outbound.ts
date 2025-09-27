@@ -3,7 +3,13 @@ import { type OutboundEmail, outboundSchema } from "./schema/outbound";
 import { DNS } from "./services/dns";
 import { Send } from "./services/send";
 
-export async function transactionalOutbound(job: Job<OutboundEmail & { sendByUser?: boolean, memberId?: string }, void, string>) {
+export async function transactionalOutbound(
+	job: Job<
+		OutboundEmail & { sendByUser?: boolean; memberId?: string },
+		void,
+		string
+	>,
+) {
 	const parse = await outboundSchema.safeParseAsync(job.data);
 
 	if (!parse.success) {
@@ -14,7 +20,7 @@ export async function transactionalOutbound(job: Job<OutboundEmail & { sendByUse
 
 	const mail = parse.data;
 
-	const host = mail.to?.split("@")[1] ?? ""
+	const host = mail.to?.split("@")[1] ?? "";
 
 	if (!host) {
 		throw new UnrecoverableError(
@@ -32,7 +38,9 @@ export async function transactionalOutbound(job: Job<OutboundEmail & { sendByUse
 		...mail,
 		records: mxRecords,
 	}).catch(async (err) => {
-		throw new Error(`Sending email failed for mail with mail-id: ${job.id}\n${err}`);
+		throw new Error(
+			`Sending email failed for mail with mail-id: ${job.id}\n${err}`,
+		);
 	});
 
 	if (!messageId) {

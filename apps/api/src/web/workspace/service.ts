@@ -45,8 +45,6 @@ export class WorkspaceService {
 			});
 		}
 
-
-
 		const workspace = await db.workspace.create({
 			data: {
 				name,
@@ -150,7 +148,9 @@ export class WorkspaceService {
 		},
 	) {
 		// Ratelimiting
-		const allowed = await Ratelimit.limit(`${userId}:${workspaceId}:send-email`);
+		const allowed = await Ratelimit.limit(
+			`${userId}:${workspaceId}:send-email`,
+		);
 		if (!allowed)
 			return status(429, "Too many requests. Please try again later.");
 

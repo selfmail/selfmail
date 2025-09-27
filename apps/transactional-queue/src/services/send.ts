@@ -18,7 +18,7 @@ export abstract class Send {
 			const host = record.exchange;
 
 			if (!host) {
-				continue
+				continue;
 			}
 
 			const transporter = nodemailer.createTransport({

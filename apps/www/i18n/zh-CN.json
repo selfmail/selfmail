@@ -1,48 +1,48 @@
 {
-  "home": {
-    "title": "Selfmail",
-    "features": {
-      "sendEmails": "发送邮件",
-      "templates": "模板与智能工作流程",
-      "ai": "为整个团队提供的AI"
-    },
-    "waitlist": {
-      "heading": "加入候补名单",
-      "description": "我们将在上线时给您发送电子邮件！",
-      "placeholder": "您的邮箱",
-      "button": "加入候补名单"
-    }
-  },
-  "roadmap": {
-    "title": "路线图",
-    "description": "Selfmail目前尚未向公众开放。我正在路线图中记录当前正在开发的功能。",
-    "items": {
-      "infrastructure": {
-        "title": "核心基础设施",
-        "description": "已完成包含 TypeScript、Astro 和数据库架构的 Turborepo 单体代码库设置。"
-      },
-      "smtp": {
-        "title": "SMTP 服务器",
-        "description": "功能齐全的 SMTP 服务器，用于发送和接收电子邮件，并支持队列管理。"
-      },
-      "dashboard": {
-        "title": "网页仪表板",
-        "description": "构建用于电子邮件管理、分析和账户设置的用户界面。"
-      },
-      "templates": {
-        "title": "电子邮件模板",
-        "description": "丰富的模板系统，配备拖放编辑器和预构建设计。"
-      },
-      "ai": {
-        "title": "AI 集成",
-        "description": "智能电子邮件撰写、主题行优化和自动回复功能。"
-      }
-    }
-  },
-  "waitlist": {
-    "success": {
-      "title": "成功！",
-      "description": "您已成功加入候补名单。我们将在上线时通知您。"
-    }
-  }
+	"home": {
+		"title": "Selfmail",
+		"features": {
+			"sendEmails": "发送邮件",
+			"templates": "模板与智能工作流程",
+			"ai": "为整个团队提供的AI"
+		},
+		"waitlist": {
+			"heading": "加入候补名单",
+			"description": "我们将在上线时给您发送电子邮件！",
+			"placeholder": "您的邮箱",
+			"button": "加入候补名单"
+		}
+	},
+	"roadmap": {
+		"title": "路线图",
+		"description": "Selfmail目前尚未向公众开放。我正在路线图中记录当前正在开发的功能。",
+		"items": {
+			"infrastructure": {
+				"title": "核心基础设施",
+				"description": "已完成包含 TypeScript、Astro 和数据库架构的 Turborepo 单体代码库设置。"
+			},
+			"smtp": {
+				"title": "SMTP 服务器",
+				"description": "功能齐全的 SMTP 服务器，用于发送和接收电子邮件，并支持队列管理。"
+			},
+			"dashboard": {
+				"title": "网页仪表板",
+				"description": "构建用于电子邮件管理、分析和账户设置的用户界面。"
+			},
+			"templates": {
+				"title": "电子邮件模板",
+				"description": "丰富的模板系统，配备拖放编辑器和预构建设计。"
+			},
+			"ai": {
+				"title": "AI 集成",
+				"description": "智能电子邮件撰写、主题行优化和自动回复功能。"
+			}
+		}
+	},
+	"waitlist": {
+		"success": {
+			"title": "成功！",
+			"description": "您已成功加入候补名单。我们将在上线时通知您。"
+		}
+	}
 }

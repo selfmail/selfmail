@@ -1,50 +1,50 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "ui": "tui",
-  "globalDependencies": [".env"],
-  "globalEnv": [
-    "NODE_ENV",
-    "CORS_ORIGIN",
-    "UNKEY_ROOT_KEY",
-    "UNKEY_API_ID",
-    "PORT",
-    "VITE_SERVER_URL",
-    "PUBLIC_POSTHOG_KEY",
-    "PUBLIC_POSTHOG_HOST",
-    "VITE_PUBLIC_POSTHOG_KEY",
-    "VITE_PUBLIC_POSTHOG_HOST"
-  ],
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**"]
-    },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
-    "check-types": {
-      "dependsOn": ["^check-types"]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "db:push": {
-      "cache": false,
-      "persistent": true
-    },
-    "db:studio": {
-      "cache": false,
-      "persistent": true
-    },
-    "db:migrate": {
-      "cache": false,
-      "persistent": true
-    },
-    "db:generate": {
-      "cache": false,
-      "persistent": true
-    }
-  }
+	"$schema": "https://turbo.build/schema.json",
+	"ui": "tui",
+	"globalDependencies": [".env"],
+	"globalEnv": [
+		"NODE_ENV",
+		"CORS_ORIGIN",
+		"UNKEY_ROOT_KEY",
+		"UNKEY_API_ID",
+		"PORT",
+		"VITE_SERVER_URL",
+		"PUBLIC_POSTHOG_KEY",
+		"PUBLIC_POSTHOG_HOST",
+		"VITE_PUBLIC_POSTHOG_KEY",
+		"VITE_PUBLIC_POSTHOG_HOST"
+	],
+	"tasks": {
+		"build": {
+			"dependsOn": ["^build"],
+			"inputs": ["$TURBO_DEFAULT$", ".env*"],
+			"outputs": ["dist/**"]
+		},
+		"lint": {
+			"dependsOn": ["^lint"]
+		},
+		"check-types": {
+			"dependsOn": ["^check-types"]
+		},
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"db:push": {
+			"cache": false,
+			"persistent": true
+		},
+		"db:studio": {
+			"cache": false,
+			"persistent": true
+		},
+		"db:migrate": {
+			"cache": false,
+			"persistent": true
+		},
+		"db:generate": {
+			"cache": false,
+			"persistent": true
+		}
+	}
 }
