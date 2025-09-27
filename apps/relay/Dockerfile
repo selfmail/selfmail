@@ -42,5 +42,7 @@ ENV PORT=4000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
   CMD curl -f http://localhost:4000/health || exit 1
 
+WORKDIR /app/apps/relay
+
 # Start the relay service
-CMD ["bun", "run", "apps/relay/src/main.ts"]
+CMD ["./app"]

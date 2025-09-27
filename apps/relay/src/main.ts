@@ -255,6 +255,8 @@ const app = new Elysia()
 			}),
 		},
 	)
-	.listen(4000);
+	.listen({
+		port: 4000,
+	});
 
 console.log(`Listening on ${app.server?.url}`);

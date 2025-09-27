@@ -1,9 +1,9 @@
 import type { MxRecord } from "node:dns";
 import { UnrecoverableError } from "bullmq";
+import { $ } from "bun";
+import consola from "consola";
 import nodemailer from "nodemailer";
 import type { OutboundEmail } from "../schema/outbound";
-import consola from "consola";
-import { $ } from "bun";
 
 export abstract class Send {
 	static async mail({
@@ -65,14 +65,9 @@ export abstract class Send {
 			throw new Error("No MX records found for domain");
 		}
 
-		console.log(await $`ls`)
-
-		const dkimPrivateKey = await Bun.file(
-			"../../keys/dkim-private.pem",
-		).text();
+		const dkimPrivateKey = await Bun.file("../../keys/dkim-private.pem").text();
 
 		if (!dkimPrivateKey) {
-			console.log("No DKIM private key found");
 			throw new UnrecoverableError("No DKIM private key found");
 		}
 

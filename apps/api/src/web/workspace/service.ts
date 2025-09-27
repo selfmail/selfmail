@@ -1,5 +1,6 @@
 import { db } from "database";
 import { status } from "elysia";
+import { EmailQueue } from "services/queue";
 import { Ratelimit } from "services/ratelimit";
 import { Files } from "../../lib/files";
 
@@ -44,8 +45,6 @@ export class WorkspaceService {
 				bucket: "workspace-icons",
 			});
 		}
-
-
 
 		const workspace = await db.workspace.create({
 			data: {
@@ -150,7 +149,9 @@ export class WorkspaceService {
 		},
 	) {
 		// Ratelimiting
-		const allowed = await Ratelimit.limit(`${userId}:${workspaceId}:send-email`);
+		const allowed = await Ratelimit.limit(
+			`${userId}:${workspaceId}:send-email`,
+		);
 		if (!allowed)
 			return status(429, "Too many requests. Please try again later.");
 
@@ -183,33 +184,34 @@ export class WorkspaceService {
 			return status(400, "Invalid sender address or access denied");
 		}
 
-		// Prepare the relay data
+		// Helper function to convert simple email strings to AddressObject format
+		const convertEmailAddress = (address: string) => ({
+			value: [{ address, name: undefined }],
+			text: address,
+			html: address,
+		});
+
+		const convertEmailAddresses = (addresses: string[]) =>
+			addresses.map(convertEmailAddress);
+
+		// Prepare the relay data in the correct OutboundEmail format
 		const relayData = {
-			from: emailData.from,
-			to: emailData.to,
-			cc: emailData.cc,
-			bcc: emailData.bcc,
+			from: convertEmailAddress(emailData.from),
+			to: convertEmailAddresses(emailData.to),
+			cc: emailData.cc ? convertEmailAddresses(emailData.cc) : undefined,
+			bcc: emailData.bcc ? convertEmailAddresses(emailData.bcc) : undefined,
 			subject: emailData.subject,
 			text: emailData.text,
 			html: emailData.html,
+			attachments: [],
+			headers: {},
+			headerLines: [],
 		};
 
 		try {
+			console.log("Sending email via relay:", relayData);
 			// Send to relay service
-			const relayResponse = await fetch("http://localhost:4000/send", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(relayData),
-			});
-
-			if (!relayResponse.ok) {
-				const errorText = await relayResponse.text();
-				throw new Error(`Relay service error: ${errorText}`);
-			}
-
-			const result = await relayResponse.json();
+			await EmailQueue.processOutbound(relayData);
 
 			// Log the email sending activity
 			await db.activity.create({
@@ -225,7 +227,6 @@ export class WorkspaceService {
 
 			return {
 				success: true,
-				messageId: result.messageId,
 				message: "Email sent successfully",
 			};
 		} catch (error) {

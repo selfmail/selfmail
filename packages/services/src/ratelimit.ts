@@ -1,4 +1,4 @@
-import { RedisClient } from "bun";
+import IORedis from "ioredis";
 
 export interface RateLimitOptions {
 	max: number;
@@ -12,10 +12,8 @@ export interface RateLimitResult {
 }
 
 export class Ratelimit {
-	private static redis = new RedisClient(
-		process.env.REDIS_RATELIMIT_URL ||
-			process.env.REDIS_URL ||
-			"redis://localhost:6379",
+	private static redis = new IORedis(
+		process.env.REDIS_URL ?? "redis://localhost:6379",
 	);
 
 	private static defaultOptions: RateLimitOptions = {
@@ -26,13 +24,18 @@ export class Ratelimit {
 		id: string,
 		options?: Partial<RateLimitOptions>,
 	): Promise<RateLimitResult> {
+		console.log("Ratelimiting");
 		const redis = Ratelimit.redis;
 		const opts = { ...Ratelimit.defaultOptions, ...options };
 		const key = `ratelimit:${id}`;
+		console.log(key);
 		const now = Math.floor(Date.now() / 1000);
+
+		console.log("Current timestamp (seconds):", now);
 
 		// Check if key exists
 		const data = await redis.get(key);
+		console.log("Ratelimit data from Redis:", data);
 
 		if (!data) {
 			// First request, initialize counter
@@ -41,8 +44,12 @@ export class Ratelimit {
 				startTime: now,
 			};
 
+			console.log("Setting new ratelimit data:", newData);
+
 			await redis.set(key, JSON.stringify(newData));
 			await redis.expire(key, opts.windowInSeconds);
+
+			console.log("Ratelimit set for key:", key);
 
 			return {
 				success: true,
@@ -53,6 +60,8 @@ export class Ratelimit {
 
 		// Parse existing data
 		const parsedData = JSON.parse(data as string);
+
+		console.log("Parsed ratelimit data:", parsedData);
 		const elapsedTime = now - parsedData.startTime;
 		const timeRemaining = opts.windowInSeconds - elapsedTime;
 

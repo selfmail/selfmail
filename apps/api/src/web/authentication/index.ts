@@ -157,11 +157,14 @@ export const authentication = new Elysia({
 	.post(
 		"/register",
 		async (ctx) => {
+			console.log("New Request!");
 			const { body, request, cookie, set } = ctx;
 			const clientIp =
 				request.headers.get("x-forwarded-for") ||
 				request.headers.get("x-real-ip") ||
 				"unknown";
+
+			console.log("Client IP:", clientIp);
 
 			const result = await AuthenticationService.handleRegister(body, clientIp);
 

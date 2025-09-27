@@ -1,13 +1,11 @@
 import type { MxRecord } from "node:dns";
-import { RedisClient } from "bun";
+import { connection } from "../config/connection";
 
 export abstract class Cache {
-	private static redis = new RedisClient("redis://localhost:6379");
-
 	static async get(
 		key: string,
 	): Promise<{ expires: number; records: MxRecord[] } | null> {
-		const data = await Cache.redis.get(key);
+		const data = await connection.get(key);
 		if (!data) return null;
 
 		const { expires, records } = JSON.parse(data);
@@ -20,13 +18,13 @@ export abstract class Cache {
 		ttl?: number,
 	): Promise<void> {
 		const expires = ttl ? Date.now() + ttl : Date.now() + 3600 * 1000;
-		await Cache.redis.set(
+		await connection.set(
 			`relay-dns-cache:${key}`,
 			JSON.stringify({ expires, records: JSON.stringify(value) }),
 		);
 	}
 
 	static async delete(key: string): Promise<void> {
-		await Cache.redis.del(`relay-dns-cache:${key}`);
+		await connection.del(`relay-dns-cache:${key}`);
 	}
 }

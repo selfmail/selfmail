@@ -108,13 +108,6 @@ export async function outbound(
 		...mail,
 		records: mxRecords,
 	}).catch(async (err) => {
-		consola.error("Sending email failed!", {
-			jobId: job.id,
-			error: err,
-			data: mail,
-			mxRecords,
-		});
-
 		throw new Error(`Sending email failed for mail with mail-id: ${job.id}`);
 	});
 

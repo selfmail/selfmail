@@ -52,7 +52,9 @@ export abstract class Transactional {
 		// parse the provided values
 		const { success, data, error } = await Transactional.schema.safeParseAsync({
 			...params,
-			from: process.env.TRANSACTIONAL_EMAIL_FROM,
+			from:
+				process.env.TRANSACTIONAL_EMAIL_FROM ||
+				"noreply@transaction.selfmail.app",
 		});
 
 		if (!success) {

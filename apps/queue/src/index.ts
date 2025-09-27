@@ -30,6 +30,14 @@ const outboundWorker = new Worker<OutboundEmail, void>(
 	},
 );
 
+outboundWorker.on("error", (err) => {
+	consola.error("Worker error", err);
+});
+
+outboundWorker.on("closed", () => {
+	consola.info("Worker closed");
+});
+
 outboundWorker.on(
 	"failed",
 	async (job, err: Error & { failedReason?: string }) => {

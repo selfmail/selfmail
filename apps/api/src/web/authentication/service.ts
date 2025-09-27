@@ -10,27 +10,37 @@ export abstract class AuthenticationService {
 		{ email, password, name }: AuthenticationModule.RegisterBody,
 		clientIp: string,
 	) {
+		console.log("Register attempt from IP:", clientIp);
 		// Rate limiting for registration
 		const rateLimit = await Ratelimit.limit(`register:${clientIp}`, {
 			max: 5,
 			windowInSeconds: 60 * 60,
 		});
 		if (!rateLimit.success) {
+			console.log("Rate limit exceeded for IP:", clientIp);
 			return status(429, "Too many requests. Please try again later.");
 		}
-
+		console.log("Rate limit success")
 		// Check if the user already exists
 		const existingUser = await db.user.findUnique({
 			where: { email },
 		});
 
 		if (existingUser) {
+			console.log("Email already registered:", email);
 			return status(409, "Email already registered. Please log in instead.");
 		}
 
+		console.log("Creating new user with email:", email);
+
 		// Hash password
 		const passwordHash = await Bun.password.hash(password, "argon2id");
+		if (!passwordHash) {
+			console.log("Failed to hash password for email:", email);
+			return status(500, "Failed to hash password. Please try again later.");
+		}
 
+		console.log("Password hashed successfully for email:", email);
 		// Create user
 		const user = await db.user.create({
 			data: {
@@ -40,11 +50,16 @@ export abstract class AuthenticationService {
 			},
 		});
 
-		if (!user)
-			throw status(500, "Failed to create user. Please try again later.");
+		if (!user){
+			console.log("Failed to create user in database for email:", email);
+			
+			return status(500, "Failed to create user. Please try again later.");
+		}
 
 		// create OTP
 		const otpToken = Math.floor(100000 + Math.random() * 900000);
+
+		console.log("Generated OTP token for email:", email, "Token:", otpToken);
 
 		// Save OTP to database
 		await db.emailVerification.create({
@@ -55,6 +70,8 @@ export abstract class AuthenticationService {
 				expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes from now
 			},
 		});
+
+		console.log("Saved OTP token to database for email:", email);
 
 		// send verify token to user
 		const mail = await Transactional.send({
@@ -75,6 +92,7 @@ export abstract class AuthenticationService {
 			).text,
 		});
 
+		console.log("Sent verification email to:", email, "Mail response:", mail);
 		// Create session token
 		const sessionToken = crypto.randomUUID();
 

@@ -44,12 +44,11 @@ services:
     container_name: selfmail-relay
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "4000:4000"
     depends_on:
       - queue
     environment:
       - NODE_ENV=production
-      - PORT=3001
       - REDIS_URL=${REDIS_URL}
       - TZ=${TZ}
     networks:
@@ -82,10 +81,18 @@ services:
       dockerfile: apps/transactional-queue/Dockerfile
     container_name: selfmail-transactional-queue
     restart: unless-stopped
+    depends_on:
+      - rspamd
+      - clamav
     environment:
       - NODE_ENV=production
       - REDIS_URL=${REDIS_URL}
+      - TRANSACTIONAL_EMAIL_FROM=noreply@transaction.selfmail.app
       - TZ=${TZ}
+      - RSPAMD_HOST=rspamd
+      - RSPAMD_API_PORT=11333
+      - CLAMAV_HOST=clamav
+      - CLAMAV_PORT=3310
     networks:
       - default
   queue:
@@ -94,11 +101,18 @@ services:
       dockerfile: apps/queue/Dockerfile
     container_name: selfmail-queue
     restart: unless-stopped
+    depends_on:
+      - rspamd
+      - clamav
     environment:
       - NODE_ENV=production
       - REDIS_URL=${REDIS_URL}
       - DATABASE_URL=${DATABASE_URL}
       - TZ=${TZ}
+      - RSPAMD_HOST=rspamd
+      - RSPAMD_API_PORT=11333
+      - CLAMAV_HOST=clamav
+      - CLAMAV_PORT=3310
     networks:
       - default
   rspamd:
@@ -146,6 +160,7 @@ services:
       - AWS_ENDPOINT=${AWS_ENDPOINT}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - TRANSACTIONAL_EMAIL_FROM=noreply@transaction.selfmail.app
       - TZ=${TZ}
     ports:
       - "3010:3000"

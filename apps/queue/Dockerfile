@@ -19,6 +19,7 @@ COPY apps/queue/tsconfig.json ./apps/queue/
 COPY packages/services/src ./packages/services/src
 COPY packages/services/tsconfig.json ./packages/services/
 COPY packages/database/src ./packages/database/src
+COPY keys ./keys
 COPY packages/database/prisma ./packages/database/prisma
 COPY packages/database/tsconfig.json ./packages/database/
 
@@ -34,6 +35,9 @@ RUN bun run build
 
 # Production stage
 FROM oven/bun:1-slim AS production
+
+# Install OpenSSL and curl in production stage for Prisma runtime and health checks
+RUN apt-get update -y && apt-get install -y openssl ca-certificates curl && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

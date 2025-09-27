@@ -21,10 +21,13 @@ export abstract class Spam {
 
 	private static async getClamscan() {
 		if (!Spam.clamscanInstance) {
+			const clamavHost = process.env.CLAMAV_HOST || "127.0.0.1";
+			const clamavPort = Number.parseInt(process.env.CLAMAV_PORT || "3310", 10);
+
 			Spam.clamscanInstance = new Clam().init({
 				clamdscan: {
-					host: "127.0.0.1",
-					port: 3310,
+					host: clamavHost,
+					port: clamavPort,
 					timeout: 300000, // 5 Minutes
 				},
 				preference: "clamdscan", // Use clamd daemon
@@ -71,7 +74,9 @@ export abstract class Spam {
 			);
 
 			// Send email to Rspamd for analysis
-			const response = await fetch("http://127.0.0.1:11333/checkv2", {
+			const rspamdHost = process.env.RSPAMD_HOST || "localhost";
+			const rspamdPort = process.env.RSPAMD_API_PORT || "11333";
+			const response = await fetch(`http://${rspamdHost}:${rspamdPort}/check`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "message/rfc822",
