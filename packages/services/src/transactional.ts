@@ -12,7 +12,7 @@ export abstract class Transactional {
 	);
 
 	static queue = new Queue<z.infer<typeof Transactional.schema>>(
-		"emails-outbound",
+		"transactional-outbound",
 		{
 			connection: Transactional.connection,
 			defaultJobOptions: {
