@@ -1,103 +1,103 @@
 {
-  "home": {
-    "title": "Selfmail",
-    "subtitle": "モダンアプリケーション向けのオープンソースメールインフラ",
-    "description": "自己ホスト型ソリューションで、トランザクションメールの送信、テンプレートの管理、メール配信の拡張を行いましょう。",
-    "features": {
-      "sendEmails": "トランザクションメールの送信",
-      "templates": "スマートテンプレート＆ワークフロー",
-      "ai": "APIファーストアーキテクチャ"
-    },
-    "cta": {
-      "primary": "はじめる",
-      "secondary": "ドキュメントを見る",
-      "github": "GitHubでスターを付ける"
-    }
-  },
-  "features": {
-    "title": "メール配信に必要なすべてが揃っています",
-    "smtp": {
-      "title": "SMTPサーバー",
-      "description": "キュー管理と配信追跡機能を備えた、フル機能のSMTPサーバー。"
-    },
-    "api": {
-      "title": "REST API",
-      "description": "あらゆる言語からプログラムでメールを送信するためのシンプルなHTTP API。"
-    },
-    "dashboard": {
-      "title": "ウェブダッシュボード",
-      "description": "ウェブインターフェースを通じて、メールの管理、分析の閲覧、設定の構成が可能。"
-    },
-    "templates": {
-      "title": "テンプレートエンジン",
-      "description": "変数と条件ロジックを使用したメールテンプレートの作成と管理。"
-    },
-    "opensource": {
-      "title": "オープンソース",
-      "description": "メールインフラを完全に制御できる自己ホスト型ソリューション。"
-    },
-    "monitoring": {
-      "title": "モニタリング＆分析",
-      "description": "配信率、バウンス、エンゲージメント指標をリアルタイムで追跡。"
-    }
-  },
-  "status": {
-    "title": "現在のステータス",
-    "description": "Selfmailが利用可能になりました！現在利用可能な機能と今後の予定をご紹介します。",
-    "items": {
-      "infrastructure": {
-        "title": "コアインフラ",
-        "description": "TypeScript、Astro、データベースアーキテクチャを備えたTurborepoモノレポのセットアップが完了。",
-        "status": "完了"
-      },
-      "smtp": {
-        "title": "SMTPサーバー",
-        "description": "キュー管理機能を備えた、メールの送受信に完全対応したSMTPサーバー。",
-        "status": "完了"
-      },
-      "api": {
-        "title": "REST API",
-        "description": "レート制限と認証機能を備えた、プログラムでメールを送信するためのHTTP API。",
-        "status": "完了"
-      },
-      "dashboard": {
-        "title": "ウェブダッシュボード",
-        "description": "メール管理、分析、アカウント設定のためのユーザーインターフェース。",
-        "status": "進行中"
-      },
-      "templates": {
-        "title": "メールテンプレート",
-        "description": "ドラッグ＆ドロップエディターと事前構築されたデザインを備えた高機能テンプレートシステム。",
-        "status": "予定"
-      },
-      "monitoring": {
-        "title": "高度な分析機能",
-        "description": "詳細なメール追跡、配信レポート、エンゲージメント指標。",
-        "status": "予定"
-      }
-    }
-  },
-  "privacy": {
-    "title": "プライバシーポリシー",
-    "subtitle": "Selfmailがあなたのデータをどのように扱うか",
-    "description": "このプライバシーポリシーでは、Selfmailをご利用いただく際に、お客様の情報をどのように収集、使用、保護するかについて説明します。",
-    "sections": {
-      "dataStorage": {
-        "title": "データの保存",
-        "description": "お客様のすべてのデータは安全なデータベースに保存されます。パスワードは業界標準のセキュリティ対策を用いて暗号化され、アカウント情報を保護しています。"
-      },
-      "dataUsage": {
-        "title": "データの使用方法",
-        "description": "お客様のデータは、メールインフラサービスを提供する目的でのみ使用されます。Selfmailプラットフォームの運営以外の目的で、お客様のデータを販売、共有、または使用することはありません。"
-      },
-      "dataRights": {
-        "title": "データに関する権利",
-        "description": "お客様はご自身のデータを完全に管理できます。contact@selfmail.appにご連絡いただくことで、いつでもデータの削除をリクエストできます。リクエストを迅速に処理し、関連するすべてのデータを安全に削除します。"
-      },
-      "contact": {
-        "title": "お問い合わせ",
-        "description": "このプライバシーポリシーやお客様のデータについてご質問がある場合は、お気軽にcontact@selfmail.appまでご連絡ください。"
-      }
-    }
-  }
+	"home": {
+		"title": "Selfmail",
+		"subtitle": "モダンアプリケーション向けのオープンソースメールインフラ",
+		"description": "自己ホスト型ソリューションで、トランザクションメールの送信、テンプレートの管理、メール配信の拡張を行いましょう。",
+		"features": {
+			"sendEmails": "トランザクションメールの送信",
+			"templates": "スマートテンプレート＆ワークフロー",
+			"ai": "APIファーストアーキテクチャ"
+		},
+		"cta": {
+			"primary": "はじめる",
+			"secondary": "ドキュメントを見る",
+			"github": "GitHubでスターを付ける"
+		}
+	},
+	"features": {
+		"title": "メール配信に必要なすべてが揃っています",
+		"smtp": {
+			"title": "SMTPサーバー",
+			"description": "キュー管理と配信追跡機能を備えた、フル機能のSMTPサーバー。"
+		},
+		"api": {
+			"title": "REST API",
+			"description": "あらゆる言語からプログラムでメールを送信するためのシンプルなHTTP API。"
+		},
+		"dashboard": {
+			"title": "ウェブダッシュボード",
+			"description": "ウェブインターフェースを通じて、メールの管理、分析の閲覧、設定の構成が可能。"
+		},
+		"templates": {
+			"title": "テンプレートエンジン",
+			"description": "変数と条件ロジックを使用したメールテンプレートの作成と管理。"
+		},
+		"opensource": {
+			"title": "オープンソース",
+			"description": "メールインフラを完全に制御できる自己ホスト型ソリューション。"
+		},
+		"monitoring": {
+			"title": "モニタリング＆分析",
+			"description": "配信率、バウンス、エンゲージメント指標をリアルタイムで追跡。"
+		}
+	},
+	"status": {
+		"title": "現在のステータス",
+		"description": "Selfmailが利用可能になりました！現在利用可能な機能と今後の予定をご紹介します。",
+		"items": {
+			"infrastructure": {
+				"title": "コアインフラ",
+				"description": "TypeScript、Astro、データベースアーキテクチャを備えたTurborepoモノレポのセットアップが完了。",
+				"status": "完了"
+			},
+			"smtp": {
+				"title": "SMTPサーバー",
+				"description": "キュー管理機能を備えた、メールの送受信に完全対応したSMTPサーバー。",
+				"status": "完了"
+			},
+			"api": {
+				"title": "REST API",
+				"description": "レート制限と認証機能を備えた、プログラムでメールを送信するためのHTTP API。",
+				"status": "完了"
+			},
+			"dashboard": {
+				"title": "ウェブダッシュボード",
+				"description": "メール管理、分析、アカウント設定のためのユーザーインターフェース。",
+				"status": "進行中"
+			},
+			"templates": {
+				"title": "メールテンプレート",
+				"description": "ドラッグ＆ドロップエディターと事前構築されたデザインを備えた高機能テンプレートシステム。",
+				"status": "予定"
+			},
+			"monitoring": {
+				"title": "高度な分析機能",
+				"description": "詳細なメール追跡、配信レポート、エンゲージメント指標。",
+				"status": "予定"
+			}
+		}
+	},
+	"privacy": {
+		"title": "プライバシーポリシー",
+		"subtitle": "Selfmailがあなたのデータをどのように扱うか",
+		"description": "このプライバシーポリシーでは、Selfmailをご利用いただく際に、お客様の情報をどのように収集、使用、保護するかについて説明します。",
+		"sections": {
+			"dataStorage": {
+				"title": "データの保存",
+				"description": "お客様のすべてのデータは安全なデータベースに保存されます。パスワードは業界標準のセキュリティ対策を用いて暗号化され、アカウント情報を保護しています。"
+			},
+			"dataUsage": {
+				"title": "データの使用方法",
+				"description": "お客様のデータは、メールインフラサービスを提供する目的でのみ使用されます。Selfmailプラットフォームの運営以外の目的で、お客様のデータを販売、共有、または使用することはありません。"
+			},
+			"dataRights": {
+				"title": "データに関する権利",
+				"description": "お客様はご自身のデータを完全に管理できます。contact@selfmail.appにご連絡いただくことで、いつでもデータの削除をリクエストできます。リクエストを迅速に処理し、関連するすべてのデータを安全に削除します。"
+			},
+			"contact": {
+				"title": "お問い合わせ",
+				"description": "このプライバシーポリシーやお客様のデータについてご質問がある場合は、お気軽にcontact@selfmail.appまでご連絡ください。"
+			}
+		}
+	}
 }
