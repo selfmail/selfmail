@@ -1,80 +1,80 @@
 {
-  "home": {
-    "title": "셀프메일",
-    "subtitle": "현대 애플리케이션을 위한 오픈소스 이메일 인프라",
-    "description": "자체 호스팅 솔루션으로 트랜잭션 이메일을 보내고, 템플릿을 관리하며, 이메일 전송을 확장하세요.",
-    "features": {
-      "sendEmails": "트랜잭션 이메일 전송",
-      "templates": "스마트 템플릿 및 워크플로우",
-      "ai": "API 우선 아키텍처"
-    },
-    "cta": {
-      "primary": "시작하기",
-      "secondary": "문서 보기",
-      "github": "GitHub에서 스타 주기"
-    }
-  },
-  "features": {
-    "title": "이메일 전송에 필요한 모든 것",
-    "smtp": {
-      "title": "SMTP 서버",
-      "description": "대기열 관리 및 전송 추적 기능을 갖춘 완전한 기능의 SMTP 서버."
-    },
-    "api": {
-      "title": "REST API",
-      "description": "모든 프로그래밍 언어에서 이메일을 프로그래밍 방식으로 보낼 수 있는 간단한 HTTP API."
-    },
-    "dashboard": {
-      "title": "웹 대시보드",
-      "description": "웹 인터페이스를 통해 이메일 관리, 분석 확인 및 설정 구성."
-    },
-    "templates": {
-      "title": "템플릿 엔진",
-      "description": "변수와 조건부 로직이 포함된 이메일 템플릿 생성 및 관리."
-    },
-    "opensource": {
-      "title": "오픈 소스",
-      "description": "이메일 인프라를 완전히 제어할 수 있는 자체 호스팅 솔루션."
-    },
-    "monitoring": {
-      "title": "모니터링 및 분석",
-      "description": "실시간으로 전송률, 반송 및 참여 지표 추적."
-    }
-  },
-  "status": {
-    "title": "현재 상태",
-    "description": "Selfmail이 이제 사용 가능합니다! 현재 준비된 것과 앞으로 출시될 것들을 확인하세요.",
-    "items": {
-      "infrastructure": {
-        "title": "핵심 인프라",
-        "description": "TypeScript, Astro 및 데이터베이스 아키텍처가 완성된 Turborepo 모노레포 설정.",
-        "status": "완료"
-      },
-      "smtp": {
-        "title": "SMTP 서버",
-        "description": "대기열 관리 기능을 갖춘 이메일 송수신용 완전 기능 SMTP 서버입니다.",
-        "status": "완료"
-      },
-      "api": {
-        "title": "REST API",
-        "description": "속도 제한 및 인증 기능이 있는 프로그래밍 방식으로 이메일을 보내기 위한 HTTP API입니다.",
-        "status": "완료"
-      },
-      "dashboard": {
-        "title": "웹 대시보드",
-        "description": "이메일 관리, 분석 및 계정 설정을 위한 사용자 인터페이스입니다.",
-        "status": "진행 중"
-      },
-      "templates": {
-        "title": "이메일 템플릿",
-        "description": "드래그 앤 드롭 에디터와 사전 제작된 디자인이 포함된 풍부한 템플릿 시스템입니다.",
-        "status": "예정"
-      },
-      "monitoring": {
-        "title": "고급 분석",
-        "description": "상세한 이메일 추적, 배달 보고서 및 참여 지표입니다.",
-        "status": "예정"
-      }
-    }
-  }
+	"home": {
+		"title": "셀프메일",
+		"subtitle": "현대 애플리케이션을 위한 오픈소스 이메일 인프라",
+		"description": "자체 호스팅 솔루션으로 트랜잭션 이메일을 보내고, 템플릿을 관리하며, 이메일 전송을 확장하세요.",
+		"features": {
+			"sendEmails": "트랜잭션 이메일 전송",
+			"templates": "스마트 템플릿 및 워크플로우",
+			"ai": "API 우선 아키텍처"
+		},
+		"cta": {
+			"primary": "시작하기",
+			"secondary": "문서 보기",
+			"github": "GitHub에서 스타 주기"
+		}
+	},
+	"features": {
+		"title": "이메일 전송에 필요한 모든 것",
+		"smtp": {
+			"title": "SMTP 서버",
+			"description": "대기열 관리 및 전송 추적 기능을 갖춘 완전한 기능의 SMTP 서버."
+		},
+		"api": {
+			"title": "REST API",
+			"description": "모든 프로그래밍 언어에서 이메일을 프로그래밍 방식으로 보낼 수 있는 간단한 HTTP API."
+		},
+		"dashboard": {
+			"title": "웹 대시보드",
+			"description": "웹 인터페이스를 통해 이메일 관리, 분석 확인 및 설정 구성."
+		},
+		"templates": {
+			"title": "템플릿 엔진",
+			"description": "변수와 조건부 로직이 포함된 이메일 템플릿 생성 및 관리."
+		},
+		"opensource": {
+			"title": "오픈 소스",
+			"description": "이메일 인프라를 완전히 제어할 수 있는 자체 호스팅 솔루션."
+		},
+		"monitoring": {
+			"title": "모니터링 및 분석",
+			"description": "실시간으로 전송률, 반송 및 참여 지표 추적."
+		}
+	},
+	"status": {
+		"title": "현재 상태",
+		"description": "Selfmail이 이제 사용 가능합니다! 현재 준비된 것과 앞으로 출시될 것들을 확인하세요.",
+		"items": {
+			"infrastructure": {
+				"title": "핵심 인프라",
+				"description": "TypeScript, Astro 및 데이터베이스 아키텍처가 완성된 Turborepo 모노레포 설정.",
+				"status": "완료"
+			},
+			"smtp": {
+				"title": "SMTP 서버",
+				"description": "대기열 관리 기능을 갖춘 이메일 송수신용 완전 기능 SMTP 서버입니다.",
+				"status": "완료"
+			},
+			"api": {
+				"title": "REST API",
+				"description": "속도 제한 및 인증 기능이 있는 프로그래밍 방식으로 이메일을 보내기 위한 HTTP API입니다.",
+				"status": "완료"
+			},
+			"dashboard": {
+				"title": "웹 대시보드",
+				"description": "이메일 관리, 분석 및 계정 설정을 위한 사용자 인터페이스입니다.",
+				"status": "진행 중"
+			},
+			"templates": {
+				"title": "이메일 템플릿",
+				"description": "드래그 앤 드롭 에디터와 사전 제작된 디자인이 포함된 풍부한 템플릿 시스템입니다.",
+				"status": "예정"
+			},
+			"monitoring": {
+				"title": "고급 분석",
+				"description": "상세한 이메일 추적, 배달 보고서 및 참여 지표입니다.",
+				"status": "예정"
+			}
+		}
+	}
 }

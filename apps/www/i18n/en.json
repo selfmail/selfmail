@@ -5,7 +5,7 @@
 		"description": "Send transactional emails, manage templates, and scale your email delivery with our self-hosted solution.",
 		"features": {
 			"sendEmails": "Send Transactional Emails",
-			"templates": "Smart Templates & Workflows", 
+			"templates": "Smart Templates & Workflows",
 			"ai": "API-First Architecture"
 		},
 		"cta": {
@@ -21,7 +21,7 @@
 			"description": "Full-featured SMTP server with queue management and delivery tracking."
 		},
 		"api": {
-			"title": "REST API", 
+			"title": "REST API",
 			"description": "Simple HTTP API for sending emails programmatically from any language."
 		},
 		"dashboard": {
