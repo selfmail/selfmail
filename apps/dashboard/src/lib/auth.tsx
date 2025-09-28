@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Navigate } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import ErrorScreen from "@/components/error";
@@ -81,4 +81,29 @@ export function useUser() {
 export function useIsAuthenticated() {
 	const { isAuthenticated } = useAuth();
 	return isAuthenticated;
+}
+
+// Hook for logout functionality
+export function useLogout() {
+	const queryClient = useQueryClient();
+
+	const logout = async () => {
+		try {
+			// Call the API logout endpoint
+			await client.v1.web.authentication.logout.get();
+
+			// Clear the user query cache to trigger re-authentication
+			queryClient.invalidateQueries({ queryKey: ["user"] });
+
+			// Redirect to login page
+			window.location.href = "/auth/login";
+		} catch (error) {
+			console.error("Logout failed:", error);
+			// Even if API call fails, clear local state and redirect
+			queryClient.invalidateQueries({ queryKey: ["user"] });
+			window.location.href = "/auth/login";
+		}
+	};
+
+	return logout;
 }

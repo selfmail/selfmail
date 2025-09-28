@@ -1,103 +1,103 @@
 {
-  "home": {
-    "title": "Selfmail",
-    "subtitle": "Infraestrutura de e-mail de código aberto para aplicações modernas",
-    "description": "Envie e-mails transacionais, gerencie modelos e escale sua entrega de e-mails com nossa solução auto-hospedada.",
-    "features": {
-      "sendEmails": "Envie e-mails transacionais",
-      "templates": "Modelos inteligentes e fluxos de trabalho",
-      "ai": "Arquitetura API-First"
-    },
-    "cta": {
-      "primary": "Começar",
-      "secondary": "Ver documentação",
-      "github": "Estrela no GitHub"
-    }
-  },
-  "features": {
-    "title": "Tudo o que você precisa para entrega de e-mails",
-    "smtp": {
-      "title": "Servidor SMTP",
-      "description": "Servidor SMTP completo com gerenciamento de filas e rastreamento de entregas."
-    },
-    "api": {
-      "title": "API REST",
-      "description": "API HTTP simples para enviar e-mails programaticamente em qualquer linguagem."
-    },
-    "dashboard": {
-      "title": "Painel web",
-      "description": "Gerencie e-mails, visualize análises e configure ajustes através da nossa interface web."
-    },
-    "templates": {
-      "title": "Motor de modelos",
-      "description": "Crie e gerencie modelos de e-mail com variáveis e lógica condicional."
-    },
-    "opensource": {
-      "title": "Código aberto",
-      "description": "Solução auto-hospedada com controle total sobre sua infraestrutura de e-mail."
-    },
-    "monitoring": {
-      "title": "Monitoramento e análises",
-      "description": "Acompanhe taxas de entrega, devoluções e métricas de engajamento em tempo real."
-    }
-  },
-  "status": {
-    "title": "Status atual",
-    "description": "Selfmail já está disponível! Aqui está o que está pronto e o que vem a seguir.",
-    "items": {
-      "infrastructure": {
-        "title": "Infraestrutura principal",
-        "description": "Configuração de monorepo Turborepo com TypeScript, Astro e arquitetura de banco de dados concluída.",
-        "status": "complete"
-      },
-      "smtp": {
-        "title": "Servidor SMTP",
-        "description": "Servidor SMTP totalmente funcional para enviar e receber emails com gerenciamento de fila.",
-        "status": "complete"
-      },
-      "api": {
-        "title": "API REST",
-        "description": "API HTTP para envio programático de emails com limitação de taxa e autenticação.",
-        "status": "complete"
-      },
-      "dashboard": {
-        "title": "Painel Web",
-        "description": "Interface de usuário para gerenciamento de emails, análises e configurações de conta.",
-        "status": "progress"
-      },
-      "templates": {
-        "title": "Modelos de Email",
-        "description": "Sistema rico de modelos com editor de arrastar e soltar e designs pré-construídos.",
-        "status": "planned"
-      },
-      "monitoring": {
-        "title": "Análises Avançadas",
-        "description": "Rastreamento detalhado de emails, relatórios de entrega e métricas de engajamento.",
-        "status": "planned"
-      }
-    }
-  },
-  "privacy": {
-    "title": "Política de privacidade",
-    "subtitle": "Como o Selfmail trata seus dados",
-    "description": "Esta política de privacidade descreve como coletamos, usamos e protegemos suas informações quando você utiliza o Selfmail.",
-    "sections": {
-      "dataStorage": {
-        "title": "Armazenamento de dados",
-        "description": "Armazenamos todos os seus dados em um banco de dados seguro. Sua senha é criptografada usando práticas de segurança padrão da indústria para proteger as informações da sua conta."
-      },
-      "dataUsage": {
-        "title": "Como usamos seus dados",
-        "description": "Seus dados são utilizados exclusivamente para fornecer serviços de infraestrutura de email. Não vendemos, compartilhamos ou usamos seus dados para qualquer finalidade além da operação da plataforma Selfmail."
-      },
-      "dataRights": {
-        "title": "Seus direitos sobre os dados",
-        "description": "Você tem controle total sobre seus dados. Você pode solicitar a exclusão de dados a qualquer momento entrando em contato conosco pelo contact@selfmail.app. Processaremos sua solicitação prontamente e removeremos com segurança todos os dados associados."
-      },
-      "contact": {
-        "title": "Contate-nos",
-        "description": "Se você tiver alguma dúvida sobre esta política de privacidade ou seus dados, não hesite em nos contatar pelo contact@selfmail.app."
-      }
-    }
-  }
+	"home": {
+		"title": "Selfmail",
+		"subtitle": "Infraestrutura de e-mail de código aberto para aplicações modernas",
+		"description": "Envie e-mails transacionais, gerencie modelos e escale sua entrega de e-mails com nossa solução auto-hospedada.",
+		"features": {
+			"sendEmails": "Envie e-mails transacionais",
+			"templates": "Modelos inteligentes e fluxos de trabalho",
+			"ai": "Arquitetura API-First"
+		},
+		"cta": {
+			"primary": "Começar",
+			"secondary": "Ver documentação",
+			"github": "Estrela no GitHub"
+		}
+	},
+	"features": {
+		"title": "Tudo o que você precisa para entrega de e-mails",
+		"smtp": {
+			"title": "Servidor SMTP",
+			"description": "Servidor SMTP completo com gerenciamento de filas e rastreamento de entregas."
+		},
+		"api": {
+			"title": "API REST",
+			"description": "API HTTP simples para enviar e-mails programaticamente em qualquer linguagem."
+		},
+		"dashboard": {
+			"title": "Painel web",
+			"description": "Gerencie e-mails, visualize análises e configure ajustes através da nossa interface web."
+		},
+		"templates": {
+			"title": "Motor de modelos",
+			"description": "Crie e gerencie modelos de e-mail com variáveis e lógica condicional."
+		},
+		"opensource": {
+			"title": "Código aberto",
+			"description": "Solução auto-hospedada com controle total sobre sua infraestrutura de e-mail."
+		},
+		"monitoring": {
+			"title": "Monitoramento e análises",
+			"description": "Acompanhe taxas de entrega, devoluções e métricas de engajamento em tempo real."
+		}
+	},
+	"status": {
+		"title": "Status atual",
+		"description": "Selfmail já está disponível! Aqui está o que está pronto e o que vem a seguir.",
+		"items": {
+			"infrastructure": {
+				"title": "Infraestrutura principal",
+				"description": "Configuração de monorepo Turborepo com TypeScript, Astro e arquitetura de banco de dados concluída.",
+				"status": "complete"
+			},
+			"smtp": {
+				"title": "Servidor SMTP",
+				"description": "Servidor SMTP totalmente funcional para enviar e receber emails com gerenciamento de fila.",
+				"status": "complete"
+			},
+			"api": {
+				"title": "API REST",
+				"description": "API HTTP para envio programático de emails com limitação de taxa e autenticação.",
+				"status": "complete"
+			},
+			"dashboard": {
+				"title": "Painel Web",
+				"description": "Interface de usuário para gerenciamento de emails, análises e configurações de conta.",
+				"status": "progress"
+			},
+			"templates": {
+				"title": "Modelos de Email",
+				"description": "Sistema rico de modelos com editor de arrastar e soltar e designs pré-construídos.",
+				"status": "planned"
+			},
+			"monitoring": {
+				"title": "Análises Avançadas",
+				"description": "Rastreamento detalhado de emails, relatórios de entrega e métricas de engajamento.",
+				"status": "planned"
+			}
+		}
+	},
+	"privacy": {
+		"title": "Política de privacidade",
+		"subtitle": "Como o Selfmail trata seus dados",
+		"description": "Esta política de privacidade descreve como coletamos, usamos e protegemos suas informações quando você utiliza o Selfmail.",
+		"sections": {
+			"dataStorage": {
+				"title": "Armazenamento de dados",
+				"description": "Armazenamos todos os seus dados em um banco de dados seguro. Sua senha é criptografada usando práticas de segurança padrão da indústria para proteger as informações da sua conta."
+			},
+			"dataUsage": {
+				"title": "Como usamos seus dados",
+				"description": "Seus dados são utilizados exclusivamente para fornecer serviços de infraestrutura de email. Não vendemos, compartilhamos ou usamos seus dados para qualquer finalidade além da operação da plataforma Selfmail."
+			},
+			"dataRights": {
+				"title": "Seus direitos sobre os dados",
+				"description": "Você tem controle total sobre seus dados. Você pode solicitar a exclusão de dados a qualquer momento entrando em contato conosco pelo contact@selfmail.app. Processaremos sua solicitação prontamente e removeremos com segurança todos os dados associados."
+			},
+			"contact": {
+				"title": "Contate-nos",
+				"description": "Se você tiver alguma dúvida sobre esta política de privacidade ou seus dados, não hesite em nos contatar pelo contact@selfmail.app."
+			}
+		}
+	}
 }
