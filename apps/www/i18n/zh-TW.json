@@ -1,80 +1,80 @@
 {
-  "home": {
-    "title": "Selfmail",
-    "subtitle": "現代應用程式的開源電子郵件基礎架構",
-    "description": "透過我們的自託管解決方案，發送交易型電子郵件、管理模板並擴展您的電子郵件傳遞能力。",
-    "features": {
-      "sendEmails": "發送交易型電子郵件",
-      "templates": "智能模板與工作流程",
-      "ai": "API優先架構"
-    },
-    "cta": {
-      "primary": "開始使用",
-      "secondary": "查看文件",
-      "github": "在 GitHub 上加星"
-    }
-  },
-  "features": {
-    "title": "電子郵件傳遞所需的一切",
-    "smtp": {
-      "title": "SMTP 伺服器",
-      "description": "功能齊全的 SMTP 伺服器，具備佇列管理與傳遞追蹤功能。"
-    },
-    "api": {
-      "title": "REST API",
-      "description": "簡單的 HTTP API，能以任何語言程式化發送電子郵件。"
-    },
-    "dashboard": {
-      "title": "網頁儀表板",
-      "description": "透過我們的網頁介面管理電子郵件、查看分析數據並配置設定。"
-    },
-    "templates": {
-      "title": "模板引擎",
-      "description": "使用變數與條件邏輯創建並管理電子郵件模板。"
-    },
-    "opensource": {
-      "title": "開源",
-      "description": "自託管解決方案，完全掌控您的電子郵件基礎架構。"
-    },
-    "monitoring": {
-      "title": "監控與分析",
-      "description": "即時追蹤傳遞率、退信與互動指標。"
-    }
-  },
-  "status": {
-    "title": "當前狀態",
-    "description": "Selfmail 現已推出！以下是已完成的功能與即將推出的內容。",
-    "items": {
-      "infrastructure": {
-        "title": "核心基礎架構",
-        "description": "已完成 Turborepo 單一代碼庫設置，包含 TypeScript、Astro 與資料庫架構。",
-        "status": "完成"
-      },
-      "smtp": {
-        "title": "SMTP 伺服器",
-        "description": "具備佇列管理功能的完整 SMTP 伺服器，用於發送和接收電子郵件。",
-        "status": "完成"
-      },
-      "api": {
-        "title": "REST API",
-        "description": "用於程式化發送電子郵件的 HTTP API，具備速率限制和身份驗證功能。",
-        "status": "完成"
-      },
-      "dashboard": {
-        "title": "網頁儀表板",
-        "description": "用於電子郵件管理、分析和帳戶設定的使用者介面。",
-        "status": "進行中"
-      },
-      "templates": {
-        "title": "電子郵件範本",
-        "description": "具備拖放編輯器和預建設計的豐富範本系統。",
-        "status": "計劃中"
-      },
-      "monitoring": {
-        "title": "進階分析",
-        "description": "詳細的電子郵件追蹤、傳遞報告和互動指標。",
-        "status": "計劃中"
-      }
-    }
-  }
+	"home": {
+		"title": "Selfmail",
+		"subtitle": "現代應用程式的開源電子郵件基礎架構",
+		"description": "透過我們的自託管解決方案，發送交易型電子郵件、管理模板並擴展您的電子郵件傳遞能力。",
+		"features": {
+			"sendEmails": "發送交易型電子郵件",
+			"templates": "智能模板與工作流程",
+			"ai": "API優先架構"
+		},
+		"cta": {
+			"primary": "開始使用",
+			"secondary": "查看文件",
+			"github": "在 GitHub 上加星"
+		}
+	},
+	"features": {
+		"title": "電子郵件傳遞所需的一切",
+		"smtp": {
+			"title": "SMTP 伺服器",
+			"description": "功能齊全的 SMTP 伺服器，具備佇列管理與傳遞追蹤功能。"
+		},
+		"api": {
+			"title": "REST API",
+			"description": "簡單的 HTTP API，能以任何語言程式化發送電子郵件。"
+		},
+		"dashboard": {
+			"title": "網頁儀表板",
+			"description": "透過我們的網頁介面管理電子郵件、查看分析數據並配置設定。"
+		},
+		"templates": {
+			"title": "模板引擎",
+			"description": "使用變數與條件邏輯創建並管理電子郵件模板。"
+		},
+		"opensource": {
+			"title": "開源",
+			"description": "自託管解決方案，完全掌控您的電子郵件基礎架構。"
+		},
+		"monitoring": {
+			"title": "監控與分析",
+			"description": "即時追蹤傳遞率、退信與互動指標。"
+		}
+	},
+	"status": {
+		"title": "當前狀態",
+		"description": "Selfmail 現已推出！以下是已完成的功能與即將推出的內容。",
+		"items": {
+			"infrastructure": {
+				"title": "核心基礎架構",
+				"description": "已完成 Turborepo 單一代碼庫設置，包含 TypeScript、Astro 與資料庫架構。",
+				"status": "完成"
+			},
+			"smtp": {
+				"title": "SMTP 伺服器",
+				"description": "具備佇列管理功能的完整 SMTP 伺服器，用於發送和接收電子郵件。",
+				"status": "完成"
+			},
+			"api": {
+				"title": "REST API",
+				"description": "用於程式化發送電子郵件的 HTTP API，具備速率限制和身份驗證功能。",
+				"status": "完成"
+			},
+			"dashboard": {
+				"title": "網頁儀表板",
+				"description": "用於電子郵件管理、分析和帳戶設定的使用者介面。",
+				"status": "進行中"
+			},
+			"templates": {
+				"title": "電子郵件範本",
+				"description": "具備拖放編輯器和預建設計的豐富範本系統。",
+				"status": "計劃中"
+			},
+			"monitoring": {
+				"title": "進階分析",
+				"description": "詳細的電子郵件追蹤、傳遞報告和互動指標。",
+				"status": "計劃中"
+			}
+		}
+	}
 }

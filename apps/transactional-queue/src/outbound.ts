@@ -12,7 +12,7 @@ export async function transactionalOutbound(
 		string
 	>,
 ) {
-	console.log("connection received")
+	console.log("connection received");
 	const parse = await outboundSchema.safeParseAsync(job.data);
 
 	if (!parse.success) {
@@ -36,7 +36,7 @@ export async function transactionalOutbound(
 		);
 	}
 
-	console.log("connection is right")
+	console.log("connection is right");
 
 	const mxRecords = await DNS.resolveMX(host);
 
@@ -45,7 +45,7 @@ export async function transactionalOutbound(
 		throw new Error(`No MX records found for host ${host}`);
 	}
 
-	console.log("try to send email!")
+	console.log("try to send email!");
 
 	const messageId = await Send.mail({
 		...mail,
