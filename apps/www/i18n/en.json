@@ -76,5 +76,28 @@
 				"status": "planned"
 			}
 		}
+	},
+	"privacy": {
+		"title": "Privacy Policy",
+		"subtitle": "How Selfmail handles your data",
+		"description": "This privacy policy describes how we collect, use, and protect your information when you use Selfmail.",
+		"sections": {
+			"dataStorage": {
+				"title": "Data Storage",
+				"description": "We store all of your data on a secure database. Your password is encrypted using industry-standard security practices to protect your account information."
+			},
+			"dataUsage": {
+				"title": "How We Use Your Data",
+				"description": "Your data is used solely to provide email infrastructure services. We do not sell, share, or use your data for any purpose other than operating the Selfmail platform."
+			},
+			"dataRights": {
+				"title": "Your Data Rights",
+				"description": "You have full control over your data. You can request data deletion at any time by contacting us at contact@selfmail.app. We will process your request promptly and securely remove all associated data."
+			},
+			"contact": {
+				"title": "Contact Us",
+				"description": "If you have any questions about this privacy policy or your data, please don't hesitate to contact us at contact@selfmail.app."
+			}
+		}
 	}
 }
