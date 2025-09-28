@@ -1,80 +1,103 @@
 {
-	"home": {
-		"title": "Selfmail",
-		"subtitle": "Infraestructura de correo electrónico de código abierto para aplicaciones modernas",
-		"description": "Envía correos electrónicos transaccionales, gestiona plantillas y escala tu entrega de correos con nuestra solución autohospedada.",
-		"features": {
-			"sendEmails": "Envío de correos transaccionales",
-			"templates": "Plantillas y flujos de trabajo inteligentes",
-			"ai": "Arquitectura API-First"
-		},
-		"cta": {
-			"primary": "Comenzar",
-			"secondary": "Ver documentación",
-			"github": "Destacar en GitHub"
-		}
-	},
-	"features": {
-		"title": "Todo lo que necesitas para la entrega de correos electrónicos",
-		"smtp": {
-			"title": "Servidor SMTP",
-			"description": "Servidor SMTP completo con gestión de colas y seguimiento de entregas."
-		},
-		"api": {
-			"title": "API REST",
-			"description": "API HTTP simple para enviar correos electrónicos programáticamente desde cualquier lenguaje."
-		},
-		"dashboard": {
-			"title": "Panel web",
-			"description": "Gestiona correos, visualiza analíticas y configura ajustes a través de nuestra interfaz web."
-		},
-		"templates": {
-			"title": "Motor de plantillas",
-			"description": "Crea y gestiona plantillas de correo con variables y lógica condicional."
-		},
-		"opensource": {
-			"title": "Código abierto",
-			"description": "Solución autohospedada con control total sobre tu infraestructura de correo."
-		},
-		"monitoring": {
-			"title": "Monitorización y analíticas",
-			"description": "Realiza seguimiento de tasas de entrega, rebotes y métricas de engagement en tiempo real."
-		}
-	},
-	"status": {
-		"title": "Estado actual",
-		"description": "¡Selfmail ya está disponible! Esto es lo que está listo y lo que viene a continuación.",
-		"items": {
-			"infrastructure": {
-				"title": "Infraestructura central",
-				"description": "Configuración de monorepo Turborepo con TypeScript, Astro y arquitectura de base de datos completada.",
-				"status": "complete"
-			},
-			"smtp": {
-				"title": "Servidor SMTP",
-				"description": "Servidor SMTP completamente funcional para enviar y recibir correos electrónicos con gestión de colas.",
-				"status": "complete"
-			},
-			"api": {
-				"title": "API REST",
-				"description": "API HTTP para enviar correos electrónicos programáticamente con límites de velocidad y autenticación.",
-				"status": "complete"
-			},
-			"dashboard": {
-				"title": "Panel web",
-				"description": "Interfaz de usuario para gestión de correos electrónicos, análisis y configuración de cuentas.",
-				"status": "progress"
-			},
-			"templates": {
-				"title": "Plantillas de correo electrónico",
-				"description": "Sistema de plantillas avanzado con editor de arrastrar y soltar y diseños predefinidos.",
-				"status": "planned"
-			},
-			"monitoring": {
-				"title": "Análisis avanzados",
-				"description": "Seguimiento detallado de correos electrónicos, informes de entrega y métricas de participación.",
-				"status": "planned"
-			}
-		}
-	}
+  "home": {
+    "title": "Selfmail",
+    "subtitle": "Infraestructura de correo electrónico de código abierto para aplicaciones modernas",
+    "description": "Envía correos electrónicos transaccionales, gestiona plantillas y escala tu entrega de correos con nuestra solución autohospedada.",
+    "features": {
+      "sendEmails": "Envío de correos transaccionales",
+      "templates": "Plantillas y flujos de trabajo inteligentes",
+      "ai": "Arquitectura API-First"
+    },
+    "cta": {
+      "primary": "Comenzar",
+      "secondary": "Ver documentación",
+      "github": "Destacar en GitHub"
+    }
+  },
+  "features": {
+    "title": "Todo lo que necesitas para la entrega de correos electrónicos",
+    "smtp": {
+      "title": "Servidor SMTP",
+      "description": "Servidor SMTP completo con gestión de colas y seguimiento de entregas."
+    },
+    "api": {
+      "title": "API REST",
+      "description": "API HTTP simple para enviar correos electrónicos programáticamente desde cualquier lenguaje."
+    },
+    "dashboard": {
+      "title": "Panel web",
+      "description": "Gestiona correos, visualiza analíticas y configura ajustes a través de nuestra interfaz web."
+    },
+    "templates": {
+      "title": "Motor de plantillas",
+      "description": "Crea y gestiona plantillas de correo con variables y lógica condicional."
+    },
+    "opensource": {
+      "title": "Código abierto",
+      "description": "Solución autohospedada con control total sobre tu infraestructura de correo."
+    },
+    "monitoring": {
+      "title": "Monitorización y analíticas",
+      "description": "Realiza seguimiento de tasas de entrega, rebotes y métricas de engagement en tiempo real."
+    }
+  },
+  "status": {
+    "title": "Estado actual",
+    "description": "¡Selfmail ya está disponible! Esto es lo que está listo y lo que viene a continuación.",
+    "items": {
+      "infrastructure": {
+        "title": "Infraestructura central",
+        "description": "Configuración de monorepo Turborepo con TypeScript, Astro y arquitectura de base de datos completada.",
+        "status": "complete"
+      },
+      "smtp": {
+        "title": "Servidor SMTP",
+        "description": "Servidor SMTP completamente funcional para enviar y recibir correos electrónicos con gestión de colas.",
+        "status": "complete"
+      },
+      "api": {
+        "title": "API REST",
+        "description": "API HTTP para enviar correos electrónicos programáticamente con límites de velocidad y autenticación.",
+        "status": "complete"
+      },
+      "dashboard": {
+        "title": "Panel web",
+        "description": "Interfaz de usuario para gestión de correos electrónicos, análisis y configuración de cuentas.",
+        "status": "progress"
+      },
+      "templates": {
+        "title": "Plantillas de correo electrónico",
+        "description": "Sistema de plantillas avanzado con editor de arrastrar y soltar y diseños predefinidos.",
+        "status": "planned"
+      },
+      "monitoring": {
+        "title": "Análisis avanzados",
+        "description": "Seguimiento detallado de correos electrónicos, informes de entrega y métricas de participación.",
+        "status": "planned"
+      }
+    }
+  },
+  "privacy": {
+    "title": "Política de privacidad",
+    "subtitle": "Cómo Selfmail maneja tus datos",
+    "description": "Esta política de privacidad describe cómo recopilamos, utilizamos y protegemos tu información cuando usas Selfmail.",
+    "sections": {
+      "dataStorage": {
+        "title": "Almacenamiento de datos",
+        "description": "Almacenamos todos tus datos en una base de datos segura. Tu contraseña está cifrada utilizando prácticas de seguridad estándar de la industria para proteger la información de tu cuenta."
+      },
+      "dataUsage": {
+        "title": "Cómo utilizamos tus datos",
+        "description": "Tus datos se utilizan únicamente para proporcionar servicios de infraestructura de correo electrónico. No vendemos, compartimos ni utilizamos tus datos para ningún otro propósito que no sea operar la plataforma Selfmail."
+      },
+      "dataRights": {
+        "title": "Tus derechos sobre los datos",
+        "description": "Tienes control total sobre tus datos. Puedes solicitar la eliminación de datos en cualquier momento contactándonos en contact@selfmail.app. Procesaremos tu solicitud rápidamente y eliminaremos de forma segura todos los datos asociados."
+      },
+      "contact": {
+        "title": "Contáctanos",
+        "description": "Si tienes alguna pregunta sobre esta política de privacidad o tus datos, no dudes en contactarnos en contact@selfmail.app."
+      }
+    }
+  }
 }

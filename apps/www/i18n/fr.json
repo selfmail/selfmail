@@ -1,80 +1,103 @@
 {
-	"home": {
-		"title": "Selfmail",
-		"subtitle": "Infrastructure email open-source pour applications modernes",
-		"description": "Envoyez des emails transactionnels, gérez des modèles et développez votre distribution d'emails avec notre solution auto-hébergée.",
-		"features": {
-			"sendEmails": "Envoi d'emails transactionnels",
-			"templates": "Modèles intelligents et flux de travail",
-			"ai": "Architecture API-first"
-		},
-		"cta": {
-			"primary": "Commencer",
-			"secondary": "Voir la documentation",
-			"github": "Étoile sur GitHub"
-		}
-	},
-	"features": {
-		"title": "Tout ce dont vous avez besoin pour l'envoi d'emails",
-		"smtp": {
-			"title": "Serveur SMTP",
-			"description": "Serveur SMTP complet avec gestion des files d'attente et suivi de livraison."
-		},
-		"api": {
-			"title": "API REST",
-			"description": "API HTTP simple pour envoyer des emails par programmation depuis n'importe quel langage."
-		},
-		"dashboard": {
-			"title": "Tableau de bord web",
-			"description": "Gérez les emails, consultez les analyses et configurez les paramètres via notre interface web."
-		},
-		"templates": {
-			"title": "Moteur de modèles",
-			"description": "Créez et gérez des modèles d'email avec variables et logique conditionnelle."
-		},
-		"opensource": {
-			"title": "Open source",
-			"description": "Solution auto-hébergée avec contrôle total sur votre infrastructure email."
-		},
-		"monitoring": {
-			"title": "Surveillance et analytique",
-			"description": "Suivez les taux de livraison, les rebonds et les métriques d'engagement en temps réel."
-		}
-	},
-	"status": {
-		"title": "Statut actuel",
-		"description": "Selfmail est maintenant disponible ! Voici ce qui est prêt et ce qui arrive prochainement.",
-		"items": {
-			"infrastructure": {
-				"title": "Infrastructure de base",
-				"description": "Configuration du monorepo Turborepo avec TypeScript, Astro et architecture de base de données terminée.",
-				"status": "complete"
-			},
-			"smtp": {
-				"title": "Serveur SMTP",
-				"description": "Serveur SMTP entièrement fonctionnel pour l'envoi et la réception d'e-mails avec gestion des files d'attente.",
-				"status": "complete"
-			},
-			"api": {
-				"title": "API REST",
-				"description": "API HTTP pour l'envoi d'e-mails par programmation avec limitation de débit et authentification.",
-				"status": "complete"
-			},
-			"dashboard": {
-				"title": "Tableau de bord web",
-				"description": "Interface utilisateur pour la gestion des e-mails, l'analyse et les paramètres du compte.",
-				"status": "progress"
-			},
-			"templates": {
-				"title": "Modèles d'e-mail",
-				"description": "Système de modèles avancé avec éditeur glisser-déposer et designs préconçus.",
-				"status": "planned"
-			},
-			"monitoring": {
-				"title": "Analyses avancées",
-				"description": "Suivi détaillé des e-mails, rapports de livraison et métriques d'engagement.",
-				"status": "planned"
-			}
-		}
-	}
+  "home": {
+    "title": "Selfmail",
+    "subtitle": "Infrastructure email open-source pour applications modernes",
+    "description": "Envoyez des emails transactionnels, gérez des modèles et développez votre distribution d'emails avec notre solution auto-hébergée.",
+    "features": {
+      "sendEmails": "Envoi d'emails transactionnels",
+      "templates": "Modèles intelligents et flux de travail",
+      "ai": "Architecture API-first"
+    },
+    "cta": {
+      "primary": "Commencer",
+      "secondary": "Voir la documentation",
+      "github": "Étoile sur GitHub"
+    }
+  },
+  "features": {
+    "title": "Tout ce dont vous avez besoin pour l'envoi d'emails",
+    "smtp": {
+      "title": "Serveur SMTP",
+      "description": "Serveur SMTP complet avec gestion des files d'attente et suivi de livraison."
+    },
+    "api": {
+      "title": "API REST",
+      "description": "API HTTP simple pour envoyer des emails par programmation depuis n'importe quel langage."
+    },
+    "dashboard": {
+      "title": "Tableau de bord web",
+      "description": "Gérez les emails, consultez les analyses et configurez les paramètres via notre interface web."
+    },
+    "templates": {
+      "title": "Moteur de modèles",
+      "description": "Créez et gérez des modèles d'email avec variables et logique conditionnelle."
+    },
+    "opensource": {
+      "title": "Open source",
+      "description": "Solution auto-hébergée avec contrôle total sur votre infrastructure email."
+    },
+    "monitoring": {
+      "title": "Surveillance et analytique",
+      "description": "Suivez les taux de livraison, les rebonds et les métriques d'engagement en temps réel."
+    }
+  },
+  "status": {
+    "title": "Statut actuel",
+    "description": "Selfmail est maintenant disponible ! Voici ce qui est prêt et ce qui arrive prochainement.",
+    "items": {
+      "infrastructure": {
+        "title": "Infrastructure de base",
+        "description": "Configuration du monorepo Turborepo avec TypeScript, Astro et architecture de base de données terminée.",
+        "status": "complete"
+      },
+      "smtp": {
+        "title": "Serveur SMTP",
+        "description": "Serveur SMTP entièrement fonctionnel pour l'envoi et la réception d'e-mails avec gestion des files d'attente.",
+        "status": "complete"
+      },
+      "api": {
+        "title": "API REST",
+        "description": "API HTTP pour l'envoi d'e-mails par programmation avec limitation de débit et authentification.",
+        "status": "complete"
+      },
+      "dashboard": {
+        "title": "Tableau de bord web",
+        "description": "Interface utilisateur pour la gestion des e-mails, l'analyse et les paramètres du compte.",
+        "status": "progress"
+      },
+      "templates": {
+        "title": "Modèles d'e-mail",
+        "description": "Système de modèles avancé avec éditeur glisser-déposer et designs préconçus.",
+        "status": "planned"
+      },
+      "monitoring": {
+        "title": "Analyses avancées",
+        "description": "Suivi détaillé des e-mails, rapports de livraison et métriques d'engagement.",
+        "status": "planned"
+      }
+    }
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "subtitle": "Comment Selfmail gère vos données",
+    "description": "Cette politique de confidentialité décrit comment nous collectons, utilisons et protégeons vos informations lorsque vous utilisez Selfmail.",
+    "sections": {
+      "dataStorage": {
+        "title": "Stockage des données",
+        "description": "Nous stockons toutes vos données sur une base de données sécurisée. Votre mot de passe est chiffré selon les pratiques de sécurité standard de l'industrie pour protéger les informations de votre compte."
+      },
+      "dataUsage": {
+        "title": "Comment nous utilisons vos données",
+        "description": "Vos données sont utilisées uniquement pour fournir des services d'infrastructure de messagerie. Nous ne vendons pas, ne partageons pas et n'utilisons pas vos données à d'autres fins que l'exploitation de la plateforme Selfmail."
+      },
+      "dataRights": {
+        "title": "Vos droits sur les données",
+        "description": "Vous avez un contrôle total sur vos données. Vous pouvez demander la suppression de vos données à tout moment en nous contactant à contact@selfmail.app. Nous traiterons votre demande rapidement et supprimerons en toute sécurité toutes les données associées."
+      },
+      "contact": {
+        "title": "Nous contacter",
+        "description": "Si vous avez des questions concernant cette politique de confidentialité ou vos données, n'hésitez pas à nous contacter à contact@selfmail.app."
+      }
+    }
+  }
 }

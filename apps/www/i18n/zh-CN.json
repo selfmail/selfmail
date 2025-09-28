@@ -1,80 +1,103 @@
 {
-	"home": {
-		"title": "Selfmail",
-		"subtitle": "为现代应用提供开源的邮件基础设施",
-		"description": "发送事务性邮件、管理模板，并通过我们的自托管解决方案扩展您的邮件发送能力。",
-		"features": {
-			"sendEmails": "发送事务性邮件",
-			"templates": "智能模板与工作流",
-			"ai": "API优先架构"
-		},
-		"cta": {
-			"primary": "开始使用",
-			"secondary": "查看文档",
-			"github": "在 GitHub 上加星"
-		}
-	},
-	"features": {
-		"title": "满足邮件发送需求的一切",
-		"smtp": {
-			"title": "SMTP 服务器",
-			"description": "功能齐全的 SMTP 服务器，支持队列管理和投递跟踪。"
-		},
-		"api": {
-			"title": "REST API",
-			"description": "简单的 HTTP API，可从任何语言以编程方式发送邮件。"
-		},
-		"dashboard": {
-			"title": "网页控制台",
-			"description": "通过我们的网页界面管理邮件、查看分析数据并配置设置。"
-		},
-		"templates": {
-			"title": "模板引擎",
-			"description": "使用变量和条件逻辑创建和管理邮件模板。"
-		},
-		"opensource": {
-			"title": "开源",
-			"description": "自托管解决方案，完全掌控您的邮件基础设施。"
-		},
-		"monitoring": {
-			"title": "监控与分析",
-			"description": "实时跟踪投递率、退信和参与度指标。"
-		}
-	},
-	"status": {
-		"title": "当前状态",
-		"description": "Selfmail 现已上线！以下是已完成和即将推出的功能。",
-		"items": {
-			"infrastructure": {
-				"title": "核心基础设施",
-				"description": "已完成 Turborepo monorepo 设置，包括 TypeScript、Astro 和数据库架构。",
-				"status": "完成"
-			},
-			"smtp": {
-				"title": "SMTP 服务器",
-				"description": "功能完善的 SMTP 服务器，用于发送和接收电子邮件，并支持队列管理。",
-				"status": "完成"
-			},
-			"api": {
-				"title": "REST API",
-				"description": "用于以编程方式发送电子邮件的 HTTP API，支持速率限制和身份验证。",
-				"status": "完成"
-			},
-			"dashboard": {
-				"title": "Web 仪表板",
-				"description": "用于电子邮件管理、分析和账户设置的用户界面。",
-				"status": "进行中"
-			},
-			"templates": {
-				"title": "电子邮件模板",
-				"description": "丰富的模板系统，配备拖放编辑器和预构建设计。",
-				"status": "计划中"
-			},
-			"monitoring": {
-				"title": "高级分析",
-				"description": "详细的电子邮件跟踪、投递报告和参与度指标。",
-				"status": "计划中"
-			}
-		}
-	}
+  "home": {
+    "title": "Selfmail",
+    "subtitle": "为现代应用提供开源的邮件基础设施",
+    "description": "发送事务性邮件、管理模板，并通过我们的自托管解决方案扩展您的邮件发送能力。",
+    "features": {
+      "sendEmails": "发送事务性邮件",
+      "templates": "智能模板与工作流",
+      "ai": "API优先架构"
+    },
+    "cta": {
+      "primary": "开始使用",
+      "secondary": "查看文档",
+      "github": "在 GitHub 上加星"
+    }
+  },
+  "features": {
+    "title": "满足邮件发送需求的一切",
+    "smtp": {
+      "title": "SMTP 服务器",
+      "description": "功能齐全的 SMTP 服务器，支持队列管理和投递跟踪。"
+    },
+    "api": {
+      "title": "REST API",
+      "description": "简单的 HTTP API，可从任何语言以编程方式发送邮件。"
+    },
+    "dashboard": {
+      "title": "网页控制台",
+      "description": "通过我们的网页界面管理邮件、查看分析数据并配置设置。"
+    },
+    "templates": {
+      "title": "模板引擎",
+      "description": "使用变量和条件逻辑创建和管理邮件模板。"
+    },
+    "opensource": {
+      "title": "开源",
+      "description": "自托管解决方案，完全掌控您的邮件基础设施。"
+    },
+    "monitoring": {
+      "title": "监控与分析",
+      "description": "实时跟踪投递率、退信和参与度指标。"
+    }
+  },
+  "status": {
+    "title": "当前状态",
+    "description": "Selfmail 现已上线！以下是已完成和即将推出的功能。",
+    "items": {
+      "infrastructure": {
+        "title": "核心基础设施",
+        "description": "已完成 Turborepo monorepo 设置，包括 TypeScript、Astro 和数据库架构。",
+        "status": "完成"
+      },
+      "smtp": {
+        "title": "SMTP 服务器",
+        "description": "功能完善的 SMTP 服务器，用于发送和接收电子邮件，并支持队列管理。",
+        "status": "完成"
+      },
+      "api": {
+        "title": "REST API",
+        "description": "用于以编程方式发送电子邮件的 HTTP API，支持速率限制和身份验证。",
+        "status": "完成"
+      },
+      "dashboard": {
+        "title": "Web 仪表板",
+        "description": "用于电子邮件管理、分析和账户设置的用户界面。",
+        "status": "进行中"
+      },
+      "templates": {
+        "title": "电子邮件模板",
+        "description": "丰富的模板系统，配备拖放编辑器和预构建设计。",
+        "status": "计划中"
+      },
+      "monitoring": {
+        "title": "高级分析",
+        "description": "详细的电子邮件跟踪、投递报告和参与度指标。",
+        "status": "计划中"
+      }
+    }
+  },
+  "privacy": {
+    "title": "隐私政策",
+    "subtitle": "Selfmail 如何处理您的数据",
+    "description": "本隐私政策描述了当您使用 Selfmail 时，我们如何收集、使用和保护您的信息。",
+    "sections": {
+      "dataStorage": {
+        "title": "数据存储",
+        "description": "我们将您的所有数据存储在安全的数据库中。您的密码使用行业标准的安全措施加密，以保护您的账户信息。"
+      },
+      "dataUsage": {
+        "title": "我们如何使用您的数据",
+        "description": "您的数据仅用于提供电子邮件基础设施服务。我们不会出售、共享或将您的数据用于运营 Selfmail 平台以外的任何目的。"
+      },
+      "dataRights": {
+        "title": "您的数据权利",
+        "description": "您对您的数据拥有完全的控制权。您可以随时通过联系 contact@selfmail.app 请求删除数据。我们会及时处理您的请求，并安全地删除所有相关数据。"
+      },
+      "contact": {
+        "title": "联系我们",
+        "description": "如果您对本隐私政策或您的数据有任何疑问，请随时通过 contact@selfmail.app 联系我们。"
+      }
+    }
+  }
 }

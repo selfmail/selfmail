@@ -43,3 +43,14 @@ checksums:
     status/items/monitoring/title: 966f8f30c70d90026d5e127b276f8886
     status/items/monitoring/description: 809dbc3e3f1b0a073ac8a3a079d5f569
     status/items/monitoring/status: 13a043dd19e7604f1d0a4e455197998f
+    privacy/title: 7459744a63ef8af4e517a09024bd7c08
+    privacy/subtitle: a9684296292d4d1dcaf65e4b149efd04
+    privacy/description: de49e5083ede2632d0efe20cb28e29a9
+    privacy/sections/dataStorage/title: 766f7aaf9d46312225c2dbb54e501800
+    privacy/sections/dataStorage/description: 3e9cc4287457c655e95130727bc61972
+    privacy/sections/dataUsage/title: 0a9366657dbad02ae667682ffb162b4a
+    privacy/sections/dataUsage/description: c7217b8ed027264c087f567b580e9a2c
+    privacy/sections/dataRights/title: 9dd2826ba24227b5faa2b4b42918a16c
+    privacy/sections/dataRights/description: bcc38d65f47c0921b5960d797a4c0bec
+    privacy/sections/contact/title: 2a75337dc9603915c4ec1d1905afb7b9
+    privacy/sections/contact/description: f26ad329f21e950162fa43d3dfd68be7
