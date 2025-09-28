@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "ui";
 import DashboardHeader from "@/components/dashboard/header";
-import { RequireAuth } from "@/lib/auth";
+import { RequireAuth, useLogout } from "@/lib/auth";
 import { RequireWorkspace } from "@/lib/workspace";
 
 export const Route = createFileRoute("/workspace/$workspaceId/settings/")({
@@ -20,6 +21,8 @@ function RouteComponent() {
 }
 
 function Settings({ workspaceId }: { workspaceId: string }) {
+	const logout = useLogout();
+
 	return (
 		<div>
 			<DashboardHeader workspaceId={workspaceId} />
@@ -51,6 +54,19 @@ function Settings({ workspaceId }: { workspaceId: string }) {
 				<form action="">
 					<h2 className="font-medium text-xl">Workspace Settings</h2>
 				</form>
+				<div className="border-gray-200 border-t pt-5">
+					<div className="flex flex-col space-y-3">
+						<h3 className="font-medium text-lg">Account</h3>
+						<p className="text-gray-600 text-sm">
+							Manage your account settings and logout from the application.
+						</p>
+						<div className="flex">
+							<Button variant="destructive" onClick={logout} className="w-fit">
+								Logout
+							</Button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);
