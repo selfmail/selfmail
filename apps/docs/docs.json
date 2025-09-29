@@ -18,25 +18,16 @@
 						"pages": ["index", "quickstart", "development"]
 					},
 					{
-						"group": "Customization",
-						"pages": ["essentials/settings", "essentials/navigation"]
-					},
-					{
-						"group": "Writing content",
+						"group": "Platform",
 						"pages": [
-							"essentials/markdown",
-							"essentials/code",
-							"essentials/images",
-							"essentials/reusable-snippets"
+							"platform/index",
+							"platform/navigation",
+							"platform/members"
 						]
 					},
 					{
-						"group": "AI tools",
-						"pages": [
-							"ai-tools/cursor",
-							"ai-tools/claude-code",
-							"ai-tools/windsurf"
-						]
+						"group": "Developers",
+						"pages": ["dev/index"]
 					}
 				]
 			}
