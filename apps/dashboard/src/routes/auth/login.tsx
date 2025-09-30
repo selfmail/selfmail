@@ -55,8 +55,8 @@ function LoginComponent() {
 				typeof res.error.value === "string"
 					? res.error.value
 					: (res.error.value?.message ??
-							res.error.value?.summary ??
-							"An error occurred during login"),
+						res.error.value?.summary ??
+						"An error occurred during login"),
 			);
 			setIsLoading(false);
 			return;
@@ -66,22 +66,6 @@ function LoginComponent() {
 			setError("An error occurred during login");
 			setIsLoading(false);
 			return;
-		}
-
-		const workspace = await client.v1.web.workspace.user.get();
-
-		if (workspace.error) {
-			console.log("Error occured!");
-			setError("An error occurred while fetching workspace");
-			setIsLoading(false);
-			return;
-		}
-
-		if (!workspace.data || workspace.data.length === 0) {
-			console.log("No workspace found, redirecting to create a workspace");
-			throw navigate({
-				to: "/workspace/create",
-			});
 		}
 
 		navigate({
