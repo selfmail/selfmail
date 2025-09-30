@@ -1,11 +1,24 @@
 {
 	"$schema": "https://mintlify.com/docs.json",
-	"theme": "mint",
-	"name": "Selfmail Documentation",
+	"theme": "maple",
+	"name": "Selfmail",
+	"icons": {
+		"library": "lucide"
+	},
 	"colors": {
 		"primary": "#36b3e0",
 		"light": "#f1f1f1",
 		"dark": "#303030"
+	},
+	"fonts": {
+		"heading": {
+			"family": "Geist",
+			"weight": 600
+		},
+		"body": {
+			"family": "Geist",
+			"weight": 400
+		}
 	},
 	"favicon": "/favicon.svg",
 	"navigation": {
@@ -14,8 +27,8 @@
 				"tab": "Guides",
 				"groups": [
 					{
-						"group": "Getting started",
-						"pages": ["index", "quickstart", "development"]
+						"group": "First Steps",
+						"pages": ["index", "quickstart"]
 					},
 					{
 						"group": "Platform",
