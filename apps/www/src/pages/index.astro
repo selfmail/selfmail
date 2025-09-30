@@ -4,33 +4,62 @@ import "../styles/global.css";
 import GitHub from "../icons/github.astro";
 import Layout from "../layouts/Layout.astro";
 ---
+
 <Layout>
     <main>
         <header class="grid grid-cols-6 w-full pt-10">
-            <div class="col-span-1" />
+            <div class="col-span-1"></div>
             <div class="col-span-1">
-                <img height="20" class="h-4" src="./logo.svg" alt="Selfmail Logo">
+                <img
+                    height="20"
+                    class="h-4"
+                    src="./logo.svg"
+                    alt="Selfmail Logo"
+                />
             </div>
-            <div class="col-span-1" />
+            <div class="col-span-1"></div>
             <div class="col-span-1 text-sm">
-                Selfmail is a free and open-source Email Provider made for companies to focus again on creating software, not setting up smtp servers.
+                Selfmail is a free and open-source Email Provider made for
+                companies to focus again on creating software, not setting up
+                smtp servers.
             </div>
             <div class="col-span-1 flex flex-col space-y-2 items-end">
-                <a class="underline text-sm hover:bg-black hover:text-white" href="https://dashboard.selfmail.app/auth/register">Get Started [Register]</a>
-                <a class="underline text-sm hover:bg-black hover:text-white" href="https://dashboard.selfmail.app/auth/login">Login</a>
-                <a class="underline text-sm hover:bg-black hover:text-white" target="_blank" href="https://docs.selfmail.app/">Docs</a>
+                <a
+                    class="underline text-sm hover:bg-black hover:text-white"
+                    href="https://dashboard.selfmail.app/auth/register"
+                    >Get Started [Register]</a
+                >
+                <a
+                    class="underline text-sm hover:bg-black hover:text-white"
+                    href="https://dashboard.selfmail.app/auth/login">Login</a
+                >
+                <a
+                    class="underline text-sm hover:bg-black hover:text-white"
+                    target="_blank"
+                    href="https://docs.selfmail.app/">Docs</a
+                >
             </div>
         </header>
         <div class="grid grid-cols-6 w-full pt-10">
             <div class="col-span-1"></div>
-            <video src="https://cdn.selfmail.app/result.mp4" autoplay muted loop class="col-span-4"></video>
+            <video
+                src="https://cdn.selfmail.app/result.mp4"
+                autoplay
+                muted
+                loop
+                class="col-span-4"></video>
             <div class="col-span-1"></div>
         </div>
         <div class="grid grid-cols-6 w-full pt-2">
             <div class="grid-cols-4"></div>
             <div class="grid-cols-1 flex items-end">
-               <a href="https://github.com/selfmail/selfmail" target="_blank" rel="noopener noreferrer">
-             <GitHub class="h-4 w-4 mr-2" /></a>
+                <a
+                    href="https://github.com/selfmail/selfmail"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <GitHub class="h-4 w-4 mr-2" /></a
+                >
             </div>
         </div>
     </main>
