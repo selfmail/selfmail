@@ -37,7 +37,7 @@ export abstract class Send {
 
 			const send = await transporter.sendMail({
 				to: to,
-				host: "mail.selfmail.app",
+				name: "mail.selfmail.app",
 				from: from,
 				subject: subject,
 				html: html,
