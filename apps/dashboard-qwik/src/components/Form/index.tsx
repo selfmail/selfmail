@@ -1,13 +1,9 @@
 import { component$ } from '@builder.io/qwik';
 
-export interface FormProps {
-
-}
+export interface FormProps extends React.HTMLAttributes<HTMLFormElement> { }
 
 export const Form = component$<FormProps>((props) => {
   return (
-    <div>
-      Form component works!
-    </div>
+    <form {...props} class={`w-full ${props.class ?? ''}`.trim()} />
   );
 });

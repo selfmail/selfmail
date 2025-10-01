@@ -1,10 +1,11 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useSignal } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 
 export default component$(() => {
+  const org = useSignal(null);
   return (
     <>
-      <h1 class="text-lg font-medium">Hi 👋</h1>
+      <h1 class="font-medium text-3xl">Hi 👋 {org.value}</h1>
       <div>
         Can't wait to see what you build with qwik!
         <br />
