@@ -1,10 +1,12 @@
 import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
-import { type DocumentHead, Form, routeAction$, z, zod$ } from "@builder.io/qwik-city";
+import { type DocumentHead, Form, routeAction$, useNavigate, z, zod$ } from "@builder.io/qwik-city";
 import { LuInfo } from "@qwikest/icons/lucide";
 import { db } from "database";
 import { Button } from "~/components/Button";
 import { Input } from "~/components/Input";
+
 import bcrypt from "bcrypt";
+import { init } from "@paralleldrive/cuid2";
 
 export const useRegister = routeAction$(
     async ({ account: { confirmPassword, email, password, name } }) => {
@@ -53,6 +55,28 @@ export const useRegister = routeAction$(
             }
         }
 
+        const createId = init({
+            length: 32,
+        })
+
+        const verification = await db.emailVerification.create({
+            data: {
+                token: createId(),
+                expiresAt: new Date(Date.now() + 1000 * 60 * 60), // 1 hour
+                userId: user.id,
+                email
+            }
+        })
+
+        if (!verification) {
+            return {
+                fieldErrors: {
+                    'account.email': 'Something went wrong, please try again later or contact support'
+                },
+                failed: true
+            }
+        }
+
         return {
             fieldErrors: {},
             failed: false
@@ -71,6 +95,7 @@ export const useRegister = routeAction$(
     }))
 
 export default component$(() => {
+    const navigation = useNavigate()
     const register = useRegister();
 
     const fieldErrors = useStore({
@@ -80,7 +105,7 @@ export default component$(() => {
         confirmPassword: "",
     })
 
-    useVisibleTask$(({ track }) => {
+    useVisibleTask$(async ({ track }) => {
         track(() => register.value?.fieldErrors)
 
         if (register.value?.failed) {
@@ -89,11 +114,12 @@ export default component$(() => {
             fieldErrors.email = errors['account.email'] || ""
             fieldErrors.password = errors['account.password'] || ""
             fieldErrors.confirmPassword = errors['account.confirmPassword'] || ""
+
+            return
         } else {
-            console.log("Success!")
+            throw await navigation("/auth/login?success=Account%20created%20successfully.%20Please%20check%20your%20email%20to%20verify%20your%20account")
         }
     })
-
 
     return (
         <div class="flex min-h-screen w-full items-center justify-center bg-neutral-50">
@@ -129,4 +155,19 @@ export default component$(() => {
 
 export const head: DocumentHead = {
     title: "Register - Selfmail",
+    meta: [
+        {
+            name: 'description',
+            content: 'Create a new Selfmail Account. Selfmail is an open-source business email platform.',
+        },
+        // Open graph
+        {
+            property: 'og:title',
+            content: 'Register - Selfmail',
+        },
+        {
+            property: 'og:description',
+            content: 'Create a new Selfmail Account.',
+        },
+    ]
 };
