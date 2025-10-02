@@ -4,72 +4,84 @@ export const middlewareAuthentication = async (
 	sessionToken: string | undefined,
 ) => {
 	try {
-        if (!sessionToken) {
-	    	return {
-                authenticated: false
-            }
-	    }
+		if (!sessionToken) {
+			return {
+				authenticated: false,
+			};
+		}
 
-	    const session = await db.session.findFirst({
-	    	where: {
-	    		token: sessionToken,
-	    	},
-	    	include: {
-	    		user: {
-	    			include: {
-	    				member: {
-	    					include: {
-	    						workspace: true,
-	    					},
-	    					take: 1,
-	    				},
-	    			},
-	    		},
-	    	},
-	    });
+		const session = await db.session.findFirst({
+			where: {
+				token: sessionToken,
+			},
+			include: {
+				user: {
+					include: {
+						member: {
+							include: {
+								workspace: true,
+							},
+							take: 1,
+						},
+					},
+				},
+			},
+		});
 
-	    if (!session || !session.user) {
-	    	return {
-                authenticated: false
-            }
-	    }
+		if (!session || !session.user) {
+			return {
+				authenticated: false,
+			};
+		}
 
-	    return {
-            authenticated: true,
-            user: session.user,
-        }
-    } catch (_) {
-        return {
-            authenticated: false
-        }
-    }
+		if (session.expiresAt < new Date()) {
+			const deletion = await db.session.deleteMany({
+				where: {
+					token: sessionToken,
+				},
+			});
+
+			return {
+				authenticated: false,
+			};
+		}
+
+		return {
+			authenticated: true,
+			user: session.user,
+		};
+	} catch (_) {
+		return {
+			authenticated: false,
+		};
+	}
 };
 
 export const verifyWorkspaceMembership = async (
-    userId: string,
-    workspaceSlug: string
+	userId: string,
+	workspaceSlug: string,
 ) => {
-    const member = await db.member.findFirst({
-        where: {
-            userId,
-            workspace: {
-                slug: workspaceSlug
-            }
-        },
-        include: {
-            workspace: true
-        }
-    });
+	const member = await db.member.findFirst({
+		where: {
+			userId,
+			workspace: {
+				slug: workspaceSlug,
+			},
+		},
+		include: {
+			workspace: true,
+		},
+	});
 
-    if (!member) {
-        return {
-            isMember: false
-        }
-    }
+	if (!member) {
+		return {
+			isMember: false,
+		};
+	}
 
-    return {
-        isMember: true,
-        member,
-        workspace: member.workspace
-    }
-}
+	return {
+		isMember: true,
+		member,
+		workspace: member.workspace,
+	};
+};

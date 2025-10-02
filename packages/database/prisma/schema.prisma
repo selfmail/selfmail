@@ -125,7 +125,7 @@ model Session {
   token String @unique
 
   // the date when the session was created
-  createdAt DateTime @default(now())
+  expiresAt DateTime
 }
 
 model Member {

@@ -26,7 +26,7 @@ export const onGet: RequestHandler = async ({ query, redirect }) => {
 
 	if (!token || token.expiresAt < new Date()) {
 		throw redirect(
-			300,
+			302,
 			"/auth/login?error=Invalid%20or%20expired%20verification%20link",
 		);
 	}

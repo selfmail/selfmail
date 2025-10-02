@@ -2,6 +2,7 @@ import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
 import {
     type DocumentHead,
     Form,
+    Link,
     routeAction$,
     useLocation,
     useNavigate,
@@ -16,7 +17,7 @@ import { Button } from "~/components/Button";
 import { Input } from "~/components/Input";
 
 export const useLogin = routeAction$(
-    async ({ account: { email, password } }) => {
+    async ({ account: { email, password } }, { cookie }) => {
         const user = await db.user.findUnique({
             where: {
                 email,
@@ -45,10 +46,7 @@ export const useLogin = routeAction$(
 
         if (!user.emailVerified) {
             return {
-                fieldErrors: {
-                    "account.email":
-                        "Please verify your email before logging in. Check your inbox for the verification email.",
-                },
+                verificationError: true,
                 failed: true,
             };
         }
@@ -65,6 +63,7 @@ export const useLogin = routeAction$(
             data: {
                 userId: user.id,
                 token: sessionToken,
+                expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // Session valid for 7 days
             },
         });
 
@@ -77,10 +76,22 @@ export const useLogin = routeAction$(
             };
         }
 
-        // Set the session token as a cookie
+        cookie.set("selfmail-session-token", sessionToken, {
+            path: "/",
+            httpOnly: true,
+            secure: true,
+            sameSite: "Lax"
+        });
+
         return {
             fieldErrors: {},
             failed: false,
+            success: true,
+            hasWorkspace: !!(await db.member.findFirst({
+                where: {
+                    userId: user.id,
+                },
+            })),
         };
     },
     zod$({
@@ -110,6 +121,18 @@ export default component$(() => {
             fieldErrors.password = errors["account.password"] || "";
 
             return;
+        } else if (
+            login.value?.success
+        ) {
+            if (!login.value.hasWorkspace) {
+                throw await navigation(
+                    "/create"
+                );
+            } else {
+                throw await navigation(
+                    "/"
+                );
+            }
         }
     });
 
@@ -125,9 +148,7 @@ export default component$(() => {
                 )}
                 {location.url.searchParams.get("error") && (
                     <div class="rounded-lg border border-red-200 bg-red-100 p-4">
-                        <p class="text-red-800">
-                            {location.url.searchParams.get("error")}
-                        </p>
+                        <p class="text-red-800">{location.url.searchParams.get("error")}</p>
                     </div>
                 )}
                 <h1 class="font-medium text-2xl">Login</h1>
@@ -138,7 +159,7 @@ export default component$(() => {
                     type="email"
                     required
                 />
-                {fieldErrors.email && <p class="text-red-500">{fieldErrors.email}</p>}
+                {fieldErrors.email && <p class="text-red-700">{fieldErrors.email}</p>}
                 <Input
                     class="bg-neutral-200"
                     placeholder="Password"
@@ -147,11 +168,22 @@ export default component$(() => {
                     required
                 />
                 {fieldErrors.password && (
-                    <p class="text-red-500">{fieldErrors.password}</p>
+                    <p class="text-red-700">{fieldErrors.password}</p>
                 )}
-                <Button disabled={login.isRunning}>
-                    {login.isRunning ? "Logging in..." : "Login"}
-                </Button>
+                {login.value?.verificationError && (
+                    <div class="rounded-lg border border-red-200 bg-red-100 p-4">
+                        <p class="text-red-800">Please verify your email before logging in. If you didn't receive
+                            the email, please check your spam folder. You can generate a new one{" "}
+                            <Link
+                                class="cursor-pointer underline"
+                                prefetch
+                                href="/auth/resend-verification"
+                            >
+                                here
+                            </Link>
+                            .</p>
+                    </div>
+                )}
                 <span class="flex items-center space-x-2 text-neutral-500 text-sm">
                     <LuInfo class="inline-block h-4 w-4" />
                     <span>
@@ -165,6 +197,15 @@ export default component$(() => {
                         </a>
                         .
                     </span>
+                </span>
+                <Button disabled={login.isRunning}>
+                    {login.isRunning ? "Logging in..." : "Login"}
+                </Button>
+                <span class="text-neutral-500 text-sm">
+                    Don't have an account?{" "}
+                    <a href="/auth/register" class="underline">
+                        Sign up
+                    </a>
                 </span>
             </Form>
         </div>
