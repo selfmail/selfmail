@@ -20,7 +20,7 @@ export const Button = component$<ButtonProps>((props) => {
   return (
     <button
       {...props}
-      class={`inline-flex cursor-pointer items-center justify-center rounded-xl bg-neutral-800 px-4 py-1 text-lg text-white transition-colors hover:bg-neutral-700 ${props.class ?? ""}`}
+      class={`inline-flex cursor-pointer items-center justify-center rounded-xl bg-neutral-800 px-4 py-1 text-lg text-white transition-colors transition-transform hover:bg-neutral-700 active:scale-97 disabled:bg-neutral-600 ${props.class ?? ""}`}
     >
       <Slot />
     </button>
