@@ -76,6 +76,8 @@ model User {
   password String
   email    String @unique
 
+  workspaceLimit Int @default(3) // max number of workspaces a user can create, contact support to increase
+
   // Two-factor authentication fields
   twoFactorEnabled Boolean @default(false)
   twoFactorSecret  String?

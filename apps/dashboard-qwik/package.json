@@ -1,6 +1,6 @@
 {
 	"name": "dashboard-qwik",
-	"description": "Blank project with routing included",
+	"description": "Dashboard rewrite in Qwik.",
 	"engines": {
 		"node": "^18.17.0 || ^20.3.0 || >=21.0.0"
 	},

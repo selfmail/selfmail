@@ -1,27 +1,86 @@
-import { component$ } from "@builder.io/qwik";
-import { Form, type RequestHandler, routeAction$, z, zod$ } from "@builder.io/qwik-city";
+import { component$, useVisibleTask$ } from "@builder.io/qwik";
+import { Form, type RequestHandler, routeAction$, useNavigate, z, zod$ } from "@builder.io/qwik-city";
+import { db } from "database";
 import { Button } from "~/components/Button";
 import { Input } from "~/components/Input";
 import { middlewareAuthentication } from "~/lib/auth";
 
-export const onRequest: RequestHandler = async ({ next, cookie, redirect }) => {
+export const onRequest: RequestHandler = async ({ next, cookie, redirect, sharedMap }) => {
     const sessionToken = cookie.get("selfmail-session-token")?.value;
 
-    const { authenticated } = await middlewareAuthentication(sessionToken);
+    const { authenticated, user } = await middlewareAuthentication(sessionToken);
 
-    if (!authenticated) {
+    if (!authenticated || !user) {
         throw redirect(302, "/auth/login");
     }
+
+    sharedMap.set("user", user);
 
     await next();
 };
 
+
 export const useCreateWorkspace = routeAction$(
-    async ({ workspace: { name, slug } }) => {
+    async ({ workspace: { name, slug } }, { sharedMap, error }) => {
+        if (!sharedMap.has("user") || !sharedMap.get("user").id) {
+            throw error(401, "Unauthorized");
+        }
+
+        // check whether a workspace with the same slug already exists
+        const existingWorkspace = await db.workspace.findUnique({
+            where: {
+                slug
+            }
+        })
+
+        if (existingWorkspace) {
+            return {
+                fieldErrors: {
+                    slug: "A workspace with this slug already exists"
+                },
+                failed: true
+            }
+        }
+
+        // create new workspace
+        const workspace = await db.workspace.create({
+            data: {
+                name,
+                slug,
+                ownerId: sharedMap.get("user").id,
+            }
+        })
+
+        if (!workspace) {
+            return {
+                fieldErrors: {
+                    workspace: "Failed to create workspace"
+                },
+                failed: true
+            }
+        }
+
+        const member = await db.member.create({
+            data: {
+                userId: sharedMap.get("user").id,
+                workspaceId: workspace.id,
+            }
+        })
+
+        if (!member) {
+            return {
+                fieldErrors: {
+                    workspace: "Failed to create workspace member"
+                },
+                failed: true
+            }
+        }
 
         return {
             fieldErrors: {},
-            failed: false
+            failed: false,
+            success: true,
+            workspaceId: workspace.id,
         }
     },
     zod$({
@@ -33,6 +92,17 @@ export const useCreateWorkspace = routeAction$(
 
 export default component$(() => {
     const create = useCreateWorkspace();
+    const navigate = useNavigate();
+
+    useVisibleTask$(({ track }) => {
+        track(() => create.value);
+
+        if (create.value?.success) {
+            // Redirect to the new workspace
+            navigate(`/workspace/${create.value.workspaceId}`);
+        }
+    });
+
     return (
         <div class="flex min-h-screen w-full items-center justify-center bg-neutral-50">
             <Form action={create} class="flex w-full max-w-md flex-col gap-4">
