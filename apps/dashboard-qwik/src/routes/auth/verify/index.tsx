@@ -6,7 +6,7 @@ export const onGet: RequestHandler = async ({ query, redirect }) => {
 		.object({
 			token: z
 				.string()
-				.min(32, "Token is required")
+				.min(32, "Token is required/invalid")
 				.max(33, "Token is invalid"),
 		})
 		.safeParseAsync(Object.fromEntries(query.entries()));

@@ -53,6 +53,9 @@ export const useLogin = routeAction$(
             length: 32,
         });
 
+
+        // TODO: add sending functionality
+
         // Set the session token as a cookie
         return {
             fieldErrors: {},

@@ -20,8 +20,7 @@ export const middlewareAuthentication = async (
 						member: {
 							include: {
 								workspace: true,
-							},
-							take: 1,
+							}
 						},
 					},
 				},
