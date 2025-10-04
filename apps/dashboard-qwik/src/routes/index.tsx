@@ -54,7 +54,7 @@ export default component$(() => {
           workspaces.value.map(
             (workspace) => (
               <Link
-                href={`/${workspace.slug}`}
+                href={`/workspace/${workspace.slug}`}
                 class="flex items-center space-x-3 rounded-lg border border-neutral-200 p-3 hover:bg-neutral-100"
                 key={workspace.id}
               >
