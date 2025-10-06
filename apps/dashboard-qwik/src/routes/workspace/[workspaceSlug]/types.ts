@@ -34,29 +34,27 @@ export type UserInSharedMap = {
 };
 
 export type MemberInSharedMap = {
-	member: {
-		workspace: {
-			id: string;
-			image: string | null;
-			name: string;
-			description: string | null;
-			createdAt: Date;
-			updatedAt: Date;
-			billingPlan: "free" | "pro" | "premium";
-			planChangedAt: Date;
-			overlimit: boolean;
-			overlimitAt: Date | null;
-			slug: string;
-			ownerId: string;
-		};
-	} & {
+	workspace: {
 		id: string;
 		image: string | null;
-		userId: string;
-		profileName: string | null;
+		name: string;
 		description: string | null;
-		workspaceId: string;
+		createdAt: Date;
+		updatedAt: Date;
+		billingPlan: "free" | "pro" | "premium";
+		planChangedAt: Date;
+		overlimit: boolean;
+		overlimitAt: Date | null;
+		slug: string;
+		ownerId: string;
 	};
+} & {
+	id: string;
+	image: string | null;
+	userId: string;
+	profileName: string | null;
+	description: string | null;
+	workspaceId: string;
 };
 
 export type WorkspaceInSharedMap = {

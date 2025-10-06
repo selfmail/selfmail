@@ -81,6 +81,7 @@ export const useHeaderData = routeLoader$(({ sharedMap }) => {
         userWorkspaces: workspaces,
         currentWorkspace: {
             id: currentWorkspace.id,
+            image: currentWorkspace.image,
             name: currentWorkspace.name,
         },
     };

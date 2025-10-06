@@ -1,7 +1,7 @@
 import {
+    $,
     component$,
     type QwikJSX,
-    useOnWindow,
     useStore,
     useTask$,
 } from "@builder.io/qwik";
@@ -25,7 +25,7 @@ export default component$<Props>(({ fetchEmails, EmailComponent }) => {
     });
 
     return (
-        <div class="flex w-full flex-col">
+        <div class="flex w-full flex-col rounded-xl border border-neutral-200 bg-white p-2">
             {emails.emails?.map((email: any) => (
                 <div key={email.id} class="border-neutral-200 border-b px-4 py-2">
                     <p class="font-medium">{email.from}</p>
@@ -34,9 +34,21 @@ export default component$<Props>(({ fetchEmails, EmailComponent }) => {
                 </div>
             ))}
             {emails.emails?.length === 0 && (
-                <p class="p-4 text-center text-neutral-500 text-sm">No emails found.</p>
+                <p class="p-4 text-center text-neutral-500 text-sm">
+                    No emails found. Reset filters or{" "}
+                    <button
+                        type="button"
+                        onClick$={async () => {
+                            emails.emails = await fetchEmails({ page: 0, take: 20 });
+                            console.log(emails.emails);
+                        }}
+                        class="cursor-pointer text-blue-500 hover:underline"
+                    >
+                        try again
+                    </button>
+                    .
+                </p>
             )}
-            <EmailComponent />
         </div>
     );
 });

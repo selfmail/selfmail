@@ -4,7 +4,6 @@ import { db } from "database";
 import EmailList from "~/components/dashboard/email-list";
 import type {
     MemberInSharedMap,
-    WorkspaceInSharedMap,
 } from "./types";
 
 const fetchEmails = server$(async function ({
@@ -26,13 +25,19 @@ const fetchEmails = server$(async function ({
     }
 
     const member = this.sharedMap.get("member") as MemberInSharedMap;
-    const workspace = this.sharedMap.get("workspace") as WorkspaceInSharedMap;
 
     const emails = await db.email.findMany({
         where: {
             sort: {
                 notIn: ["sent", "spam", "trash"],
             },
+            address: {
+                MemberAddress: {
+                    every: {
+                        memberId: member.id,
+                    }
+                }
+            }
         },
         orderBy: {
             createdAt: "desc",
@@ -65,7 +70,6 @@ export default component$(() => {
     const Email = $(() => {
         return <div>Email Component</div>;
     })
-
 
     return (
         <>
