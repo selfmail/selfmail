@@ -1,5 +1,4 @@
 import {
-    $,
     component$,
     type QwikJSX,
     useStore,

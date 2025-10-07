@@ -6,61 +6,51 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-    <main>
-        <header class="grid grid-cols-6 w-full pt-10">
-            <div class="col-span-1"></div>
-            <div class="col-span-1">
-                <img
-                    height="20"
-                    class="h-4"
-                    src="./logo.svg"
-                    alt="Selfmail Logo"
-                />
-            </div>
-            <div class="col-span-1"></div>
-            <div class="col-span-1 text-sm">
-                Selfmail is a free and open-source Email Provider made for
-                companies to focus again on creating software, not setting up
-                smtp servers.
-            </div>
-            <div class="col-span-1 flex flex-col space-y-2 items-end">
+    <main
+        class="flex w-full text-neutral-950 bg-white uppercase min-h-screen flex-col gap-16 items-center py-8"
+    >
+        <header
+            class="w-full flex flex-row items-center justify-between lg:px-16 px-8"
+        >
+            <h1 class="font-extrabold italic text-lg">Selfmail</h1>
+            <nav>
                 <a
-                    class="underline text-sm hover:bg-black hover:text-white"
-                    href="https://dashboard.selfmail.app/auth/register"
-                    >Get Started [Register]</a
+                    href="/roadmap"
+                    class="font-medium text-sm underline hover:bg-black hover:text-white"
+                    >Roadmap</a
                 >
                 <a
-                    class="underline text-sm hover:bg-black hover:text-white"
-                    href="https://dashboard.selfmail.app/auth/login">Login</a
+                    href="/register"
+                    class="font-medium text-sm underline hover:bg-black hover:text-white"
+                    >Register</a
                 >
                 <a
-                    class="underline text-sm hover:bg-black hover:text-white"
-                    target="_blank"
-                    href="https://docs.selfmail.app/">Docs</a
+                    href="/login"
+                    class="font-medium text-sm underline hover:bg-black hover:text-white"
+                    >Login</a
                 >
-            </div>
+            </nav>
+            <p class="text-sm font-medium lg:w-[20%] w-[40%]">
+                The open-source email providers for fast-moving businesses with
+                AI in mind.
+            </p>
         </header>
-        <div class="grid grid-cols-6 w-full pt-10">
-            <div class="col-span-1"></div>
-            <video
-                src="https://cdn.selfmail.app/result.mp4"
-                autoplay
-                muted
-                loop
-                class="col-span-4"></video>
-            <div class="col-span-1"></div>
-        </div>
-        <div class="grid grid-cols-6 w-full pt-2">
-            <div class="grid-cols-4"></div>
-            <div class="grid-cols-1 flex items-end">
-                <a
-                    href="https://github.com/selfmail/selfmail"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <GitHub class="h-4 w-4 mr-2" /></a
-                >
-            </div>
-        </div>
+        <h2 class="font-medium text-3xl text-balance text-center w-[25%]">
+            Selfmail is the missing piece of communication in your company.
+        </h2>
+        <video
+            src="https://cdn.selfmail.app/result.mp4"
+            autoplay
+            muted
+            loop
+            class="w-[30%]"></video>
+
+        <h2 class="font-medium text-xl text-balance text-center w-[30%]">
+            We lost control about communication. Over <u>45% of emails</u> sent are
+            <u>spam</u>. But the medium email is growing like never before. <u
+                >300 billions</u
+            >
+            of emails are received <u>every day</u>.
+        </h2>
     </main>
 </Layout>
