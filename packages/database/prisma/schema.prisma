@@ -262,6 +262,13 @@ model Domain {
   verified   Boolean   @default(false)
   verifiedAt DateTime?
 
+  addresses Address[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // ATTENTION: public means, that everybody (EVEN PEOPLE OUTSIDE OF THE WORKSPACE) can create a new address with this domain
+  public Boolean @default(false)
+
   // a verification token must be a txt record for the domain
   // it is used to verify that the user owns the domain
   verificationToken String
@@ -269,15 +276,20 @@ model Domain {
 
 // addresses
 model Address {
+  // not the default uuid, because we want to have short ids for the email addresses, in order to short the url (uuid as backup)
   id String @id @default(uuid())
 
-  email String @unique
+  handle String
+  email  String @unique
 
   // multiple members can access the same address (e.g. shared addresses)
   MemberAddress   MemberAddress[]
   Email           Email[]
   SmtpCredentials SmtpCredentials[]
   Contact         Contact[]
+
+  Domain   Domain? @relation(fields: [domainId], references: [id])
+  domainId String?
 }
 
 model MemberAddress {

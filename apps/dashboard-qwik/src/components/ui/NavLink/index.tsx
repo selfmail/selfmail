@@ -3,7 +3,7 @@ import { Link, type LinkProps, useLocation } from "@builder.io/qwik-city";
 
 type NavLinkProps = LinkProps & { activeClass?: string };
 
-// copied straight from qwik.dev docs :)
+// copied straight from qwik.dev docs :) (but ofc own styles and modified)
 export const NavLink = component$(({ activeClass, ...props }: NavLinkProps) => {
     const location = useLocation();
     const toPathname = props.href ?? "";

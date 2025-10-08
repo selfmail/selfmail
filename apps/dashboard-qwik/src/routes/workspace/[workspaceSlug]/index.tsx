@@ -1,10 +1,8 @@
 import { $, component$ } from "@builder.io/qwik";
-import { server$, z } from "@builder.io/qwik-city";
+import { routeLoader$, server$, z } from "@builder.io/qwik-city";
 import { db } from "database";
 import EmailList from "~/components/dashboard/email-list";
-import type {
-    MemberInSharedMap,
-} from "./types";
+import type { MemberInSharedMap } from "./types";
 
 const fetchEmails = server$(async function ({
     page = 0,
@@ -35,9 +33,9 @@ const fetchEmails = server$(async function ({
                 MemberAddress: {
                     every: {
                         memberId: member.id,
-                    }
-                }
-            }
+                    },
+                },
+            },
         },
         orderBy: {
             createdAt: "desc",
@@ -49,31 +47,64 @@ const fetchEmails = server$(async function ({
                 select: {
                     email: true,
                     id: true,
-                }
-            }
-        }
+                },
+            },
+        },
     });
-
-    console.log("Hello from server!")
 
     return emails;
 });
 
-export default component$(() => {
-    const getEmails = $(
-        async function getEmails(params: { page: number; take: number }) {
-            const emails = await fetchEmails(params);
-            return emails;
-        }
-    )
+const useEmailCount = routeLoader$(async ({ sharedMap }) => {
+    const member = sharedMap.get("member") as MemberInSharedMap;
 
+    if (!member) {
+        return 0;
+    }
+
+    const count = await db.email.count({
+        where: {
+            sort: {
+                notIn: ["sent", "spam", "trash"],
+            },
+            address: {
+                MemberAddress: {
+                    every: {
+                        memberId: member.id,
+                    },
+                },
+            },
+        },
+    });
+
+    return count;
+});
+
+export default component$(() => {
+    const count = useEmailCount();
+
+    // fetch emails function to be passed to email list
+    const getEmails = $(async function getEmails(params: {
+        page: number;
+        take: number;
+    }) {
+        const emails = await fetchEmails(params);
+        return emails;
+    });
+
+    // simple email component to be passed to email list
     const Email = $(() => {
         return <div>Email Component</div>;
-    })
+    });
 
     return (
         <>
-            <h1 class="font-medium text-2xl">Unified Inbox</h1>
+            <div class="flex w-full flex-row items-center justify-between">
+                <div class="flex flex-col gap-1">
+                    <h1 class="font-medium text-2xl">Unified Inbox</h1>
+                    <p class="text-neutral-600">{count.value} emails</p>
+                </div>
+            </div>
             {/* @ts-expect-error Server Component */}
             <EmailList EmailComponent={Email} fetchEmails={getEmails} />
         </>

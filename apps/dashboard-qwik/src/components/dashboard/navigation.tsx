@@ -1,5 +1,5 @@
-import { component$, useComputed$, useResource$, useStore, useTask$ } from "@builder.io/qwik";
-import { server$, useLocation } from "@builder.io/qwik-city";
+import { component$, useResource$, useStore, useTask$ } from "@builder.io/qwik";
+import { Link, server$, useLocation } from "@builder.io/qwik-city";
 import { db } from "database";
 import type { MemberInSharedMap } from "~/routes/workspace/[workspaceSlug]/types";
 import { NavLink } from "../ui/NavLink";
@@ -16,6 +16,7 @@ const getAddresses = server$(async function () {
         },
     });
 
+
     return memberAddresses;
 });
 
@@ -25,7 +26,8 @@ export default component$(() => {
         data: [] as { id: string; email: string }[],
     });
 
-    useResource$(async () => {
+    useTask$(async ({ track }) => {
+        track(() => location.params.workspaceSlug,)
         addresses.data = await getAddresses();
     });
 
@@ -59,7 +61,7 @@ export default component$(() => {
                 }
                 {
                     addresses.data.length === 0 && (
-                        <p class="text-neutral-500 text-sm">No addresses found.</p>
+                        <p class="text-neutral-500 text-sm">No addresses found. Create a <Link href={`/workspace/${location.params.workspaceSlug}/address/new`} class="text-blue-500" prefetch>new address</Link>.</p>
                     )
                 }
             </div>
@@ -69,7 +71,7 @@ export default component$(() => {
                     links.platform && Object.entries(links.platform).map(([key, value]) => (
                         <NavLink
                             key={key}
-                            href={value}
+                            href={`/workspace/${location.params.workspaceSlug}${value}`}
                             activeClass="bg-blue-100 text-blue-700 font-medium"
                         >
                             {key.charAt(0).toUpperCase() + key.slice(1)}
