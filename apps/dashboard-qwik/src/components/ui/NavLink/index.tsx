@@ -26,9 +26,16 @@ export const NavLink = component$(({ activeClass, ...props }: NavLinkProps) => {
     return (
         <Link
             {...props}
-            class={[props.class, isActive && activeClass ? activeClass : ""]}
-        >
-            <Slot />
+            class="group w-full">
+            <span
+                class={[
+                    "w-fit rounded-md font-medium text-black text-xl ring-neutral-200 transition-all group-hover:bg-neutral-200 group-hover:ring-4",
+                    props.class,
+                    isActive && "bg-neutral-200 ring-4",
+                ]}
+            >
+                <Slot />
+            </span>
         </Link>
     );
 });

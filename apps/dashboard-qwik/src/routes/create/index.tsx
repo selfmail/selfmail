@@ -1,11 +1,23 @@
 import { component$, useVisibleTask$ } from "@builder.io/qwik";
-import { Form, type RequestHandler, routeAction$, useNavigate, z, zod$ } from "@builder.io/qwik-city";
+import {
+    Form,
+    type RequestHandler,
+    routeAction$,
+    useNavigate,
+    z,
+    zod$,
+} from "@builder.io/qwik-city";
 import { db } from "database";
-import { Button } from "~/components/Button";
-import { Input } from "~/components/Input";
+import { Button } from "~/components/ui/Button";
+import { Input } from "~/components/ui/Input";
 import { middlewareAuthentication } from "~/lib/auth";
 
-export const onRequest: RequestHandler = async ({ next, cookie, redirect, sharedMap }) => {
+export const onRequest: RequestHandler = async ({
+    next,
+    cookie,
+    redirect,
+    sharedMap,
+}) => {
     const sessionToken = cookie.get("selfmail-session-token")?.value;
 
     const { authenticated, user } = await middlewareAuthentication(sessionToken);
@@ -19,7 +31,6 @@ export const onRequest: RequestHandler = async ({ next, cookie, redirect, shared
     await next();
 };
 
-
 export const useCreateWorkspace = routeAction$(
     async ({ workspace: { name, slug } }, { sharedMap, error }) => {
         if (!sharedMap.has("user") || !sharedMap.get("user").id) {
@@ -29,17 +40,17 @@ export const useCreateWorkspace = routeAction$(
         // check whether a workspace with the same slug already exists
         const existingWorkspace = await db.workspace.findUnique({
             where: {
-                slug
-            }
-        })
+                slug,
+            },
+        });
 
         if (existingWorkspace) {
             return {
                 fieldErrors: {
-                    slug: "A workspace with this slug already exists"
+                    slug: "A workspace with this slug already exists",
                 },
-                failed: true
-            }
+                failed: true,
+            };
         }
 
         // create new workspace
@@ -48,32 +59,32 @@ export const useCreateWorkspace = routeAction$(
                 name,
                 slug,
                 ownerId: sharedMap.get("user").id,
-            }
-        })
+            },
+        });
 
         if (!workspace) {
             return {
                 fieldErrors: {
-                    workspace: "Failed to create workspace"
+                    workspace: "Failed to create workspace",
                 },
-                failed: true
-            }
+                failed: true,
+            };
         }
 
         const member = await db.member.create({
             data: {
                 userId: sharedMap.get("user").id,
                 workspaceId: workspace.id,
-            }
-        })
+            },
+        });
 
         if (!member) {
             return {
                 fieldErrors: {
-                    workspace: "Failed to create workspace member"
+                    workspace: "Failed to create workspace member",
                 },
-                failed: true
-            }
+                failed: true,
+            };
         }
 
         return {
@@ -81,14 +92,25 @@ export const useCreateWorkspace = routeAction$(
             failed: false,
             success: true,
             workspaceId: workspace.id,
-        }
+        };
     },
     zod$({
         workspace: z.object({
-            name: z.string().min(3, "Name must be at least 3 characters").max(50, "Name must be at most 50 characters"),
-            slug: z.string().min(3, "Slug must be at least 3 characters").max(50, "Slug must be at most 50 characters").regex(/^[a-zA-Z0-9-]+$/, "Slug can only contain letters, numbers, and hyphens"),
+            name: z
+                .string()
+                .min(3, "Name must be at least 3 characters")
+                .max(50, "Name must be at most 50 characters"),
+            slug: z
+                .string()
+                .min(3, "Slug must be at least 3 characters")
+                .max(50, "Slug must be at most 50 characters")
+                .regex(
+                    /^[a-zA-Z0-9-]+$/,
+                    "Slug can only contain letters, numbers, and hyphens",
+                ),
         }),
-    }))
+    }),
+);
 
 export default component$(() => {
     const create = useCreateWorkspace();

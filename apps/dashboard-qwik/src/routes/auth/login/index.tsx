@@ -13,8 +13,8 @@ import { init } from "@paralleldrive/cuid2";
 import { LuInfo } from "@qwikest/icons/lucide";
 import bcrypt from "bcrypt";
 import { db } from "database";
-import { Button } from "~/components/Button";
-import { Input } from "~/components/Input";
+import { Button } from "~/components/ui/Button";
+import { Input } from "~/components/ui/Input";
 
 export const useLogin = routeAction$(
     async ({ account: { email, password } }, { cookie }) => {
@@ -80,7 +80,7 @@ export const useLogin = routeAction$(
             path: "/",
             httpOnly: true,
             secure: true,
-            sameSite: "Lax"
+            sameSite: "Lax",
         });
 
         return {
@@ -121,18 +121,12 @@ export default component$(() => {
             fieldErrors.password = errors["account.password"] || "";
 
             return;
-        } else if (
-            login.value?.success
-        ) {
+        }
+        if (login.value?.success) {
             if (!login.value.hasWorkspace) {
-                throw await navigation(
-                    "/create"
-                );
-            } else {
-                throw await navigation(
-                    "/"
-                );
+                throw await navigation("/create");
             }
+            throw await navigation("/");
         }
     });
 
@@ -172,8 +166,10 @@ export default component$(() => {
                 )}
                 {login.value?.verificationError && (
                     <div class="rounded-lg border border-red-200 bg-red-100 p-4">
-                        <p class="text-red-800">Please verify your email before logging in. If you didn't receive
-                            the email, please check your spam folder. You can generate a new one{" "}
+                        <p class="text-red-800">
+                            Please verify your email before logging in. If you didn't receive
+                            the email, please check your spam folder. You can generate a new
+                            one{" "}
                             <Link
                                 class="cursor-pointer underline"
                                 prefetch
@@ -181,7 +177,8 @@ export default component$(() => {
                             >
                                 here
                             </Link>
-                            .</p>
+                            .
+                        </p>
                     </div>
                 )}
                 <span class="flex items-center space-x-2 text-neutral-500 text-sm">

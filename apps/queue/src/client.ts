@@ -1,5 +1,5 @@
 import { Inngest } from "inngest";
 
 export const inngest = new Inngest({
-	id: "my-app",
+	id: process.env.INNGEST_ID || "selfmail-dev",
 });

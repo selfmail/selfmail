@@ -1,6 +1,7 @@
 import { component$, Slot } from "@builder.io/qwik";
 import { type RequestHandler, routeLoader$ } from "@builder.io/qwik-city";
 import Header from "~/components/dashboard/header";
+import Navigation from "~/components/dashboard/navigation";
 import {
     middlewareAuthentication,
     verifyWorkspaceMembership,
@@ -91,8 +92,9 @@ export default component$(() => {
     const header = useHeaderData();
     return (
         <div class="flex min-h-screen w-full flex-col items-center bg-neutral-50">
-            <div class="flex w-full flex-col gap-6 px-5 py-6 lg:px-26 xl:px-32">
+            <div class="flex w-full flex-col gap-12 px-5 py-6 lg:px-26 xl:px-32">
                 <Header value={header.value} />
+                <Navigation />
                 <Slot />
             </div>
         </div>

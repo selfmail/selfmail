@@ -17,8 +17,8 @@ import { init } from "@paralleldrive/cuid2";
 import { LuInfo } from "@qwikest/icons/lucide";
 import bcrypt from "bcrypt";
 import { db } from "database";
-import { Button } from "~/components/Button";
-import { Input } from "~/components/Input";
+import { Button } from "~/components/ui/Button";
+import { Input } from "~/components/ui/Input";
 
 export const useLogin = routeAction$(
     async ({ account: { email, password } }) => {
@@ -52,7 +52,6 @@ export const useLogin = routeAction$(
         const createId = init({
             length: 32,
         });
-
 
         // TODO: add sending functionality
 
@@ -101,7 +100,8 @@ export default component$(() => {
                 {success.value && (
                     <div class="rounded-lg border border-green-200 bg-green-100 p-4">
                         <p class="text-green-800">
-                            Verification email sent successfully. Please check your mail provider.
+                            Verification email sent successfully. Please check your mail
+                            provider.
                         </p>
                     </div>
                 )}
