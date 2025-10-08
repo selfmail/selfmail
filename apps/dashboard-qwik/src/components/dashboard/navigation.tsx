@@ -1,4 +1,4 @@
-import { component$, useResource$, useStore, useTask$ } from "@builder.io/qwik";
+import { component$, useStore, useTask$ } from "@builder.io/qwik";
 import { Link, server$, useLocation } from "@builder.io/qwik-city";
 import { db } from "database";
 import type { MemberInSharedMap } from "~/routes/workspace/[workspaceSlug]/types";
