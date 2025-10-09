@@ -15,26 +15,18 @@ export const middlewareAuthentication = async (
 				token: sessionToken,
 			},
 			include: {
-				user: {
-					include: {
-						member: {
-							include: {
-								workspace: true,
-							}
-						},
-					},
-				},
+				user: true,
 			},
 		});
 
-		if (!session || !session.user) {
+		if (!session) {
 			return {
 				authenticated: false,
 			};
 		}
 
 		if (session.expiresAt < new Date()) {
-			const deletion = await db.session.deleteMany({
+			await db.session.deleteMany({
 				where: {
 					token: sessionToken,
 				},
@@ -60,15 +52,27 @@ export const verifyWorkspaceMembership = async (
 	userId: string,
 	workspaceSlug: string,
 ) => {
-	const member = await db.member.findFirst({
+	const workspace = await db.workspace.findUnique({
 		where: {
-			userId,
-			workspace: {
-				slug: workspaceSlug,
+			slug: workspaceSlug,
+		},
+	});
+
+	if (!workspace) {
+		return {
+			isMember: false,
+		};
+	}
+
+	const member = await db.member.findUnique({
+		where: {
+			userWorkspaceId: {
+				userId,
+				workspaceId: workspace.id,
 			},
 		},
 		include: {
-			workspace: true,
+			MemberPermission: true,
 		},
 	});
 
@@ -81,6 +85,6 @@ export const verifyWorkspaceMembership = async (
 	return {
 		isMember: true,
 		member,
-		workspace: member.workspace,
+		workspace,
 	};
 };

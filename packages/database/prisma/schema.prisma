@@ -137,22 +137,22 @@ model Member {
   user   User   @relation(fields: [userId], references: [id])
 
   // profile configuration
-  profileName String? // by default it's the name of the user
+  profileName String?
   description String?
   image       String? // url to image (hosted on selfmail r2) or undefined for no image
 
   // permissions
-
-  workspaceId      String
-  workspace        Workspace          @relation(fields: [workspaceId], references: [id])
   MemberPermission MemberPermission[]
-  MemberAddress    MemberAddress[]
   roles            Role[]
-  SmtpCredentials  SmtpCredentials[]
-  Notification     Notification[]
 
-  @@unique([workspaceId, userId])
-  @@index([userId])
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+  MemberAddress   MemberAddress[]
+  SmtpCredentials SmtpCredentials[]
+  Notification    Notification[]
+
+  @@unique(name: "userWorkspaceId", fields: [workspaceId, userId])
 }
 
 // permissions
@@ -184,12 +184,12 @@ model MemberPermission {
   memberId String
   member   Member @relation(fields: [memberId], references: [id])
 
-  permissionId String
-  permission   Permission @relation(fields: [permissionId], references: [id])
+  permissionName String
+  permission     Permission @relation(fields: [permissionName], references: [name])
 
   givenAt DateTime @default(now())
 
-  @@id([memberId, permissionId])
+  @@id([memberId, permissionName])
 }
 
 // Permissions are the actual actions that a user can perform in a workspace. These permissions

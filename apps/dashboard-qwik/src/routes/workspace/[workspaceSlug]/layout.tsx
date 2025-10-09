@@ -19,16 +19,12 @@ export const onRequest: RequestHandler = async ({
     const workspaceSlug = params.workspaceSlug;
 
     if (!workspaceSlug || !sessionToken) {
-        console.log(
-            `no workspace slug or session token ${workspaceSlug} ${sessionToken}`,
-        );
         throw redirect(302, "/auth/login");
     }
 
     const { authenticated, user } = await middlewareAuthentication(sessionToken);
 
     if (!authenticated || !user) {
-        console.log("not authenticated");
         throw redirect(302, "/auth/login");
     }
 
@@ -38,7 +34,6 @@ export const onRequest: RequestHandler = async ({
     );
 
     if (!isMember || !member || !workspace) {
-        console.log("not a member of this workspace");
         throw redirect(
             302,
             "/auth/login?message=not%20a%20member%20of%20this%20workspace",
