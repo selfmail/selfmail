@@ -1,12 +1,13 @@
 import { component$, Slot } from "@builder.io/qwik";
 import { type RequestHandler, routeLoader$ } from "@builder.io/qwik-city";
+import { db } from "database";
 import Header from "~/components/dashboard/header";
 import Navigation from "~/components/dashboard/navigation";
 import {
     middlewareAuthentication,
     verifyWorkspaceMembership,
 } from "~/lib/auth";
-import type { UserInSharedMap, WorkspaceInSharedMap } from "./types";
+import type { MemberInSharedMap, UserInSharedMap, WorkspaceInSharedMap } from "./types";
 
 export const onRequest: RequestHandler = async ({
     next,
@@ -15,6 +16,7 @@ export const onRequest: RequestHandler = async ({
     redirect,
     sharedMap,
 }) => {
+    console.log("onRequest called");
     const sessionToken = cookie.get("selfmail-session-token")?.value;
     const workspaceSlug = params.workspaceSlug;
 
@@ -40,55 +42,28 @@ export const onRequest: RequestHandler = async ({
         );
     }
 
-    sharedMap.set("user", user);
-    sharedMap.set("member", member);
-    sharedMap.set("workspace", workspace);
+    const workspaces = await db.workspace.findMany({
+        where: {
+            Member: {
+                every: {
+                    userId: user.id,
+                },
+            },
+        },
+    });
+
+    sharedMap.set("user", user as UserInSharedMap);
+    sharedMap.set("member", member as MemberInSharedMap);
+    sharedMap.set("workspace", workspace as WorkspaceInSharedMap);
 
     await next();
 };
 
-export const useHeaderData = routeLoader$(({ sharedMap }) => {
-    const user = sharedMap.get("user") as UserInSharedMap;
-    const currentWorkspace = sharedMap.get("workspace") as WorkspaceInSharedMap;
-    if (!user || !currentWorkspace) {
-        throw new Error("No user or workspace defined. Please try again.");
-    }
-
-    const workspaces = user.member
-        .map((m) => {
-            if (m.workspace.id !== currentWorkspace.id) {
-                return {
-                    id: m.workspace.id,
-                    name: m.workspace.name,
-                    slug: m.workspace.slug,
-                    image: m.workspace.image,
-                };
-            }
-
-            return null;
-        })
-        .filter(Boolean);
-
-    return {
-        user: {
-            username: user.name,
-            email: user.email,
-        },
-        userWorkspaces: workspaces,
-        currentWorkspace: {
-            id: currentWorkspace.id,
-            image: currentWorkspace.image,
-            name: currentWorkspace.name,
-        },
-    };
-});
-
 export default component$(() => {
-    const header = useHeaderData();
     return (
         <div class="flex min-h-screen w-full flex-col items-center bg-neutral-50">
             <div class="flex w-full flex-col gap-12 px-5 py-6 lg:px-26 xl:px-32">
-                <Header value={header.value} />
+                <Header />
                 <Navigation />
                 <Slot />
             </div>

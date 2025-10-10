@@ -172,7 +172,6 @@ export default component$(() => {
                             one{" "}
                             <Link
                                 class="cursor-pointer underline"
-                                prefetch
                                 href="/auth/resend-verification"
                             >
                                 here

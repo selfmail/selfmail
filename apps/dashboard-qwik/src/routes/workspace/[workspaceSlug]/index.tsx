@@ -2,6 +2,10 @@ import { $, component$ } from "@builder.io/qwik";
 import { routeLoader$, server$, z } from "@builder.io/qwik-city";
 import { db } from "database";
 import EmailList from "~/components/dashboard/email-list";
+import {
+    middlewareAuthentication,
+    verifyWorkspaceMembership,
+} from "~/lib/auth";
 import type { MemberInSharedMap } from "./types";
 
 const fetchEmails = server$(async function ({
@@ -22,7 +26,33 @@ const fetchEmails = server$(async function ({
         throw new Error("Invalid parameters");
     }
 
-    const member = this.sharedMap.get("member") as MemberInSharedMap;
+    let currentMember = this.sharedMap.get("member") as MemberInSharedMap;
+
+    if (!currentMember) {
+        const sessionToken = this.cookie.get("selfmail-session-token")?.value;
+        const workspaceSlug = this.params.workspaceSlug;
+
+        if (!workspaceSlug || !sessionToken) {
+            throw Error("No workspace slug or session token provided.");
+        }
+
+        const { authenticated, user } =
+            await middlewareAuthentication(sessionToken);
+
+        if (!authenticated || !user) {
+            throw Error("User is not authenticated. Please log in.");
+        }
+
+        const { isMember, member, workspace } = await verifyWorkspaceMembership(
+            user.id,
+            workspaceSlug,
+        );
+
+        if (!isMember || !member || !workspace) {
+            throw Error("User is not a member of this workspace. Access denied.");
+        }
+        currentMember = member;
+    }
 
     const emails = await db.email.findMany({
         where: {
@@ -32,7 +62,7 @@ const fetchEmails = server$(async function ({
             address: {
                 MemberAddress: {
                     every: {
-                        memberId: member.id,
+                        memberId: currentMember.id,
                     },
                 },
             },

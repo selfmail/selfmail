@@ -1,30 +1,38 @@
 import { component$ } from "@builder.io/qwik";
 import { Link, type RequestHandler, routeLoader$ } from "@builder.io/qwik-city";
+import { db } from "database";
 import { middlewareAuthentication } from "~/lib/auth";
 
 export const onRequest: RequestHandler = async ({
   next,
+  params,
   cookie,
   redirect,
   sharedMap,
 }) => {
   const sessionToken = cookie.get("selfmail-session-token")?.value;
 
-  const { authenticated, user } = await middlewareAuthentication(sessionToken);
-
-  if (!authenticated) {
+  if (!sessionToken) {
     throw redirect(302, "/auth/login");
   }
 
-  sharedMap.set(
-    "workspaces",
-    user?.member.map((m) => ({
-      id: m.workspace.id,
-      name: m.workspace.name,
-      slug: m.workspace.slug,
-      image: m.workspace.image,
-    })) ?? [],
-  );
+  const { authenticated, user } = await middlewareAuthentication(sessionToken);
+
+  if (!authenticated || !user) {
+    throw redirect(302, "/auth/login");
+  }
+
+  const workspaces = await db.workspace.findMany({
+    where: {
+      Member: {
+        every: {
+          userId: user.id,
+        }
+      }
+    }
+  })
+
+  sharedMap.set("workspaces", workspaces);
 
   await next();
 };
