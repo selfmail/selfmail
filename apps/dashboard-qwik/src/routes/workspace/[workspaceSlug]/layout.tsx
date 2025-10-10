@@ -16,7 +16,6 @@ export const onRequest: RequestHandler = async ({
     redirect,
     sharedMap,
 }) => {
-    console.log("onRequest called");
     const sessionToken = cookie.get("selfmail-session-token")?.value;
     const workspaceSlug = params.workspaceSlug;
 

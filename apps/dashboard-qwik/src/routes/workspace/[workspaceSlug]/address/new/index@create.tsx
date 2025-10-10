@@ -131,8 +131,8 @@ export default component$(() => {
         if (create.value?.failed) {
             const errors = create.value.fieldErrors as Record<string, string>;
             console.log(errors);
-            fieldErrors.emailHandle = errors["emailHandle"] || "";
-            fieldErrors.domain = errors["domain"] || "";
+            fieldErrors.emailHandle = errors.emailHandle || "";
+            fieldErrors.domain = errors.domain || "";
 
             console.log(fieldErrors);
 

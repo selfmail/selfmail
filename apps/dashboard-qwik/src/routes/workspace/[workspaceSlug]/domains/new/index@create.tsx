@@ -1,10 +1,8 @@
 import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
 import {
     Form,
-    Link,
     routeAction$,
     routeLoader$,
-    useLocation,
     z,
     zod$,
 } from "@builder.io/qwik-city";
@@ -12,34 +10,10 @@ import { init } from "@paralleldrive/cuid2";
 import { db } from "database";
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
-import type { MemberInSharedMap, WorkspaceInSharedMap } from "../../types";
+import type { MemberInSharedMap, UserInSharedMap } from "../../types";
 
 export const useCreateDomainDraft = routeAction$(
-    async (
-        { address: { domain, emailHandle } },
-        { sharedMap, error, redirect, params },
-    ) => {
-        if (!sharedMap.has("member") || !sharedMap.get("member").id) {
-            throw error(401, "Unauthorized");
-        }
-
-        const member = sharedMap.get("member") as MemberInSharedMap;
-
-        const existingAddress = await db.address.findUnique({
-            where: {
-                email: `${emailHandle}@${domain}`,
-            },
-        });
-
-        if (existingAddress) {
-            return {
-                fieldErrors: {
-                    emailHandle: "An address with this email already exists",
-                },
-                failed: true,
-            };
-        }
-
+    async ({ workspace: { domain } }, { redirect, params }) => {
         // check whether the domain exists
         const existingDomain = await db.domain.findUnique({
             where: {
@@ -47,94 +21,95 @@ export const useCreateDomainDraft = routeAction$(
             },
         });
 
-        if (!existingDomain) {
+        if (existingDomain) {
             return {
                 fieldErrors: {
-                    domain: "Domain does not exist",
+                    domain:
+                        "Domain already added to a workspace. Please delete the domain first if you want to add it to this workspace.",
                 },
                 failed: true,
             };
         }
 
         const createId = init({
-            length: 8
+            length: 8,
         });
 
-        // create new address
-        const address = await db.address.create({
+        const domainDraft = await db.domain.create({
             data: {
                 id: createId(),
-                email: `${emailHandle}@${domain}`,
-                handle: emailHandle,
-                MemberAddress: {
-                    create: {
-                        memberId: member.id,
-                    },
-                },
-                Domain: {
-                    connect: {
-                        domain,
-                    },
-                },
+                domain,
+                verificationToken: `selfmail-domain-verification-${new Date().toISOString()}-${createId()}`,
+                workspaceId: params.workspaceSlug,
+                public: false,
+                verified: false,
             },
         });
 
-        if (!address) {
+        if (!domainDraft) {
             return {
                 fieldErrors: {
-                    address: "Failed to create address",
+                    domain: "Failed to create domain. Please try again.",
                 },
                 failed: true,
             };
         }
 
-        redirect(302, `/workspace/${params.workspaceSlug}/address/${address.id}`);
+        redirect(302, `/workspace/${params.workspaceSlug}/domains`);
     },
     zod$({
-        address: z.object({
+        workspace: z.object({
             domain: z.string().min(1, "Domain is required").max(255),
-            emailHandle: z.string().min(1, "Email Handle is required").max(255),
         }),
     }),
 );
 
-const useLimits = routeLoader$(
-    async ({ sharedMap, error, params }) => {
-        if (!sharedMap.has("member") || !sharedMap.get("member").id) {
-            throw error(401, "Unauthorized");
-        }
+const useLimits = routeLoader$(async ({ sharedMap, error }) => {
+    if (!sharedMap.has("user") || !sharedMap.get("user").id) {
+        throw error(401, "Unauthorized");
+    }
 
-        const member = sharedMap.get("member") as MemberInSharedMap;
+    const user = sharedMap.get("user") as UserInSharedMap;
 
-        if (!sharedMap.has("workspace") || !sharedMap.get("workspace").id) {
-            throw error(400, "Workspace not found in shared map");
-        }
+    if (!sharedMap.has("member") || !sharedMap.get("member").id) {
+        throw error(401, "Unauthorized");
+    }
 
-        const workspace = sharedMap.get("workspace") as WorkspaceInSharedMap;
+    const member = sharedMap.get("member") as MemberInSharedMap;
 
-        // check whether the current member has the right to add new domains
-        const permissions = await db.memberPermission.findUnique({
-            where: {
-                memberId_permissionName: {
-                    memberId: member.id,
-                    permissionName: "domains:create",
-                }
-            }
-        })
+    if (!sharedMap.has("workspace") || !sharedMap.get("workspace").id) {
+        throw error(400, "Workspace not found in shared map");
+    }
+    // check whether the current member has the right to add new domains
+    const permissions = await db.memberPermission.findUnique({
+        where: {
+            memberId_permissionName: {
+                memberId: member.id,
+                permissionName: "domains:create",
+            },
+        },
+    });
 
-        if (!permissions) {
-            throw error(403, "You do not have permission to add new domains");
-        }
+    // check whether the user is the workspace owner
+    const workspace = sharedMap.get("workspace") as {
+        id: string;
+        ownerId: string;
+    };
+    if (user.id === workspace.ownerId) {
+        console.log("User is the workspace owner");
+        return {};
+    }
 
-
-    })
+    if (!permissions) {
+        throw error(403, "You do not have permission to add new domains");
+    }
+});
 
 export default component$(() => {
-    const limits = useLimits()
+    const limits = useLimits();
     const create = useCreateDomainDraft();
 
     const fieldErrors = useStore({
-        emailHandle: "",
         domain: "",
     });
 
@@ -143,7 +118,6 @@ export default component$(() => {
 
         if (create.value?.failed) {
             const errors = create.value.fieldErrors as Record<string, string>;
-            fieldErrors.emailHandle = errors.emailHandle || "";
             fieldErrors.domain = errors.domain || "";
 
             return;
@@ -154,11 +128,13 @@ export default component$(() => {
         <div class="flex min-h-screen w-full items-center justify-center bg-neutral-50">
             <Form action={create} class="flex w-full max-w-md flex-col gap-4">
                 <h1 class="font-medium text-2xl">Add a new Domain</h1>
-                <Input name="address.emailHandle" placeholder="Email Handle" required />
-                {fieldErrors.emailHandle && (
-                    <p class="text-red-700">{fieldErrors.emailHandle}</p>
-                )}
-                <Button>{create.isRunning ? "Creating..." : "Create Address"}</Button>
+                <p class="text-neutral-500 text-sm">
+                    After that, you'll need to place an TXT records and a MX Record in
+                    your DNS settings.
+                </p>
+                <Input name="workspace.domain" placeholder="Domain" required />
+                {fieldErrors.domain && <p class="text-red-700">{fieldErrors.domain}</p>}
+                <Button>{create.isRunning ? "Creating..." : "Add Domain"}</Button>
             </Form>
         </div>
     );
