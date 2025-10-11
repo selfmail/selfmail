@@ -5,7 +5,6 @@ import { middlewareAuthentication } from "~/lib/auth";
 
 export const onRequest: RequestHandler = async ({
   next,
-  params,
   cookie,
   redirect,
   sharedMap,

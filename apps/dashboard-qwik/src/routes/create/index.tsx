@@ -32,7 +32,7 @@ export const onRequest: RequestHandler = async ({
 };
 
 export const useCreateWorkspace = routeAction$(
-    async ({ workspace: { name, slug } }, { sharedMap, error }) => {
+    async ({ workspace: { name, slug } }, { sharedMap, error, env }) => {
         if (!sharedMap.has("user") || !sharedMap.get("user").id) {
             throw error(401, "Unauthorized");
         }
@@ -57,6 +57,7 @@ export const useCreateWorkspace = routeAction$(
         const workspace = await db.workspace.create({
             data: {
                 name,
+                planId: env.get("DEFAULT_WORKSPACE_PLAN_ID") || "free",
                 slug,
                 ownerId: sharedMap.get("user").id,
             },

@@ -214,8 +214,9 @@ model Workspace {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  billingPlan   BillingPlan @default(free)
-  planChangedAt DateTime    @default(now())
+  planId        String
+  plan          Plan     @relation(fields: [planId], references: [id])
+  planChangedAt DateTime @default(now())
 
   overlimit   Boolean   @default(false)
   overlimitAt DateTime?
@@ -235,20 +236,31 @@ model Workspace {
 model Plan {
   id String @id @default(uuid())
 
-  name                 BillingPlan @unique
-  maxMembers           Int // max number of members in the workspace
-  softBytesMemberLimit BigInt
+  name        String  @unique
+  description String?
+
+  maxMembers Int // max number of members in the workspace
+
+  // max number of email addresses in the workspace
+  maxAddresses             Int    @default(10)
+  maxPublicDomainAddresses Int    @default(2) // max number of public domain addresses, for example addresses with the @selfmail.app domain ending
+  softBytesMemberLimit     BigInt
+  storageBytes             BigInt // storage in bytes
+
+  maxDomains Int // max number of domains in the workspace
 
   priceEuroCents Int // price in cents for euro
 
-  storageBytes BigInt // storage in bytes
+  access Access[]
+
+  Workspace Workspace[]
 }
 
-enum BillingPlan {
-  free
-  pro
-  premium
-  // TODO: create enterprise plan with custom pricing
+enum Access {
+  AI
+  API
+  SSO
+  PrioritySupport
 }
 
 model Domain {

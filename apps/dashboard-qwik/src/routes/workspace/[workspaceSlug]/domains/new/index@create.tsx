@@ -7,10 +7,13 @@ import {
     zod$,
 } from "@builder.io/qwik-city";
 import { init } from "@paralleldrive/cuid2";
-import { db } from "database";
+import { db, type Workspace } from "database";
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
-import type { MemberInSharedMap, UserInSharedMap } from "../../types";
+import type {
+    MemberInSharedMap,
+    UserInSharedMap,
+} from "../../types";
 
 export const useCreateDomainDraft = routeAction$(
     async ({ workspace: { domain } }, { redirect, params }) => {
@@ -65,6 +68,8 @@ export const useCreateDomainDraft = routeAction$(
 );
 
 const useLimits = routeLoader$(async ({ sharedMap, error }) => {
+    console.log("check limits")
+    // Check if the user has the right to add new domains
     if (!sharedMap.has("user") || !sharedMap.get("user").id) {
         throw error(401, "Unauthorized");
     }
@@ -80,6 +85,7 @@ const useLimits = routeLoader$(async ({ sharedMap, error }) => {
     if (!sharedMap.has("workspace") || !sharedMap.get("workspace").id) {
         throw error(400, "Workspace not found in shared map");
     }
+
     // check whether the current member has the right to add new domains
     const permissions = await db.memberPermission.findUnique({
         where: {
@@ -91,22 +97,43 @@ const useLimits = routeLoader$(async ({ sharedMap, error }) => {
     });
 
     // check whether the user is the workspace owner
-    const workspace = sharedMap.get("workspace") as {
-        id: string;
-        ownerId: string;
-    };
-    if (user.id === workspace.ownerId) {
-        console.log("User is the workspace owner");
-        return {};
-    }
+    const workspace = sharedMap.get("workspace") as Workspace;
 
-    if (!permissions) {
+    if (!permissions && user.id !== workspace.ownerId) {
         throw error(403, "You do not have permission to add new domains");
     }
+
+    // fetch the limits for domains
+    const plan = await db.plan.findUnique({
+        where: {
+            id: workspace.planId,
+        },
+    });
+
+    if (!plan) {
+        throw error(500, "Plan not found");
+    }
+
+    const domainCount = await db.domain.count({
+        where: {
+            workspaceId: workspace.id,
+        },
+    });
+
+    console.log(plan, domainCount)
+
+
+    return {
+        maxDomains: plan.maxDomains,
+        currentDomains: domainCount,
+        canAddMore: domainCount < plan.maxDomains,
+    }
+
 });
 
 export default component$(() => {
     const limits = useLimits();
+    console.log(limits.value)
     const create = useCreateDomainDraft();
 
     const fieldErrors = useStore({
@@ -134,7 +161,10 @@ export default component$(() => {
                 </p>
                 <Input name="workspace.domain" placeholder="Domain" required />
                 {fieldErrors.domain && <p class="text-red-700">{fieldErrors.domain}</p>}
-                <Button>{create.isRunning ? "Creating..." : "Add Domain"}</Button>
+                <p class={`text-sm ${limits.value.canAddMore ? "text-neutral-500" : "text-red-700"}`}>
+                    Your workspace has used {limits.value.currentDomains} out of {limits.value.maxDomains} domains.
+                </p>
+                <Button class="disabled:cursor-not-allowed disabled:active:scale-100" disabled={!limits.value.canAddMore}>{!limits.value.canAddMore ? "Limit reached" : create.isRunning ? "Creating..." : "Add Domain"}</Button>
             </Form>
         </div>
     );
