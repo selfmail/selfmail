@@ -10,13 +10,11 @@ import { init } from "@paralleldrive/cuid2";
 import { db, type Workspace } from "database";
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
-import type {
-    MemberInSharedMap,
-    UserInSharedMap,
-} from "../../types";
+import { hasPermissions } from "~/lib/permissions";
+import type { MemberInSharedMap, UserInSharedMap } from "../../types";
 
 export const useCreateDomainDraft = routeAction$(
-    async ({ workspace: { domain } }, { redirect, params }) => {
+    async ({ workspace: { domain } }, { redirect, params, sharedMap, error }) => {
         // check whether the domain exists
         const existingDomain = await db.domain.findUnique({
             where: {
@@ -38,12 +36,22 @@ export const useCreateDomainDraft = routeAction$(
             length: 8,
         });
 
+
+        const workspace = sharedMap.get("workspace") as Workspace;
+
+        if (!workspace || !workspace.id) {
+            throw error(500, "Internal Server Error")
+        }
+
+        const createdTime = new Date()
+
         const domainDraft = await db.domain.create({
             data: {
                 id: createId(),
                 domain,
-                verificationToken: `selfmail-domain-verification-${new Date().toISOString()}-${createId()}`,
-                workspaceId: params.workspaceSlug,
+                createdAt: createdTime,
+                verificationToken: `selfmail-domain-verification-${Buffer.from(createdTime.toUTCString()).toString("base64")}-${createId()}`,
+                workspaceId: workspace.id,
                 public: false,
                 verified: false,
             },
@@ -58,7 +66,7 @@ export const useCreateDomainDraft = routeAction$(
             };
         }
 
-        redirect(302, `/workspace/${params.workspaceSlug}/domains`);
+        redirect(302, `/workspace/${params.workspaceSlug}/domains/verify?domain=${domainDraft.domain}`);
     },
     zod$({
         workspace: z.object({
@@ -68,7 +76,6 @@ export const useCreateDomainDraft = routeAction$(
 );
 
 const useLimits = routeLoader$(async ({ sharedMap, error }) => {
-    console.log("check limits")
     // Check if the user has the right to add new domains
     if (!sharedMap.has("user") || !sharedMap.get("user").id) {
         throw error(401, "Unauthorized");
@@ -82,31 +89,25 @@ const useLimits = routeLoader$(async ({ sharedMap, error }) => {
 
     const member = sharedMap.get("member") as MemberInSharedMap;
 
-    if (!sharedMap.has("workspace") || !sharedMap.get("workspace").id) {
+    if (!sharedMap.has("workspace") || !sharedMap.get("workspace").id || !sharedMap.get("workspace").ownerId) {
         throw error(400, "Workspace not found in shared map");
     }
 
     // check whether the current member has the right to add new domains
-    const permissions = await db.memberPermission.findUnique({
-        where: {
-            memberId_permissionName: {
-                memberId: member.id,
-                permissionName: "domains:create",
-            },
-        },
+    const permissions = await hasPermissions({
+        memberId: member.id,
+        workspaceId: member.workspaceId,
+        permissions: ["create:domain"],
     });
 
-    // check whether the user is the workspace owner
-    const workspace = sharedMap.get("workspace") as Workspace;
-
-    if (!permissions && user.id !== workspace.ownerId) {
+    if (!permissions && user.id !== sharedMap.get("workspace").ownerId) {
         throw error(403, "You do not have permission to add new domains");
     }
 
     // fetch the limits for domains
     const plan = await db.plan.findUnique({
         where: {
-            id: workspace.planId,
+            id: sharedMap.get("workspace").planId,
         },
     });
 
@@ -116,24 +117,19 @@ const useLimits = routeLoader$(async ({ sharedMap, error }) => {
 
     const domainCount = await db.domain.count({
         where: {
-            workspaceId: workspace.id,
+            workspaceId: sharedMap.get("workspace").id,
         },
     });
-
-    console.log(plan, domainCount)
-
 
     return {
         maxDomains: plan.maxDomains,
         currentDomains: domainCount,
         canAddMore: domainCount < plan.maxDomains,
-    }
-
+    };
 });
 
 export default component$(() => {
     const limits = useLimits();
-    console.log(limits.value)
     const create = useCreateDomainDraft();
 
     const fieldErrors = useStore({
@@ -142,6 +138,7 @@ export default component$(() => {
 
     useVisibleTask$(async ({ track }) => {
         track(() => create.value?.fieldErrors);
+        console.log(create.value?.fieldErrors)
 
         if (create.value?.failed) {
             const errors = create.value.fieldErrors as Record<string, string>;
@@ -161,10 +158,22 @@ export default component$(() => {
                 </p>
                 <Input name="workspace.domain" placeholder="Domain" required />
                 {fieldErrors.domain && <p class="text-red-700">{fieldErrors.domain}</p>}
-                <p class={`text-sm ${limits.value.canAddMore ? "text-neutral-500" : "text-red-700"}`}>
-                    Your workspace has used {limits.value.currentDomains} out of {limits.value.maxDomains} domains.
+                <p
+                    class={`text-sm ${limits.value.canAddMore ? "text-neutral-500" : "text-red-700"}`}
+                >
+                    Your workspace has used {limits.value.currentDomains} out of{" "}
+                    {limits.value.maxDomains} domains.
                 </p>
-                <Button class="disabled:cursor-not-allowed disabled:active:scale-100" disabled={!limits.value.canAddMore}>{!limits.value.canAddMore ? "Limit reached" : create.isRunning ? "Creating..." : "Add Domain"}</Button>
+                <Button
+                    class="disabled:cursor-not-allowed disabled:active:scale-100"
+                    disabled={!limits.value.canAddMore}
+                >
+                    {!limits.value.canAddMore
+                        ? "Limit reached"
+                        : create.isRunning
+                            ? "Creating..."
+                            : "Add Domain"}
+                </Button>
             </Form>
         </div>
     );

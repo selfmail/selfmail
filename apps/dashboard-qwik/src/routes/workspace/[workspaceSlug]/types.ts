@@ -27,15 +27,15 @@ export type MemberInSharedMap = {
 
 export type WorkspaceInSharedMap = {
 	id: string;
-	image: string | null;
 	name: string;
 	description: string | null;
+	image: string | null;
+	slug: string;
 	createdAt: Date;
 	updatedAt: Date;
-	billingPlan: "free" | "pro" | "premium";
+	planId: string;
 	planChangedAt: Date;
 	overlimit: boolean;
 	overlimitAt: Date | null;
-	slug: string;
 	ownerId: string;
 };

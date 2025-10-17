@@ -1,5 +1,5 @@
 import { component$, Slot } from "@builder.io/qwik";
-import { type RequestHandler, routeLoader$ } from "@builder.io/qwik-city";
+import type { RequestHandler } from "@builder.io/qwik-city";
 import { db } from "database";
 import Header from "~/components/dashboard/header";
 import Navigation from "~/components/dashboard/navigation";
@@ -7,7 +7,11 @@ import {
     middlewareAuthentication,
     verifyWorkspaceMembership,
 } from "~/lib/auth";
-import type { MemberInSharedMap, UserInSharedMap, WorkspaceInSharedMap } from "./types";
+import type {
+    MemberInSharedMap,
+    UserInSharedMap,
+    WorkspaceInSharedMap,
+} from "./types";
 
 export const onRequest: RequestHandler = async ({
     next,
@@ -41,15 +45,6 @@ export const onRequest: RequestHandler = async ({
         );
     }
 
-    const workspaces = await db.workspace.findMany({
-        where: {
-            Member: {
-                every: {
-                    userId: user.id,
-                },
-            },
-        },
-    });
 
     sharedMap.set("user", user as UserInSharedMap);
     sharedMap.set("member", member as MemberInSharedMap);

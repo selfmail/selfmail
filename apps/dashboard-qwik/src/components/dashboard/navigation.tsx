@@ -1,5 +1,6 @@
 import { component$, useStore, useTask$ } from "@builder.io/qwik";
 import { Link, server$, useLocation } from "@builder.io/qwik-city";
+import { LuPlaneTakeoff } from "@qwikest/icons/lucide";
 import { db } from "database";
 import {
     middlewareAuthentication,
@@ -71,6 +72,15 @@ export default component$(() => {
         <div class="flex w-full flex-row justify-between">
             <div class="flex flex-col gap-3">
                 <p class="text-neutral-700 text-sm">Addresses</p>
+                <NavLink
+                    groupHover={false}
+                    href={`/workspace/${location.params.workspaceSlug}/compose${location.params.addressId ? `?addressId=${location.params.addressId}` : ""}`}
+                    class="flex w-min items-center space-x-3 rounded-xl border border-neutral-300 border-dashed p-2 text-center text-neutral-600 text-sm hover:bg-neutral-100! hover:ring-0!"
+                    prefetch
+                >
+                    <LuPlaneTakeoff class="inline-block h-5 w-5" />
+                    <span>Compose</span>
+                </NavLink>
                 {addresses.data.map((address) => (
                     <NavLink
                         key={address.id}
