@@ -249,6 +249,8 @@ export default component$(() => {
                                     {domain.value.verificationToken}
                                 </code>
                             </div>
+
+
                             <div class="flex items-center">
                                 {getStatusIcon(
                                     verificationResult.value?.txtVerificationCheck?.pass,

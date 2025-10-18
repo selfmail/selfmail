@@ -1,11 +1,16 @@
 import { component$, useStore, useTask$ } from "@builder.io/qwik";
-import { server$ } from "@builder.io/qwik-city";
+import { Link, server$, useLocation } from "@builder.io/qwik-city";
+import { LuPlaneTakeoff } from "@qwikest/icons/lucide";
 import { db } from "database";
-import { middlewareAuthentication, verifyWorkspaceMembership } from "~/lib/auth";
+import {
+    middlewareAuthentication,
+    verifyWorkspaceMembership,
+} from "~/lib/auth";
 import type {
     UserInSharedMap,
     WorkspaceInSharedMap,
 } from "~/routes/workspace/[workspaceSlug]/types";
+import { NavLink } from "../ui/NavLink";
 
 const getData = server$(async function () {
     const sessionToken = this.cookie.get("selfmail-session-token")?.value;
@@ -50,7 +55,9 @@ const getData = server$(async function () {
     });
 
     if (workspaces.length === 0) {
-        throw new Error("User is not a member of any workspaces. Please try again.");
+        throw new Error(
+            "User is not a member of any workspaces. Please try again.",
+        );
     }
 
     return {
@@ -68,11 +75,12 @@ const getData = server$(async function () {
 });
 
 export default component$(() => {
+    const location = useLocation();
     const currentWorkspace = useStore({
         id: "",
         image: null as string | null,
         name: "",
-    })
+    });
 
     useTask$(async () => {
         const data = await getData();
@@ -82,7 +90,7 @@ export default component$(() => {
     });
 
     return (
-        <header class="flex w-full items-center justify-between">
+        <header class="flex w-full flex-row items-center justify-between">
             <div class="flex cursor-pointer flex-row items-center space-x-3 rounded-lg pr-1 transition hover:bg-neutral-200 hover:ring-4 hover:ring-neutral-200">
                 {currentWorkspace.image ? (
                     <img
@@ -97,6 +105,14 @@ export default component$(() => {
                 )}
                 <h3 class="font-medium text-lg">{currentWorkspace.name}</h3>
             </div>
+            <Link
+                href={`/workspace/${location.params.workspaceSlug}/compose${location.params.addressId ? `?addressId=${location.params.addressId}` : ""}`}
+                class="flex w-min items-center space-x-3 rounded-xl border border-neutral-300 border-dashed p-2 text-center text-neutral-600 text-sm hover:bg-neutral-100! hover:ring-0"
+                prefetch
+            >
+                <LuPlaneTakeoff class="inline-block h-5 w-5" />
+                <span>Compose</span>
+            </Link>
         </header>
     );
 });
