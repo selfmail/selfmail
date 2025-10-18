@@ -1,9 +1,15 @@
 import { component$, Slot } from "@builder.io/qwik";
 import type { RequestHandler } from "@builder.io/qwik-city";
+import Header from "~/components/dashboard/header";
 import {
     middlewareAuthentication,
     verifyWorkspaceMembership,
 } from "~/lib/auth";
+import type {
+    MemberInSharedMap,
+    UserInSharedMap,
+    WorkspaceInSharedMap,
+} from "./types";
 
 export const onRequest: RequestHandler = async ({
     next,
@@ -37,9 +43,10 @@ export const onRequest: RequestHandler = async ({
         );
     }
 
-    sharedMap.set("user", user);
-    sharedMap.set("member", member);
-    sharedMap.set("workspace", workspace);
+
+    sharedMap.set("user", user as UserInSharedMap);
+    sharedMap.set("member", member as MemberInSharedMap);
+    sharedMap.set("workspace", workspace as WorkspaceInSharedMap);
 
     await next();
 };
@@ -48,6 +55,7 @@ export default component$(() => {
     return (
         <div class="flex min-h-screen w-full flex-col items-center bg-neutral-50">
             <div class="flex w-full flex-col gap-12 px-5 py-6 lg:px-26 xl:px-32">
+                <Header />
                 <Slot />
             </div>
         </div>

@@ -60,6 +60,7 @@ export default component$(() => {
             api: "/api",
             ai: "/ai",
             workflows: "/workflows",
+            activity: "/activity",
         },
         workspace: {
             member: "/members",
