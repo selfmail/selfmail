@@ -84,6 +84,7 @@ export const useCreateWorkspace = routeAction$(
             data: {
                 userId: sharedMap.get("user").id,
                 workspaceId: workspace.id,
+                profileName: sharedMap.get("user").name || "Owner",
             },
         });
 

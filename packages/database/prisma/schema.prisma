@@ -94,6 +94,7 @@ model User {
   TwoFactorToken    TwoFactorToken[]
   Workspace         Workspace[]
   Notification      Notification[]
+  Invitation        Invitation[]
 
   @@unique([id, email])
 }
@@ -137,7 +138,7 @@ model Member {
   user   User   @relation(fields: [userId], references: [id])
 
   // profile configuration
-  profileName String?
+  profileName String
   description String?
   image       String? // url to image (hosted on selfmail r2) or undefined for no image
 
@@ -153,6 +154,7 @@ model Member {
   MemberAddress   MemberAddress[]
   SmtpCredentials SmtpCredentials[]
   Notification    Notification[]
+  Invitation      Invitation[]
 
   @@unique(name: "userWorkspaceId", fields: [workspaceId, userId])
 }
@@ -170,6 +172,9 @@ model Role {
   workspace      Workspace        @relation(fields: [workspaceId], references: [id])
   member         Member[]
   RolePermission RolePermission[]
+  Invitation     Invitation[]
+
+  @@unique([workspaceId, name])
 }
 
 model RolePermission {
@@ -231,6 +236,7 @@ model Workspace {
   Domain          Domain[]
   SmtpCredentials SmtpCredentials[]
   Activity        Activity[]
+  Invitation      Invitation[]
 
   @@index([ownerId])
 }
@@ -551,4 +557,42 @@ enum NotificationType {
   info
   warning
   error
+}
+
+model Invitation {
+  id String @id @default(uuid())
+
+  email String
+
+  token String @unique
+
+  userToken String? @unique
+
+  role   Role?   @relation(fields: [roleId], references: [id])
+  roleId String?
+
+  // Role is not important if set true, 
+  // we'll assign admin permissions directly to the invited user
+  inviteAsAdmin Boolean @default(false)
+
+  status InvitationStatus @default(PENDING)
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+  invitedById String
+  invitedBy   Member @relation(fields: [invitedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  respondedAt DateTime?
+  User        User?     @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
 }

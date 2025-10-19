@@ -88,12 +88,12 @@ const kickMember = server$(async function (memberId: string) {
                 workspace: {
                     ownerId: {
                         not: memberId,
-                    }
-                }
-            }
+                    },
+                },
+            },
         },
     });
-})
+});
 
 export default component$(() => {
     const members = useMembers();
@@ -102,16 +102,32 @@ export default component$(() => {
             <BackHeading>Members</BackHeading>
             <div class="flex flex-col space-y-3">
                 <h2 class="font-medium text-lg">You</h2>
-                <div class="flex w-full flex-row items-center justify-between rounded-md border border-neutral-200 bg-white">
-                    Workspace Member sind {new Date(members.value.currentMember.createdAt).toLocaleDateString(undefined, {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                    })}.
+                <div class="flex w-full flex-row items-center justify-between rounded-md border border-neutral-200 bg-white p-4">
+                    Workspace Member since{" "}
+                    {new Date(members.value.currentMember.createdAt).toLocaleDateString(
+                        undefined,
+                        {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        },
+                    )}
+                    .
                 </div>
             </div>
             <div class="flex flex-col space-y-3">
-                <h2 class="font-medium text-lg">Members of this workspace</h2>
+                <div class="flex w-full flex-row items-center justify-between">
+                    <h2 class="font-medium text-lg">Members of this workspace</h2>
+                    {members.value.canInviteMembers && (
+                        <Link
+                            href="invite"
+                            class="flex items-center space-x-1 text-blue-500"
+                        >
+                            <LuUserPlus class="h-4 w-4" />
+                            <span>Invite</span>
+                        </Link>
+                    )}
+                </div>
                 {members.value.members.length === 0 ? (
                     <div class="flex w-full flex-col items-center justify-center rounded-lg border border-neutral-200 bg-white p-6">
                         <p class="text-neutral-500">No other members yet.</p>
