@@ -4,6 +4,7 @@ import {
     Form,
     routeAction$,
     routeLoader$,
+    useLocation,
     useNavigate,
     z,
     zod$,
@@ -20,7 +21,7 @@ const useCookies = routeLoader$(async ({ cookie }) => {
 });
 
 export const useRegister = routeAction$(
-    async ({ account: { confirmPassword, email, password, name } }) => {
+    async ({ account: { confirmPassword, email, password, name } }, { query }) => {
         if (password !== confirmPassword) {
             return {
                 fieldErrors: {
@@ -64,6 +65,26 @@ export const useRegister = routeAction$(
                 },
                 failed: true,
             };
+        }
+
+        // checks for the invitation
+        if (query.has("invitationToken")) {
+            const invitation = await db.invitation.findUnique({
+                where: {
+                    userToken: query.get("invitationToken") || "",
+                },
+            });
+
+            if (invitation) {
+                await db.invitation.update({
+                    where: {
+                        id: invitation?.id || "",
+                    },
+                    data: {
+                        userId: user.id
+                    }
+                })
+            }
         }
 
         const createId = init({
@@ -116,8 +137,10 @@ export const useRegister = routeAction$(
 export default component$(() => {
     const navigation = useNavigate();
     const register = useRegister();
-
-    console.log("cookies", useCookies() || "hello");
+    const location = useLocation()
+    const invitationToken = `?invitationToken=${location.url.searchParams.get(
+        "invitationToken",
+    ) || ""}`;
 
     const fieldErrors = useStore({
         name: "",
@@ -203,7 +226,7 @@ export default component$(() => {
                 </Button>
                 <span class="text-neutral-500 text-sm">
                     Already have an account?{" "}
-                    <a href="/auth/login" class="underline">
+                    <a href={`/auth/login${invitationToken}`} class="underline">
                         Login
                     </a>
                 </span>

@@ -19,7 +19,7 @@ import { Input } from "~/components/ui/Input";
 import { middlewareAuthentication } from "~/lib/auth";
 
 export const useLogin = routeAction$(
-    async ({ account: { email, password } }, { cookie }) => {
+    async ({ account: { email, password } }, { cookie, redirect }) => {
         const user = await db.user.findUnique({
             where: {
                 email,
@@ -85,6 +85,17 @@ export const useLogin = routeAction$(
             sameSite: "Lax",
         });
 
+        // Check for an open invitation
+        const invitation = await db.invitation.findFirst({
+            where: {
+                userId: user.id,
+            },
+        });
+
+        if (invitation) {
+            throw redirect(307, `/workspace/members/join?token=${invitation.token}`);
+        }
+
         return {
             fieldErrors: {},
             failed: false,
@@ -135,6 +146,10 @@ export default component$(() => {
         email: "",
         password: "",
     });
+
+    const invitationToken = `?invitationToken=${location.url.searchParams.get(
+        "invitationToken",
+    ) || ""}`;
 
     useVisibleTask$(async ({ track }) => {
         track(() => login.value?.fieldErrors);
@@ -230,7 +245,7 @@ export default component$(() => {
                 </Button>
                 <span class="text-neutral-500 text-sm">
                     Don't have an account?{" "}
-                    <a href="/auth/register" class="underline">
+                    <a href={`/auth/register${invitationToken}`} class="underline">
                         Sign up
                     </a>
                 </span>

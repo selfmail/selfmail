@@ -82,10 +82,43 @@ const acceptInvitation = server$(async function () {
                 slug: workspaceSlug,
             },
         },
+        include: {
+            workspace: {
+                select: {
+                    Member: {
+                        select: {
+                            id: true,
+                        },
+                    },
+                    plan: {
+                        select: {
+                            maxMembers: true,
+                        },
+                    },
+                },
+            },
+        },
     });
 
     if (!invitation) {
-        throw new Error("Invalid invitation link");
+        return {
+            success: false,
+            redirectToAuth: false,
+            message: "Invitation not found or invalid.",
+        };
+    }
+
+    if (
+        !invitation.workspace ||
+        !invitation.workspace.plan.maxMembers ||
+        invitation.workspace.Member.length <= invitation.workspace.plan?.maxMembers
+    ) {
+        return {
+            success: false,
+            redirectToAuth: false,
+            message:
+                "The workspace has reached its maximum number of members. Please contact the workspace administrator.",
+        };
     }
 
     // if there's no user currently logged in, we'll have to push the user to the registration/login page
@@ -93,7 +126,7 @@ const acceptInvitation = server$(async function () {
 
     const createUserToken = init({
         length: 8,
-    })
+    });
 
     if (!sessionToken) {
         const token = createUserToken();
@@ -110,7 +143,7 @@ const acceptInvitation = server$(async function () {
         return {
             success: true,
             redirectToAuth: true,
-            token
+            token,
         };
     }
 
@@ -131,7 +164,7 @@ const acceptInvitation = server$(async function () {
         return {
             success: true,
             redirectToAuth: true,
-            token
+            token,
         };
     }
 
@@ -146,8 +179,9 @@ const acceptInvitation = server$(async function () {
         return {
             success: false,
             redirectToAuth: false,
-            message: "You are already a member of this workspace. A user can't be twice in the same workspace.",
-        }
+            message:
+                "You are already a member of this workspace. A user can't be twice in the same workspace.",
+        };
     }
 
     // add user to the workspace members
@@ -164,12 +198,12 @@ const acceptInvitation = server$(async function () {
         message: undefined,
         token: undefined,
         redirectToAuth: false,
-    }
+    };
 });
 
 export default component$(() => {
     const invitation = useInvitationInformations();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     return (
         <div class="flex min-h-screen w-full flex-col items-center justify-center space-y-3 bg-neutral-50">
             <h1 class="font-medium text-2xl">Join Workspace</h1>
@@ -194,19 +228,24 @@ export default component$(() => {
                     {new Date(invitation.value.invitation.createdAt).toLocaleDateString()}
                 </p>
             </div>
-            <Button onClick$={async () => {
-                const res = await acceptInvitation()
+            <Button
+                onClick$={async () => {
+                    const res = await acceptInvitation();
 
-                if (res.success) {
-                    if (res.redirectToAuth && res.token) {
-                        throw navigate(`/auth/login?invitationToken=${res.token}&workspaceSlug=${invitation.value.workspace.name}`)
-                    } else {
-                        throw navigate(`/workspace/${invitation.value.workspace.slug}`)
+                    if (res.success) {
+                        if (res.redirectToAuth && res.token) {
+                            throw navigate(
+                                `/auth/login?invitationToken=${res.token}&workspaceSlug=${invitation.value.workspace.name}`,
+                            );
+                        }
+
+                        throw navigate(`/workspace/${invitation.value.workspace.slug}`);
                     }
-                } else {
-                    toast.error(res.message || "An error occurred")
-                }
-            }}>Accept Invitation</Button>
+                    toast.error(res.message || "An error occurred. Try again later.");
+                }}
+            >
+                Accept Invitation
+            </Button>
             <span class="cursor-pointer text-neutral-500 text-sm">
                 Decline Invitation
             </span>
