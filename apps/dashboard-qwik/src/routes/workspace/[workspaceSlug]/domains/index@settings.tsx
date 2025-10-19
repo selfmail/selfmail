@@ -1,16 +1,20 @@
 import { $, component$ } from "@builder.io/qwik";
 import { Link, routeLoader$, server$, z } from "@builder.io/qwik-city";
 import { db } from "database";
+import { toast } from "qwik-sonner";
+import AlertDialog from "~/components/ui/AlertDialog";
 import BackHeading from "~/components/ui/BackHeading";
+import { Button } from "~/components/ui/Button";
+import {
+    middlewareAuthentication,
+    verifyWorkspaceMembership,
+} from "~/lib/auth";
 import { hasPermissions, permissions } from "~/lib/permissions";
 import type {
     MemberInSharedMap,
     UserInSharedMap,
     WorkspaceInSharedMap,
 } from "../types";
-import { middlewareAuthentication, verifyWorkspaceMembership } from "~/lib/auth";
-import AlertDialog from "~/components/ui/AlertDialog";
-import { toast } from "qwik-sonner";
 
 const useDomains = routeLoader$(async ({ sharedMap, error }) => {
     const user = sharedMap.get("user") as UserInSharedMap;
@@ -33,7 +37,7 @@ const useDomains = routeLoader$(async ({ sharedMap, error }) => {
     const userPermissions = await permissions({
         memberId: member.id,
         workspaceId: workspace.id,
-        permissions: ["domains:add", "domains:remove", "domains:update"],
+        permissions: ["domains:add", "domains:delete", "domains:update"],
     });
 
     const domains = await db.domain.findMany({
@@ -45,13 +49,13 @@ const useDomains = routeLoader$(async ({ sharedMap, error }) => {
     return {
         domains,
         canAddDomain: userPermissions.includes("domains:add"),
-        canRemoveDomain: userPermissions.includes("domains:remove"),
+        canRemoveDomain: userPermissions.includes("domains:delete"),
         canUpdateDomain: userPermissions.includes("domains:update"),
     };
 });
 
 const removeDomain = server$(async function (domainId: string) {
-    const parse = await z.string().min(8).max(9).safeParseAsync(domainId)
+    const parse = await z.string().min(8).max(9).safeParseAsync(domainId);
     if (!parse.success) {
         throw new Error("Invalid domain ID");
     }
@@ -88,14 +92,14 @@ const removeDomain = server$(async function (domainId: string) {
     const userPermisssion = await hasPermissions({
         memberId: currentMember.id,
         workspaceId: currentMember.workspaceId,
-        permissions: ["domains:remove"],
-    })
+        permissions: ["domains:delete"],
+    });
 
     if (!userPermisssion) {
         return {
             success: false,
             message: "You do not have permission to remove domains.",
-        }
+        };
     }
 
     try {
@@ -108,13 +112,13 @@ const removeDomain = server$(async function (domainId: string) {
         return {
             success: false,
             message: "Failed to remove domain",
-        }
+        };
     }
 
     return {
-        success: true
-    }
-})
+        success: true,
+    };
+});
 
 export default component$(() => {
     const domains = useDomains();
@@ -125,7 +129,9 @@ export default component$(() => {
                 <BackHeading>Domains ({domains.value.domains.length})</BackHeading>
                 <p class="text-neutral-500">
                     You can {domains.value.canAddDomain ? "add" : "view"} custom domains
-                    for this workspace here. Your workspace has currently {domains.value.domains.length} domain{domains.value.domains.length === 1 ? "" : "s"}.
+                    for this workspace here. Your workspace has currently{" "}
+                    {domains.value.domains.length} domain
+                    {domains.value.domains.length === 1 ? "" : "s"}.
                 </p>
             </div>
             <div class="flex flex-col space-y-3">
@@ -140,6 +146,11 @@ export default component$(() => {
                     </div>
                 ) : (
                     <ul class="flex flex-col gap-4">
+                        {domains.value.canAddDomain && (
+                            <Link href="new" class="self-start">
+                                <Button>Add Domain</Button>
+                            </Link>
+                        )}
                         {domains.value.domains.map((domain) => (
                             <li
                                 key={domain.id}
@@ -148,13 +159,14 @@ export default component$(() => {
                                 <div class="flex items-center justify-between">
                                     <div class="flex flex-row">
                                         <span class="font-medium">{domain.domain}</span>
-                                        {
-                                            !domain.verified && (
-                                                <Link href={`verify?domain=${domain.domain}`} class="text-blue-500">
-                                                    Verify Now
-                                                </Link>
-                                            )
-                                        }
+                                        {!domain.verified && (
+                                            <Link
+                                                href={`verify?domain=${domain.domain}`}
+                                                class="text-blue-500"
+                                            >
+                                                Verify Now
+                                            </Link>
+                                        )}
                                     </div>
                                     <div class="flex flex-row items-center space-x-3">
                                         <span
@@ -165,12 +177,11 @@ export default component$(() => {
                                         >
                                             {domain.verified ? "Verified" : "Unverified"}
                                         </span>
-                                        {(
+                                        {domains.value.canRemoveDomain && (
                                             <AlertDialog
                                                 title={`Remove ${domain.domain}?`}
                                                 description={`Are you sure you want to remove ${domain.domain}? This action can't be undone.`}
-                                                class="rounded-full cursor-pointer bg-red-100 text-red-800 px-2 py-1 font-semibold text-sm"
-
+                                                class="cursor-pointer rounded-full bg-red-100 px-2 py-1 font-semibold text-red-800 text-sm"
                                                 proceedActionText="Delete Domain"
                                                 proceedAction={$(async () => {
                                                     const result = await removeDomain(domain.id);
@@ -178,7 +189,9 @@ export default component$(() => {
                                                         // Reload the page to reflect changes
                                                         window.location.reload();
                                                     } else {
-                                                        toast.error(result.message || "Failed to remove domain");
+                                                        toast.error(
+                                                            result.message || "Failed to remove domain",
+                                                        );
                                                     }
                                                 })}
                                             >
@@ -191,7 +204,7 @@ export default component$(() => {
                         ))}
                     </ul>
                 )}
-            </div >
+            </div>
         </>
     );
 });

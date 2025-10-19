@@ -1,4 +1,4 @@
-import { component$, Slot, useSignal } from "@builder.io/qwik";
+import { component$, Slot } from "@builder.io/qwik";
 import { Modal } from "@qwik-ui/headless";
 
 type AlertDialogProps = {
@@ -17,11 +17,8 @@ export default component$<AlertDialogProps>(
         title,
         proceedActionText,
     }) => {
-        const open = useSignal(false);
         return (
-            <Modal.Root bind:show={open} onShow$={() => {
-                console.log("show")
-            }} alert>
+            <Modal.Root alert>
                 <Modal.Trigger class={triggerClass}>
                     <Slot />
                 </Modal.Trigger>
