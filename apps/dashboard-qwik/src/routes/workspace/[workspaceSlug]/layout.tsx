@@ -1,6 +1,5 @@
 import { component$, Slot } from "@builder.io/qwik";
 import type { RequestHandler } from "@builder.io/qwik-city";
-import { db } from "database";
 import Header from "~/components/dashboard/header";
 import Navigation from "~/components/dashboard/navigation";
 import {
@@ -41,7 +40,7 @@ export const onRequest: RequestHandler = async ({
     if (!isMember || !member || !workspace) {
         throw redirect(
             302,
-            "/auth/login?message=not%20a%20member%20of%20this%20workspace",
+            "/auth/login?error=You are not authorized to access this workspace. Contact us or use a different account.",
         );
     }
 

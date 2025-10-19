@@ -39,7 +39,7 @@ export const onRequest: RequestHandler = async ({
     if (!isMember || !member || !workspace) {
         throw redirect(
             302,
-            "/auth/login?message=not%20a%20member%20of%20this%20workspace",
+            "/auth/login?error=not%20a%20member%20of%20this%20workspace",
         );
     }
 

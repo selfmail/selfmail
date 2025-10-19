@@ -36,11 +36,11 @@
 		"vite-tsconfig-paths": "^4.2.1",
 		"database": "workspace:*",
 		"@qwik-ui/headless": "^0.7.3",
-		"@qwikest/icons": "^0.0.13"
-	},
-	"dependencies": {
+		"qwik-sonner": "^1.0.3",
+		"@qwikest/icons": "^0.0.13",
 		"@paralleldrive/cuid2": "^2.2.2",
 		"@types/bcrypt": "^6.0.0",
 		"bcrypt": "^6.0.0"
-	}
+	},
+	"dependencies": {}
 }

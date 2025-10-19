@@ -4,6 +4,7 @@ import {
     Form,
     Link,
     routeAction$,
+    routeLoader$,
     useLocation,
     useNavigate,
     z,
@@ -15,6 +16,7 @@ import bcrypt from "bcrypt";
 import { db } from "database";
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
+import { middlewareAuthentication } from "~/lib/auth";
 
 export const useLogin = routeAction$(
     async ({ account: { email, password } }, { cookie }) => {
@@ -102,10 +104,32 @@ export const useLogin = routeAction$(
     }),
 );
 
+const useAlreadyLoggedIn = routeLoader$(async ({ cookie }) => {
+    const sessionToken = cookie.get("selfmail-session-token")?.value;
+
+    if (!sessionToken) {
+        return { isLoggedIn: false, user: null };
+    }
+
+    const { authenticated, user } = await middlewareAuthentication(sessionToken);
+    if (!authenticated || !user) {
+        return { isLoggedIn: false, user: null };
+    }
+    return {
+        isLoggedIn: true,
+        user: {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+        },
+    };
+});
+
 export default component$(() => {
     const location = useLocation();
     const navigation = useNavigate();
     const login = useLogin();
+    const user = useAlreadyLoggedIn()
 
     const fieldErrors = useStore({
         email: "",
@@ -144,6 +168,13 @@ export default component$(() => {
                     <div class="rounded-lg border border-red-200 bg-red-100 p-4">
                         <p class="text-red-800">{location.url.searchParams.get("error")}</p>
                     </div>
+                )}
+                {user.value.user && user.value.isLoggedIn && (
+                    <Link href="/" class="rounded-lg border border-neutral-200 bg-neutral-100 p-4">
+                        <p class="text-neutral-800">
+                            Welcome back, {user.value.user.name}! You are already logged in. Click here to go to your dashboard.
+                        </p>
+                    </Link>
                 )}
                 <h1 class="font-medium text-2xl">Login</h1>
                 <Input

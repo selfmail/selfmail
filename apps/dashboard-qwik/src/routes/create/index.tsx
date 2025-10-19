@@ -1,4 +1,4 @@
-import { component$, useVisibleTask$ } from "@builder.io/qwik";
+import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
 import {
     Form,
     type RequestHandler,
@@ -7,7 +7,7 @@ import {
     z,
     zod$,
 } from "@builder.io/qwik-city";
-import { db } from "database";
+import { db, type Workspace } from "database";
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
 import { middlewareAuthentication } from "~/lib/auth";
@@ -52,21 +52,29 @@ export const useCreateWorkspace = routeAction$(
                 failed: true,
             };
         }
-
+        let workspace: Workspace;
         // create new workspace
-        const workspace = await db.workspace.create({
-            data: {
-                name,
-                planId: env.get("DEFAULT_WORKSPACE_PLAN_ID") || "free",
-                slug,
-                ownerId: sharedMap.get("user").id,
-            },
-        });
-
+        try {
+            workspace = await db.workspace.create({
+                data: {
+                    name,
+                    planId: env.get("DEFAULT_WORKSPACE_PLAN_ID") || "free",
+                    slug,
+                    ownerId: sharedMap.get("user").id,
+                },
+            });
+        } catch (e) {
+            return {
+                fieldErrors: {
+                    name: "Failed to create workspace",
+                },
+                failed: true,
+            };
+        }
         if (!workspace) {
             return {
                 fieldErrors: {
-                    workspace: "Failed to create workspace",
+                    name: "Failed to create workspace",
                 },
                 failed: true,
             };
@@ -82,7 +90,9 @@ export const useCreateWorkspace = routeAction$(
         if (!member) {
             return {
                 fieldErrors: {
-                    workspace: "Failed to create workspace member",
+                    workspace: {
+                        name: "Failed to add member to workspace",
+                    },
                 },
                 failed: true,
             };
@@ -92,7 +102,6 @@ export const useCreateWorkspace = routeAction$(
             fieldErrors: {},
             failed: false,
             success: true,
-            workspaceId: workspace.id,
         };
     },
     zod$({
@@ -116,13 +125,23 @@ export const useCreateWorkspace = routeAction$(
 export default component$(() => {
     const create = useCreateWorkspace();
     const navigate = useNavigate();
+    const fieldErrors = useStore({
+        name: "",
+        slug: "",
+    });
 
     useVisibleTask$(({ track }) => {
         track(() => create.value);
+        if (create.value?.failed) {
+            const errors = create.value.fieldErrors as Record<string, string>;
+            fieldErrors.name = errors.name || "";
+            fieldErrors.slug = errors.slug || "";
 
+            return;
+        }
         if (create.value?.success) {
-            // Redirect to the new workspace
-            navigate(`/workspace/${create.value.workspaceId}`);
+            // Due to a permissions bug (or caching issue) we navigate to the workspace list
+            navigate("/");
         }
     });
 
@@ -131,7 +150,9 @@ export default component$(() => {
             <Form action={create} class="flex w-full max-w-md flex-col gap-4">
                 <h1 class="font-bold text-2xl">Create a new Workspace</h1>
                 <Input name="workspace.name" placeholder="Workspace Name" required />
+                {fieldErrors.name && <p class="text-red-700">{fieldErrors.name}</p>}
                 <Input name="workspace.slug" placeholder="Workspace Slug" required />
+                {fieldErrors.slug && <p class="text-red-700">{fieldErrors.slug}</p>}
                 <Button>{create.isRunning ? "Creating..." : "Create Workspace"}</Button>
             </Form>
         </div>

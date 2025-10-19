@@ -3,6 +3,10 @@ import { Link, routeLoader$, server$ } from "@builder.io/qwik-city";
 import { LuUserPlus } from "@qwikest/icons/lucide";
 import { db } from "database";
 import BackHeading from "~/components/ui/BackHeading";
+import {
+    middlewareAuthentication,
+    verifyWorkspaceMembership,
+} from "~/lib/auth";
 import { permissions } from "~/lib/permissions";
 import type { MemberInSharedMap, WorkspaceInSharedMap } from "../types";
 
@@ -40,7 +44,56 @@ const useMembers = routeLoader$(async ({ sharedMap, error }) => {
         canRemoveMembers: memberPermissions.includes("members:remove"),
     };
 });
-const kickMember = server$(async (memberId: string) => { });
+
+const kickMember = server$(async function (memberId: string) {
+    // checking for user permissions
+    const sessionToken = this.cookie.get("selfmail-session-token")?.value;
+    const workspaceSlug = this.params.workspaceSlug;
+
+    if (!workspaceSlug || !sessionToken) {
+        throw new Error("User not authenticated");
+    }
+
+    const { authenticated, user } = await middlewareAuthentication(sessionToken);
+
+    if (!authenticated || !user) {
+        throw new Error("User not authenticated");
+    }
+
+    const { isMember, member, workspace } = await verifyWorkspaceMembership(
+        user.id,
+        workspaceSlug,
+    );
+
+    if (!isMember || !member || !workspace) {
+        throw new Error("User not authenticated");
+    }
+
+    // check permissions
+    const memberPermissions = await permissions({
+        memberId: member.id,
+        permissions: ["members:remove"],
+        workspaceId: workspace.id,
+    });
+
+    if (!memberPermissions.includes("members:remove")) {
+        throw new Error("User not authorized to remove members");
+    }
+
+    await db.member.delete({
+        where: {
+            id: memberId,
+            workspaceId: workspace.id,
+            AND: {
+                workspace: {
+                    ownerId: {
+                        not: memberId,
+                    }
+                }
+            }
+        },
+    });
+})
 
 export default component$(() => {
     const members = useMembers();
@@ -50,11 +103,11 @@ export default component$(() => {
             <div class="flex flex-col space-y-3">
                 <h2 class="font-medium text-lg">You</h2>
                 <div class="flex w-full flex-row items-center justify-between rounded-md border border-neutral-200 bg-white">
-                    <img
-                        src={members.value.currentMember.image}
-                        alt={members.value.currentMember.profileName}
-                        class="h-10 w-10 rounded-full"
-                    />
+                    Workspace Member sind {new Date(members.value.currentMember.createdAt).toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    })}.
                 </div>
             </div>
             <div class="flex flex-col space-y-3">

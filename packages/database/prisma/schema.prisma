@@ -145,6 +145,8 @@ model Member {
   MemberPermission MemberPermission[]
   roles            Role[]
 
+  createdAt DateTime @default(now())
+
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
 
