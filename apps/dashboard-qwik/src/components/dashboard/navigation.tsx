@@ -57,14 +57,15 @@ export default component$(() => {
 
     const links = {
         platform: {
-            api: "/api",
             ai: "/ai",
             workflows: "/workflows",
-            activity: "/activity",
+            developers: "/developers",
+            changelog: "/changelog",
         },
         workspace: {
             member: "/members",
             billing: "/billing",
+            activity: "/activity",
             settings: "/settings",
             domains: "/domains",
         },

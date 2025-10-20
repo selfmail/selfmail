@@ -5,7 +5,8 @@
 	"private": true,
 	"devDependencies": {
 		"@types/bun": "latest",
-		"@types/clamscan": "^2.4.1"
+		"@types/clamscan": "^2.4.1",
+		"database": "workspace:*"
 	},
 	"exports": {
 		".": {

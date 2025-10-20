@@ -40,7 +40,8 @@
 		"@qwikest/icons": "^0.0.13",
 		"@paralleldrive/cuid2": "^2.2.2",
 		"@types/bcrypt": "^6.0.0",
-		"bcrypt": "^6.0.0"
+		"bcrypt": "^6.0.0",
+		"services": "workspace:*"
 	},
 	"dependencies": {}
 }

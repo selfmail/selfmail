@@ -13,6 +13,7 @@ import { LuPlus } from "@qwikest/icons/lucide";
 import { db } from "database";
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
+import { Activity } from "services/activity"
 import type { MemberInSharedMap, WorkspaceInSharedMap } from "../../types";
 
 export const useCreateAddress = routeAction$(
@@ -88,6 +89,15 @@ export const useCreateAddress = routeAction$(
                 failed: true,
             };
         }
+
+        Activity.capture({
+            color: "positive",
+            description: `Created new address: ${address.email}`,
+            title: "Address Created",
+            type: "note",
+            workspaceId: member.workspaceId,
+            userId: member.userId,
+        })
 
         redirect(302, `/workspace/${params.workspaceSlug}/address/${address.id}`);
     },
