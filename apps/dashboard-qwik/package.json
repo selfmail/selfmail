@@ -43,5 +43,8 @@
 		"bcrypt": "^6.0.0",
 		"services": "workspace:*"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"posthog-js": "^1.277.0",
+		"posthog-node": "^5.10.1"
+	}
 }

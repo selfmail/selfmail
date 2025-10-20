@@ -1,5 +1,16 @@
+import { PostHog } from 'posthog-node'
+
 export abstract class Analytics {
-	static async trackEvent(eventName: string, properties?: Record<string, any>) {
-		// Implementation for tracking an event
+	static dashboardClient  = new PostHog(import.meta.env.PUBLIC_POSTHOG_KEY || "", {
+		host: 'https://eu.i.posthog.com',
+	})
+
+	static async captureDashboardEvent({distinctId, event, properties}: {event: string, distinctId: string, properties?: Record<string, any>}): Promise<void> {
+		console.log("Capturing dashboard event:", {distinctId, event, properties});
+		await this.dashboardClient.capture({
+			distinctId: distinctId,
+			event: event,
+			properties: properties,
+		});
 	}
 }

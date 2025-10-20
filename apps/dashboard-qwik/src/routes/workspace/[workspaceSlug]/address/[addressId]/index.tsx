@@ -1,5 +1,6 @@
 import { $, component$ } from "@builder.io/qwik";
-import { routeLoader$, server$, z } from "@builder.io/qwik-city";
+import { Link, routeLoader$, server$, useLocation, z } from "@builder.io/qwik-city";
+import { LuChevronLeft } from "@qwikest/icons/lucide";
 import { db } from "database";
 import EmailList from "~/components/dashboard/email-list";
 import {
@@ -142,6 +143,7 @@ const useEmailCount = routeLoader$(async ({ sharedMap, params }) => {
 export default component$(() => {
     const count = useEmailCount();
     const address = useAddress();
+    const location = useLocation();
 
     // fetch emails function to be passed to email list
     const getEmails = $(async function getEmails(params: {
@@ -161,7 +163,12 @@ export default component$(() => {
         <>
             <div class="flex w-full flex-row items-center justify-between">
                 <div class="flex flex-col gap-1">
-                    <h1 class="font-medium text-2xl">Emails for {address.value.email}</h1>
+                    <h1 class="flex flex-row items-center space-x-1 font-medium text-2xl">
+                        <Link href={`/workspace/${location.params.workspaceSlug}`} class="text-neutral-500">
+                            <LuChevronLeft />
+                        </Link>
+                        <span>Emails for {address.value.email}</span>
+                    </h1>
                     <p class="text-neutral-600">{count.value} emails</p>
                 </div>
             </div>

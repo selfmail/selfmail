@@ -6,11 +6,6 @@ import {
     middlewareAuthentication,
     verifyWorkspaceMembership,
 } from "~/lib/auth";
-import type {
-    UserInSharedMap,
-    WorkspaceInSharedMap,
-} from "~/routes/workspace/[workspaceSlug]/types";
-import { NavLink } from "../ui/NavLink";
 
 const getData = server$(async function () {
     const sessionToken = this.cookie.get("selfmail-session-token")?.value;

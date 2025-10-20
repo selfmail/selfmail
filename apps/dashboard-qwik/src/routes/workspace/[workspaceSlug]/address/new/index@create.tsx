@@ -11,9 +11,10 @@ import {
 import { init } from "@paralleldrive/cuid2";
 import { LuPlus } from "@qwikest/icons/lucide";
 import { db } from "database";
+import { Activity } from "services/activity";
+import { Analytics } from "services/analytics";
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
-import { Activity } from "services/activity"
 import type { MemberInSharedMap, WorkspaceInSharedMap } from "../../types";
 
 export const useCreateAddress = routeAction$(
@@ -59,7 +60,7 @@ export const useCreateAddress = routeAction$(
         }
 
         const createId = init({
-            length: 8
+            length: 8,
         });
 
         // create new address
@@ -97,6 +98,14 @@ export const useCreateAddress = routeAction$(
             type: "note",
             workspaceId: member.workspaceId,
             userId: member.userId,
+        });
+
+        Analytics.captureDashboardEvent({
+            distinctId: member.id,
+            event: "address.created",
+            properties: {
+                domain
+            },
         })
 
         redirect(302, `/workspace/${params.workspaceSlug}/address/${address.id}`);
