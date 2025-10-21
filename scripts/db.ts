@@ -55,20 +55,12 @@ await db.permission.createMany({
 			name: "activities:see-all",
 		},
 
-		// workspace
-		{
-			name: "workspace:delete",
-		},
-
 		// settings
 		{
-			name: "workspace:update-icon",
+			name: "settings:update-workspace",
 		},
 		{
-			name: "workspace:update-name",
-		},
-		{
-			name: "workspace:update-description",
+			name: "settings:delete",
 		},
 	],
 });
