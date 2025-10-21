@@ -25,8 +25,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*
-!.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # vercel
 .vercel
@@ -38,5 +40,3 @@ yarn-error.log*
 **/*.log
 package-lock.json
 **/*.bun
-
-dist

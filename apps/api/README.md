@@ -1,3 +1,15 @@
-**Api**
+# Elysia with Bun runtime
 
-This is the service for the public API and the API which is used in the dashboard. This service can be used with Docker.
+## Getting Started
+To get started with this template, simply paste this command into your terminal:
+```bash
+bun create elysia ./elysia-example
+```
+
+## Development
+To start the development server run:
+```bash
+bun run dev
+```
+
+Open http://localhost:3000/ with your browser to see the result.
