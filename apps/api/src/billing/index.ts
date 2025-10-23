@@ -8,10 +8,25 @@ export const billing = new Elysia({
 	},
 })
 	.post(
-		"/polar/webhooks",
+		"/webhooks",
 		Webhooks({
 			webhookSecret: process.env.POLAR_WEBHOOK_SECRET || "",
-			onPayload: async (payload) => {},
+			onPayload: async (payload) => {
+				// You can log all payloads here if needed
+				console.log("Payload:", payload.data);
+			},
+
+			onSubscriptionCreated: async (payload) => {
+				console.log("Subscription created Payload:", payload.data);
+			},
+
+			onSubscriptionCanceled(payload) {
+				
+			},
+
+			onSubscriptionUpdated(payload) {
+				
+			},
 		}),
 	)
 	.get(

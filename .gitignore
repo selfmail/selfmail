@@ -21,3 +21,5 @@ i18n.cache
 
 /certs
 /certs/*
+
+test-do-not-push

@@ -1,12 +1,10 @@
 import { component$, useStore, useTask$ } from "@builder.io/qwik";
 import { Link, server$, useLocation } from "@builder.io/qwik-city";
-import { LuPlaneTakeoff } from "@qwikest/icons/lucide";
 import { db } from "database";
 import {
     middlewareAuthentication,
     verifyWorkspaceMembership,
 } from "~/lib/auth";
-import type { MemberInSharedMap } from "~/routes/workspace/[workspaceSlug]/types";
 import { NavLink } from "../ui/NavLink";
 
 const getAddresses = server$(async function () {
@@ -63,7 +61,7 @@ export default component$(() => {
             changelog: "/changelog",
         },
         workspace: {
-            member: "/members",
+            members: "/members",
             billing: "/billing",
             activity: "/activity",
             settings: "/settings",

@@ -1,18 +1,19 @@
 {
-  "name": "api",
-  "version": "1.0.50",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
-  },
-  "dependencies": {
-    "@polar-sh/elysia": "^0.2.9",
-    "@polar-sh/sdk": "^0.38.1",
-    "elysia": "latest",
-    "zod": "^4.1.12"
-  },
-  "devDependencies": {
-    "bun-types": "latest"
-  },
-  "module": "src/index.js"
+	"name": "api",
+	"version": "1.0.50",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "bun run --watch src/index.ts"
+	},
+	"dependencies": {
+		"@polar-sh/elysia": "latest",
+		"@polar-sh/sdk": "latest",
+		"elysia": "latest",
+		"stripe": "^19.1.0",
+		"zod": "^4.1.12"
+	},
+	"devDependencies": {
+		"bun-types": "latest"
+	},
+	"module": "src/index.js"
 }
