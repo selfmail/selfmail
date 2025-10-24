@@ -1,40 +1,41 @@
-import { Checkout, Webhooks } from "@polar-sh/elysia";
 import Elysia from "elysia";
+import { BillingService } from "./service";
+import { BillingModule } from "./module";
 
 export const billing = new Elysia({
 	prefix: "/billing",
 	detail: {
 		description: "Internal billing related endpoints, not for the public.",
 	},
-})
-	.post(
-		"/webhooks",
-		Webhooks({
-			webhookSecret: process.env.POLAR_WEBHOOK_SECRET || "",
-			onPayload: async (payload) => {
-				// You can log all payloads here if needed
-				console.log("Payload:", payload.data);
-			},
+}).post("/webhooks", async ({ body, headers, set, request }) => {
+	try {
+		const rawBody = await request.text();
+		const signature = headers["stripe-signature"];
+		
+		if (!signature) {
+			set.status = 400;
+			return {
+				success: false,
+				error: "Missing Stripe signature",
+				code: BillingModule.WebhookErrorCode.INVALID_SIGNATURE,
+			} satisfies BillingModule.WebhookErrorResponse;
+		}
 
-			onSubscriptionCreated: async (payload) => {
-				console.log("Subscription created Payload:", payload.data);
-			},
-
-			onSubscriptionCanceled(payload) {
-				
-			},
-
-			onSubscriptionUpdated(payload) {
-				
-			},
-		}),
-	)
-	.get(
-		"/checkout",
-		Checkout({
-			accessToken: process.env.POLAR_ACCESS_TOKEN || "",
-			successUrl: process.env.SUCCESS_URL,
-			server: process.env.NODE_ENV === "development" ? "sandbox" : "production",
-			theme: "light", // enforces light theme to match our dashboard
-		}),
-	);
+		const result = await BillingService.processWebhook(rawBody, signature);
+		
+		if (!result.success) {
+			set.status = 400;
+		}
+		
+		return result;
+	} catch (error) {
+		console.error("Webhook endpoint error:", error);
+		
+		set.status = 500;
+		return {
+			success: false,
+			error: "Internal server error",
+			code: BillingModule.WebhookErrorCode.PROCESSING_ERROR,
+		} satisfies BillingModule.WebhookErrorResponse;
+	}
+});

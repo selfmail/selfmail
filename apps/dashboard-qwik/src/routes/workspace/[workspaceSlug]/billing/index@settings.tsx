@@ -7,7 +7,6 @@ import {
 } from "@builder.io/qwik-city";
 import { db } from "database";
 import { toast } from "qwik-sonner";
-import Stripe from "stripe";
 import BackHeading from "~/components/ui/BackHeading";
 import { Button } from "~/components/ui/Button";
 import { permissions } from "~/lib/permissions";
