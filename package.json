@@ -3,7 +3,8 @@
 	"private": true,
 	"workspaces": [
 		"apps/*",
-		"packages/*"
+		"packages/*",
+		"scripts"
 	],
 	"scripts": {
 		"check": "biome check --write .",

@@ -11,6 +11,7 @@ import { db, type Workspace } from "database";
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
 import { middlewareAuthentication } from "~/lib/auth";
+import { pricingConfig } from "../../../../../config/pricing";
 
 export const onRequest: RequestHandler = async ({
     next,
@@ -32,7 +33,7 @@ export const onRequest: RequestHandler = async ({
 };
 
 export const useCreateWorkspace = routeAction$(
-    async ({ workspace: { name, slug } }, { sharedMap, error, env }) => {
+    async ({ workspace: { name, slug } }, { sharedMap, error }) => {
         if (!sharedMap.has("user") || !sharedMap.get("user").id) {
             throw error(401, "Unauthorized");
         }
@@ -53,24 +54,27 @@ export const useCreateWorkspace = routeAction$(
             };
         }
         let workspace: Workspace;
+
         // create new workspace
         try {
+            const planId = pricingConfig.defaultPlan.dbId
             workspace = await db.workspace.create({
                 data: {
                     name,
-                    planId: env.get("DEFAULT_WORKSPACE_PLAN_ID") || "free",
+                    planId,
                     slug,
                     ownerId: sharedMap.get("user").id,
                 },
-            });
-        } catch (e) {
+            })
+        } catch (_) {
             return {
                 fieldErrors: {
-                    name: "Failed to create workspace",
+                    name: "Failed to create workspace. Contact support if the issue persists.",
                 },
                 failed: true,
             };
         }
+
         if (!workspace) {
             return {
                 fieldErrors: {

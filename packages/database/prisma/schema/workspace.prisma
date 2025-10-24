@@ -25,6 +25,7 @@ model Workspace {
     SmtpCredentials SmtpCredentials[]
     Activity        Activity[]
     Invitation      Invitation[]
+    WorkspaceSeats  WorkspaceSeats?
 
     @@index([ownerId])
 }

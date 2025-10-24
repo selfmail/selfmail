@@ -9,6 +9,9 @@ model Member {
     description String?
     image       String? // url to image (hosted on selfmail r2) or undefined for no image
 
+    // Storage quota in bytes
+    storageBytes BigInt @default(0)
+
     // permissions
     MemberPermission MemberPermission[]
     roles            Role[]

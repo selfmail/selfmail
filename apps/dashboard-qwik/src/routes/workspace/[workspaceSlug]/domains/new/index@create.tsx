@@ -10,6 +10,7 @@ import { init } from "@paralleldrive/cuid2";
 import { db, type Workspace } from "database";
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
+import { checkLimits } from "~/lib/billing";
 import { hasPermissions } from "~/lib/permissions";
 import type { MemberInSharedMap, UserInSharedMap } from "../../types";
 
@@ -36,14 +37,13 @@ export const useCreateDomainDraft = routeAction$(
             length: 8,
         });
 
-
         const workspace = sharedMap.get("workspace") as Workspace;
 
         if (!workspace || !workspace.id) {
-            throw error(500, "Internal Server Error")
+            throw error(500, "Internal Server Error");
         }
 
-        const createdTime = new Date()
+        const createdTime = new Date();
 
         const domainDraft = await db.domain.create({
             data: {
@@ -66,7 +66,10 @@ export const useCreateDomainDraft = routeAction$(
             };
         }
 
-        redirect(302, `/workspace/${params.workspaceSlug}/domains/verify?domain=${domainDraft.domain}`);
+        redirect(
+            302,
+            `/workspace/${params.workspaceSlug}/domains/verify?domain=${domainDraft.domain}`,
+        );
     },
     zod$({
         workspace: z.object({
@@ -89,7 +92,11 @@ const useLimits = routeLoader$(async ({ sharedMap, error }) => {
 
     const member = sharedMap.get("member") as MemberInSharedMap;
 
-    if (!sharedMap.has("workspace") || !sharedMap.get("workspace").id || !sharedMap.get("workspace").ownerId) {
+    if (
+        !sharedMap.has("workspace") ||
+        !sharedMap.get("workspace").id ||
+        !sharedMap.get("workspace").ownerId
+    ) {
         throw error(400, "Workspace not found in shared map");
     }
 
@@ -103,28 +110,12 @@ const useLimits = routeLoader$(async ({ sharedMap, error }) => {
     if (!permissions && user.id !== sharedMap.get("workspace").ownerId) {
         throw error(403, "You do not have permission to add new domains");
     }
-
-    // fetch the limits for domains
-    const plan = await db.plan.findUnique({
-        where: {
-            id: sharedMap.get("workspace").planId,
-        },
-    });
-
-    if (!plan) {
-        throw error(500, "Plan not found");
-    }
-
-    const domainCount = await db.domain.count({
-        where: {
-            workspaceId: sharedMap.get("workspace").id,
-        },
-    });
+    const limits = await checkLimits(member.id);
 
     return {
-        maxDomains: plan.maxDomains,
-        currentDomains: domainCount,
-        canAddMore: domainCount < plan.maxDomains,
+        maxDomains: limits.maxDomains,
+        currentDomains: limits.currentDomains,
+        canAddMore: limits.currentDomains < limits.maxDomains,
     };
 });
 
@@ -138,7 +129,7 @@ export default component$(() => {
 
     useVisibleTask$(async ({ track }) => {
         track(() => create.value?.fieldErrors);
-        console.log(create.value?.fieldErrors)
+        console.log(create.value?.fieldErrors);
 
         if (create.value?.failed) {
             const errors = create.value.fieldErrors as Record<string, string>;

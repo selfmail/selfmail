@@ -4,25 +4,46 @@ model Plan {
     name        String  @unique
     description String?
 
-    maxMembers Int // max number of members in the workspace
+    // Seat-based pricing fields
+    baseSeats Int  @default(1) // minimum seats included
+    maxSeats  Int? // maximum seats allowed (null = unlimited)
 
-    // max number of email addresses in the workspace
-    maxAddresses             Int    @default(10)
-    maxPublicDomainAddresses Int    @default(2) // max number of public domain addresses, for example addresses with the @selfmail.app domain ending
-    softBytesMemberLimit     BigInt
-    storageBytes             BigInt // storage in bytes
-    maxDomains               Int // max number of domains in the workspace
+    // Per-seat allocations
+    storageBytesPerSeat BigInt @default(0)
+    domainsPerSeat      Int    @default(0)
+    addressesPerSeat    Int    @default(2)
+
+    // AI usage limits per seat
+    aiRequestsPerSeatPerMonth Int? // AI requests per seat per month
+    aiTokensPerSeatPerMonth   Int? // AI tokens per seat per month
 
     access Access[]
 
+    // This ID maps to the Stripe Product ID for this plan, so
+    // we can fetch the price from stripe.
     stripeProductId String? @unique
 
     Workspace Workspace[]
 }
 
+// New model to track seat usage per workspace
+model WorkspaceSeats {
+    id String @id @default(uuid())
+
+    workspaceId String    @unique
+    workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+    purchasedSeats Int @default(1) // number of seats purchased
+    usedSeats      Int @default(1) // number of seats currently used
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
 enum Access {
     AI
     API
+    WORKFLOWS
     SSO
     PrioritySupport
 }
