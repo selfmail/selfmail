@@ -1,0 +1,27 @@
+model Member {
+    id String @id @default(uuid())
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    // profile configuration
+    profileName String
+    description String?
+    image       String? // url to image (hosted on selfmail r2) or undefined for no image
+
+    // permissions
+    MemberPermission MemberPermission[]
+    roles            Role[]
+
+    createdAt DateTime @default(now())
+
+    workspaceId String
+    workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+    MemberAddress   MemberAddress[]
+    SmtpCredentials SmtpCredentials[]
+    Notification    Notification[]
+    Invitation      Invitation[]
+
+    @@unique(name: "userWorkspaceId", fields: [workspaceId, userId])
+}

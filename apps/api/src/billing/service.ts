@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { BillingModule } from "./module";
+import { db } from "database";
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY as string);
 
@@ -45,7 +46,7 @@ export abstract class BillingService {
 		}
 
 		try {
-			const event = stripe.webhooks.constructEvent(
+			const event = await stripe.webhooks.constructEventAsync(
 				body,
 				signature,
 				process.env.STRIPE_WEBHOOK_SECRET,
@@ -88,11 +89,14 @@ export abstract class BillingService {
 		}
 	}
 
+    // SUBSCRIPTION EVENT HANDLERS
+
 	private static async handleSubscriptionCreated(
 		event: BillingModule.StripeWebhookEvent,
 	): Promise<boolean> {
 		const subscription = event.data.object as Stripe.Subscription;
-		console.log(`New subscription created: ${subscription.id}`);
+		const plan = await db
+        
 		return true;
 	}
 

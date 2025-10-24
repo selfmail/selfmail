@@ -13,7 +13,8 @@
 		"zod": "^4.1.12"
 	},
 	"devDependencies": {
-		"bun-types": "latest"
+		"bun-types": "latest",
+		"database": "workspace:*"
 	},
 	"module": "src/index.js"
 }

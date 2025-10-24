@@ -1,0 +1,151 @@
+// Workspaces
+
+model Workspace {
+    id          String  @id @default(uuid())
+    name        String
+    description String?
+    image       String? // url to image (hosted on selfmail r2) or undefined for no image
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    planId        String
+    plan          Plan     @relation(fields: [planId], references: [id])
+    planChangedAt DateTime @default(now())
+
+    overlimit   Boolean   @default(false)
+    overlimitAt DateTime?
+
+    slug            String            @unique @default(uuid())
+    ownerId         String
+    owner           User              @relation(fields: [ownerId], references: [id])
+    Member          Member[]
+    Role            Role[]
+    Domain          Domain[]
+    SmtpCredentials SmtpCredentials[]
+    Activity        Activity[]
+    Invitation      Invitation[]
+
+    @@index([ownerId])
+}
+
+model Domain {
+    id String @id @default(uuid())
+
+    domain String @unique
+
+    workspaceId String
+    workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+    verified   Boolean   @default(false)
+    verifiedAt DateTime?
+
+    addresses Address[]
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+
+    // ATTENTION: public means, that everybody (EVEN PEOPLE OUTSIDE OF THE WORKSPACE) can create a new address with this domain
+    public Boolean @default(false)
+
+    // a verification token must be a txt record for the domain
+    // it is used to verify that the user owns the domain
+    verificationToken String
+}
+
+model SmtpCredentials {
+    id String @id @default(uuid())
+
+    title       String
+    description String?
+
+    // actual credentials
+    username String
+    password String
+
+    // Security: Track when password was last viewed
+    passwordViewedAt DateTime?
+
+    // created by the user
+    memberId String
+    member   Member @relation(fields: [memberId], references: [id])
+
+    // the workspace this credentials are used for
+    workspaceId String
+    workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+    // the address of the crendentials
+    addressId String
+    address   Address @relation(fields: [addressId], references: [id])
+
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    activeUntil DateTime?
+    User        User?     @relation(fields: [userId], references: [id])
+    userId      String?
+
+    @@unique([username, password])
+}
+
+model Notification {
+    id String @id @default(uuid())
+
+    userId String?
+    user   User?   @relation(fields: [userId], references: [id])
+
+    memberId String?
+    member   Member? @relation(fields: [memberId], references: [id])
+
+    type NotificationType @default(info)
+
+    title   String
+    message String
+
+    read   Boolean   @default(false)
+    readAt DateTime?
+
+    createdAt DateTime @default(now())
+}
+
+enum NotificationType {
+    info
+    warning
+    error
+}
+
+model Invitation {
+    id String @id @default(uuid())
+
+    email String
+
+    token String @unique
+
+    userToken String? @unique
+
+    role   Role?   @relation(fields: [roleId], references: [id])
+    roleId String?
+
+    // Role is not important if set true, 
+    // we'll assign admin permissions directly to the invited user
+    inviteAsAdmin Boolean @default(false)
+
+    status InvitationStatus @default(PENDING)
+
+    workspaceId String
+    workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+    invitedById String
+    invitedBy   Member @relation(fields: [invitedById], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    respondedAt DateTime?
+    User        User?     @relation(fields: [userId], references: [id])
+    userId      String?
+}
+
+enum InvitationStatus {
+    PENDING
+    ACCEPTED
+    DECLINED
+}

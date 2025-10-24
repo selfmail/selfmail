@@ -7,7 +7,7 @@ export const billing = new Elysia({
 	detail: {
 		description: "Internal billing related endpoints, not for the public.",
 	},
-}).post("/webhooks", async ({ body, headers, set, request }) => {
+}).post("/webhooks", async ({ headers, set, request }) => {
 	try {
 		const rawBody = await request.text();
 		const signature = headers["stripe-signature"];

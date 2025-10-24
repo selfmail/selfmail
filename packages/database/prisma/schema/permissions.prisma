@@ -1,0 +1,48 @@
+// A role is just a set of editable permissions that can be assigned to users. These roles are editable
+// by the owner of the workspace. The owner can create, update, and delete roles, and assign them to users.
+model Role {
+    id          String  @id @default(uuid())
+    name        String
+    description String?
+
+    workspaceId    String
+    workspace      Workspace        @relation(fields: [workspaceId], references: [id])
+    member         Member[]
+    RolePermission RolePermission[]
+    Invitation     Invitation[]
+
+    @@unique([workspaceId, name])
+}
+
+model RolePermission {
+    roleId String
+    role   Role   @relation(fields: [roleId], references: [id])
+
+    permissionId String
+    permission   Permission @relation(fields: [permissionId], references: [id])
+
+    @@id([roleId, permissionId])
+}
+
+model MemberPermission {
+    memberId String
+    member   Member @relation(fields: [memberId], references: [id])
+
+    permissionName String
+    permission     Permission @relation(fields: [permissionName], references: [name])
+
+    givenAt DateTime @default(now())
+
+    @@id([memberId, permissionName])
+}
+
+// Permissions are the actual actions that a user can perform in a workspace. These permissions
+// are not editable by the owner of the workspace, he can only assign them to roles and users.
+model Permission {
+    id          String  @id @default(uuid())
+    name        String  @unique
+    description String?
+
+    RolePermission    RolePermission[]
+    MemberPermissions MemberPermission[]
+}

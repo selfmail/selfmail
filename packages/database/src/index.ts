@@ -24,7 +24,6 @@ export type {
 	Domain,
 	Email,
 	EmailVerification,
-	Error,
 	Member,
 	MemberAddress,
 	MemberPermission,
@@ -39,6 +38,5 @@ export type {
 	Sort,
 	TwoFactorToken,
 	User,
-	Waitlist,
 	Workspace,
 } from "@prisma/client";

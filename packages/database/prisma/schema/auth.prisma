@@ -1,0 +1,74 @@
+// Authentication
+model User {
+    id       String @id @default(uuid())
+    name     String
+    password String
+    email    String @unique
+
+    workspaceLimit Int @default(3) // max number of workspaces a user can create, contact support to increase
+
+    // Two-factor authentication fields
+    twoFactorEnabled Boolean @default(false)
+    twoFactorSecret  String?
+    backupCodes      String? // JSON array of hashed backup codes
+
+    emailVerified DateTime?
+
+    // a single user can be member of different workspaces
+    member            Member[]
+    EmailVerification EmailVerification[]
+    Session           Session[]
+    SmtpCredentials   SmtpCredentials[]
+    Activity          Activity[]
+    TwoFactorToken    TwoFactorToken[]
+    Workspace         Workspace[]
+    Notification      Notification[]
+    Invitation        Invitation[]
+
+    @@unique([id, email])
+}
+
+model EmailVerification {
+    id String @id @default(uuid())
+
+    // the user that is being verified
+    userId String
+    user   User   @relation(fields: [userId, email], references: [id, email])
+
+    email String
+
+    // the verification token
+    token String @unique
+
+    // the date when the verification was created
+    expiresAt DateTime
+
+    @@unique([email, userId])
+}
+
+model Session {
+    id String @id @default(uuid())
+
+    // the user that is being verified
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    // the session token
+    token String @unique
+
+    // the date when the session was created
+    expiresAt DateTime
+}
+
+// Two-Factor Authentication
+model TwoFactorToken {
+    id        String   @id @default(uuid())
+    token     String   @unique
+    userId    String
+    user      User     @relation(fields: [userId], references: [id])
+    createdAt DateTime @default(now())
+    expiresAt DateTime
+
+    @@index([userId])
+    @@index([token])
+}

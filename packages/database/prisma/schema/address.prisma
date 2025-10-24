@@ -1,0 +1,134 @@
+// addresses
+model Address {
+    // not the default uuid, because we want to have short ids for the email addresses, in order to short the url (uuid as backup)
+    id String @id @default(uuid())
+
+    handle String
+    email  String @unique
+
+    // multiple members can access the same address (e.g. shared addresses)
+    MemberAddress   MemberAddress[]
+    Email           Email[]
+    SmtpCredentials SmtpCredentials[]
+    Contact         Contact[]
+
+    Domain   Domain? @relation(fields: [domainId], references: [id])
+    domainId String?
+}
+
+model MemberAddress {
+    memberId String
+    member   Member @relation(fields: [memberId], references: [id])
+
+    addressId String
+    address   Address @relation(fields: [addressId], references: [id])
+
+    @@id([memberId, addressId])
+}
+
+model Contact {
+    id String @id @default(uuid())
+
+    name        String?
+    description String?
+    image       String? // url to image (hosted on selfmail r2) or undefined
+
+    blocked Boolean @default(false)
+
+    addressId String
+    address   Address @relation(fields: [addressId], references: [id])
+
+    // Expecting addiotional information to be stored as JSON as the following schema:
+
+    /**
+     * (pretty weird formatting from vscode and prisma :/ )
+     * [
+     * {
+     * "key": "phone",
+     * "value": "+1234567890"
+     * },
+     * {
+     * "key": "address",
+     * "value": "123 Main St, Anytown, USA"
+     * }
+     * ]
+     */
+    additionalInformation Json[]
+
+    email String
+    Email Email[]
+
+    @@unique([email, addressId])
+}
+
+model Email {
+    id String @id @default(uuid())
+
+    // email metadata
+    messageId String? // RFC Message-ID header
+    subject   String
+    date      DateTime @default(now())
+
+    // size of the bytes to keep in track with the storage
+    sizeBytes BigInt
+
+    // read status
+    read   Boolean   @default(false)
+    readAt DateTime? // when the email was marked as read
+
+    // sender and recipient information
+    from    Json // EmailAddress[] from mailparser (name, address)
+    to      Json // EmailAddress[] from mailparser (name, address)
+    cc      Json? // EmailAddress[] - optional
+    bcc     Json? // EmailAddress[] - optional
+    replyTo Json? // EmailAddress[] - optional
+
+    // email content
+    text String? // plain text version
+    html String? // HTML version
+
+    // headers and technical data
+    headers Json? // all email headers as JSON
+
+    // attachments information
+    attachments Json? // attachment metadata (filename, contentType, size, etc.)
+
+    // security and filtering
+    warning     String? // spam/security warnings
+    spamScore   Float? // spam score from filtering
+    virusStatus String? // virus scan result
+
+    // processing status
+    processed       Boolean @default(false)
+    processingError String? // any errors during processing
+
+    // raw email data
+    rawEmail String? // original EML content (optional, for debugging)
+
+    // the recipient address (our address that received this email)
+    addressId String
+    address   Address @relation(fields: [addressId], references: [id])
+
+    // contact relationship (sender)
+    contact   Contact? @relation(fields: [contactId], references: [id])
+    contactId String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    sort Sort
+
+    @@index([addressId])
+    @@index([contactId])
+    @@index([date])
+    @@index([processed])
+    @@index([read])
+}
+
+enum Sort {
+    normal
+    important
+    spam
+    trash
+    sent
+}

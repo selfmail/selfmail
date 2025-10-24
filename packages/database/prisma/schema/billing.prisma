@@ -1,0 +1,28 @@
+model Plan {
+    id String @id @default(uuid())
+
+    name        String  @unique
+    description String?
+
+    maxMembers Int // max number of members in the workspace
+
+    // max number of email addresses in the workspace
+    maxAddresses             Int    @default(10)
+    maxPublicDomainAddresses Int    @default(2) // max number of public domain addresses, for example addresses with the @selfmail.app domain ending
+    softBytesMemberLimit     BigInt
+    storageBytes             BigInt // storage in bytes
+    maxDomains               Int // max number of domains in the workspace
+
+    access Access[]
+
+    stripeProductId String? @unique
+
+    Workspace Workspace[]
+}
+
+enum Access {
+    AI
+    API
+    SSO
+    PrioritySupport
+}
