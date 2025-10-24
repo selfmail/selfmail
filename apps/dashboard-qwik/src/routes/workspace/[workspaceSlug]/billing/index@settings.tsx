@@ -9,11 +9,9 @@ import { db } from "database";
 import { toast } from "qwik-sonner";
 import BackHeading from "~/components/ui/BackHeading";
 import { Button } from "~/components/ui/Button";
+import { PREMIUM_PRODUCT_ID, stripe } from "~/lib/billing";
 import { permissions } from "~/lib/permissions";
 import type { MemberInSharedMap, WorkspaceInSharedMap } from "../types";
-import { PREMIUM_PRODUCT_ID, stripe } from "~/lib/billing";
-
-
 
 const useBilling = routeLoader$(async ({ sharedMap, error }) => {
     const workspace = sharedMap.get("workspace") as WorkspaceInSharedMap;
@@ -34,14 +32,14 @@ const useBilling = routeLoader$(async ({ sharedMap, error }) => {
             id: workspace.planId,
         },
         select: {
-            description: true,
-            maxAddresses: true,
-            maxDomains: true,
-            maxMembers: true,
             name: true,
-            storageBytes: true,
-            softBytesMemberLimit: true,
-            priceEuroCents: true,
+            description: true,
+            maxSeats: true,
+            baseSeats: true,
+            storageBytesPerSeat: true,
+            domainsPerSeat: true,
+            addressesPerSeat: true,
+            stripeProductId: true,
         },
     });
 
@@ -49,9 +47,13 @@ const useBilling = routeLoader$(async ({ sharedMap, error }) => {
         throw error(404, "Contact us. Plan not found.");
     }
 
+    // For now, we'll determine if it's upgradeable based on whether it has a Stripe product ID
+    // You might want to adjust this logic based on your business rules
+    const canUpgrade = !billingInfo.stripeProductId;
+
     return {
         plan: billingInfo,
-        canUpgrade: billingInfo.priceEuroCents === 0,
+        canUpgrade,
     };
 });
 
@@ -100,10 +102,6 @@ const formatBytes = (bytes: number | bigint) => {
     return Number.parseFloat((numBytes / k ** i).toFixed(2)) + " " + sizes[i];
 };
 
-const formatPrice = (euroCents: number) => {
-    return `€${(euroCents / 100).toFixed(2)}`;
-};
-
 export default component$(() => {
     const billing = useBilling();
     const navigate = useNavigate();
@@ -150,50 +148,50 @@ export default component$(() => {
                         <div class="rounded-lg bg-gray-50 p-4">
                             <div class="mb-1 font-medium text-gray-500 text-sm">Price</div>
                             <div class="font-semibold text-gray-900 text-lg">
-                                {formatPrice(plan.plan.priceEuroCents)}/month
+                                {plan.plan.stripeProductId ? "Contact us for pricing" : "Free"}/month
                             </div>
                         </div>
 
                         <div class="rounded-lg bg-gray-50 p-4">
                             <div class="mb-1 font-medium text-gray-500 text-sm">
-                                Max Domains
+                                Domains per Seat
                             </div>
                             <div class="font-semibold text-gray-900 text-lg">
-                                {plan.plan.maxDomains}
+                                {plan.plan.domainsPerSeat}
                             </div>
                         </div>
 
                         <div class="rounded-lg bg-gray-50 p-4">
                             <div class="mb-1 font-medium text-gray-500 text-sm">
-                                Max Addresses
+                                Addresses per Seat
                             </div>
                             <div class="font-semibold text-gray-900 text-lg">
-                                {plan.plan.maxAddresses}
+                                {plan.plan.addressesPerSeat}
                             </div>
                         </div>
 
                         <div class="rounded-lg bg-gray-50 p-4">
                             <div class="mb-1 font-medium text-gray-500 text-sm">
-                                Max Members
+                                Max Seats
                             </div>
                             <div class="font-semibold text-gray-900 text-lg">
-                                {plan.plan.maxMembers}
+                                {plan.plan.maxSeats ?? "Unlimited"}
                             </div>
                         </div>
 
                         <div class="rounded-lg bg-gray-50 p-4">
-                            <div class="mb-1 font-medium text-gray-500 text-sm">Storage</div>
+                            <div class="mb-1 font-medium text-gray-500 text-sm">Storage per Seat</div>
                             <div class="font-semibold text-gray-900 text-lg">
-                                {formatBytes(plan.plan.storageBytes)}
+                                {formatBytes(plan.plan.storageBytesPerSeat)}
                             </div>
                         </div>
 
                         <div class="rounded-lg bg-gray-50 p-4">
                             <div class="mb-1 font-medium text-gray-500 text-sm">
-                                Member Limit
+                                Base Seats
                             </div>
                             <div class="font-semibold text-gray-900 text-lg">
-                                {formatBytes(plan.plan.softBytesMemberLimit)}
+                                {plan.plan.baseSeats}
                             </div>
                         </div>
                     </div>

@@ -9,7 +9,7 @@ export const permissions = async ({
 	memberId: string;
 	workspaceId: string;
 }): Promise<string[]> => {
-	// Single optimized query to get all permissions for a member
+	// Single optimized query to get all permissions for a member and workspace ownership info
 	// This includes both direct permissions and role-based permissions
 	const member = await db.member.findUnique({
 		where: {
@@ -17,6 +17,7 @@ export const permissions = async ({
 			workspaceId: workspaceId, // Ensure member belongs to the workspace
 		},
 		select: {
+			userId: true, // Include userId to check workspace ownership
 			// Direct member permissions
 			MemberPermission: {
 				select: {
@@ -49,11 +50,25 @@ export const permissions = async ({
 					},
 				},
 			},
+			// Include workspace owner information
+			workspace: {
+				select: {
+					ownerId: true,
+				},
+			},
 		},
 	});
 
 	if (!member) {
 		return []; // Member not found or doesn't belong to workspace
+	}
+
+	// Check if the user is the owner of the workspace
+	const isOwner = member.userId === member.workspace.ownerId;
+
+	// If the user is the owner, they have all permissions
+	if (isOwner) {
+		return permissions;
 	}
 
 	// Collect all permissions (both direct and role-based)
@@ -85,6 +100,31 @@ export const hasPermissions = async ({
 	memberId: string;
 	workspaceId: string;
 }): Promise<boolean> => {
+	// Check if user is workspace owner first
+	const member = await db.member.findUnique({
+		where: {
+			id: memberId,
+			workspaceId: workspaceId,
+		},
+		select: {
+			userId: true,
+			workspace: {
+				select: {
+					ownerId: true,
+				},
+			},
+		},
+	});
+
+	if (!member) {
+		return false; // Member not found or doesn't belong to workspace
+	}
+
+	// If the user is the owner of the workspace, they have all permissions
+	if (member.userId === member.workspace.ownerId) {
+		return true;
+	}
+
 	const userPermissions = await permissions({
 		permissions: permissionNames,
 		memberId,
@@ -107,6 +147,31 @@ export const hasAnyPermission = async ({
 	memberId: string;
 	workspaceId: string;
 }): Promise<boolean> => {
+	// Check if user is workspace owner first
+	const member = await db.member.findUnique({
+		where: {
+			id: memberId,
+			workspaceId: workspaceId,
+		},
+		select: {
+			userId: true,
+			workspace: {
+				select: {
+					ownerId: true,
+				},
+			},
+		},
+	});
+
+	if (!member) {
+		return false; // Member not found or doesn't belong to workspace
+	}
+
+	// If the user is the owner of the workspace, they have all permissions
+	if (member.userId === member.workspace.ownerId) {
+		return true;
+	}
+
 	const userPermissions = await permissions({
 		permissions: permissionNames,
 		memberId,
