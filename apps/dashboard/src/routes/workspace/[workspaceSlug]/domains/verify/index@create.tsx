@@ -1,6 +1,6 @@
 import { promises as dns } from "node:dns";
 import { $, component$, useSignal } from "@builder.io/qwik";
-import { routeLoader$, server$ } from "@builder.io/qwik-city";
+import { routeLoader$, server$, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { LuCheck, LuLoader2, LuX } from "@qwikest/icons/lucide";
 import { db } from "database";
 
@@ -177,6 +177,8 @@ export default component$(() => {
     const domain = useDomainData();
     const verificationResult = useSignal<VerificationResult | null>(null);
     const isVerifying = useSignal(false);
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const handleVerify = $(async () => {
         isVerifying.value = true;
@@ -187,10 +189,7 @@ export default component$(() => {
         isVerifying.value = false;
 
         if (result.success && "allChecksPass" in result && result.allChecksPass) {
-            // All checks passed, domain is verified
-            setTimeout(() => {
-                window.location.href = `/workspace/${domain.value.workspaceId}/domains`;
-            }, 2000);
+            navigate(`/workspace/${location.params.workspaceSlug}/domains`);
         }
     });
 

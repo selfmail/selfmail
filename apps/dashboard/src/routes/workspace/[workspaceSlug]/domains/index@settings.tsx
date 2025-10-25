@@ -103,6 +103,15 @@ const removeDomain = server$(async function (domainId: string) {
     }
 
     try {
+        // Delete Addresses associated with the domain
+        await db.address.deleteMany({
+            where: {
+                Domain: {
+                    id: domainId,
+                }
+            },
+        });
+
         await db.domain.delete({
             where: {
                 id: domainId,
@@ -180,7 +189,7 @@ export default component$(() => {
                                         {domains.value.canRemoveDomain && (
                                             <AlertDialog
                                                 title={`Remove ${domain.domain}?`}
-                                                description={`Are you sure you want to remove ${domain.domain}? This action can't be undone.`}
+                                                description={`Are you sure you want to remove the domain ${domain.domain}? You'll delete all the associated addresses to this domain, the emails and attachments are stored, however you can't receive any email with the email address anymore. This action can't be undone.`}
                                                 class="cursor-pointer rounded-full bg-red-100 px-2 py-1 font-semibold text-red-800 text-sm"
                                                 proceedActionText="Delete Domain"
                                                 proceedAction={$(async () => {

@@ -1,4 +1,5 @@
 import { $, component$ } from "@builder.io/qwik";
+import type { DocumentHead } from "@builder.io/qwik-city";
 import { routeLoader$, server$, z } from "@builder.io/qwik-city";
 import { db } from "database";
 import EmailList from "~/components/dashboard/email-list";
@@ -140,3 +141,41 @@ export default component$(() => {
         </>
     );
 });
+
+// Dynamic head that includes email count and workspace info
+export const head: DocumentHead = ({ resolveValue, params }) => {
+    const emailCount = resolveValue(useEmailCount);
+    const workspaceSlug = params.workspaceSlug;
+
+    return {
+        title: `Unified Inbox - ${workspaceSlug} | Selfmail`,
+        meta: [
+            {
+                name: "description",
+                content: `Manage your unified inbox with ${emailCount} emails in ${workspaceSlug} workspace on Selfmail.`,
+            },
+            {
+                property: "og:title",
+                content: `Unified Inbox - ${workspaceSlug} | Selfmail`,
+            },
+            {
+                property: "og:description",
+                content: `Manage your unified inbox with ${emailCount} emails in ${workspaceSlug} workspace on Selfmail.`,
+            },
+            {
+                property: "og:type",
+                content: "website",
+            },
+            {
+                name: "robots",
+                content: "noindex, nofollow", // Private dashboard pages shouldn't be indexed
+            },
+        ],
+        links: [
+            {
+                rel: "canonical",
+                href: `https://app.selfmail.com/workspace/${workspaceSlug}`,
+            },
+        ],
+    };
+};

@@ -23,7 +23,7 @@ export default component$<AlertDialogProps>(
                     <Slot />
                 </Modal.Trigger>
 
-                <Modal.Panel class="bg-white rounded-lg border border-neutral-200 p-6  max-w-md transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 fixed">
+                <Modal.Panel class="-translate-x-1/2 -translate-y-1/2 fixed top-1/2 left-1/2 max-w-md transform rounded-lg border border-neutral-200 bg-white p-6">
                     <div class="flex flex-col space-y-2 text-center sm:text-left">
                         <Modal.Title class="font-semibold text-lg text-neutral-900">
                             {title}
@@ -33,8 +33,11 @@ export default component$<AlertDialogProps>(
                         </Modal.Description>
                     </div>
 
-                    <footer class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-                        <Modal.Close autofocus class="mt-2 inline-flex h-10 cursor-pointer items-center justify-center rounded-lg border border-neutral-200 bg-white px-4 py-2 font-medium text-neutral-900 text-sm ring-offset-white transition-colors hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 sm:mt-0">
+                    <footer class="mt-4 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+                        <Modal.Close
+                            autofocus
+                            class="mt-2 inline-flex h-10 cursor-pointer items-center justify-center rounded-lg border border-neutral-200 bg-white px-4 py-2 font-medium text-neutral-900 text-sm ring-offset-white transition-colors hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 sm:mt-0"
+                        >
                             Cancel
                         </Modal.Close>
                         <Modal.Close

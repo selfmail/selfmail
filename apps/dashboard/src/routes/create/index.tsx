@@ -1,4 +1,5 @@
 import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
+import type { DocumentHead } from "@builder.io/qwik-city";
 import {
     Form,
     type RequestHandler,
@@ -57,7 +58,7 @@ export const useCreateWorkspace = routeAction$(
 
         // create new workspace
         try {
-            const planId = pricingConfig.defaultPlan.dbId
+            const planId = pricingConfig.defaultPlan.dbId;
             workspace = await db.workspace.create({
                 data: {
                     name,
@@ -65,7 +66,7 @@ export const useCreateWorkspace = routeAction$(
                     slug,
                     ownerId: sharedMap.get("user").id,
                 },
-            })
+            });
         } catch (_) {
             return {
                 fieldErrors: {
@@ -163,3 +164,37 @@ export default component$(() => {
         </div>
     );
 });
+
+export const head: DocumentHead = {
+    title: "Create Workspace | Selfmail",
+    meta: [
+        {
+            name: "description",
+            content:
+                "Create a new workspace to organize your emails and team collaboration on Selfmail.",
+        },
+        {
+            property: "og:title",
+            content: "Create Workspace | Selfmail",
+        },
+        {
+            property: "og:description",
+            content:
+                "Create a new workspace to organize your emails and team collaboration on Selfmail.",
+        },
+        {
+            property: "og:type",
+            content: "website",
+        },
+        {
+            name: "robots",
+            content: "noindex, nofollow",
+        },
+    ],
+    links: [
+        {
+            rel: "canonical",
+            href: "https://app.selfmail.com/create",
+        },
+    ],
+};

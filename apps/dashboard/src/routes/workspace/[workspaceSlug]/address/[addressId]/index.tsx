@@ -1,5 +1,12 @@
 import { $, component$ } from "@builder.io/qwik";
-import { Link, routeLoader$, server$, useLocation, z } from "@builder.io/qwik-city";
+import type { DocumentHead } from "@builder.io/qwik-city";
+import {
+    Link,
+    routeLoader$,
+    server$,
+    useLocation,
+    z,
+} from "@builder.io/qwik-city";
 import { LuChevronLeft } from "@qwikest/icons/lucide";
 import { db } from "database";
 import EmailList from "~/components/dashboard/email-list";
@@ -164,7 +171,10 @@ export default component$(() => {
             <div class="flex w-full flex-row items-center justify-between">
                 <div class="flex flex-col gap-1">
                     <h1 class="flex flex-row items-center space-x-1 font-medium text-2xl">
-                        <Link href={`/workspace/${location.params.workspaceSlug}`} class="text-neutral-500">
+                        <Link
+                            href={`/workspace/${location.params.workspaceSlug}`}
+                            class="text-neutral-500"
+                        >
                             <LuChevronLeft />
                         </Link>
                         <span>Emails for {address.value.email}</span>
@@ -177,3 +187,41 @@ export default component$(() => {
         </>
     );
 });
+
+export const head: DocumentHead = ({ resolveValue, params }) => {
+    const address = resolveValue(useAddress);
+    const emailCount = resolveValue(useEmailCount);
+    const workspaceSlug = params.workspaceSlug;
+
+    return {
+        title: `${address.email} - ${emailCount} emails | ${workspaceSlug} | Selfmail`,
+        meta: [
+            {
+                name: "description",
+                content: `Manage ${emailCount} emails for ${address.email} in ${workspaceSlug} workspace on Selfmail.`,
+            },
+            {
+                property: "og:title",
+                content: `${address.email} - ${emailCount} emails | ${workspaceSlug} | Selfmail`,
+            },
+            {
+                property: "og:description",
+                content: `Manage ${emailCount} emails for ${address.email} in ${workspaceSlug} workspace on Selfmail.`,
+            },
+            {
+                property: "og:type",
+                content: "website",
+            },
+            {
+                name: "robots",
+                content: "noindex, nofollow",
+            },
+        ],
+        links: [
+            {
+                rel: "canonical",
+                href: `https://app.selfmail.com/workspace/${workspaceSlug}/address/${params.addressId}`,
+            },
+        ],
+    };
+};

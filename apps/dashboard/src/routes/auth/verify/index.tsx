@@ -1,4 +1,5 @@
 import { component$ } from "@builder.io/qwik";
+import type { DocumentHead } from "@builder.io/qwik-city";
 import { Link, type RequestHandler, z } from "@builder.io/qwik-city";
 import { db } from "database";
 
@@ -56,9 +57,50 @@ export default component$(() => {
 			<div class="flex w-full max-w-md flex-col gap-2">
 				<h1 class="font-medium text-2xl">Verify your email</h1>
 				<p class="text-neutral-500 text-sm">
-					We have send you a verification link to your email. Please click <b>on the link inside the email</b>. Also check your spam folder in case you can't find the email. If you receive any error, you can either <Link href="/auth/resend-verification" class="text-blue-500">try it again</Link> or <a href="mailto:support@selfmail.app" class="text-blue-500">contact the support</a>.
+					We have send you a verification link to your email. Please click{" "}
+					<b>on the link inside the email</b>. Also check your spam folder in
+					case you can't find the email. If you receive any error, you can
+					either{" "}
+					<Link href="/auth/resend-verification" class="text-blue-500">
+						try it again
+					</Link>{" "}
+					or{" "}
+					<a href="mailto:support@selfmail.app" class="text-blue-500">
+						contact the support
+					</a>
+					.
 				</p>
 			</div>
 		</div>
 	);
 });
+
+export const head: DocumentHead = {
+	title: "Email Verified | Selfmail",
+	meta: [
+		{
+			name: "description",
+			content:
+				"Your email has been successfully verified. You can now log in to your Selfmail account.",
+		},
+		{
+			property: "og:title",
+			content: "Email Verified | Selfmail",
+		},
+		{
+			property: "og:description",
+			content:
+				"Your email has been successfully verified. You can now log in to your Selfmail account.",
+		},
+		{
+			property: "og:type",
+			content: "website",
+		},
+	],
+	links: [
+		{
+			rel: "canonical",
+			href: "https://app.selfmail.com/auth/verify",
+		},
+	],
+};
