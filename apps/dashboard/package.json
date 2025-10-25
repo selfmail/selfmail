@@ -1,6 +1,6 @@
 {
-	"name": "dashboard-qwik",
-	"description": "Dashboard rewrite in Qwik.",
+	"name": "dashboard",
+	"description": "Dashboard for Selfmail written in Qwik.",
 	"engines": {
 		"node": "^18.17.0 || ^20.3.0 || >=21.0.0"
 	},
