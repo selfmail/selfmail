@@ -6,12 +6,37 @@ on:
       - main
 
 jobs:
+  install:
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    name: Install Dependencies
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: oven-sh/setup-bun
+        with:
+          bun-version: stable
+      - name: Install Dependencies
+        run: bun install
+  build:
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    name: Build Site
+    needs: install
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: oven-sh/setup-bun
+        with:
+          bun-version: stable
+      - name: Build Site
+        run: cd apps/www && bun run build
   deploy:
     runs-on: blacksmith-2vcpu-ubuntu-2404
     name: Deploy
+    needs: build
     steps:
       - uses: actions/checkout@v4
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: ./apps/www
