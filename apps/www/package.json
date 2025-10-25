@@ -3,21 +3,21 @@
 	"type": "module",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "astro dev",
+		"dev": "astro dev --port=5000",
 		"build": "astro build",
 		"preview": "astro preview",
-		"astro": "astro",
-		"start": "node ./dist/server/entry.mjs"
+		"astro": "astro"
 	},
 	"dependencies": {
-		"@astrojs/node": "^9.4.3",
-		"@neondatabase/serverless": "^1.0.1",
-		"@tailwindcss/vite": "^4.1.13",
-		"@upstash/ratelimit": "^2.0.6",
-		"@upstash/redis": "^1.35.4",
-		"astro": "^5.13.9",
-		"astro-bun-adapter": "^1.0.2",
+		"@astrojs/cloudflare": "^12.6.10",
+		"@astrojs/mdx": "^4.3.8",
+		"@astrojs/rss": "^4.0.13",
+		"@astrojs/sitemap": "^3.6.0",
+		"@tailwindcss/vite": "^4.1.16",
+		"astro": "^5.15.1",
 		"astro-i18next": "^1.0.0-beta.21",
-		"tailwindcss": "^4.1.13"
+		"i18next": "^25.6.0",
+		"sharp": "^0.34.3",
+		"tailwindcss": "^4.1.16"
 	}
 }

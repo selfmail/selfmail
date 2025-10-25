@@ -1,56 +1,16 @@
 ---
-import "../styles/global.css";
-
-import GitHub from "../icons/github.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-    <main
-        class="flex w-full text-neutral-950 bg-white uppercase min-h-screen flex-col gap-16 items-center py-8"
-    >
-        <header
-            class="w-full flex flex-row items-center justify-between lg:px-16 px-8"
-        >
-            <h1 class="font-extrabold italic text-lg">Selfmail</h1>
-            <nav>
-                <a
-                    href="/roadmap"
-                    class="font-medium text-sm underline hover:bg-black hover:text-white"
-                    >Roadmap</a
-                >
-                <a
-                    href="/register"
-                    class="font-medium text-sm underline hover:bg-black hover:text-white"
-                    >Register</a
-                >
-                <a
-                    href="/login"
-                    class="font-medium text-sm underline hover:bg-black hover:text-white"
-                    >Login</a
-                >
-            </nav>
-            <p class="text-sm font-medium lg:w-[20%] w-[40%]">
-                The open-source email providers for fast-moving businesses with
-                AI in mind.
-            </p>
-        </header>
-        <h2 class="font-medium text-3xl text-balance text-center w-[25%]">
-            Selfmail is the missing piece of communication in your company.
-        </h2>
-        <video
-            src="https://cdn.selfmail.app/result.mp4"
-            autoplay
-            muted
-            loop
-            class="w-[30%]"></video>
-
-        <h2 class="font-medium text-xl text-balance text-center w-[30%]">
-            We lost control about communication. Over <u>45% of emails</u> sent are
-            <u>spam</u>. But the medium email is growing like never before. <u
-                >300 billions</u
-            >
-            of emails are received <u>every day</u>.
-        </h2>
-    </main>
+	<main class="min-h-screen w-full flex flex-col">
+		<div class="flex flex-col h-screen justify-center">
+			<h1
+				class="font-medium w-full text-center leading-none whitespace-nowrap overflow-hidden"
+				style="font-size: clamp(2vw, 5.5vw, 8vw); letter-spacing: -0.02em;"
+			>
+				SELFMAIL DEVELOPERS
+			</h1>
+		</div>
+	</main>
 </Layout>

@@ -1,27 +1,30 @@
 // @ts-check
 
-import node from "@astrojs/node";
+import cloudflare from "@astrojs/cloudflare";
+import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
+	site: "https://selfmail.app",
+	integrations: [mdx(), sitemap()],
+
+	i18n: {
+		locales: ["es", "en", "pt", "nl", "it", "es", "fr", "de"],
+		defaultLocale: "en",
+		routing: {
+			prefixDefaultLocale: false,
+			fallbackType: "rewrite",
+		},
+	},
+
+	output: "server",
+
 	vite: {
 		plugins: [tailwindcss()],
 	},
-	i18n: {
-		locales: ["es", "en", "pt", "fr", "de", "it", "ja", "ko", "zh-CN", "zh-TW"],
-		defaultLocale: "en",
-	},
-	output: "server",
-	adapter: node({
-		mode: "standalone",
-	}),
-	server: {
-		host: "0.0.0.0",
-		allowedHosts: ["selfmail.app", "www.selfmail.app"],
-	},
-	devToolbar: {
-		enabled: false,
-	},
+
+	adapter: cloudflare(),
 });

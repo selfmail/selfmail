@@ -1,3 +1,1 @@
-**Website**
-
-Offical Marketing site, made with Astro.
+**Selfmail Website**

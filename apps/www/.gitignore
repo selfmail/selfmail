@@ -1,6 +1,5 @@
 # build output
 dist/
-
 # generated types
 .astro/
 
@@ -13,6 +12,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+
 # environment variables
 .env
 .env.production
@@ -22,3 +22,4 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+i18n.cache
