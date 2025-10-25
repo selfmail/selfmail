@@ -28,6 +28,38 @@ export const useCreateAddress = routeAction$(
 
         const member = sharedMap.get("member") as MemberInSharedMap;
 
+        // Check address limits before proceeding - count only member's addresses
+        const memberWithPlan = await db.member.findUnique({
+            where: { id: member.id },
+            include: {
+                workspace: {
+                    include: {
+                        plan: true,
+                    },
+                },
+            },
+        });
+
+        if (!memberWithPlan || !memberWithPlan.workspace.plan) {
+            throw error(500, "Member or plan not found");
+        }
+
+        const plan = memberWithPlan.workspace.plan;
+        const currentAddresses = await db.memberAddress.count({
+            where: {
+                memberId: member.id,
+            },
+        });
+
+        if (currentAddresses >= plan.addressesPerSeat) {
+            return {
+                fieldErrors: {
+                    emailHandle: `Address limit reached. Your plan allows ${plan.addressesPerSeat} addresses per member.`,
+                },
+                failed: true,
+            };
+        }
+
         const existingAddress = await db.address.findUnique({
             where: {
                 email: `${emailHandle}@${domain}`,
@@ -104,9 +136,9 @@ export const useCreateAddress = routeAction$(
             distinctId: member.id,
             event: "address.created",
             properties: {
-                domain
+                domain,
             },
-        })
+        });
 
         redirect(302, `/workspace/${params.workspaceSlug}/address/${address.id}`);
     },
@@ -117,6 +149,59 @@ export const useCreateAddress = routeAction$(
         }),
     }),
 );
+
+const useLimits = routeLoader$(async ({ sharedMap, error }) => {
+    // Check if the user has the right to add new addresses
+    if (!sharedMap.has("user") || !sharedMap.get("user").id) {
+        throw error(401, "Unauthorized");
+    }
+
+    if (!sharedMap.has("member") || !sharedMap.get("member").id) {
+        throw error(401, "Unauthorized");
+    }
+
+    const member = sharedMap.get("member") as MemberInSharedMap;
+
+    try {
+        // Get member with workspace and plan info
+        const memberWithPlan = await db.member.findUnique({
+            where: { id: member.id },
+            include: {
+                workspace: {
+                    include: {
+                        plan: true,
+                    },
+                },
+            },
+        });
+
+        if (!memberWithPlan || !memberWithPlan.workspace.plan) {
+            throw error(500, "Member or plan not found");
+        }
+
+        const plan = memberWithPlan.workspace.plan;
+
+        // Count addresses belonging to this specific member
+        const currentAddresses = await db.memberAddress.count({
+            where: {
+                memberId: member.id,
+            },
+        });
+
+        // Each member gets addressesPerSeat addresses
+        const maxAddresses = plan.addressesPerSeat;
+
+        return {
+            maxAddresses,
+            currentAddresses,
+            addressesPerSeat: plan.addressesPerSeat,
+            canAddMore: currentAddresses < maxAddresses,
+        };
+    } catch (err) {
+        console.error("Error checking limits:", err);
+        throw error(500, "Failed to check address limits");
+    }
+});
 
 const useAvaiableDomains = routeLoader$(async ({ sharedMap }) => {
     const workspace = sharedMap.get("workspace") as WorkspaceInSharedMap;
@@ -138,6 +223,7 @@ export default component$(() => {
     const create = useCreateAddress();
     const location = useLocation();
     const domains = useAvaiableDomains();
+    const limits = useLimits();
 
     const fieldErrors = useStore({
         emailHandle: "",
@@ -163,6 +249,29 @@ export default component$(() => {
         <div class="flex min-h-screen w-full items-center justify-center bg-neutral-50">
             <Form action={create} class="flex w-full max-w-md flex-col gap-4">
                 <h1 class="font-medium text-2xl">Create a new Address</h1>
+
+                {/* Limits information */}
+                <div class="rounded-lg border border-neutral-200 bg-white p-4">
+                    <h3 class="mb-2 font-medium text-neutral-700 text-sm">
+                        Address Limits
+                    </h3>
+                    <p
+                        class={`text-sm ${limits.value.canAddMore ? "text-neutral-600" : "text-red-600"}`}
+                    >
+                        You are using {limits.value.currentAddresses} of{" "}
+                        {limits.value.maxAddresses} allowed addresses
+                        <span class="text-neutral-500">
+                            {" "}({limits.value.addressesPerSeat} addresses per member)
+                        </span>
+                    </p>
+                    {!limits.value.canAddMore && (
+                        <p class="mt-1 text-red-600 text-sm">
+                            You have reached your address limit. Upgrade your plan to create
+                            more addresses.
+                        </p>
+                    )}
+                </div>
+
                 <Input name="address.emailHandle" placeholder="Email Handle" required />
                 {fieldErrors.emailHandle && (
                     <p class="text-red-700">{fieldErrors.emailHandle}</p>
@@ -190,7 +299,17 @@ export default component$(() => {
                         Add a new Domain to your workspace.
                     </span>
                 </Link>
-                <Button>{create.isRunning ? "Creating..." : "Create Address"}</Button>
+                <Button
+                    type="submit"
+                    class="disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100"
+                    disabled={!limits.value.canAddMore || create.isRunning}
+                >
+                    {!limits.value.canAddMore
+                        ? "Address Limit Reached"
+                        : create.isRunning
+                            ? "Creating..."
+                            : "Create Address"}
+                </Button>
             </Form>
         </div>
     );
