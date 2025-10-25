@@ -10,9 +10,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Biome
-        uses: biomejs/setup-biome@v2
-        with:
-          version: latest
-      - name: Run Biome
-        run: biome ci apps packages scripts
+      - name: Setup Bun
+        uses: oven-sh/setup-bun
+      - name: Run Bun Install and Biome CI
+        run: bun install && bunx biome ci apps packages scripts
