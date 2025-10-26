@@ -11,12 +11,16 @@
 	"dependencies": {
 		"@astrojs/cloudflare": "^12.6.10",
 		"@astrojs/mdx": "^4.3.8",
+		"@astrojs/react": "^4.4.0",
 		"@astrojs/rss": "^4.0.13",
 		"@astrojs/sitemap": "^3.6.0",
 		"@tailwindcss/vite": "^4.1.16",
+		"@types/react": "^19.2.2",
+		"@types/react-dom": "^19.2.2",
 		"astro": "^5.15.1",
-		"astro-i18next": "^1.0.0-beta.21",
-		"i18next": "^25.6.0",
+		"lucide-react": "^0.548.0",
+		"react": "^19.2.0",
+		"react-dom": "^19.2.0",
 		"sharp": "^0.34.3",
 		"tailwindcss": "^4.1.16"
 	}
