@@ -8,7 +8,9 @@
 	"dependencies": {
 		"@polar-sh/elysia": "latest",
 		"@polar-sh/sdk": "latest",
+		"bullmq": "^5.61.2",
 		"elysia": "latest",
+		"ioredis": "latest",
 		"stripe": "^19.1.0",
 		"zod": "^4.1.12"
 	},
