@@ -26,6 +26,9 @@ model Workspace {
     Activity        Activity[]
     Invitation      Invitation[]
     WorkspaceSeats  WorkspaceSeats?
+    Subscription    Subscription[]
+    PaymentRecord   PaymentRecord[]
+    BillingAlert    BillingAlert[]
 
     @@index([ownerId])
 }

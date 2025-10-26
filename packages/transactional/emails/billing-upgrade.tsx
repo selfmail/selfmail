@@ -11,13 +11,9 @@ import {
 } from "@react-email/components";
 
 const UpgradeTemplate = ({
-	oldPlan,
-	newPlan,
 	workspaceName,
 	name,
 }: {
-	oldPlan: string;
-	newPlan: string;
 	name: string;
 	workspaceName: string;
 }) => {
@@ -26,7 +22,7 @@ const UpgradeTemplate = ({
 			<Head>
 				<title>Billing Change Notice for workspace {workspaceName}!</title>
 			</Head>
-			<Preview>You have upgraded your plan to {newPlan}.</Preview>
+			<Preview>You have upgraded your plan.</Preview>
 			<Tailwind>
 				<Body className="bg-white py-[20px] font-sans">
 					<Container className="mx-auto max-w-[600px] rounded-[8px] bg-white shadow-sm">
@@ -44,10 +40,8 @@ const UpgradeTemplate = ({
 								Hi {name || "there"},
 							</Text>
 							<Text className="m-0 mb-[40px] text-[18px] text-black leading-[26px]">
-								Thanks for using selfmail! We have successfully changed your
-								plan to "{newPlan}" for your workspace "{workspaceName}". If you
-								have any questions or need assistance, feel free to reach out to
-								our support team. Your old plan was "{oldPlan}".
+								Thanks for the trust! We're excited to inform you that your
+								workspace <strong>{workspaceName}</strong> has been upgraded! You can now enjoy the benefits of your new plan!
 							</Text>
 						</Section>
 

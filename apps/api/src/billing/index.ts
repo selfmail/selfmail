@@ -1,6 +1,6 @@
 import Elysia from "elysia";
-import { BillingService } from "./service";
 import { BillingModule } from "./module";
+import { BillingService } from "./service";
 
 export const billing = new Elysia({
 	prefix: "/billing",
@@ -11,7 +11,7 @@ export const billing = new Elysia({
 	try {
 		const rawBody = await request.text();
 		const signature = headers["stripe-signature"];
-		
+
 		if (!signature) {
 			set.status = 400;
 			return {
@@ -22,15 +22,15 @@ export const billing = new Elysia({
 		}
 
 		const result = await BillingService.processWebhook(rawBody, signature);
-		
+
 		if (!result.success) {
 			set.status = 400;
 		}
-		
+
 		return result;
 	} catch (error) {
 		console.error("Webhook endpoint error:", error);
-		
+
 		set.status = 500;
 		return {
 			success: false,

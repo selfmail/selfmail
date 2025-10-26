@@ -8,9 +8,6 @@ try {
 				name: "payments:read",
 			},
 			{
-				name: "payments:write",
-			},
-			{
 				name: "payments:delete",
 			},
 			{

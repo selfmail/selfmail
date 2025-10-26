@@ -14,7 +14,9 @@
 	},
 	"devDependencies": {
 		"bun-types": "latest",
-		"database": "workspace:*"
+		"database": "workspace:*",
+		"services": "workspace:*",
+		"transactional": "workspace:*"
 	},
 	"module": "src/index.js"
 }

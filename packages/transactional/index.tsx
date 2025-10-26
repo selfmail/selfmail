@@ -74,21 +74,15 @@ export async function generateOverlimitTemplate({
 }
 
 export async function generateBillingUpgradeTemplate({
-	oldPlan,
-	newPlan,
 	workspaceName,
 	name,
 }: {
-	oldPlan: string;
-	newPlan: string;
 	name: string;
 	workspaceName: string;
 }) {
 	const html = await pretty(
 		await render(
 			<UpgradeTemplate
-				oldPlan={oldPlan}
-				newPlan={newPlan}
 				workspaceName={workspaceName}
 				name={name}
 			/>,

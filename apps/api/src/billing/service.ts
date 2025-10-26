@@ -1,34 +1,50 @@
 import Stripe from "stripe";
 import { BillingModule } from "./module";
-import { db } from "database";
+import { CustomerService } from "./services/customer";
+import { BillingLogger } from "./services/logger";
+import { PaymentService } from "./services/payment";
+import { SubscriptionService } from "./services/subscription";
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY as string);
 
+/**
+ * Main billing service that handles webhook processing and delegates to specialized services
+ */
 export abstract class BillingService {
+	/**
+	 * Process incoming Stripe webhook events
+	 */
 	static async processWebhook(
 		body: string,
 		signature: string,
-	): Promise<BillingModule.WebhookSuccessResponse | BillingModule.WebhookErrorResponse> {
+	): Promise<
+		BillingModule.WebhookSuccessResponse | BillingModule.WebhookErrorResponse
+	> {
 		try {
-			const event = await this.verifyWebhookSignature(body, signature);
-			const processed = await this.handleWebhookEvent(event);
-			
+			const event = await BillingService.verifyWebhookSignature(
+				body,
+				signature,
+			);
+			const processed = await BillingService.handleWebhookEvent(event);
+
 			return {
 				success: true,
 				message: `Successfully processed ${event.type}`,
 				processed,
 			};
 		} catch (error) {
-			console.error("Webhook processing error:", error);
-			
+			await BillingLogger.error("Webhook processing error", {
+				error: error instanceof Error ? error.message : "Unknown error",
+			});
+
 			if (error instanceof Error) {
 				return {
 					success: false,
 					error: error.message,
-					code: this.getErrorCode(error),
+					code: BillingService.getErrorCode(error),
 				};
 			}
-			
+
 			return {
 				success: false,
 				error: "Unknown error occurred",
@@ -37,6 +53,9 @@ export abstract class BillingService {
 		}
 	}
 
+	/**
+	 * Verify webhook signature from Stripe
+	 */
 	private static async verifyWebhookSignature(
 		body: string,
 		signature: string,
@@ -51,111 +70,98 @@ export abstract class BillingService {
 				signature,
 				process.env.STRIPE_WEBHOOK_SECRET,
 			);
-			
+
 			return BillingModule.StripeWebhookSchema.parse(event);
 		} catch (error) {
 			if (error instanceof Error) {
-				throw new Error(`Webhook signature verification failed: ${error.message}`);
+				throw new Error(
+					`Webhook signature verification failed: ${error.message}`,
+				);
 			}
 			throw new Error("Webhook signature verification failed");
 		}
 	}
 
+	/**
+	 * Route webhook events to appropriate service handlers
+	 */
 	private static async handleWebhookEvent(
 		event: BillingModule.StripeWebhookEvent,
 	): Promise<boolean> {
-		console.log(`Processing webhook event: ${event.type}`);
+		BillingLogger.info(`Processing webhook event: ${event.type}`, {
+			eventId: event.id,
+		});
 
-		switch (event.type) {
-			case "customer.subscription.created":
-				return await this.handleSubscriptionCreated(event);
-			case "customer.subscription.updated":
-				return await this.handleSubscriptionUpdated(event);
-			case "customer.subscription.deleted":
-				return await this.handleSubscriptionDeleted(event);
-			case "invoice.payment_succeeded":
-				return await this.handlePaymentSucceeded(event);
-			case "invoice.payment_failed":
-				return await this.handlePaymentFailed(event);
-			case "customer.created":
-				return await this.handleCustomerCreated(event);
-			case "customer.updated":
-				return await this.handleCustomerUpdated(event);
-			case "customer.deleted":
-				return await this.handleCustomerDeleted(event);
-			default:
-				console.log(`Unhandled event type: ${event.type}`);
-				return false;
+		try {
+			switch (event.type) {
+				// Subscription events
+				case "customer.subscription.created":
+					return await SubscriptionService.handleCreated(
+						event.data.object as Stripe.Subscription,
+						{ id: event.id, type: event.type },
+					);
+
+				case "customer.subscription.updated":
+					return await SubscriptionService.handleUpdated(
+						event.data.object as Stripe.Subscription,
+						(event.data.previous_attributes as Partial<Stripe.Subscription>) ||
+							{},
+						{ id: event.id, type: event.type },
+					);
+
+				case "customer.subscription.deleted":
+					return await SubscriptionService.handleDeleted(
+						event.data.object as Stripe.Subscription,
+						{ id: event.id, type: event.type },
+					);
+
+				// Payment events
+				case "invoice.payment_succeeded":
+					return await PaymentService.handlePaymentSucceeded(
+						event.data.object as Stripe.Invoice,
+						{ id: event.id, type: event.type },
+					);
+
+				case "invoice.payment_failed":
+					return await PaymentService.handlePaymentFailed(
+						event.data.object as Stripe.Invoice,
+						{ id: event.id, type: event.type },
+					);
+
+				// Customer events
+				case "customer.created":
+					return await CustomerService.handleCreated(
+						event.data.object as Stripe.Customer,
+					);
+
+				case "customer.updated":
+					return await CustomerService.handleUpdated(
+						event.data.object as Stripe.Customer,
+					);
+
+				case "customer.deleted":
+					return await CustomerService.handleDeleted(
+						event.data.object as Stripe.Customer,
+					);
+
+				default:
+					BillingLogger.warn(`Unhandled event type: ${event.type}`, {
+						eventId: event.id,
+					});
+					return false;
+			}
+		} catch (error) {
+			await BillingLogger.error(`Failed to handle event ${event.type}`, {
+				eventId: event.id,
+				error: error instanceof Error ? error.message : "Unknown error",
+			});
+			return false;
 		}
 	}
 
-    // SUBSCRIPTION EVENT HANDLERS
-
-	private static async handleSubscriptionCreated(
-		event: BillingModule.StripeWebhookEvent,
-	): Promise<boolean> {
-		const subscription = event.data.object as Stripe.Subscription;
-		const plan = await db
-        
-		return true;
-	}
-
-	private static async handleSubscriptionUpdated(
-		event: BillingModule.StripeWebhookEvent,
-	): Promise<boolean> {
-		const subscription = event.data.object as Stripe.Subscription;
-		console.log(`Subscription updated: ${subscription.id}`);
-		return true;
-	}
-
-	private static async handleSubscriptionDeleted(
-		event: BillingModule.StripeWebhookEvent,
-	): Promise<boolean> {
-		const subscription = event.data.object as Stripe.Subscription;
-		console.log(`Subscription deleted: ${subscription.id}`);
-		return true;
-	}
-
-	private static async handlePaymentSucceeded(
-		event: BillingModule.StripeWebhookEvent,
-	): Promise<boolean> {
-		const invoice = event.data.object as Stripe.Invoice;
-		console.log(`Payment succeeded for invoice: ${invoice.id}`);
-		return true;
-	}
-
-	private static async handlePaymentFailed(
-		event: BillingModule.StripeWebhookEvent,
-	): Promise<boolean> {
-		const invoice = event.data.object as Stripe.Invoice;
-		console.log(`Payment failed for invoice: ${invoice.id}`);
-		return true;
-	}
-
-	private static async handleCustomerCreated(
-		event: BillingModule.StripeWebhookEvent,
-	): Promise<boolean> {
-		const customer = event.data.object as Stripe.Customer;
-		console.log(`Customer created: ${customer.id}`);
-		return true;
-	}
-
-	private static async handleCustomerUpdated(
-		event: BillingModule.StripeWebhookEvent,
-	): Promise<boolean> {
-		const customer = event.data.object as Stripe.Customer;
-		console.log(`Customer updated: ${customer.id}`);
-		return true;
-	}
-
-	private static async handleCustomerDeleted(
-		event: BillingModule.StripeWebhookEvent,
-	): Promise<boolean> {
-		const customer = event.data.object as Stripe.Customer;
-		console.log(`Customer deleted: ${customer.id}`);
-		return true;
-	}
-
+	/**
+	 * Map error messages to error codes
+	 */
 	private static getErrorCode(error: Error): string {
 		if (error.message.includes("signature")) {
 			return BillingModule.WebhookErrorCode.INVALID_SIGNATURE;
@@ -163,7 +169,10 @@ export abstract class BillingService {
 		if (error.message.includes("Webhook secret")) {
 			return BillingModule.WebhookErrorCode.MISSING_WEBHOOK_SECRET;
 		}
-		if (error.message.includes("parse") || error.message.includes("validation")) {
+		if (
+			error.message.includes("parse") ||
+			error.message.includes("validation")
+		) {
 			return BillingModule.WebhookErrorCode.PARSING_ERROR;
 		}
 		return BillingModule.WebhookErrorCode.PROCESSING_ERROR;

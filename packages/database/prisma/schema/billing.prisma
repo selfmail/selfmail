@@ -47,3 +47,158 @@ enum Access {
     SSO
     PrioritySupport
 }
+
+model Subscription {
+    id String @id @default(uuid())
+
+    workspaceId String
+    workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+    stripeSubscriptionId String @unique
+    stripeCustomerId     String
+
+    currentPeriodStart DateTime
+    currentPeriodEnd   DateTime
+
+    status SubscriptionStatus @default(ACTIVE)
+
+    // Billing details
+    cancelAtPeriodEnd Boolean   @default(false)
+    cancelAt          DateTime?
+    canceledAt        DateTime?
+    trialStart        DateTime?
+    trialEnd          DateTime?
+
+    // Pricing information
+    amount   Int // Amount in cents
+    currency String @default("usd")
+    interval String // month, year, etc.
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Relations
+    subscriptionHistory SubscriptionHistory[]
+    paymentRecords      PaymentRecord[]
+}
+
+model SubscriptionHistory {
+    id String @id @default(uuid())
+
+    subscriptionId String
+    subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+    // What changed
+    eventType   SubscriptionEventType
+    oldStatus   SubscriptionStatus?
+    newStatus   SubscriptionStatus?
+    oldPlanId   String?
+    newPlanId   String?
+    description String?
+
+    // Stripe event details
+    stripeEventId   String?
+    stripeEventType String?
+
+    createdAt DateTime @default(now())
+}
+
+model PaymentRecord {
+    id String @id @default(uuid())
+
+    subscriptionId String?
+    subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+
+    workspaceId String
+    workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+    // Stripe details
+    stripeInvoiceId       String? @unique
+    stripePaymentIntentId String? @unique
+    stripeChargeId        String?
+
+    // Payment details
+    amount        Int // Amount in cents
+    currency      String        @default("usd")
+    status        PaymentStatus
+    paymentMethod String? // card, bank_transfer, etc.
+
+    // Billing period this payment covers
+    periodStart DateTime?
+    periodEnd   DateTime?
+
+    // Failure details
+    failureCode    String?
+    failureMessage String?
+
+    paidAt    DateTime?
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+}
+
+model BillingAlert {
+    id String @id @default(uuid())
+
+    workspaceId String
+    workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+    type       BillingAlertType
+    message    String
+    severity   AlertSeverity    @default(INFO)
+    resolved   Boolean          @default(false)
+    resolvedAt DateTime?
+
+    // Alert details
+    metadata Json? // Store additional context as JSON
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+enum SubscriptionStatus {
+    ACTIVE
+    CANCELED
+    INCOMPLETE
+    INCOMPLETE_EXPIRED
+    PAST_DUE
+    TRIALING
+    UNPAID
+    PAUSED
+}
+
+enum SubscriptionEventType {
+    CREATED
+    UPDATED
+    CANCELED
+    PLAN_CHANGED
+    TRIAL_STARTED
+    TRIAL_ENDED
+    PAYMENT_SUCCEEDED
+    PAYMENT_FAILED
+    REACTIVATED
+}
+
+enum PaymentStatus {
+    PENDING
+    SUCCEEDED
+    FAILED
+    CANCELED
+    REFUNDED
+    PARTIALLY_REFUNDED
+}
+
+enum BillingAlertType {
+    PAYMENT_FAILED
+    SUBSCRIPTION_CANCELED
+    TRIAL_ENDING
+    USAGE_LIMIT_EXCEEDED
+    PAYMENT_METHOD_EXPIRING
+    DUNNING_STARTED
+}
+
+enum AlertSeverity {
+    INFO
+    WARNING
+    ERROR
+    CRITICAL
+}

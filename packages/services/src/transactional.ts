@@ -1,17 +1,17 @@
 import { Queue } from "bullmq";
 import IORedis from "ioredis";
-import { z } from "zod/v4";
+import { z } from "zod";
 import { Logs } from "./logs";
 
 export abstract class Transactional {
-	static connection = new IORedis(
+	private static connection = new IORedis(
 		process.env.REDIS_URL || "redis://localhost:6379",
 		{
 			maxRetriesPerRequest: null,
 		},
 	);
 
-	static queue = new Queue<z.infer<typeof Transactional.schema>>(
+	private static queue = new Queue<z.infer<typeof Transactional.schema>>(
 		"transactional-outbound",
 		{
 			connection: Transactional.connection,
@@ -23,7 +23,7 @@ export abstract class Transactional {
 		},
 	);
 
-	static async processOutbound(
+	private static async processOutbound(
 		data: z.infer<typeof Transactional.schema> & { delay?: number },
 	) {
 		await Transactional.queue.add("transactional-outbound", data, {
@@ -31,9 +31,9 @@ export abstract class Transactional {
 		});
 	}
 
-	static schema = z.object({
-		to: z.email(),
-		from: z.email(),
+	private static schema = z.object({
+		to: z.string().email(),
+		from: z.string().email(),
 		subject: z.string().min(1).max(255),
 		text: z.string().min(1),
 		html: z.string().min(1),
@@ -55,7 +55,7 @@ export abstract class Transactional {
 
 		if (!success) {
 			await Logs.error(
-				`Failed to parse transactional parameter for recipient ${params.to}: ${JSON.stringify(z.prettifyError(error))}\nParams: ${JSON.stringify(params)}`,
+				`Failed to parse transactional parameter for recipient ${params.to}: ${JSON.stringify(error.issues)}\nParams: ${JSON.stringify(params)}`,
 			);
 
 			throw new Error("Invalid parameters for transactional email");
