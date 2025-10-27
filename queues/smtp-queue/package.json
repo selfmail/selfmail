@@ -1,0 +1,17 @@
+{
+	"name": "smtp-queue",
+	"description": "Queue for handling SMTP Events.",
+	"module": "index.ts",
+	"type": "module",
+	"private": true,
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"bullmq": "^5.61.2",
+		"ioredis": "^5.8.2"
+	}
+}

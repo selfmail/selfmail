@@ -279,6 +279,19 @@
         "typescript": "^5",
       },
     },
+    "queues/smtp-queue": {
+      "name": "smtp-queue",
+      "dependencies": {
+        "bullmq": "^5.61.2",
+        "ioredis": "^5.8.2",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+      },
+      "peerDependencies": {
+        "typescript": "^5",
+      },
+    },
     "queues/transactional-queue": {
       "name": "transactional-queue",
       "dependencies": {
@@ -2540,6 +2553,8 @@
     "smtp": ["smtp@workspace:apps/smtp"],
 
     "smtp-api": ["smtp-api@workspace:apps/smtp-api"],
+
+    "smtp-queue": ["smtp-queue@workspace:queues/smtp-queue"],
 
     "smtp-server": ["smtp-server@3.14.0", "", { "dependencies": { "base32.js": "0.1.0", "ipv6-normalize": "1.0.1", "nodemailer": "7.0.3", "punycode.js": "2.3.1" } }, "sha512-cEw/hdIY+xw1pkbQbQ23hvnm9kNABAsgYB+jJYGkzAynZxJ2VB9aqC6JhB1vpdDnqan7C7AL3qHYRGwz5eD6BQ=="],
 
