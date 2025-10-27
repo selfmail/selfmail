@@ -5,7 +5,8 @@
 		"apps/*",
 		"packages/*",
 		"scripts",
-		"queues/*"
+		"queues/*",
+		"smtp/*"
 	],
 	"scripts": {
 		"check": "biome check --write .",
