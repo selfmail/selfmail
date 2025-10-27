@@ -1,15 +1,3 @@
-# outbound
+**Outbound SMTP Server**
 
-To install dependencies:
-
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.2.21. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+The outbound SMTP Server is an SMTP Server to send emails with an existing Selfmail Account. After the connection was successfully, we'll give the email to the outbound-queue, which handles the actual sending of the email.

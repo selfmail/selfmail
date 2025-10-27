@@ -1,12 +1,15 @@
 {
-  "name": "outbound",
-  "module": "index.ts",
-  "type": "module",
-  "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  }
+	"name": "outbound",
+	"module": "index.ts",
+	"type": "module",
+	"private": true,
+	"dependencies": {
+		"spam": "workspace:*"
+	},
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	}
 }
