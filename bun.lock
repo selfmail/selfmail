@@ -330,8 +330,12 @@
     },
     "smtp/spam": {
       "name": "spam",
+      "dependencies": {
+        "sanitize-html": "^2.17.0",
+      },
       "devDependencies": {
         "@types/bun": "latest",
+        "@types/sanitize-html": "^2.16.0",
       },
       "peerDependencies": {
         "typescript": "^5",

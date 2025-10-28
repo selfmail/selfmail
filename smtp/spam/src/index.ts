@@ -1,5 +1,6 @@
 export type { ClamAVConfig, ClamAVScanResult } from "./clamav/index.ts";
 export { ClamAVClient } from "./clamav/index.ts";
+export { ContentClient } from "./content/index.ts";
 export type {
 	RspamdBodyCheckParams,
 	RspamdBodyResult,
