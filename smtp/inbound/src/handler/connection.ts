@@ -1,163 +1,155 @@
 import type { SMTPServerSession } from "smtp-server";
+import { rspamd } from "../lib/rspamd";
 import type { Callback } from "../types";
 
-interface RspamdResponse {
-	is_spam: boolean;
-	score: number;
-	required_score: number;
-	action: "reject" | "add header" | "greylist" | "no action";
-	symbols: Record<string, { score: number; description?: string }>;
-	messages?: Record<string, string>;
-}
+export abstract class Connection {
+	// List of private IP ranges (RFC1918) that should be rejected unless whitelisted
+	private static readonly PRIVATE_IP_RANGES = [
+		/^10\./,
+		/^172\.(1[6-9]|2[0-9]|3[0-1])\./,
+		/^192\.168\./,
+		/^127\./,
+		/^169\.254\./,
+		/^::1$/,
+		/^fe80:/,
+		/^fc00:/,
+		/^fd00:/,
+	];
 
-interface SpamCheckResult {
-	accept: boolean;
-	score: number;
-	action: string;
-	symbols?: Record<string, { score: number; description?: string }>;
-}
+	// Whitelisted IPs that should always be allowed
+	private static readonly WHITELISTED_IPS = [
+		"127.0.0.1",
+		"::1",
+		// Add more whitelisted IPs as needed
+	];
 
-export class Connection {
-	private static readonly RSPAMD_URL =
-		process.env.RSPAMD_URL || "http://127.0.0.1:11334";
-	private static readonly RSPAMD_TIMEOUT = 5000; // 5 seconds
-	private static readonly SPAM_REJECT_THRESHOLD = 15; // Reject emails with score >= 15
-
-	static async init(session: SMTPServerSession, callback: Callback) {
+	static async init(
+		session: SMTPServerSession,
+		callback: Callback,
+	): Promise<ReturnType<Callback>> {
 		try {
-			// Check rate limiting first
-			const limited = await Connection.ratelimit(session.remoteAddress);
-			if (!limited.accept) {
-				return callback(new Error("Too many connections from your IP address"));
+			if (!session.remoteAddress) {
+				console.warn("[Connection] Rejected: No remote address");
+				return callback(new Error("Connection rejected: No remote address"));
 			}
 
-			// Perform spam check during connection phase
-			const spamCheck = await Connection.spamCheck(session);
-			if (!spamCheck.accept) {
+			const clientIP = session.remoteAddress;
+			const clientHostname =
+				session.clientHostname || session.hostNameAppearsAs || "unknown";
+
+			console.log(
+				`[Connection] New connection from IP: ${clientIP}, Hostname: ${clientHostname}`,
+			);
+
+			// Check if the ip is whitelisted
+			if (Connection.isWhitelisted(clientIP)) {
+				console.log(`[Connection] Whitelisted IP: ${clientIP}`);
+				return callback();
+			}
+
+			// Check for private/internal IPs (security measure)
+			if (
+				Connection.isPrivateIP(clientIP) &&
+				!Connection.isWhitelisted(clientIP)
+			) {
+				console.warn(
+					`[Connection] Rejected: Private IP address not whitelisted: ${clientIP}`,
+				);
 				return callback(
 					new Error(
-						`Connection rejected: ${spamCheck.action} (score: ${spamCheck.score})`,
+						"Connection rejected: Connections from private networks are not allowed",
 					),
 				);
 			}
 
-			// Store spam score in session for later use
-			// biome-ignore lint/suspicious/noExplicitAny: SMTPServerSession envelope doesn't include our custom properties
-			(session.envelope as any).spamScore = spamCheck.score;
-			// biome-ignore lint/suspicious/noExplicitAny: SMTPServerSession envelope doesn't include our custom properties
-			(session.envelope as any).spamAction = spamCheck.action;
-
-			return callback();
-		} catch (error) {
-			console.error("Connection initialization error:", error);
-			return callback(
-				new Error("Internal server error during connection setup"),
-			);
-		}
-	}
-
-	static async spamCheck(session: SMTPServerSession): Promise<SpamCheckResult> {
-		try {
-			const checkUrl = `${Connection.RSPAMD_URL}/checkv2`;
-
-			// Prepare the payload for rspamd
-			const payload = {
-				ip: session.remoteAddress || "unknown",
-				helo: session.hostNameAppearsAs || "",
-				from: "", // No sender yet at connection time
-				rcpt: [], // No recipients yet at connection time
-				subject: "", // No subject yet at connection time
-				user: session.user || "",
-				pass_all: "1", // Check all rules
-				deliver_to: "reject", // We want to know what action rspamd would take
-			};
-
-			const controller = new AbortController();
-			const timeoutId = setTimeout(
-				() => controller.abort(),
-				Connection.RSPAMD_TIMEOUT,
-			);
-
-			const response = await fetch(checkUrl, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					"User-Agent": "Selfmail-SMTP-Inbound/1.0",
-				},
-				body: JSON.stringify(payload),
-				signal: controller.signal,
-			});
-
-			clearTimeout(timeoutId);
-
-			if (!response.ok) {
+			// Validate HELO/EHLO hostname format
+			if (clientHostname && !Connection.isValidHostname(clientHostname)) {
 				console.warn(
-					`Rspamd check failed with status ${response.status}: ${response.statusText}`,
+					`[Connection] Warning: Invalid HELO/EHLO hostname: ${clientHostname}`,
+				);
+				// Log but don't reject - some legitimate servers have poor HELO
+			}
+
+			// Check with Rspamd for spam/reputation checks
+			try {
+				const rspamdResult = await rspamd.checkConnection({
+					ip: clientIP,
+					helo: clientHostname !== "unknown" ? clientHostname : undefined,
+				});
+
+				console.log(
+					`[Connection] Rspamd check result - Action: ${rspamdResult.action}, Score: ${rspamdResult.score}`,
 				);
 
-				// If rspamd is down, we'll allow the connection but log it
-				return {
-					accept: true,
-					score: 0,
-					action: "no action (rspamd unavailable)",
-				};
+				if (!rspamdResult.allowed) {
+					console.warn(
+						`[Connection] Rejected by Rspamd - Action: ${rspamdResult.action}, Reason: ${rspamdResult.reason || "Unknown"}`,
+					);
+					return callback(
+						new Error(
+							`Connection rejected: ${rspamdResult.reason || "Spam protection triggered"}`,
+						),
+					);
+				}
+
+				// Log if there are any suspicious symbols but connection is allowed
+				if (rspamdResult.score > 0) {
+					console.warn(
+						`[Connection] Warning: Connection allowed but has elevated spam score: ${rspamdResult.score} (${rspamdResult.reason || "N/A"})`,
+					);
+				}
+			} catch (rspamdError) {
+				// Log error but allow connection if Rspamd is down
+				console.error(
+					`[Connection] Rspamd check failed: ${rspamdError instanceof Error ? rspamdError.message : "Unknown error"}`,
+				);
+				console.warn(
+					`[Connection] Allowing connection ${clientIP} despite Rspamd failure (fail-open policy)`,
+				);
 			}
 
-			const data = (await response.json()) as RspamdResponse;
-
-			// Determine if we should accept the connection
-			const shouldAccept = Connection.shouldAcceptConnection(data);
-
-			return {
-				accept: shouldAccept,
-				score: data.score || 0,
-				action: data.action || "no action",
-				symbols: data.symbols,
-			};
+			// All checks passed
+			console.log(`[Connection] Connection accepted from ${clientIP}`);
+			return callback();
 		} catch (error) {
-			if (error instanceof Error && error.name === "AbortError") {
-				console.warn("Rspamd check timed out");
-			} else {
-				console.error("Rspamd check error:", error);
-			}
-
-			// If there's an error with rspamd, we'll allow the connection
-			// but this should be logged and monitored
-			return {
-				accept: true,
-				score: 0,
-				action: "no action (error)",
-			};
+			console.error(
+				`[Connection] Unexpected error during connection check: ${error instanceof Error ? error.message : "Unknown error"}`,
+			);
+			// Fail-open: allow connection on unexpected errors
+			return callback();
 		}
 	}
 
-	private static shouldAcceptConnection(
-		rspamdResponse: RspamdResponse,
-	): boolean {
-		const { score, action, is_spam } = rspamdResponse;
-
-		// Always reject if rspamd explicitly says to reject
-		if (action === "reject") {
-			return false;
-		}
-
-		// Reject if score is above our threshold
-		if (score >= Connection.SPAM_REJECT_THRESHOLD) {
-			return false;
-		}
-
-		// For very high spam scores, reject even if action isn't "reject"
-		if (is_spam && score > 10) {
-			return false;
-		}
-
-		return true;
+	private static isWhitelisted(ip: string): boolean {
+		return Connection.WHITELISTED_IPS.includes(ip);
 	}
 
-	static async ratelimit(_remoteAddress: string): Promise<{ accept: boolean }> {
-		// TODO: Implement proper rate limiting
-		// This could use Redis, in-memory cache, or database
-		// For now, we'll accept all connections
-		return { accept: true };
+	private static isPrivateIP(ip: string): boolean {
+		return Connection.PRIVATE_IP_RANGES.some((pattern) => pattern.test(ip));
+	}
+
+	/**
+	 * Should be a valid FQDN or IP address
+	 */
+	private static isValidHostname(hostname: string): boolean {
+		if (!hostname || hostname === "unknown") {
+			return false;
+		}
+
+		// Check if it's an IP address (IPv4 or IPv6)
+		const ipv4Pattern = /^(\d{1,3}\.){3}\d{1,3}$/;
+		const ipv6Pattern = /^([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}$/;
+
+		if (ipv4Pattern.test(hostname) || ipv6Pattern.test(hostname)) {
+			return true;
+		}
+
+		// Check if it's a valid FQDN
+		// - Must contain at least one dot
+		// - Must not start or end with a dot or hyphen
+		// - Must contain valid characters (alphanumeric, dots, hyphens)
+		const fqdnPattern = /^(?!-)[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.?$/;
+
+		return fqdnPattern.test(hostname) && hostname.includes(".");
 	}
 }
