@@ -13,6 +13,7 @@
 		"prepare": "husky",
 		"dev": "infisical run --env=dev -- turbo dev --ui tui -F !smtp -F !smtp-api -F !outbound-queue -F !transactional-queue",
 		"dev:smtp": "infisical run --env=dev -- turbo dev   -F smtp-api -F smtp -F relay -F outbound-queue -F transactional-queue",
+		"smtp": "turbo dev   -F inbound",
 		"build": "turbo build",
 		"check-types": "turbo check-types",
 		"dev:native": "turbo -F native dev",

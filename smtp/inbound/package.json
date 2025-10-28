@@ -7,6 +7,7 @@
 		"@types/bun": "latest"
 	},
 	"dependencies": {
+		"smtp-server": "^3.15.0",
 		"spam": "workspace:*"
 	},
 	"peerDependencies": {
