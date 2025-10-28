@@ -129,6 +129,7 @@ services:
 
   clamav:
     image: clamav/clamav:latest
+    platform: linux/amd64
     container_name: clamav
     restart: unless-stopped
     ports:

@@ -1,10 +1,1 @@
-# Security Policy
-
-## Supported Versions
-
-Because we don't have currently any versions of Selfmail, we'll support every version with security updates.
-
-
-## Reporting a Vulnerability
-
-To report a vulnerability, please email us at security@selfmail.app. This email is not yet active. 
+**For any security problems, please contact for now @i-am-henri: hey@henri.is**
