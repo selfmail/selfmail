@@ -94,6 +94,7 @@ export class Connection {
 				console.warn(
 					`Rspamd check failed with status ${response.status}: ${response.statusText}`,
 				);
+
 				// If rspamd is down, we'll allow the connection but log it
 				return {
 					accept: true,
