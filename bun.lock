@@ -315,6 +315,7 @@
       "devDependencies": {
         "@types/bun": "latest",
         "@types/smtp-server": "^3.5.12",
+        "database": "workspace:*",
       },
       "peerDependencies": {
         "typescript": "^5.8.3",

@@ -125,6 +125,19 @@ model Email {
     @@index([read])
 }
 
+// List of blocked email addresses and domains, due to spam or abuse
+model Blocked {
+    id String @id @default(uuid())
+
+    email  String? // specific email address
+    domain String? // entire domain
+
+    reason    String // reason for blocking
+    blockedAt DateTime @default(now())
+
+    @@unique([email, domain])
+}
+
 enum Sort {
     normal
     important

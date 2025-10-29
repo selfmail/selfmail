@@ -4,7 +4,7 @@ import type { Callback } from "../types";
 
 export abstract class Connection {
 	// List of private IP ranges (RFC1918) that should be rejected unless whitelisted
-	private static readonly PRIVATE_IP_RANGES = [
+	static readonly PRIVATE_IP_RANGES = [
 		/^10\./,
 		/^172\.(1[6-9]|2[0-9]|3[0-1])\./,
 		/^192\.168\./,
@@ -17,11 +17,7 @@ export abstract class Connection {
 	];
 
 	// Whitelisted IPs that should always be allowed
-	private static readonly WHITELISTED_IPS = [
-		"127.0.0.1",
-		"::1",
-		// Add more whitelisted IPs as needed
-	];
+	static readonly WHITELISTED_IPS = ["127.0.0.1", "::1"];
 
 	static async init(
 		session: SMTPServerSession,
@@ -108,7 +104,6 @@ export abstract class Connection {
 				);
 			}
 
-			// All checks passed
 			console.log(`[Connection] Connection accepted from ${clientIP}`);
 			return callback();
 		} catch (error) {
@@ -120,18 +115,18 @@ export abstract class Connection {
 		}
 	}
 
-	private static isWhitelisted(ip: string): boolean {
+	static isWhitelisted(ip: string): boolean {
 		return Connection.WHITELISTED_IPS.includes(ip);
 	}
 
-	private static isPrivateIP(ip: string): boolean {
+	static isPrivateIP(ip: string): boolean {
 		return Connection.PRIVATE_IP_RANGES.some((pattern) => pattern.test(ip));
 	}
 
 	/**
 	 * Should be a valid FQDN or IP address
 	 */
-	private static isValidHostname(hostname: string): boolean {
+	static isValidHostname(hostname: string): boolean {
 		if (!hostname || hostname === "unknown") {
 			return false;
 		}

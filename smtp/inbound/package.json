@@ -5,7 +5,8 @@
 	"private": true,
 	"devDependencies": {
 		"@types/bun": "latest",
-		"@types/smtp-server": "^3.5.12"
+		"@types/smtp-server": "^3.5.12",
+		"database": "workspace:*"
 	},
 	"scripts": {
 		"dev": "bun --watch run ./src/index.ts",
