@@ -1,6 +1,8 @@
 import { SMTPServer } from "smtp-server";
 import { Connection } from "./handler/connection";
+import { Data } from "./handler/data";
 import { MailFrom } from "./handler/mail-from";
+import { RcptTo } from "./handler/rcpt-to";
 
 const smtpServer = new SMTPServer({
 	name: "Inbound Selfmail SMTP Server",
@@ -14,6 +16,8 @@ const smtpServer = new SMTPServer({
 
 	onConnect: Connection.init,
 	onMailFrom: MailFrom.init,
+	onRcptTo: RcptTo.init,
+	onData: Data.init,
 });
 
 smtpServer.listen(25, () => {

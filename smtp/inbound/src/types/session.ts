@@ -41,13 +41,37 @@ export type MailFromData = {
 	timestamp: Date;
 };
 
+export type RspamdResult = {
+	action:
+		| "reject"
+		| "add header"
+		| "rewrite subject"
+		| "greylist"
+		| "no action";
+	score: number;
+	required_score: number;
+	symbols?: Record<string, { score: number; options?: string[] }>;
+	rewriteSubject?: string;
+};
+
+export type EmailData = {
+	raw: string;
+	size: number;
+	subject?: string;
+	messageId?: string;
+	date?: string;
+	rspamd: RspamdResult;
+};
+
 export type ExtendedSession = SMTPServerSession & {
 	meta: {
 		dkimVerified?: boolean;
 		spamScore: number;
 		spfResult?: SPFResult;
+		rspamdResult?: RspamdResult;
 	};
 	envelope: SMTPServerSession["envelope"] & {
 		mailFrom?: MailFromData;
+		emailData?: EmailData;
 	};
 };
