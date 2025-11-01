@@ -1,6 +1,7 @@
 import { SMTPServer } from "smtp-server";
 import { Auth } from "./handler/auth";
 import { Connect } from "./handler/connect";
+import { MailFrom } from "./handler/mail-from";
 
 const outboundServer = new SMTPServer({
 	secure: false,
@@ -11,6 +12,7 @@ const outboundServer = new SMTPServer({
 
 	onConnect: Connect.init,
 	onAuth: Auth.init,
+	onMailFrom: MailFrom.init,
 });
 
 outboundServer.listen(587, () => {
