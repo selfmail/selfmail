@@ -1,5 +1,4 @@
 import { type Job, UnrecoverableError } from "bullmq";
-import { consola } from "consola";
 import type { ParsedMail } from "mailparser";
 import { Logs } from "services/logs";
 import { Notify } from "services/notify";
@@ -108,6 +107,7 @@ export async function outbound(
 		...mail,
 		records: mxRecords,
 	}).catch(async (err) => {
+		console.log(err);
 		throw new Error(`Sending email failed for mail with mail-id: ${job.id}`);
 	});
 

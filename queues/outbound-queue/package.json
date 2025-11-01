@@ -9,6 +9,7 @@
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
+		"@types/mailparser": "^3.4.6",
 		"@types/nodemailer": "^7.0.1"
 	},
 	"peerDependencies": {
@@ -18,6 +19,7 @@
 		"bullmq": "^5.58.4",
 		"consola": "^3.4.2",
 		"dkim-signer": "^0.2.2",
+		"mailparser": "^3.7.5",
 		"nodemailer": "^7.0.6",
 		"services": "workspace:*",
 		"zod": "^4.1.5"

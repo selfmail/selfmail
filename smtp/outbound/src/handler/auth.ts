@@ -13,7 +13,7 @@ type AuthCallback = (
 export abstract class Auth {
 	static async init(
 		auth: SMTPServerAuthentication,
-		session: SMTPServerSession,
+		_session: SMTPServerSession,
 		callback: AuthCallback,
 	): Promise<ReturnType<AuthCallback>> {
 		try {
@@ -66,7 +66,7 @@ export abstract class Auth {
 					`AUTH rejected: Unsupported authentication method ${method} or missing credentials.`,
 				),
 			);
-		} catch (error) {
+		} catch (_error) {
 			return callback(new Error("AUTH rejected: Authentication error"));
 		}
 	}

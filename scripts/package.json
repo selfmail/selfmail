@@ -5,10 +5,13 @@
 	"private": true,
 	"devDependencies": {
 		"@types/bun": "latest",
-		"database": "workspace:*"
+		"database": "workspace:*",
+		"services": "workspace:*"
 	},
 	"scripts": {
-		"setup:db": "bun run src/db.ts"
+		"setup:db": "bun run src/db.ts",
+		"generate:jwt-keys": "bun run src/generate-jwt-keys.ts",
+		"test:jwt": "bun run src/test-jwt.ts"
 	},
 	"peerDependencies": {
 		"typescript": "^5"

@@ -1,8 +1,5 @@
-import { readFile } from "node:fs/promises";
 import { db } from "database";
-import { jwtVerify } from "jose";
-import { importSPKI } from "jose/key/import";
-import z from "zod";
+import { JWT } from "services";
 
 export abstract class AuthenticationUtils {
 	static async validateCredentials(
@@ -28,54 +25,28 @@ export abstract class AuthenticationUtils {
 	}
 
 	static async validateAccessToken(
-		username: string,
+		_username: string,
 		accessToken: string,
 	): Promise<{ success: false } | { success: true; userId: string }> {
-		const pubKeyPem = await readFile("./pubkey.pem", "utf8");
-		const pubKey = await importSPKI(pubKeyPem, "RS256");
+		const verifyResult = await JWT.verifyJWT(accessToken);
 
-		try {
-			const { payload, protectedHeader } = await jwtVerify(
-				accessToken,
-				pubKey,
-				{
-					issuer: "https://auth.yourdomain.example",
-					audience: "your-audience",
-					// optional: maxTokenAge, clockTolerance etc.
-				},
-			);
-			console.log("Payload:", payload);
-			console.log("Header:", protectedHeader);
-
-			// Parse payload
-			const parse = await z
-				.object({
-					username: z.string(),
-					password: z.string(),
-				})
-				.safeParseAsync(payload);
-
-			if (!parse.success) {
-				console.error("Invalid token payload structure");
-				return { success: false };
-			}
-
-			// Check credentials
-			const credentialsCheck = await AuthenticationUtils.validateCredentials(
-				parse.data.username,
-				parse.data.password,
-			);
-
-			if (!credentialsCheck.success) {
-				console.error("Invalid credentials");
-				return { success: false };
-			}
-
-			return { success: true, userId: credentialsCheck.userId };
-		} catch (err) {
-			console.error("Invalid token:", err);
-
+		if (!verifyResult.success) {
+			console.error("Token verification failed:", verifyResult.error);
 			return { success: false };
 		}
+
+		const { payload } = verifyResult;
+
+		const credentialsCheck = await AuthenticationUtils.validateCredentials(
+			payload.username,
+			payload.password,
+		);
+
+		if (!credentialsCheck.success) {
+			console.error("Invalid credentials from token");
+			return { success: false };
+		}
+
+		return { success: true, userId: credentialsCheck.userId };
 	}
 }
