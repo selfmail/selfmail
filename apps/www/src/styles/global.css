@@ -32,3 +32,24 @@ h6 {
 .nav {
 	transition: opacity 0.2s ease-in-out;
 }
+
+.animate-box {
+	animation: box-fade-in-out 5s ease-in-out forwards;
+	overflow: hidden;
+}
+
+@keyframes box-fade-in-out {
+	0% {
+		width: 0;
+	}
+	20% {
+		width: 100%;
+	}
+	80% {
+		width: 100%;
+		transform: translateX(0%);
+	}
+	100% {
+		transform: translateX(100%);
+	}
+}

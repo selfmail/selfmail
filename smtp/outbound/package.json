@@ -4,10 +4,15 @@
 	"type": "module",
 	"private": true,
 	"dependencies": {
-		"spam": "workspace:*"
+		"mailparser": "^3.7.5",
+		"smtp-server": "^3.16.0",
+		"spam": "workspace:*",
+		"zod": "^4.1.12"
 	},
 	"devDependencies": {
-		"@types/bun": "latest"
+		"@types/bun": "latest",
+		"@types/mailparser": "^3.4.6",
+		"@types/smtp-server": "^3.5.12"
 	},
 	"peerDependencies": {
 		"typescript": "^5.8.3"
