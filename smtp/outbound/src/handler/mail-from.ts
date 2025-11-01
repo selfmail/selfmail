@@ -5,7 +5,7 @@ import type { Callback } from "../types";
 export abstract class MailFrom {
 	static async init(
 		address: SMTPServerAddress,
-		session: SMTPServerSession,
+		_session: SMTPServerSession,
 		callback: Callback,
 	): Promise<ReturnType<Callback>> {
 		try {
