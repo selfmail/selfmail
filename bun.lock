@@ -329,7 +329,10 @@
     "smtp/outbound": {
       "name": "outbound",
       "dependencies": {
+        "database": "workspace:*",
+        "jose": "^6.1.0",
         "mailparser": "^3.7.5",
+        "services": "workspace:*",
         "smtp-server": "^3.16.0",
         "spam": "workspace:*",
         "zod": "^4.1.12",
@@ -346,6 +349,7 @@
     "smtp/spam": {
       "name": "spam",
       "dependencies": {
+        "ioredis": "^5.8.2",
         "sanitize-html": "^2.17.0",
       },
       "devDependencies": {

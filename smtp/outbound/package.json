@@ -4,7 +4,10 @@
 	"type": "module",
 	"private": true,
 	"dependencies": {
+		"database": "workspace:*",
+		"jose": "^6.1.0",
 		"mailparser": "^3.7.5",
+		"services": "workspace:*",
 		"smtp-server": "^3.16.0",
 		"spam": "workspace:*",
 		"zod": "^4.1.12"
