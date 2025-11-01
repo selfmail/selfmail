@@ -1,6 +1,7 @@
 import { db } from "database";
 import type { ParsedMail } from "mailparser";
 import { simpleParser } from "mailparser";
+import { createEmail } from "outbound-queue";
 import type { SMTPServerDataStream, SMTPServerSession } from "smtp-server";
 import type { Callback } from "../types";
 
@@ -45,7 +46,25 @@ export abstract class Data {
 				}
 			}
 
-			// TODO: Add Email to Outbound Queue
+			await createEmail({
+				subject: parsed.subject,
+				text: parsed.text,
+				html: parsed.html,
+				to: parsed.to as unknown as never,
+				from: parsed.from as unknown as never,
+				cc: parsed.cc as unknown as never,
+				bcc: parsed.bcc as unknown as never,
+				replyTo: parsed.replyTo as unknown as never,
+				messageId: parsed.messageId,
+				inReplyTo: parsed.inReplyTo,
+				references: parsed.references,
+				date: parsed.date?.toISOString(),
+				priority: parsed.priority as "normal" | "low" | "high" | undefined,
+				textAsHtml: parsed.textAsHtml,
+				attachments: parsed.attachments as unknown as never,
+				headers: parsed.headers as unknown as never,
+				headerLines: [...parsed.headerLines] as unknown as never,
+			});
 
 			return callback();
 		} catch (error) {

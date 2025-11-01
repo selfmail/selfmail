@@ -7,6 +7,7 @@
 		"database": "workspace:*",
 		"jose": "^6.1.0",
 		"mailparser": "^3.7.5",
+		"outbound-queue": "workspace:*",
 		"services": "workspace:*",
 		"smtp-server": "^3.16.0",
 		"spam": "workspace:*",

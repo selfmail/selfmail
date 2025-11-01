@@ -251,6 +251,7 @@
         "bullmq": "^5.58.4",
         "consola": "^3.4.2",
         "dkim-signer": "^0.2.2",
+        "ioredis": "^5.8.2",
         "mailparser": "^3.7.5",
         "nodemailer": "^7.0.6",
         "services": "workspace:*",
@@ -303,6 +304,7 @@
       "devDependencies": {
         "@types/bun": "latest",
         "database": "workspace:*",
+        "services": "workspace:*",
       },
       "peerDependencies": {
         "typescript": "^5",
@@ -335,7 +337,9 @@
         "database": "workspace:*",
         "jose": "^6.1.0",
         "mailparser": "^3.7.5",
+        "outbound-queue": "workspace:*",
         "services": "workspace:*",
+        "smtp-queue": "workspace:*",
         "smtp-server": "^3.16.0",
         "spam": "workspace:*",
         "zod": "^4.1.12",

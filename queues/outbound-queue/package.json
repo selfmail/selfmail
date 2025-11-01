@@ -7,6 +7,9 @@
 		"dev": "bun run --watch src/index.ts",
 		"build": "bun build src/index.ts --outfile=app --target=bun --compile"
 	},
+	"exports": {
+		".": "./src/create.ts"
+	},
 	"devDependencies": {
 		"@types/bun": "latest",
 		"@types/mailparser": "^3.4.6",
@@ -19,6 +22,7 @@
 		"bullmq": "^5.58.4",
 		"consola": "^3.4.2",
 		"dkim-signer": "^0.2.2",
+		"ioredis": "^5.8.2",
 		"mailparser": "^3.7.5",
 		"nodemailer": "^7.0.6",
 		"services": "workspace:*",
