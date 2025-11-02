@@ -1,4 +1,5 @@
 import { db } from "database";
+import type { ParsedMail } from "mailparser";
 import { simpleParser } from "mailparser";
 import { saveEmail } from "smtp-queue";
 import type { SMTPServerDataStream } from "smtp-server";
@@ -13,269 +14,266 @@ export abstract class Data {
 		callback: Callback,
 	): Promise<ReturnType<Callback>> {
 		try {
-			// Get sender information from session
-			const mailFrom = session.envelope?.mailFrom;
-			if (!mailFrom) {
-				console.error("[Data] No MAIL FROM information in session");
-				return callback(new Error("DATA rejected: Missing sender information"));
+			const s = stream.on("end", () => {
+				if (s.sizeExceeded) {
+					console.error("Message too large.");
+
+					const err = Object.assign(new Error("Message too large"), {
+						responseCode: 552,
+					});
+
+					throw callback(err);
+				}
+			});
+
+			stream.on("error", (err) => {
+				console.error("Stream error:", err);
+				throw callback(new Error("Error receiving message data"));
+			});
+
+			const parsed = await simpleParser(s);
+
+			const recipients = session.envelope.rcptTo.map((rcpt) => rcpt.address);
+
+			if (recipients.length === 0) {
+				return callback(new Error("No recipients specified"));
 			}
 
-			// Get recipient information from session envelope
-			const rcptTo = session.envelope?.rcptTo;
-			if (!rcptTo || rcptTo.length === 0) {
-				console.error("[Data] No RCPT TO information in session");
-				return callback(
-					new Error("DATA rejected: Missing recipient information"),
-				);
+			const sender = session.envelope.mailFrom?.address;
+			if (!sender) {
+				return callback(new Error("No sender specified"));
 			}
 
-			// Read email data from stream
-			const chunks: Buffer[] = [];
-			let totalSize = 0;
-			const maxSize = 25 * 1024 * 1024; // 25MB limit
+			const { toAddresses, ccAddresses, bccAddresses } =
+				Data.parseRecipientAddresses(parsed);
 
-			stream.on("data", (chunk: Buffer) => {
-				totalSize += chunk.length;
+			const allRecipients = [...toAddresses, ...ccAddresses, ...bccAddresses];
 
-				if (totalSize > maxSize) {
-					stream.destroy();
-					console.error(
-						`[Data] Email size exceeded limit: ${totalSize} bytes > ${maxSize} bytes`,
-					);
+			if (allRecipients.length === 0) {
+				console.warn("No valid recipient addresses found in parsed email");
+			}
+
+			for await (const recipientEmail of recipients) {
+				const address = await db.address.findUnique({
+					where: { email: recipientEmail },
+					select: {
+						id: true,
+						email: true,
+						MemberAddress: {
+							where: { role: "owner" },
+							select: { memberId: true },
+						},
+					},
+				});
+
+				if (!address) {
+					console.warn(`Recipient address not found: ${recipientEmail}`);
 					return callback(
-						new Error("DATA rejected: Email size exceeds maximum allowed size"),
+						new Error(`Recipient address not found: ${recipientEmail}`),
 					);
 				}
 
-				chunks.push(chunk);
-			});
-
-			stream.on("error", (error) => {
-				console.error(`[Data] Stream error: ${error.message}`);
-				return callback(
-					new Error(`DATA rejected: Stream error - ${error.message}`),
-				);
-			});
-
-			stream.on("end", async () => {
-				try {
-					const emailBuffer = Buffer.concat(chunks);
-					const emailBody = emailBuffer.toString("utf-8");
-
-					console.log(
-						`[Data] Received email data: ${totalSize} bytes from ${mailFrom.address}`,
+				if (address.MemberAddress.length === 0) {
+					console.error(`No owner found for address: ${recipientEmail}`);
+					return callback(
+						new Error(`No owner found for address: ${recipientEmail}`),
 					);
+				}
 
-					const parsed = await simpleParser(emailBuffer);
-
-					const clientIP = session.remoteAddress || "unknown";
-					const clientHostname =
-						session.clientHostname || session.hostNameAppearsAs || "unknown";
-
-					console.log("[Data] Performing Rspamd spam check");
-
-					const rspamdCheck = await rspamd.checkBody({
-						from: mailFrom.address,
-						to: rcptTo.map((addr) => addr.address),
-						subject: parsed.subject || "(no subject)",
-						body: emailBody,
-						ip: clientIP !== "unknown" ? clientIP : undefined,
-						helo: clientHostname !== "unknown" ? clientHostname : undefined,
-					});
-
-					console.log(
-						`[Data] Rspamd check result - Action: ${rspamdCheck.action}, Score: ${rspamdCheck.score}/${rspamdCheck.required_score}`,
+				if (address.MemberAddress.length > 1) {
+					console.error(`Multiple owners found for address: ${recipientEmail}`);
+					return callback(
+						new Error(`Multiple owners found for address: ${recipientEmail}`),
 					);
+				}
 
-					session.meta.spamScore =
-						(session.meta.spamScore || 0) + rspamdCheck.score;
+				const memberId = address.MemberAddress[0]?.memberId;
+				if (!memberId) {
+					return callback(new Error("Member ID not found"));
+				}
 
-					if (rspamdCheck.action === "reject") {
-						console.warn(
-							`[Data] Rejected by Rspamd - Score: ${rspamdCheck.score}, Reason: ${rspamdCheck.reason || "Spam detected"}`,
-						);
-						return callback(
-							new Error(
-								`DATA rejected: ${rspamdCheck.reason || "Message identified as spam"}`,
-							),
-						);
-					}
+				const { Limits } = await import("services/limits");
+				const availableStorage = await Limits.checkLimit(memberId);
+				const emailSize =
+					BigInt(parsed.text?.length || 0) +
+					BigInt(parsed.html?.toString().length || 0);
 
-					if (rspamdCheck.action === "greylist") {
-						console.warn(
-							`[Data] Greylisted by Rspamd - Score: ${rspamdCheck.score}`,
-						);
-						return callback(
-							new Error(
-								"DATA rejected: Message greylisted, please try again later",
-							),
-						);
-					}
-
-					if (!session.meta) {
-						session.meta = { spamScore: 0 };
-					}
-					// biome-ignore lint/suspicious/noExplicitAny: extending meta with rspamd results
-					(session.meta as any).rspamdResult = {
-						action: rspamdCheck.action,
-						score: rspamdCheck.score,
-						required_score: rspamdCheck.required_score,
-						symbols: rspamdCheck.symbols,
-						rewriteSubject: rspamdCheck.rewriteSubject,
-					};
-
-					if (rspamdCheck.action === "add header") {
-						console.log(
-							`[Data] Adding spam headers - Score: ${rspamdCheck.score}`,
-						);
-					}
-
-					if (rspamdCheck.action === "rewrite subject") {
-						console.log(
-							`[Data] Subject rewrite suggested: ${rspamdCheck.rewriteSubject}`,
-						);
-					}
-
-					// biome-ignore lint/suspicious/noExplicitAny: extending envelope with email data
-					(session.envelope as any).emailData = {
-						raw: emailBody,
-						size: totalSize,
-						subject: parsed.subject,
-						messageId: parsed.messageId,
-						date: parsed.date,
-						rspamd: {
-							action: rspamdCheck.action,
-							score: rspamdCheck.score,
-							required_score: rspamdCheck.required_score,
-							symbols: rspamdCheck.symbols,
-						},
-					};
-
-					console.log(
-						`[Data] Email accepted from ${mailFrom.address} to ${rcptTo.map((addr) => addr.address).join(", ")}`,
-					);
-					console.log(
-						`[Data] Total spam score: ${session.meta.spamScore}, Rspamd action: ${rspamdCheck.action}`,
-					);
-
-					const recipientAddress = await db.address.findUnique({
-						where: { email: rcptTo[0]?.address },
-					});
-
-					if (!recipientAddress) {
-						console.error(
-							`[Data] Recipient address not found: ${rcptTo[0]?.address}`,
-						);
-						return callback(
-							new Error("DATA rejected: Recipient address not found"),
-						);
-					}
-
-					const determineSort = ():
-						| "normal"
-						| "important"
-						| "spam"
-						| "trash"
-						| "sent" => {
-						if (rspamdCheck.score >= rspamdCheck.required_score * 0.8)
-							return "spam";
-						if (rspamdCheck.action === "add header") return "spam";
-						return "normal";
-					};
-
-					const headers: Record<string, unknown> = {};
-					if (parsed.headers) {
-						for (const [key, value] of parsed.headers) {
-							headers[key] = value;
-						}
-					}
-
-					const attachments = parsed.attachments?.map(
-						(att: {
-							filename?: string;
-							contentType: string;
-							size: number;
-							checksum?: string;
-							contentDisposition?: string;
-							contentId?: string;
-						}) => ({
-							filename: att.filename,
-							contentType: att.contentType,
-							size: att.size,
-							checksum: att.checksum,
-							contentDisposition: att.contentDisposition,
-							contentId: att.contentId,
-						}),
-					);
-
-					const getAddresses = (
-						addressObj:
-							| { value: Array<{ address?: string; name?: string }> }
-							| Array<{ value: Array<{ address?: string; name?: string }> }>
-							| undefined,
-					): Array<{ address: string; name?: string }> | undefined => {
-						if (!addressObj) return undefined;
-						if (Array.isArray(addressObj)) {
-							return addressObj
-								.flatMap((obj) => obj.value)
-								.map((addr) => ({
-									address: addr.address || "",
-									name: addr.name,
-								}));
-						}
-						return addressObj.value.map((addr) => ({
-							address: addr.address || "",
-							name: addr.name,
-						}));
-					};
-
-					await saveEmail({
-						messageId: parsed.messageId || undefined,
-						subject: parsed.subject || "(no subject)",
-						date: parsed.date,
-						sizeBytes: BigInt(totalSize),
-						from: getAddresses(parsed.from) || [{ address: mailFrom.address }],
-						to:
-							getAddresses(parsed.to) ||
-							rcptTo.map((addr) => ({ address: addr.address })),
-						cc: getAddresses(parsed.cc),
-						bcc: getAddresses(parsed.bcc),
-						replyTo: getAddresses(parsed.replyTo),
-						text: parsed.text,
-						html: parsed.html || undefined,
-						headers,
-						attachments,
-						warning:
-							rspamdCheck.action === "add header"
-								? "Potential spam detected"
-								: undefined,
-						spamScore: rspamdCheck.score,
-						virusStatus: undefined,
-						rawEmail: emailBody,
-						addressId: recipientAddress.id,
-						contactId: undefined,
-						sort: determineSort(),
-					});
-
-					return callback(null);
-				} catch (error) {
+				if (availableStorage < emailSize) {
 					console.error(
-						`[Data] Error processing email: ${error instanceof Error ? error.message : "Unknown error"}`,
+						`Storage limit exceeded for ${recipientEmail}: available ${availableStorage} bytes, needed ${emailSize} bytes`,
+					);
+					return callback(
+						new Error("Message rejected: Recipient storage quota exceeded"),
+					);
+				}
+
+				const clientIP = session.remoteAddress || "unknown";
+				const clientHostname =
+					session.clientHostname || session.hostNameAppearsAs || "unknown";
+
+				const rspamdCheck = await rspamd.checkBody({
+					from: sender,
+					to: recipients,
+					subject: parsed.subject || "(no subject)",
+					body: parsed.text || parsed.html?.toString() || "",
+					ip: clientIP !== "unknown" ? clientIP : undefined,
+					helo: clientHostname !== "unknown" ? clientHostname : undefined,
+				});
+
+				if (rspamdCheck.action === "reject") {
+					console.warn(
+						`Rejected by Rspamd - Score: ${rspamdCheck.score}, Reason: ${rspamdCheck.reason || "Spam detected"}`,
 					);
 					return callback(
 						new Error(
-							"DATA rejected: Internal server error during email processing",
+							`Message rejected: ${rspamdCheck.reason || "Identified as spam"}`,
 						),
 					);
 				}
-			});
+
+				if (rspamdCheck.action === "greylist") {
+					console.warn(`Greylisted by Rspamd - Score: ${rspamdCheck.score}`);
+					return callback(
+						new Error("Message greylisted, please try again later"),
+					);
+				}
+
+				const determineSort = ():
+					| "normal"
+					| "important"
+					| "spam"
+					| "trash"
+					| "sent" => {
+					if (rspamdCheck.score >= rspamdCheck.required_score * 0.8)
+						return "spam";
+					if (rspamdCheck.action === "add header") return "spam";
+					return "normal";
+				};
+
+				const headers: Record<string, unknown> = {};
+				if (parsed.headers) {
+					for (const [key, value] of parsed.headers) {
+						headers[key] = value;
+					}
+				}
+
+				const attachments = parsed.attachments?.map((att) => ({
+					filename: att.filename,
+					contentType: att.contentType,
+					size: att.size,
+					checksum: att.checksum,
+					contentDisposition: att.contentDisposition,
+					contentId: att.contentId,
+				}));
+
+				await saveEmail({
+					messageId: parsed.messageId,
+					subject: parsed.subject || "(no subject)",
+					date: parsed.date,
+					sizeBytes: emailSize,
+					from: Data.parseAddressObjects(parsed.from) || [{ address: sender }],
+					to:
+						Data.parseAddressObjects(parsed.to) ||
+						recipients.map((addr) => ({ address: addr })),
+					cc: Data.parseAddressObjects(parsed.cc),
+					bcc: Data.parseAddressObjects(parsed.bcc),
+					replyTo: Data.parseAddressObjects(parsed.replyTo),
+					text: parsed.text,
+					html: parsed.html || undefined,
+					headers,
+					attachments,
+					warning:
+						rspamdCheck.action === "add header"
+							? "Potential spam detected"
+							: undefined,
+					spamScore: rspamdCheck.score,
+					virusStatus: undefined,
+					rawEmail: parsed.text || parsed.html?.toString(),
+					addressId: address.id,
+					contactId: undefined,
+					sort: determineSort(),
+				});
+			}
+
+			return callback();
 		} catch (error) {
-			console.error(
-				`[Data] Unexpected error: ${error instanceof Error ? error.message : "Unknown error"}`,
-			);
-			return callback(
-				new Error("DATA rejected: Internal server error during validation"),
-			);
+			console.error("Error in DATA handler:", error);
+			return callback(new Error("Temporary server error"));
 		}
+	}
+
+	static parseRecipientAddresses(parsed: ParsedMail): {
+		toAddresses: string[];
+		ccAddresses: string[];
+		bccAddresses: string[];
+	} {
+		const toAddresses: string[] = [];
+		const ccAddresses: string[] = [];
+		const bccAddresses: string[] = [];
+
+		if (parsed.to) {
+			const toList = Array.isArray(parsed.to) ? parsed.to : [parsed.to];
+			for (const to of toList) {
+				if (to.value) {
+					toAddresses.push(
+						...to.value
+							.map((addr) => addr.address)
+							.filter((a): a is string => !!a),
+					);
+				}
+			}
+		}
+
+		if (parsed.cc) {
+			const ccList = Array.isArray(parsed.cc) ? parsed.cc : [parsed.cc];
+			for (const cc of ccList) {
+				if (cc.value) {
+					ccAddresses.push(
+						...cc.value
+							.map((addr) => addr.address)
+							.filter((a): a is string => !!a),
+					);
+				}
+			}
+		}
+
+		if (parsed.bcc) {
+			const bccList = Array.isArray(parsed.bcc) ? parsed.bcc : [parsed.bcc];
+			for (const bcc of bccList) {
+				if (bcc.value) {
+					bccAddresses.push(
+						...bcc.value
+							.map((addr) => addr.address)
+							.filter((a): a is string => !!a),
+					);
+				}
+			}
+		}
+
+		return { toAddresses, ccAddresses, bccAddresses };
+	}
+
+	static parseAddressObjects(
+		addressObj:
+			| { value: Array<{ address?: string; name?: string }> }
+			| Array<{ value: Array<{ address?: string; name?: string }> }>
+			| undefined,
+	): Array<{ address: string; name?: string }> | undefined {
+		if (!addressObj) return undefined;
+		if (Array.isArray(addressObj)) {
+			return addressObj
+				.flatMap((obj) => obj.value)
+				.map((addr) => ({
+					address: addr.address || "",
+					name: addr.name,
+				}))
+				.filter((addr) => addr.address);
+		}
+		return addressObj.value
+			.map((addr) => ({
+				address: addr.address || "",
+				name: addr.name,
+			}))
+			.filter((addr) => addr.address);
 	}
 }

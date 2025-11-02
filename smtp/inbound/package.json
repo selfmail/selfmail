@@ -16,6 +16,7 @@
 	"dependencies": {
 		"dmarc-parse": "^1.2.1",
 		"mailparser": "^3.7.4",
+		"services": "workspace:*",
 		"smtp-queue": "workspace:*",
 		"smtp-server": "^3.16.0",
 		"spam": "workspace:*",

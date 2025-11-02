@@ -6,6 +6,8 @@ model Address {
     handle String
     email  String @unique
 
+    usedStorageBytes BigInt @default(0)
+
     // multiple members can access the same address (e.g. shared addresses)
     MemberAddress   MemberAddress[]
     Email           Email[]
@@ -23,7 +25,17 @@ model MemberAddress {
     addressId String
     address   Address @relation(fields: [addressId], references: [id])
 
+    // Storage of the mailbox will be determined by the highest role
+    role MemberRole @default(member)
+
     @@id([memberId, addressId])
+}
+
+enum MemberRole {
+    // Owner will have to pay for the storage limit
+    owner
+    admin
+    member
 }
 
 model Contact {

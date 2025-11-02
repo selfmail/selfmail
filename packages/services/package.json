@@ -5,6 +5,7 @@
 	"private": true,
 	"devDependencies": {
 		"@types/bun": "latest",
+		"@prisma/client": "^6.18.0",
 		"@types/clamscan": "^2.4.1",
 		"database": "workspace:*"
 	},
@@ -12,6 +13,10 @@
 		".": {
 			"import": "./src/index.ts",
 			"types": "./src/index.ts"
+		},
+		"./limits": {
+			"import": "./src/limits.ts",
+			"types": "./src/limits.ts"
 		},
 		"./logs": {
 			"import": "./src/logs.ts",
