@@ -79,7 +79,7 @@ try {
 			},
 			{
 				name: "Premium",
-				storageBytesPerSeat: 200 * 1024 * 1024 * 1024, // 200 GB
+				storageBytesPerSeat: 100 * 1024 * 1024 * 1024, // 100 GB
 				description: "Premium plan with advanced features for a growing team.",
 				addressesPerSeat: 15,
 				domainsPerSeat: 2,

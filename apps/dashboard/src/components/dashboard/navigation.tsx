@@ -64,6 +64,7 @@ export default component$(() => {
             members: "/members",
             billing: "/billing",
             activity: "/activity",
+            limits: "/limits",
             settings: "/settings",
             domains: "/domains",
         },
