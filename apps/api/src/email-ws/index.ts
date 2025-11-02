@@ -5,6 +5,7 @@ import {
 	middlewareAuthentication,
 	verifyWorkspaceMembership,
 } from "../lib/auth";
+import type { EmailWSModule } from "./module";
 
 export const connection = new IORedis(
 	process.env.REDIS_URL ?? "redis://localhost:6379",
@@ -64,8 +65,8 @@ export const emailWebsocket = new Elysia({
 		console.log("WebSocket closed:", ws.id);
 	},
 	message(ws, message) {
-		const worker = new Worker<{}, void>(
-			"foo",
+		const worker = new Worker<EmailWSModule.EmailJobData, void>(
+			"real-time-emails",
 			async (job) => {
 				ws.send(job.data);
 			},

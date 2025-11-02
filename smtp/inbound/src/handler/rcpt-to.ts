@@ -7,7 +7,7 @@ import type { ExtendedSession } from "../types/session";
 export abstract class RcptTo {
 	static async init(
 		address: SMTPServerAddress,
-		session: ExtendedSession,
+		_session: ExtendedSession,
 		callback: (err?: Error) => void,
 	): Promise<ReturnType<Callback>> {
 		try {

@@ -1,4 +1,4 @@
-import { Worker } from "bullmq";
+import { Queue, Worker } from "bullmq";
 import { db } from "database";
 import { connection } from "./connection";
 
@@ -71,8 +71,10 @@ export const emailWorker = new Worker<EmailJobData>(
 	{ connection } as any,
 );
 
-emailWorker.on("completed", (job) => {
-	console.log(`[EmailWorker] Job ${job.id} completed`);
+emailWorker.on("completed", async (job) => {
+	const queue = new Queue("real-time-emails");
+
+	await queue.add("email", job.data);
 });
 
 emailWorker.on("failed", (job, err) => {
