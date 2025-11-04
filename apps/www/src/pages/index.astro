@@ -1,4 +1,5 @@
 ---
+import GridItem from "../components/GridItem.astro";
 import Header from "../components/Header.astro";
 import Layout from "../layouts/Layout.astro";
 ---
@@ -47,9 +48,11 @@ import Layout from "../layouts/Layout.astro";
 			<div
 				class="grid gap-px outline outline-neutral-700 grid-cols-8 grid-rows-6 w-full"
 			>
-				<div class="outline outline-neutral-700 aspect-square"></div>
+				<GridItem
+					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+				/>
 				<div
-					class="flex relative flex-col space-y-3 item-center h-full justify-center w-full col-span-6 row-span-2 outline outline-neutral-700"
+					class="flex relative flex-col space-y-3 item-center h-full justify-center w-full col-span-6 row-span-2 outline outline-neutral-700 overflow-hidden"
 				>
 					<div
 						class="inset-0 absolute rounded-full outline outline-neutral-700"
@@ -59,47 +62,35 @@ import Layout from "../layouts/Layout.astro";
 						</h2>
 					</div>
 				</div>
-				<div class="outline outline-neutral-700 aspect-square"></div>
-				<div class="outline outline-neutral-700 aspect-square"></div>
-				<div class="outline outline-neutral-700 aspect-square"></div>
-				<div
+				<GridItem
 					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
-				>
-					<div class="absolute animate-box inset-0 bg-blue-700/20">
-					</div>
-				</div>
-				<div
+				/>
+				<GridItem
 					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
-				>
-					<div class="absolute animate-box inset-0 bg-blue-700/20">
-					</div>
-				</div>
-				<div
+				/>
+				<GridItem
 					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
-				>
-					<div class="absolute animate-box inset-0 bg-blue-700/20">
-					</div>
-				</div>
-				<div
+				/>
+				<GridItem
 					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
-				>
-					<div class="absolute animate-box inset-0 bg-blue-700/20">
-					</div>
-				</div>
-				<div
+				/>
+				<GridItem
 					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
-				>
-					<div class="absolute animate-box inset-0 bg-blue-700/20">
-					</div>
-				</div>
-				<div
+				/>
+				<GridItem
 					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
-				>
-					<div class="absolute animate-box inset-0 bg-blue-700/20">
-					</div>
-				</div>
+				/>
+				<GridItem
+					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+				/>
+				<GridItem
+					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+				/>
+				<GridItem
+					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+				/>
 				<div
-					class="outline relative outline-neutral-700 col-span-2 row-span-3"
+					class="outline relative outline-neutral-700 col-span-2 row-span-3 overflow-hidden"
 				>
 					<div
 						class="flex flex-col absolute inset-0 rounded-full outline outline-neutral-700"
@@ -108,7 +99,7 @@ import Layout from "../layouts/Layout.astro";
 					</div>
 				</div>
 				<div
-					class="outline relative outline-neutral-700 col-span-4 row-span-2"
+					class="outline relative outline-neutral-700 col-span-4 row-span-2 overflow-hidden"
 				>
 					<div
 						class="flex flex-col absolute inset-0 rounded-full outline outline-neutral-700"
@@ -116,17 +107,25 @@ import Layout from "../layouts/Layout.astro";
 						<h2>AI-Powered Email Composition</h2>
 					</div>
 				</div>
-				<div class="outline outline-neutral-700 aspect-square"></div>
-				<div class="outline outline-neutral-700 aspect-square"></div>
-				<div class="outline outline-neutral-700 aspect-square"></div>
-				<div class="outline outline-neutral-700 aspect-square"></div>
+				<GridItem
+					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+				/>
+				<GridItem
+					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+				/>
+				<GridItem
+					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+				/>
+				<GridItem
+					class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+				/>
 				<div
-					class="outline relative outline-neutral-700 col-span-8 row-span-1"
+					class="outline relative outline-neutral-700 col-span-8 row-span-1 overflow-hidden"
 				>
 					<div
 						class="flex flex-col absolute inset-0 rounded-full outline outline-neutral-700"
 					>
-						<h2>AI-Powered Email Composition</h2>
+						<h2>Companies</h2>
 					</div>
 				</div>
 			</div>

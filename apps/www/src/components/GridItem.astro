@@ -1,0 +1,28 @@
+<div class:list={["grid-item", Astro.props.class]} {...Astro.props}>
+    <div class="grid-glow glow-blue"></div>
+    <div class="grid-glow glow-white"></div>
+    <div class="grid-glow glow-red"></div>
+    <div class="grid-glow glow-purple"></div>
+    <slot />
+</div>
+
+<script>
+    document.querySelectorAll(".grid-item").forEach((item) => {
+        let animationTimeout: number | null = null;
+
+        item.addEventListener("mouseenter", () => {
+            if (animationTimeout) {
+                clearTimeout(animationTimeout);
+                animationTimeout = null;
+            }
+            item.classList.add("is-animating");
+        });
+
+        item.addEventListener("mouseleave", () => {
+            animationTimeout = window.setTimeout(() => {
+                item.classList.remove("is-animating");
+                animationTimeout = null;
+            }, 900);
+        });
+    });
+</script>

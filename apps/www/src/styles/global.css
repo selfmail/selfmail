@@ -53,3 +53,82 @@ h6 {
 		transform: translateX(100%);
 	}
 }
+
+.grid-item {
+	position: relative;
+}
+
+.grid-glow {
+	position: absolute;
+	inset: 0;
+	transform: translateX(-101%);
+	transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	pointer-events: none;
+	z-index: 1;
+	opacity: 0.6;
+	width: 100%;
+}
+
+.glow-blue {
+	background: rgba(59, 130, 246, 0.8);
+}
+
+.glow-white {
+	background: rgba(255, 255, 255, 0.6);
+}
+
+.glow-red {
+	background: rgba(239, 68, 68, 0.7);
+}
+
+.glow-purple {
+	background: rgba(168, 85, 247, 0.7);
+}
+
+.grid-item:hover .glow-blue,
+.grid-item.is-animating .glow-blue {
+	transform: translateX(0);
+	transition-delay: 0s;
+}
+
+.grid-item:hover .glow-white,
+.grid-item.is-animating .glow-white {
+	transform: translateX(0);
+	transition-delay: 0.1s;
+}
+
+.grid-item:hover .glow-red,
+.grid-item.is-animating .glow-red {
+	transform: translateX(0);
+	transition-delay: 0.2s;
+}
+
+.grid-item:hover .glow-purple,
+.grid-item.is-animating .glow-purple {
+	transform: translateX(0);
+	transition-delay: 0.3s;
+}
+
+.grid-item:not(:hover):not(.is-animating) .glow-blue {
+	transform: translateX(101%);
+	transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	transition-delay: 0.3s;
+}
+
+.grid-item:not(:hover):not(.is-animating) .glow-white {
+	transform: translateX(101%);
+	transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	transition-delay: 0.2s;
+}
+
+.grid-item:not(:hover):not(.is-animating) .glow-red {
+	transform: translateX(101%);
+	transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	transition-delay: 0.1s;
+}
+
+.grid-item:not(:hover):not(.is-animating) .glow-purple {
+	transform: translateX(101%);
+	transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	transition-delay: 0s;
+}
