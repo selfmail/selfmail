@@ -1,0 +1,211 @@
+---
+import GridItem from "../components/GridItem.astro";
+import Header from "../components/Header.astro";
+import Layout from "../layouts/Layout.astro";
+
+const plans = [
+    {
+        name: "Free",
+        price: "0€",
+        period: "forever",
+        features: ["Single user", "Up to 3 addresses", "Standard support"],
+        cta: "Get Started",
+        ctaLink: "https://dashboard.selfmail.app/auth/register",
+    },
+    {
+        name: "Pro",
+        price: "10€",
+        period: "per user/month",
+        features: [
+            "Unlimited users",
+            "Custom domain",
+            "Priority support",
+            "AI features",
+            "API access",
+            "Workflows with custom code",
+            "Advanced security",
+            "Unlimited addresses",
+        ],
+        cta: "Never miss an email again",
+        ctaLink: "https://dashboard.selfmail.app/auth/register",
+        featured: true,
+    },
+];
+---
+
+<Layout>
+    <main class="w-full flex flex-col">
+        <div class="flex mt-24 flex-col items-center justify-center">
+            <h1 class="text-center text-4xl sm:text-6xl md:text-7xl">
+                <span class="text-neutral-300">Simple, Transparent</span><br />
+                Pricing
+            </h1>
+            <p class="text-neutral-300 text-center mt-6 max-w-2xl">
+                Choose the plan that fits your needs. Start free and scale as
+                you grow.
+            </p>
+        </div>
+
+        <div class="lg:px-20 flex flex-col mt-32 space-y-12">
+            <div
+                class="grid gap-px outline outline-neutral-700 grid-cols-8 grid-rows-8 w-full"
+            >
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+                <div
+                    class="outline relative outline-neutral-700 col-span-3 row-span-6 overflow-hidden flex items-center justify-center p-8"
+                >
+                    <div class="flex flex-col space-y-6 w-full h-full">
+                        <div class="flex flex-col space-y-2">
+                            <h3 class="text-2xl font-medium">
+                                {plans[0].name}
+                            </h3>
+                            <div class="flex items-baseline space-x-2">
+                                <span class="text-5xl font-bold"
+                                    >{plans[0].price}</span
+                                >
+                                <span class="text-neutral-400"
+                                    >{plans[0].period}</span
+                                >
+                            </div>
+                        </div>
+                        <ul class="flex flex-col space-y-3 flex-1">
+                            {
+                                plans[0].features.map((feature) => (
+                                    <li class="flex items-start space-x-3">
+                                        <span class="text-neutral-400 mt-1">
+                                            ✓
+                                        </span>
+                                        <span class="text-neutral-200">
+                                            {feature}
+                                        </span>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                        <a
+                            href={plans[0].ctaLink}
+                            class="w-full text-center px-6 py-3 rounded-full bg-neutral-800 hover:bg-neutral-700 transition-colors text-neutral-100"
+                        >
+                            {plans[0].cta}
+                        </a>
+                    </div>
+                </div>
+                <div
+                    class="outline relative outline-neutral-700 col-span-3 row-span-6 overflow-hidden flex items-center justify-center p-8 bg-neutral-900"
+                >
+                    <div class="flex flex-col space-y-6 w-full h-full">
+                        <div class="flex flex-col space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <h3 class="text-2xl font-medium">
+                                    {plans[1].name}
+                                </h3>
+                                <span
+                                    class="text-xs px-2 py-1 rounded-full bg-neutral-700 text-neutral-200"
+                                    >Popular</span
+                                >
+                            </div>
+                            <div class="flex items-baseline space-x-2">
+                                <span class="text-5xl font-bold"
+                                    >{plans[1].price}</span
+                                >
+                                <span class="text-neutral-400"
+                                    >{plans[1].period}</span
+                                >
+                            </div>
+                        </div>
+                        <ul class="flex flex-col space-y-3 flex-1">
+                            {
+                                plans[1].features.map((feature) => (
+                                    <li class="flex items-start space-x-3">
+                                        <span class="text-green-400 mt-1">
+                                            ✓
+                                        </span>
+                                        <span class="text-neutral-200">
+                                            {feature}
+                                        </span>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                        <a
+                            href={plans[1].ctaLink}
+                            class="w-full text-center px-6 py-3 rounded-full bg-neutral-100 hover:bg-neutral-200 transition-colors text-black font-medium"
+                        >
+                            {plans[1].cta}
+                        </a>
+                    </div>
+                </div>
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+                <div
+                    class="outline relative outline-neutral-700 col-span-6 row-span-2 overflow-hidden flex items-center justify-center p-8"
+                >
+                    <div class="flex flex-col space-y-3 text-center">
+                        <h2 class="text-3xl font-medium">
+                            Need a custom plan?
+                        </h2>
+                        <p class="text-neutral-300 max-w-xl mx-auto">
+                            For enterprise customers with specific requirements,
+                            we offer custom plans with dedicated support and
+                            tailored features.
+                        </p>
+                        <a
+                            href="mailto:sales@selfmail.app"
+                            class="text-neutral-100 hover:text-neutral-300 transition-colors inline-flex items-center justify-center space-x-2"
+                        >
+                            <span>Contact Sales</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+                <GridItem
+                    class="outline outline-neutral-700 aspect-square overflow-hidden relative"
+                />
+            </div>
+        </div>
+    </main>
+</Layout>

@@ -1,5 +1,8 @@
 ---
 import "../styles/global.css";
+
+import Footer from "@/components/Footer.astro";
+import Header from "../components/Header.astro";
 ---
 
 <!doctype html>
@@ -10,6 +13,8 @@ import "../styles/global.css";
         <title>Selfmail</title>
     </head>
     <body class="antialiased root">
+        <Header />
         <slot />
+        <Footer />
     </body>
 </html>

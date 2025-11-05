@@ -1,0 +1,202 @@
+---
+
+---
+
+<footer class="mt-20 flex flex-row gap-px w-full">
+    <div class="hidden lg:flex outline-1 w-20 outline-neutral-700"></div>
+    <div
+        class="hidden lg:flex p-5 outline-1 outline-neutral-700 w-full flex-col"
+    >
+        <div class="flex flex-row justify-between w-full items-start">
+            <div class="flex flex-row space-x-12 mb-20 z-40">
+                <div class="flex flex-col space-y-2">
+                    <span class="text-sm text-neutral-400 mb-1">Features</span>
+                    <a
+                        href="/features/workflows"
+                        class="footer-link text-lg hover:text-neutral-300 transition-colors relative group"
+                    >
+                        Workflows
+                        <span class="footer-underline"></span>
+                    </a>
+                    <a
+                        href="/features/api"
+                        class="footer-link text-lg hover:text-neutral-300 transition-colors relative group"
+                    >
+                        API
+                        <span class="footer-underline"></span>
+                    </a>
+                    <a
+                        href="/features/spam"
+                        class="footer-link text-lg hover:text-neutral-300 transition-colors relative group"
+                    >
+                        Spam
+                        <span class="footer-underline"></span>
+                    </a>
+                    <a
+                        href="/features/ai"
+                        class="footer-link text-lg hover:text-neutral-300 transition-colors relative group"
+                    >
+                        AI
+                        <span class="footer-underline"></span>
+                    </a>
+                    <a
+                        href="/features/security"
+                        class="footer-link text-lg hover:text-neutral-300 transition-colors relative group"
+                    >
+                        Security
+                        <span class="footer-underline"></span>
+                    </a>
+                </div>
+                <div class="flex flex-col space-y-2">
+                    <span class="text-sm text-neutral-400 mb-1">Platform</span>
+                    <a
+                        href="/pricing"
+                        class="footer-link text-lg hover:text-neutral-300 transition-colors relative group"
+                    >
+                        Pricing
+                        <span class="footer-underline"></span>
+                    </a>
+                    <a
+                        href="https://docs.selfmail.app"
+                        target="_blank"
+                        class="footer-link text-lg hover:text-neutral-300 transition-colors relative group"
+                    >
+                        Docs
+                        <span class="footer-underline"></span>
+                    </a>
+                    <a
+                        href="/features"
+                        class="footer-link text-lg hover:text-neutral-300 transition-colors relative group"
+                    >
+                        Features
+                        <span class="footer-underline"></span>
+                    </a>
+                </div>
+                <div class="flex flex-col space-y-2">
+                    <span class="text-sm text-neutral-400 mb-1">Legal</span>
+                    <a
+                        href="/privacy"
+                        class="footer-link text-lg hover:text-neutral-300 transition-colors relative group"
+                    >
+                        Privacy
+                        <span class="footer-underline"></span>
+                    </a>
+                    <a
+                        href="/terms"
+                        class="footer-link text-lg hover:text-neutral-300 transition-colors relative group"
+                    >
+                        Terms
+                        <span class="footer-underline"></span>
+                    </a>
+                    <a
+                        href="/imprint"
+                        class="footer-link text-lg hover:text-neutral-300 transition-colors relative group"
+                    >
+                        Imprint
+                        <span class="footer-underline"></span>
+                    </a>
+                </div>
+            </div>
+            <div
+                class="survey-box z-40 relative overflow-hidden outline-1 outline-neutral-700 p-6 max-w-md"
+            >
+                <div class="grid-glow glow-amber"></div>
+                <div class="relative z-10">
+                    <h3 class="text-2xl font-bold mb-3 text-neutral-100">
+                        What are your problems with Email?
+                    </h3>
+                    <p class="text-neutral-300 mb-4">
+                        We are running a survey to understand the biggest pain
+                        points of communication via Email. Attend this journey
+                        and help us improve the future of email.
+                    </p>
+                    <a
+                        href="/survey"
+                        class="inline-block bg-neutral-100 text-black px-6 py-2 rounded-full hover:bg-neutral-200 transition-all hover:scale-105"
+                    >
+                        Take Survey →
+                    </a>
+                </div>
+            </div>
+        </div>
+        <h2
+            id="selfmail-title"
+            class="opacity-30 font-bold mb-8 whitespace-nowrap"
+            style="line-height: 0.9;"
+        >
+            Selfmail
+        </h2>
+    </div>
+    <div class="hidden lg:flex outline-1 w-20 outline-neutral-700"></div>
+</footer>
+
+<style>
+    .footer-underline {
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: currentColor;
+        transition: width 0.3s ease;
+    }
+
+    .footer-link:hover .footer-underline {
+        width: 100%;
+    }
+
+    .survey-box {
+        transition: all 0.3s ease;
+    }
+
+    .survey-box:hover {
+        transform: translateY(-4px);
+    }
+
+    .grid-glow {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0;
+        transition: opacity 0.9s ease;
+        pointer-events: none;
+    }
+
+    .glow-amber {
+        background: rgba(251, 191, 36, 0.3);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .survey-box:hover .grid-glow {
+        opacity: 1;
+    }
+</style>
+
+<script>
+    const resizeTitle = () => {
+        const title = document.getElementById("selfmail-title");
+        const container = title?.parentElement;
+
+        if (!title || !container) return;
+
+        let fontSize = 10;
+        title.style.fontSize = `${fontSize}px`;
+
+        while (title.scrollWidth < container.clientWidth && fontSize < 500) {
+            fontSize += 1;
+            title.style.fontSize = `${fontSize}px`;
+        }
+
+        while (title.scrollWidth > container.clientWidth && fontSize > 10) {
+            fontSize -= 1;
+            title.style.fontSize = `${fontSize}px`;
+        }
+    };
+
+    resizeTitle();
+    window.addEventListener("resize", resizeTitle);
+</script>

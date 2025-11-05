@@ -33,6 +33,16 @@ h6 {
 	transition: opacity 0.2s ease-in-out;
 }
 
+/* Navigation hover effects */
+.footer-container:hover .footer:not(:hover) {
+	opacity: 0.5;
+	transition: opacity 0.2s ease-in-out;
+}
+
+.footer {
+	transition: opacity 0.2s ease-in-out;
+}
+
 .animate-box {
 	animation: box-fade-in-out 5s ease-in-out forwards;
 	overflow: hidden;
