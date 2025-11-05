@@ -2,13 +2,19 @@
 
 ---
 
-<footer class="mt-20 flex flex-row gap-px w-full">
-    <div class="hidden lg:flex outline-1 w-20 outline-neutral-700"></div>
+<footer
+    class="mt-20 flex flex-row gap-px w-full overflow-hidden border-t border-neutral-700"
+>
+    <div class="hidden lg:flex outline outline-neutral-700 w-20 shrink-0"></div>
     <div
-        class="hidden lg:flex p-5 outline-1 outline-neutral-700 w-full flex-col"
+        class="flex px-5 md:px-10 lg:px-5 py-10 outline outline-neutral-700 flex-1 min-w-0 flex-col"
     >
-        <div class="flex flex-row justify-between w-full items-start">
-            <div class="flex flex-row space-x-12 mb-20 z-40">
+        <div
+            class="flex flex-col lg:flex-row justify-between w-full items-start gap-8"
+        >
+            <div
+                class="flex flex-col md:flex-row md:space-x-12 space-y-8 md:space-y-0 mb-10 lg:mb-20 z-40 w-full lg:w-auto"
+            >
                 <div class="flex flex-col space-y-2">
                     <span class="text-sm text-neutral-400 mb-1">Features</span>
                     <a
@@ -98,7 +104,7 @@
                 </div>
             </div>
             <div
-                class="survey-box z-40 relative overflow-hidden outline-1 outline-neutral-700 p-6 max-w-md"
+                class="survey-box z-40 relative overflow-hidden outline-1 outline-neutral-700 p-6 w-full lg:max-w-md"
             >
                 <div class="grid-glow glow-amber"></div>
                 <div class="relative z-10">
@@ -121,13 +127,13 @@
         </div>
         <h2
             id="selfmail-title"
-            class="opacity-30 font-bold mb-8 whitespace-nowrap"
+            class="opacity-30 font-bold mb-8 whitespace-nowrap overflow-hidden"
             style="line-height: 0.9;"
         >
             Selfmail
         </h2>
     </div>
-    <div class="hidden lg:flex outline-1 w-20 outline-neutral-700"></div>
+    <div class="hidden lg:flex outline outline-neutral-700 w-20 shrink-0"></div>
 </footer>
 
 <style>
@@ -183,16 +189,17 @@
 
         if (!title || !container) return;
 
+        const maxWidth = container.clientWidth - 20;
         let fontSize = 10;
         title.style.fontSize = `${fontSize}px`;
 
-        while (title.scrollWidth < container.clientWidth && fontSize < 500) {
-            fontSize += 1;
+        while (title.scrollWidth < maxWidth && fontSize < 500) {
+            fontSize += 0.5;
             title.style.fontSize = `${fontSize}px`;
         }
 
-        while (title.scrollWidth > container.clientWidth && fontSize > 10) {
-            fontSize -= 1;
+        while (title.scrollWidth > maxWidth && fontSize > 10) {
+            fontSize -= 0.5;
             title.style.fontSize = `${fontSize}px`;
         }
     };
