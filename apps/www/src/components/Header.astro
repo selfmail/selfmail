@@ -1,11 +1,17 @@
 <header
-    class="w-full flex flex-row px-5 md:px-10 lg:px-20 justify-between items-center h-16"
+    class="w-full flex flex-row px-5 md:px-10 lg:px-20 justify-between items-center h-24"
 >
     <div class="flex flex-row items-center gap-12">
-        <h1 class="font-medium text-xl space-x-1">
-            <img src="/logo.png" alt="Selfmail Logo" class="h-8 inline-block" />
-            <span class="align-middle">Selfmail</span>
-        </h1>
+        <a href="/">
+            <h1 class="font-medium text-xl space-x-1">
+                <img
+                    src="/logo.png"
+                    alt="Selfmail Logo"
+                    class="h-8 inline-block"
+                />
+                <span class="align-middle">Selfmail</span>
+            </h1>
+        </a>
         <div
             class="hidden lg:flex nav-container flex-row space-x-3 items-center"
         >
@@ -17,5 +23,16 @@
                 class="nav transition-colors">Docs</a
             >
         </div>
+    </div>
+    <div class="flex flex-row items-center space-x-3">
+        <a
+            href="https://dashboard.selfmail.app/auth/login"
+            class="nav transition-colors hidden md:inline-block">Login</a
+        >
+        <a
+            href="https://dashboard.selfmail.app/auth/register"
+            class="text-black bg-neutral-100 px-4 py-2 rounded-full hover:bg-neutral-200 pr-5 transition-colors"
+            >Get Started</a
+        >
     </div>
 </header>

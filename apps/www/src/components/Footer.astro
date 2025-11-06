@@ -6,16 +6,14 @@
     class="mt-20 flex flex-row gap-px w-full overflow-hidden border-t border-neutral-700"
 >
     <div class="hidden lg:flex outline outline-neutral-700 w-20 shrink-0"></div>
-    <div
-        class="flex px-5 md:px-10 lg:px-5 py-10 outline outline-neutral-700 flex-1 min-w-0 flex-col"
-    >
+    <div class="flex py-10 outline outline-neutral-700 flex-1 min-w-0 flex-col">
         <div
-            class="flex flex-col lg:flex-row justify-between w-full items-start gap-8"
+            class="flex px-5 flex-col lg:flex-row justify-between w-full items-start gap-8"
         >
             <div
                 class="flex flex-col md:flex-row md:space-x-12 space-y-8 md:space-y-0 mb-10 lg:mb-20 z-40 w-full lg:w-auto"
             >
-                <div class="flex flex-col space-y-2">
+                <div class="flex footer-container flex-col space-y-2">
                     <span class="text-sm text-neutral-400 mb-1">Features</span>
                     <a
                         href="/features/workflows"
@@ -53,7 +51,7 @@
                         <span class="footer-underline"></span>
                     </a>
                 </div>
-                <div class="flex flex-col space-y-2">
+                <div class="flex footer-container flex-col space-y-2">
                     <span class="text-sm text-neutral-400 mb-1">Platform</span>
                     <a
                         href="/pricing"
@@ -78,7 +76,7 @@
                         <span class="footer-underline"></span>
                     </a>
                 </div>
-                <div class="flex flex-col space-y-2">
+                <div class="flex footer-container flex-col space-y-2">
                     <span class="text-sm text-neutral-400 mb-1">Legal</span>
                     <a
                         href="/privacy"
@@ -127,30 +125,23 @@
         </div>
         <h2
             id="selfmail-title"
-            class="opacity-30 font-bold mb-8 whitespace-nowrap overflow-hidden"
+            class="opacity-30 font-bold mb-8 whitespace-nowrap"
             style="line-height: 0.9;"
         >
             Selfmail
         </h2>
+        <a
+            href="https://selfmail.company"
+            target="_blank"
+            class="text-sm text-neutral-500 hover:text-neutral-400 transition-colors z-40 underline px-5"
+        >
+            Made with love by the Selfmail Company.
+        </a>
     </div>
     <div class="hidden lg:flex outline outline-neutral-700 w-20 shrink-0"></div>
 </footer>
 
 <style>
-    .footer-underline {
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 0;
-        height: 1px;
-        background: currentColor;
-        transition: width 0.3s ease;
-    }
-
-    .footer-link:hover .footer-underline {
-        width: 100%;
-    }
-
     .survey-box {
         transition: all 0.3s ease;
     }
@@ -186,24 +177,42 @@
     const resizeTitle = () => {
         const title = document.getElementById("selfmail-title");
         const container = title?.parentElement;
-
         if (!title || !container) return;
 
-        const maxWidth = container.clientWidth - 20;
-        let fontSize = 10;
-        title.style.fontSize = `${fontSize}px`;
+        const containerWidth = container.clientWidth;
+        const containerStyle = window.getComputedStyle(container);
+        const paddingLeft = parseFloat(containerStyle.paddingLeft);
+        const paddingRight = parseFloat(containerStyle.paddingRight);
+        const availableWidth = containerWidth - paddingLeft - paddingRight;
 
-        while (title.scrollWidth < maxWidth && fontSize < 500) {
-            fontSize += 0.5;
-            title.style.fontSize = `${fontSize}px`;
+        let low = 10;
+        let high = 1000;
+        let bestSize = low;
+
+        while (low <= high) {
+            const mid = Math.floor((low + high) / 2);
+            title.style.fontSize = `${mid}px`;
+
+            void title.offsetHeight;
+
+            const textWidth = title.scrollWidth;
+
+            if (textWidth <= availableWidth) {
+                bestSize = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
         }
 
-        while (title.scrollWidth > maxWidth && fontSize > 10) {
-            fontSize -= 0.5;
-            title.style.fontSize = `${fontSize}px`;
-        }
+        title.style.fontSize = `${bestSize}px`;
     };
 
-    resizeTitle();
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", resizeTitle);
+    } else {
+        resizeTitle();
+    }
+
     window.addEventListener("resize", resizeTitle);
 </script>

@@ -1,0 +1,327 @@
+<div class="w-full max-w-5xl mx-auto">
+    <div class="flex flex-col lg:flex-row gap-12 items-start">
+        <div class="flex-1 w-full space-y-8">
+            <div class="space-y-4">
+                <div class="flex justify-between items-baseline">
+                    <label
+                        for="users"
+                        class="text-base font-medium text-neutral-200"
+                    >
+                        Users
+                    </label>
+                    <span
+                        class="text-2xl font-bold text-neutral-100"
+                        id="usersValue">1</span
+                    >
+                </div>
+                <input
+                    type="range"
+                    id="users"
+                    min="1"
+                    max="50"
+                    value="1"
+                    class="slider w-full h-2 bg-neutral-800 rounded-full appearance-none cursor-pointer"
+                />
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex justify-between items-baseline">
+                    <label
+                        for="domains"
+                        class="text-base font-medium text-neutral-200"
+                    >
+                        Extra Domains
+                    </label>
+                    <span
+                        class="text-2xl font-bold text-neutral-100"
+                        id="domainsValue">0</span
+                    >
+                </div>
+                <input
+                    type="range"
+                    id="domains"
+                    min="0"
+                    max="20"
+                    value="0"
+                    class="slider w-full h-2 bg-neutral-800 rounded-full appearance-none cursor-pointer"
+                />
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex justify-between items-baseline">
+                    <label
+                        for="storage"
+                        class="text-base font-medium text-neutral-200"
+                    >
+                        Extra Storage
+                    </label>
+                    <span class="text-2xl font-bold text-neutral-100">
+                        <span id="storageValue">0</span>
+                        <span class="text-base text-neutral-400 ml-1">GB</span>
+                    </span>
+                </div>
+                <input
+                    type="range"
+                    id="storage"
+                    min="0"
+                    max="500"
+                    step="10"
+                    value="0"
+                    class="slider w-full h-2 bg-neutral-800 rounded-full appearance-none cursor-pointer"
+                />
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex justify-between items-baseline">
+                    <label
+                        for="apiCalls"
+                        class="text-base font-medium text-neutral-200"
+                    >
+                        Extra API Calls
+                    </label>
+                    <span class="text-2xl font-bold text-neutral-100">
+                        <span id="apiCallsValue">0</span>
+                        <span class="text-base text-neutral-400 ml-1">k</span>
+                    </span>
+                </div>
+                <input
+                    type="range"
+                    id="apiCalls"
+                    min="0"
+                    max="100"
+                    step="5"
+                    value="0"
+                    class="slider w-full h-2 bg-neutral-800 rounded-full appearance-none cursor-pointer"
+                />
+            </div>
+        </div>
+
+        <div class="lg:sticky lg:top-8 w-full lg:w-80">
+            <div
+                class="bg-neutral-900 border border-neutral-700 rounded-2xl p-8 space-y-6"
+            >
+                <div
+                    class="flex flex-col items-center justify-center space-y-2"
+                >
+                    <span
+                        class="text-neutral-400 text-sm uppercase tracking-wider"
+                        >Your Monthly Total</span
+                    >
+                    <div class="flex items-baseline space-x-1">
+                        <span
+                            class="text-6xl font-bold text-neutral-100"
+                            id="totalCost">€10</span
+                        >
+                        <span class="text-2xl text-neutral-400">/mo</span>
+                    </div>
+                </div>
+
+                <div class="border-t border-neutral-800 pt-6 space-y-3 text-sm">
+                    <div class="flex justify-between text-neutral-400">
+                        <span id="summaryUsers">1 user × €10</span>
+                        <span id="summaryUsersCost">€10</span>
+                    </div>
+                    <div
+                        class="flex justify-between text-neutral-400"
+                        id="summaryDomainsRow"
+                        style="display: none;"
+                    >
+                        <span id="summaryDomains">0 domains × €1</span>
+                        <span id="summaryDomainsCost">€0</span>
+                    </div>
+                    <div
+                        class="flex justify-between text-neutral-400"
+                        id="summaryStorageRow"
+                        style="display: none;"
+                    >
+                        <span id="summaryStorage">0 GB × €0.25</span>
+                        <span id="summaryStorageCost">€0</span>
+                    </div>
+                    <div
+                        class="flex justify-between text-neutral-400"
+                        id="summaryApiRow"
+                        style="display: none;"
+                    >
+                        <span id="summaryApi">0k calls × €1</span>
+                        <span id="summaryApiCost">€0</span>
+                    </div>
+                </div>
+
+                <a
+                    href="https://dashboard.selfmail.app/auth/register"
+                    class="block w-full text-center px-6 py-4 rounded-full bg-neutral-100 hover:bg-neutral-200 transition-colors text-black font-medium"
+                >
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .slider {
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #f5f5f5;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        margin-top: -6px;
+    }
+
+    .slider::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+        background: #ffffff;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #f5f5f5;
+        cursor: pointer;
+        border: none;
+        transition: all 0.15s ease;
+    }
+
+    .slider::-moz-range-thumb:hover {
+        transform: scale(1.2);
+        background: #ffffff;
+    }
+
+    .slider::-webkit-slider-runnable-track {
+        background: linear-gradient(
+            to right,
+            #f5f5f5 0%,
+            #f5f5f5 var(--progress, 0%),
+            #262626 var(--progress, 0%),
+            #262626 100%
+        );
+        height: 8px;
+        border-radius: 9999px;
+    }
+
+    .slider::-moz-range-track {
+        background: #262626;
+        height: 8px;
+        border-radius: 9999px;
+    }
+
+    .slider::-moz-range-progress {
+        background: #f5f5f5;
+        height: 8px;
+        border-radius: 9999px;
+    }
+</style>
+
+<script>
+    const usersInput = document.getElementById("users") as HTMLInputElement;
+    const domainsInput = document.getElementById("domains") as HTMLInputElement;
+    const storageInput = document.getElementById("storage") as HTMLInputElement;
+    const apiCallsInput = document.getElementById(
+        "apiCalls",
+    ) as HTMLInputElement;
+
+    const usersValueEl = document.getElementById("usersValue");
+    const domainsValueEl = document.getElementById("domainsValue");
+    const storageValueEl = document.getElementById("storageValue");
+    const apiCallsValueEl = document.getElementById("apiCallsValue");
+    const totalCostEl = document.getElementById("totalCost");
+
+    const summaryUsersEl = document.getElementById("summaryUsers");
+    const summaryUsersCostEl = document.getElementById("summaryUsersCost");
+    const summaryDomainsEl = document.getElementById("summaryDomains");
+    const summaryDomainsCostEl = document.getElementById("summaryDomainsCost");
+    const summaryStorageEl = document.getElementById("summaryStorage");
+    const summaryStorageCostEl = document.getElementById("summaryStorageCost");
+    const summaryApiEl = document.getElementById("summaryApi");
+    const summaryApiCostEl = document.getElementById("summaryApiCost");
+
+    const summaryDomainsRow = document.getElementById("summaryDomainsRow");
+    const summaryStorageRow = document.getElementById("summaryStorageRow");
+    const summaryApiRow = document.getElementById("summaryApiRow");
+
+    const BASE_PRICE = 10;
+    const DOMAIN_PRICE = 1;
+    const STORAGE_PRICE = 0.25;
+    const API_PRICE = 1;
+
+    const updateSliderProgress = (slider: HTMLInputElement) => {
+        const min = parseInt(slider.min);
+        const max = parseInt(slider.max);
+        const value = parseInt(slider.value);
+        const progress = ((value - min) / (max - min)) * 100;
+        slider.style.setProperty("--progress", `${progress}%`);
+    };
+
+    const calculatePrice = () => {
+        const users = parseInt(usersInput?.value || "1");
+        const domains = parseInt(domainsInput?.value || "0");
+        const storage = parseInt(storageInput?.value || "0");
+        const apiCalls = parseInt(apiCallsInput?.value || "0");
+
+        if (usersValueEl) usersValueEl.textContent = users.toString();
+        if (domainsValueEl) domainsValueEl.textContent = domains.toString();
+        if (storageValueEl) storageValueEl.textContent = storage.toString();
+        if (apiCallsValueEl) apiCallsValueEl.textContent = apiCalls.toString();
+
+        const baseCost = users * BASE_PRICE;
+        const domainsCost = domains * DOMAIN_PRICE;
+        const storageCost = storage * STORAGE_PRICE;
+        const apiCost = apiCalls * API_PRICE;
+
+        const total = baseCost + domainsCost + storageCost + apiCost;
+
+        if (totalCostEl) totalCostEl.textContent = `€${Math.round(total)}`;
+
+        if (summaryUsersEl)
+            summaryUsersEl.textContent = `${users} user${users > 1 ? "s" : ""} × €${BASE_PRICE}`;
+        if (summaryUsersCostEl) summaryUsersCostEl.textContent = `€${baseCost}`;
+
+        if (summaryDomainsRow)
+            summaryDomainsRow.style.display = domains > 0 ? "flex" : "none";
+        if (summaryStorageRow)
+            summaryStorageRow.style.display = storage > 0 ? "flex" : "none";
+        if (summaryApiRow)
+            summaryApiRow.style.display = apiCalls > 0 ? "flex" : "none";
+
+        if (domains > 0) {
+            if (summaryDomainsEl)
+                summaryDomainsEl.textContent = `${domains} domain${domains > 1 ? "s" : ""} × €${DOMAIN_PRICE}`;
+            if (summaryDomainsCostEl)
+                summaryDomainsCostEl.textContent = `€${domainsCost}`;
+        }
+
+        if (storage > 0) {
+            if (summaryStorageEl)
+                summaryStorageEl.textContent = `${storage} GB × €${STORAGE_PRICE}`;
+            if (summaryStorageCostEl)
+                summaryStorageCostEl.textContent = `€${storageCost.toFixed(2)}`;
+        }
+
+        if (apiCalls > 0) {
+            if (summaryApiEl)
+                summaryApiEl.textContent = `${apiCalls}k calls × €${API_PRICE}`;
+            if (summaryApiCostEl) summaryApiCostEl.textContent = `€${apiCost}`;
+        }
+
+        updateSliderProgress(usersInput);
+        updateSliderProgress(domainsInput);
+        updateSliderProgress(storageInput);
+        updateSliderProgress(apiCallsInput);
+    };
+
+    usersInput?.addEventListener("input", calculatePrice);
+    domainsInput?.addEventListener("input", calculatePrice);
+    storageInput?.addEventListener("input", calculatePrice);
+    apiCallsInput?.addEventListener("input", calculatePrice);
+
+    calculatePrice();
+</script>

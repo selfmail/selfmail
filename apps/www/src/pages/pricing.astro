@@ -1,6 +1,6 @@
 ---
 import GridItem from "../components/GridItem.astro";
-import Header from "../components/Header.astro";
+import PriceCalculator from "../components/PriceCalculator.astro";
 import Layout from "../layouts/Layout.astro";
 
 const plans = [
@@ -33,7 +33,7 @@ const plans = [
 ];
 ---
 
-<Layout>
+<Layout title="Pricing | Selfmail ">
     <main class="w-full flex flex-col">
         <div class="flex mt-24 flex-col items-center justify-center">
             <h1 class="text-center text-4xl sm:text-6xl md:text-7xl">
@@ -205,6 +205,63 @@ const plans = [
                 <GridItem
                     class="outline outline-neutral-700 aspect-square overflow-hidden relative"
                 />
+            </div>
+        </div>
+
+        <div class="flex flex-col space-y-12 mx-20 items-center mt-32">
+            <div class="flex flex-col space-y-3 items-center xl:w-[30%]">
+                <h2 class="text-2xl font-medium text-balance">
+                    Need some extras?
+                </h2>
+                <p class="text-center">
+                    We got you at every step of the way. Just use our
+                    usage-based pricing for extra storage, you pay for what you
+                    actually use.
+                </p>
+            </div>
+            <div
+                class="w-full grid lg:grid-cols-3 gap-px outline outline-neutral-700"
+            >
+                <div class="relative outline outline-neutral-700 h-32">
+                    <div
+                        class="absolute justify-center rounded-full outline outline-neutral-700 inset-0 items-center flex flex-col space-y-1"
+                    >
+                        <h3 class="text-xl font-medium">Extra Domain</h3>
+                        <div class="flex items-baseline space-x-2">
+                            <span class="text-3xl font-bold">1€</span>
+                            <span class="text-neutral-400">/month</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative outline outline-neutral-700">
+                    <div
+                        class="rounded-full inset-0 absolute outline outline-neutral-700 flex items-center justify-center space-y-1 flex-col"
+                    >
+                        <h3 class="text-xl font-medium">Extra Storage</h3>
+                        <div class="flex items-baseline space-x-2">
+                            <span class="text-3xl font-bold">0.25€</span>
+                            <span class="text-neutral-400">/GB</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative outline outline-neutral-700">
+                    <div
+                        class="rounded-full inset-0 absolute outline outline-neutral-700 flex items-center justify-center space-y-1 flex-col"
+                    >
+                        <h3 class="text-xl font-medium">Higher API Access</h3>
+                        <div class="flex items-baseline space-x-2">
+                            <span class="text-3xl font-bold">1€</span>
+                            <span class="text-neutral-400">/1000 calls</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="p-8 flex col-span-3 items-center justify-center flex-col space-y-6"
+                >
+                    <h2 class="text-2xl font-medium">Calculate Your Price</h2>
+                    <PriceCalculator />
+                </div>
             </div>
         </div>
     </main>

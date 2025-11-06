@@ -34,12 +34,12 @@ h6 {
 }
 
 /* Navigation hover effects */
-.footer-container:hover .footer:not(:hover) {
+.footer-container:hover .footer-link:not(:hover) {
 	opacity: 0.5;
 	transition: opacity 0.2s ease-in-out;
 }
 
-.footer {
+.footer-link {
 	transition: opacity 0.2s ease-in-out;
 }
 
