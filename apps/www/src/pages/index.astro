@@ -1,4 +1,5 @@
 ---
+import EmailViewer from "@/components/EmailViewer.astro";
 import GridItem from "../components/GridItem.astro";
 import Layout from "../layouts/Layout.astro";
 ---
@@ -126,5 +127,49 @@ import Layout from "../layouts/Layout.astro";
 				</div>
 			</div>
 		</div>
+		<div class="flex lg:mx-20 mx-6 flex-col space-y-12 items-center mt-32">
+			<div class="flex flex-col space-y-3 text-center max-w-3xl">
+				<h2 class="text-4xl font-medium">Feel the Simplicity.</h2>
+				<p class="text-neutral-300">
+					Selfmail is built from the ground up to be intuitive and
+					powerful. Try our live demo below - send an email from any
+					email client to
+					<span
+						class="font-mono bg-neutral-800 px-2 py-1 rounded text-neutral-100"
+						>henri@selfmail.app</span
+					>
+					and watch it appear in real-time!
+				</p>
+			</div>
+			<EmailViewer />
+		</div>
 	</main>
+	<div class="vertical-lines mx-20 h-72 mt-32 relative">
+		<a
+			href="https://dashboard.selfmail.app/auth/register"
+			class="absolute flex-col space-y-3 hover:bg-neutral-900 transition-colors w-[50%] right-10 top-10 bottom-10 rounded-full bg-(--color-background) flex items-center justify-center px-8"
+		>
+			<h2 class="text-center text-4xl font-medium">
+				Fix your communication
+			</h2>
+			<p>
+				Start Now into a new Era of communication, with your colleagues,
+				clients and partners.
+			</p>
+		</a>
+	</div>
 </Layout>
+
+<style>
+	.vertical-lines {
+		background-image: repeating-linear-gradient(
+			to top,
+			transparent,
+			transparent 14px,
+			rgba(168, 235, 184, 0.613) 15px
+		);
+	}
+	.vertical-lines > a {
+		border: dashed 2px rgba(168, 235, 184, 0.613);
+	}
+</style>
