@@ -5,5 +5,68 @@ import Layout from "@/layouts/Layout.astro";
 <Layout title="Features | Selfmail">
     <main class="w-full flex flex-col">
         <h1 class="text-8xl font-medium mx-20 mt-20">Features</h1>
+        <div class="flex flex-row gap-px outline outline-neutral-700 mt-5">
+            <div class="outline outline-neutral-700 w-20"></div>
+            <div
+                class="outline h-12 w-full gap-px outline-neutral-700 flex-1 flex flex-row"
+            >
+                <div class="relative flex-1 outline outline-neutral-700">
+                    <a
+                        href="/features/ai"
+                        class="absolute flex items-center justify-center cursor-pointer hover:bg-neutral-900 transition-colors inset-0 rounded-full outline outline-neutral-700"
+                    >
+                        <h2>Artificial Intelligence</h2>
+                    </a>
+                </div>
+                <div class="relative flex-1 outline outline-neutral-700">
+                    <a
+                        href="/features/security"
+                        class="absolute flex items-center justify-center cursor-pointer hover:bg-neutral-900 transition-colors inset-0 rounded-full outline outline-neutral-700"
+                    >
+                        <h2>Security</h2>
+                    </a>
+                </div>
+                <div class="relative flex-1 outline outline-neutral-700">
+                    <a
+                        href="/features/workflows"
+                        class="absolute flex items-center justify-center cursor-pointer hover:bg-neutral-900 transition-colors inset-0 rounded-full outline outline-neutral-700"
+                    >
+                        <h2>Workflows</h2>
+                    </a>
+                </div>
+                <div class="relative flex-1 outline outline-neutral-700">
+                    <a
+                        href="/features/api"
+                        class="absolute flex items-center justify-center cursor-pointer hover:bg-neutral-900 transition-colors inset-0 rounded-full outline outline-neutral-700"
+                    >
+                        <h2>API</h2>
+                    </a>
+                </div>
+                <div class="relative flex-1 outline outline-neutral-700">
+                    <a
+                        href="https://selfmail.dev"
+                        target="_blank"
+                        class="absolute flex items-center justify-center cursor-pointer hover:bg-neutral-900 transition-colors inset-0 rounded-full outline outline-neutral-700"
+                    >
+                        <span class="flex flex-row items-center space-x-2">
+                            <span>Developers</span>
+                            <span class="text-neutral-400 font-bold text-xs"
+                                >↗</span
+                            >
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div class="outline outline-neutral-700 w-20"></div>
+        </div>
+
+        <div class="flex mx-20 flex-col mt-32 space-y-3">
+            <div
+                class="flex items-center justify-center h-[80vh] bg-neutral-500 rounded-xl border border-neutral-700"
+            >
+                <p>Play.</p>
+            </div>
+            <p>Selfmail is made for businesses, so the features are.</p>
+        </div>
     </main>
 </Layout>
