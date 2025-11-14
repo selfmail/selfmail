@@ -4,18 +4,158 @@ import Layout from "@/layouts/Layout.astro";
 
 <Layout title="Features | Selfmail">
     <main class="w-full flex flex-col">
-        <div class="flex flex-col space-y-6">
-            <h1 class="text-8xl font-medium mx-20 mt-20">Security</h1>
-            <p class="text-neutral-400 mx-20 w-[50%] text-lg leading-relaxed">
-                Security is one of the most important aspects of the current
-                email communication. Half of all emails sent are spam, phishing
-                methods are getting better and better, and employees are loosing
-                arround 16 hours filtering spam in a year. Selfmail offers
-                fine-tuned spam control, leveraging advanced trained AI models
-                to indentify spam and phishing, deleting emails before they can
-                do any harm.
-            </p>
+        <h1 class="text-8xl font-medium mx-20 mt-20">Security</h1>
+        <div
+            class="h-[70vh] flex flex-row items-center bg-neutral-900 border-y border-y-neutral-700 my-16"
+        >
+            <div
+                class="flex-1 flex-col space-y-3 h-full items-center justify-center flex"
+            >
+                <div
+                    class="text-box border w-[500px] border-neutral-700 p-4 flex flex-col space-y-1"
+                    data-index="0"
+                >
+                    <h2 class="text-xl">Connection Security</h2>
+                    <p>
+                        Checking common spam patterns right before delivery to
+                        ensure safety.
+                    </p>
+                </div>
+                <div
+                    class="text-box border w-[500px] border-neutral-700 p-4 flex flex-col space-y-1"
+                    data-index="1"
+                >
+                    <h2 class="text-xl">Spam Control</h2>
+                    <p>
+                        You can decide what level of spam filtering you want to
+                        apply to your inbox, from low to aggressive, filtering
+                        with AI.
+                    </p>
+                </div>
+                <div
+                    class="text-box border w-[500px] border-neutral-700 p-4 flex flex-col space-y-1"
+                    data-index="2"
+                >
+                    <h2 class="text-xl">In-App Previews</h2>
+                    <p>
+                        We have created secure sandbox previews for links, files
+                        and text to avoid malicious content. You can take
+                        screenshots, so you don't have to open the file on your
+                        computer.
+                    </p>
+                </div>
+            </div>
+            <div
+                class="flex-1 layers relative items-center justify-center flex flex-col"
+            >
+                <div
+                    class="feature-dot-layer layer-item rotate-45 h-80 w-80 relative top-10"
+                >
+                </div>
+                <div
+                    class="feature-lines-layer layer-item rotate-45 h-80 w-80 absolute"
+                >
+                </div>
+                <div
+                    class="feature-grid-layer layer-item rotate-45 h-80 w-80 relative bottom-10"
+                >
+                </div>
+            </div>
         </div>
-        div.flex.
+        <p class="text-neutral-200 mx-20 text-2xl leading-relaxed">
+            Security is one of the most important aspects of the current email
+            communication. Half of all emails sent are spam, phishing methods
+            are getting better and better, and employees are loosing arround 16
+            hours filtering spam in a year. Selfmail offers fine-tuned spam
+            control, leveraging advanced trained AI models to indentify spam and
+            phishing, deleting emails before they can do any harm.
+        </p>
     </main>
 </Layout>
+
+<style>
+    .feature-dot-layer {
+        background: radial-gradient(circle, #5e5e5e 2px, transparent 2px);
+        background-size: 10px 10px;
+        transform: rotate(45deg);
+        rotate: x 50deg;
+    }
+    .feature-lines-layer {
+        background-image: linear-gradient(#5e5e5e 1px, transparent 1px),
+            linear-gradient(#5e5e5e 1px, transparent 1px);
+        background-size: 10px 10px;
+        transform: rotate(45deg);
+        rotate: x 50deg;
+    }
+    .feature-grid-layer {
+        background-image: linear-gradient(#5e5e5e 1px, transparent 1px),
+            linear-gradient(90deg, #5e5e5e 1px, transparent 1px);
+        background-size: 20px 20px; /* Abstand der Linien */
+        transform: rotate(45deg);
+        border: 1px solid #5e5e5e;
+        rotate: x 50deg;
+    }
+
+    .layers:hover .layer-item:not(:hover) {
+        opacity: 0.5;
+        z-index: 15;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .layer-item {
+        z-index: 5;
+        background-color: transparent;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .text-box {
+        transition: all 0.3s ease-in-out;
+        opacity: 0.4;
+    }
+
+    .text-box.active {
+        opacity: 1;
+        border-color: #a3a3a3;
+    }
+</style>
+
+<script>
+    const dots = document.querySelector(".feature-dot-layer") as HTMLDivElement;
+    const lines = document.querySelector(
+        ".feature-lines-layer",
+    ) as HTMLDivElement;
+    const grid = document.querySelector(
+        ".feature-grid-layer",
+    ) as HTMLDivElement;
+    const textBoxes = document.querySelectorAll<HTMLDivElement>(".text-box");
+
+    if (!dots || !lines || !grid) {
+        throw new Error("Could not find feature layers");
+    }
+
+    const layers = [dots, lines, grid];
+    let currentIndex = 0;
+
+    const highlightLayer = (index: number) => {
+        layers.forEach((layer, i) => {
+            layer.style.opacity = i === index ? "1" : "0.3";
+            layer.style.zIndex = i === index ? "20" : "5";
+        });
+
+        textBoxes.forEach((box, i) => {
+            if (i === index) {
+                box.classList.add("active");
+            } else {
+                box.classList.remove("active");
+            }
+        });
+    };
+
+    const cycleHighlight = () => {
+        highlightLayer(currentIndex);
+        currentIndex = (currentIndex + 1) % layers.length;
+    };
+
+    highlightLayer(0);
+    setInterval(cycleHighlight, 3000);
+</script>

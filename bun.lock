@@ -153,6 +153,7 @@
         "@types/react": "^19.2.2",
         "@types/react-dom": "^19.2.2",
         "astro": "^5.15.1",
+        "dither-plugin": "^1.1.1",
         "lucide-react": "^0.548.0",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
@@ -1597,6 +1598,8 @@
     "didyoumean": ["didyoumean@1.2.2", "", {}, "sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw=="],
 
     "diff": ["diff@5.2.0", "", {}, "sha512-uIFDxqpRZGZ6ThOk84hEfqWoHx2devRFvpTZcTHur85vImfaxUbTW9Ryh4CpCuDnToOP1CEtXKIgytHBPVff5A=="],
+
+    "dither-plugin": ["dither-plugin@1.1.1", "", {}, "sha512-PsgAcSoNVKkwh+Q/OopRn/2qb9HW1LRyGqT1bQe8iooYvVY1FIIqePFN9JkEIVK9rkfZdj7nXn9EUB4B7mNh6g=="],
 
     "dkim-signer": ["dkim-signer@0.2.2", "", { "dependencies": { "libmime": "^2.0.3" } }, "sha512-24OZ3cCA30UTRz+Plpg+ibfPq3h7tDtsJRg75Bo0pGakZePXcPBddY80bKi1Bi7Jsz7tL5Cw527mhCRDvNFgfg=="],
 
