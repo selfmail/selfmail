@@ -70,92 +70,135 @@ import Layout from "@/layouts/Layout.astro";
             control, leveraging advanced trained AI models to indentify spam and
             phishing, deleting emails before they can do any harm.
         </p>
+        <div class="flex flex-col space-y-3 mt-20">
+            <h2 class="text-center text-4xl font-medium">
+                Our Security in Numbers
+            </h2>
+
+            <div
+                class="mx-20 mt-5 grid lg:grid-cols-3 gap-px outline outline-neutral-700"
+            >
+                <div class="relative outline outline-neutral-700 h-32">
+                    <div
+                        class="absolute justify-center rounded-full outline outline-neutral-700 inset-0 items-center flex flex-col space-y-1"
+                    >
+                        <span class="text-4xl font-bold">99.8%</span>
+                        <h3 class="text-lg text-neutral-400">
+                            Spam Detection Rate
+                        </h3>
+                    </div>
+                </div>
+                <div class="relative outline outline-neutral-700">
+                    <div
+                        class="rounded-full inset-0 absolute outline outline-neutral-700 flex items-center justify-center space-y-1 flex-col"
+                    >
+                        <span class="text-4xl font-bold">50M+</span>
+                        <h3 class="text-lg text-neutral-400">
+                            Emails Analyzed Daily
+                        </h3>
+                    </div>
+                </div>
+                <div class="relative outline outline-neutral-700">
+                    <div
+                        class="rounded-full inset-0 absolute outline outline-neutral-700 flex items-center justify-center space-y-1 flex-col"
+                    >
+                        <span class="text-4xl font-bold">24/7</span>
+                        <h3 class="text-lg text-neutral-400">
+                            Real-time Protection
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
+
+    <style>
+        .feature-dot-layer {
+            background: radial-gradient(circle, #5e5e5e 2px, transparent 2px);
+            background-size: 10px 10px;
+            transform: rotate(45deg);
+            rotate: x 50deg;
+        }
+        .feature-lines-layer {
+            background-image: linear-gradient(#5e5e5e 1px, transparent 1px),
+                linear-gradient(#5e5e5e 1px, transparent 1px);
+            background-size: 10px 10px;
+            transform: rotate(45deg);
+            rotate: x 50deg;
+        }
+        .feature-grid-layer {
+            background-image: linear-gradient(#5e5e5e 1px, transparent 1px),
+                linear-gradient(90deg, #5e5e5e 1px, transparent 1px);
+            background-size: 20px 20px; /* Abstand der Linien */
+            transform: rotate(45deg);
+            border: 1px solid #5e5e5e;
+            rotate: x 50deg;
+        }
+
+        .layers:hover .layer-item:not(:hover) {
+            opacity: 0.5;
+            z-index: 15;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .layer-item {
+            z-index: 5;
+            background-color: transparent;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .text-box {
+            transition: all 0.3s ease-in-out;
+            opacity: 0.4;
+        }
+
+        .text-box.active {
+            opacity: 1;
+            border-color: #a3a3a3;
+        }
+    </style>
+
+    <script>
+        const dots = document.querySelector(
+            ".feature-dot-layer",
+        ) as HTMLDivElement;
+        const lines = document.querySelector(
+            ".feature-lines-layer",
+        ) as HTMLDivElement;
+        const grid = document.querySelector(
+            ".feature-grid-layer",
+        ) as HTMLDivElement;
+        const textBoxes =
+            document.querySelectorAll<HTMLDivElement>(".text-box");
+
+        if (!dots || !lines || !grid) {
+            throw new Error("Could not find feature layers");
+        }
+
+        const layers = [dots, lines, grid];
+        let currentIndex = 0;
+
+        const highlightLayer = (index: number) => {
+            layers.forEach((layer, i) => {
+                layer.style.opacity = i === index ? "1" : "0.3";
+                layer.style.zIndex = i === index ? "20" : "5";
+            });
+
+            textBoxes.forEach((box, i) => {
+                if (i === index) {
+                    box.classList.add("active");
+                } else {
+                    box.classList.remove("active");
+                }
+            });
+        };
+
+        const cycleHighlight = () => {
+            highlightLayer(currentIndex);
+            currentIndex = (currentIndex + 1) % layers.length;
+        };
+
+        highlightLayer(0);
+        setInterval(cycleHighlight, 3000);
+    </script>
 </Layout>
-
-<style>
-    .feature-dot-layer {
-        background: radial-gradient(circle, #5e5e5e 2px, transparent 2px);
-        background-size: 10px 10px;
-        transform: rotate(45deg);
-        rotate: x 50deg;
-    }
-    .feature-lines-layer {
-        background-image: linear-gradient(#5e5e5e 1px, transparent 1px),
-            linear-gradient(#5e5e5e 1px, transparent 1px);
-        background-size: 10px 10px;
-        transform: rotate(45deg);
-        rotate: x 50deg;
-    }
-    .feature-grid-layer {
-        background-image: linear-gradient(#5e5e5e 1px, transparent 1px),
-            linear-gradient(90deg, #5e5e5e 1px, transparent 1px);
-        background-size: 20px 20px; /* Abstand der Linien */
-        transform: rotate(45deg);
-        border: 1px solid #5e5e5e;
-        rotate: x 50deg;
-    }
-
-    .layers:hover .layer-item:not(:hover) {
-        opacity: 0.5;
-        z-index: 15;
-        transition: opacity 0.2s ease-in-out;
-    }
-
-    .layer-item {
-        z-index: 5;
-        background-color: transparent;
-        transition: opacity 0.2s ease-in-out;
-    }
-
-    .text-box {
-        transition: all 0.3s ease-in-out;
-        opacity: 0.4;
-    }
-
-    .text-box.active {
-        opacity: 1;
-        border-color: #a3a3a3;
-    }
-</style>
-
-<script>
-    const dots = document.querySelector(".feature-dot-layer") as HTMLDivElement;
-    const lines = document.querySelector(
-        ".feature-lines-layer",
-    ) as HTMLDivElement;
-    const grid = document.querySelector(
-        ".feature-grid-layer",
-    ) as HTMLDivElement;
-    const textBoxes = document.querySelectorAll<HTMLDivElement>(".text-box");
-
-    if (!dots || !lines || !grid) {
-        throw new Error("Could not find feature layers");
-    }
-
-    const layers = [dots, lines, grid];
-    let currentIndex = 0;
-
-    const highlightLayer = (index: number) => {
-        layers.forEach((layer, i) => {
-            layer.style.opacity = i === index ? "1" : "0.3";
-            layer.style.zIndex = i === index ? "20" : "5";
-        });
-
-        textBoxes.forEach((box, i) => {
-            if (i === index) {
-                box.classList.add("active");
-            } else {
-                box.classList.remove("active");
-            }
-        });
-    };
-
-    const cycleHighlight = () => {
-        highlightLayer(currentIndex);
-        currentIndex = (currentIndex + 1) % layers.length;
-    };
-
-    highlightLayer(0);
-    setInterval(cycleHighlight, 3000);
-</script>
