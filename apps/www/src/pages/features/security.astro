@@ -110,6 +110,108 @@ import Layout from "@/layouts/Layout.astro";
                 </div>
             </div>
         </div>
+        <div
+            class="w-full px-20 flex flex-col space-y-3 mt-20 items-center mb-20"
+        >
+            <h2 class="text-4xl font-medium">Privacy by Default</h2>
+            <p class="text-neutral-400 text-center max-w-2xl">
+                All your emails are encrypted end-to-end. Even we can't read
+                them.
+            </p>
+            <div
+                class="flex flex-col gap-2 bg-neutral-900 p-5 font-mono text-sm max-w-3xl w-full mt-8 privacy-section"
+            >
+                <div class="flex gap-2">
+                    <span class="text-neutral-500">From:</span>
+                    <span
+                        class="encrypted-text"
+                        data-text="john.doe@example.com"
+                        >████████████████████</span
+                    >
+                </div>
+                <div class="flex gap-2">
+                    <span class="text-neutral-500">To:</span>
+                    <span
+                        class="encrypted-text"
+                        data-text="jane.smith@company.com"
+                        >█████████████████████</span
+                    >
+                </div>
+                <div class="flex gap-2">
+                    <span class="text-neutral-500">Subject:</span>
+                    <span
+                        class="encrypted-text"
+                        data-text="Project Update - Q4 2025"
+                        >████████████████████████</span
+                    >
+                </div>
+                <div class="h-px bg-neutral-700 my-4"></div>
+                <div class="flex flex-col gap-2">
+                    <span class="encrypted-text" data-text="Hi Jane,"
+                        >███████</span
+                    >
+                    <span class="encrypted-text" data-text="">█</span>
+                    <span
+                        class="encrypted-text"
+                        data-text="I hope this email finds you well. I wanted to give you a quick update"
+                        >████████████████████████████████████████████████████████████████</span
+                    >
+                    <span
+                        class="encrypted-text"
+                        data-text="on our Q4 project progress. We've successfully completed the initial"
+                        >█████████████████████████████████████████████████████████████████</span
+                    >
+                    <span
+                        class="encrypted-text"
+                        data-text="phase and are now moving into the development stage."
+                        >████████████████████████████████████████████████</span
+                    >
+                    <span class="encrypted-text" data-text="">█</span>
+                    <span
+                        class="encrypted-text"
+                        data-text="The team has been working incredibly hard, and we're ahead of schedule"
+                        >████████████████████████████████████████████████████████████████████</span
+                    >
+                    <span
+                        class="encrypted-text"
+                        data-text="by about 2 weeks. Here are the key highlights:"
+                        >███████████████████████████████████████████</span
+                    >
+                    <span class="encrypted-text" data-text="">█</span>
+                    <span
+                        class="encrypted-text"
+                        data-text="- Security implementation: 95% complete"
+                        >████████████████████████████████████████</span
+                    >
+                    <span
+                        class="encrypted-text"
+                        data-text="- User interface design: Finalized and approved"
+                        >███████████████████████████████████████████████</span
+                    >
+                    <span
+                        class="encrypted-text"
+                        data-text="- Backend infrastructure: Testing phase"
+                        >████████████████████████████████████████</span
+                    >
+                    <span
+                        class="encrypted-text"
+                        data-text="- Documentation: In progress"
+                        >██████████████████████████████</span
+                    >
+                    <span class="encrypted-text" data-text="">█</span>
+                    <span
+                        class="encrypted-text"
+                        data-text="Let me know if you'd like to schedule a meeting to discuss this further."
+                        >████████████████████████████████████████████████████████████████████████</span
+                    >
+                    <span class="encrypted-text" data-text="">█</span>
+                    <span class="encrypted-text" data-text="Best regards,"
+                        >█████████████</span
+                    >
+                    <span class="encrypted-text" data-text="John">████</span>
+                </div>
+            </div>
+        </div>
     </main>
 
     <style>
@@ -156,6 +258,28 @@ import Layout from "@/layouts/Layout.astro";
             opacity: 1;
             border-color: #a3a3a3;
         }
+
+        .encrypted-text {
+            display: inline-block;
+            color: #737373;
+            transition: all 0.5s ease-in-out;
+            font-family: monospace;
+        }
+
+        .encrypted-text.decrypted {
+            color: #e5e5e5;
+        }
+
+        .privacy-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .privacy-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 
     <script>
@@ -200,5 +324,73 @@ import Layout from "@/layouts/Layout.astro";
 
         highlightLayer(0);
         setInterval(cycleHighlight, 3000);
+
+        const privacySection = document.querySelector(
+            ".privacy-section",
+        ) as HTMLElement;
+        const encryptedTexts =
+            document.querySelectorAll<HTMLSpanElement>(".encrypted-text");
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        privacySection.classList.add("visible");
+
+                        setTimeout(() => {
+                            encryptedTexts.forEach((text, index) => {
+                                setTimeout(() => {
+                                    const actualText =
+                                        text.getAttribute("data-text") || "";
+                                    let currentIteration = 0;
+
+                                    const interval = setInterval(() => {
+                                        text.textContent = actualText
+                                            .split("")
+                                            .map((char, charIndex) => {
+                                                if (
+                                                    charIndex < currentIteration
+                                                ) {
+                                                    return char;
+                                                }
+                                                const randomChar =
+                                                    String.fromCharCode(
+                                                        33 +
+                                                            Math.floor(
+                                                                Math.random() *
+                                                                    94,
+                                                            ),
+                                                    );
+                                                return randomChar;
+                                            })
+                                            .join("");
+
+                                        if (
+                                            currentIteration >=
+                                            actualText.length
+                                        ) {
+                                            clearInterval(
+                                                interval as unknown as number,
+                                            );
+                                            text.textContent = actualText;
+                                            text.classList.add("decrypted");
+                                        }
+
+                                        currentIteration += 1;
+                                    }, 30);
+                                }, index * 50);
+                            });
+                        }, 500);
+
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.2 },
+        );
+
+        if (privacySection) {
+            observer.observe(privacySection);
+        }
     </script>
 </Layout>
