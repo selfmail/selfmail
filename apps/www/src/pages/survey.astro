@@ -1,0 +1,950 @@
+---
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="Email Pain Points Survey | Selfmail">
+    <main class="w-full flex flex-col">
+        <div class="mx-20 mt-20 mb-32">
+            <h1 class="text-6xl font-medium mb-6">
+                Help Us Understand Your Email Challenges
+            </h1>
+            <p class="text-neutral-400 text-xl max-w-3xl">
+                We're building Selfmail to solve real problems. Share your
+                experience with traditional email providers to help us create
+                better solutions.
+            </p>
+        </div>
+
+        <div class="mx-20 mb-32">
+            <form class="max-w-4xl" id="survey-form">
+                <div class="space-y-16">
+                    <div class="survey-section">
+                        <div class="flex items-center gap-4 mb-8">
+                            <div
+                                class="w-12 h-12 bg-neutral-900 border border-neutral-700 flex items-center justify-center"
+                            >
+                                <span class="text-xl font-medium">1</span>
+                            </div>
+                            <h2 class="text-3xl font-medium">
+                                Basic Information
+                            </h2>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="form-group">
+                                <label
+                                    for="email"
+                                    class="block text-sm font-medium mb-2"
+                                    >Email Address</label
+                                >
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    required
+                                    class="w-full bg-neutral-900 border border-neutral-700 px-4 py-3 focus:outline-none focus:border-neutral-500 transition-colors"
+                                    placeholder="you@example.com"
+                                />
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    for="company"
+                                    class="block text-sm font-medium mb-2"
+                                    >Company (Optional)</label
+                                >
+                                <input
+                                    type="text"
+                                    id="company"
+                                    name="company"
+                                    class="w-full bg-neutral-900 border border-neutral-700 px-4 py-3 focus:outline-none focus:border-neutral-500 transition-colors"
+                                    placeholder="Your company name"
+                                />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="block text-sm font-medium mb-3"
+                                    >Company Size</label
+                                >
+                                <div class="space-y-3">
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="company_size"
+                                            value="solo"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Solo / Freelancer</span
+                                        >
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="company_size"
+                                            value="small"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Small Team (2-10)</span
+                                        >
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="company_size"
+                                            value="medium"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Medium (11-50)</span
+                                        >
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="company_size"
+                                            value="large"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Large (50+)</span
+                                        >
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="h-px bg-neutral-800"></div>
+
+                    <div class="survey-section">
+                        <div class="flex items-center gap-4 mb-8">
+                            <div
+                                class="w-12 h-12 bg-neutral-900 border border-neutral-700 flex items-center justify-center"
+                            >
+                                <span class="text-xl font-medium">2</span>
+                            </div>
+                            <h2 class="text-3xl font-medium">
+                                Current Email Provider
+                            </h2>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="form-group">
+                                <label class="block text-sm font-medium mb-3"
+                                    >Which email provider do you currently use?</label
+                                >
+                                <div class="grid grid-cols-2 gap-3">
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="provider"
+                                            value="gmail"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Gmail</span
+                                        >
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="provider"
+                                            value="outlook"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Outlook</span
+                                        >
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="provider"
+                                            value="proton"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >ProtonMail</span
+                                        >
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="provider"
+                                            value="other"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Other</span
+                                        >
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    for="satisfaction"
+                                    class="block text-sm font-medium mb-3"
+                                    >How satisfied are you with your current
+                                    provider?</label
+                                >
+                                <div class="space-y-3">
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="satisfaction"
+                                            value="very-unsatisfied"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Very Unsatisfied</span
+                                        >
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="satisfaction"
+                                            value="unsatisfied"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Unsatisfied</span
+                                        >
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="satisfaction"
+                                            value="neutral"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Neutral</span
+                                        >
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="satisfaction"
+                                            value="satisfied"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Satisfied</span
+                                        >
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="satisfaction"
+                                            value="very-satisfied"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Very Satisfied</span
+                                        >
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="h-px bg-neutral-800"></div>
+
+                    <div class="survey-section">
+                        <div class="flex items-center gap-4 mb-8">
+                            <div
+                                class="w-12 h-12 bg-neutral-900 border border-neutral-700 flex items-center justify-center"
+                            >
+                                <span class="text-xl font-medium">3</span>
+                            </div>
+                            <h2 class="text-3xl font-medium">Pain Points</h2>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="form-group">
+                                <label class="block text-sm font-medium mb-3"
+                                    >What are your biggest challenges with
+                                    email? (Select all that apply)</label
+                                >
+                                <div class="space-y-3">
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="pain_points"
+                                            value="spam"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Too much spam and unwanted
+                                                emails</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="pain_points"
+                                            value="privacy"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Privacy concerns and data
+                                                tracking</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="pain_points"
+                                            value="organization"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Difficult to organize and find
+                                                emails</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="pain_points"
+                                            value="automation"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Lack of automation and
+                                                workflows</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="pain_points"
+                                            value="ui"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Outdated or cluttered interface</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="pain_points"
+                                            value="collaboration"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Poor team collaboration
+                                                features</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="pain_points"
+                                            value="security"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Security and phishing concerns</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="pain_points"
+                                            value="ai"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Missing AI-powered features</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="pain_points"
+                                            value="cost"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Cost and pricing concerns</span
+                                            >
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    for="biggest_pain"
+                                    class="block text-sm font-medium mb-2"
+                                    >What's the single biggest pain point you
+                                    experience with email?</label
+                                >
+                                <textarea
+                                    id="biggest_pain"
+                                    name="biggest_pain"
+                                    rows="4"
+                                    required
+                                    class="w-full bg-neutral-900 border border-neutral-700 px-4 py-3 focus:outline-none focus:border-neutral-500 transition-colors resize-none"
+                                    placeholder="Tell us about your most frustrating email experience..."
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="h-px bg-neutral-800"></div>
+
+                    <div class="survey-section">
+                        <div class="flex items-center gap-4 mb-8">
+                            <div
+                                class="w-12 h-12 bg-neutral-900 border border-neutral-700 flex items-center justify-center"
+                            >
+                                <span class="text-xl font-medium">4</span>
+                            </div>
+                            <h2 class="text-3xl font-medium">
+                                Features You Need
+                            </h2>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="form-group">
+                                <label class="block text-sm font-medium mb-3"
+                                    >Which features are most important to you?</label
+                                >
+                                <div class="space-y-3">
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="features"
+                                            value="better-spam"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Better spam filtering</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="features"
+                                            value="privacy-first"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Privacy-first approach</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="features"
+                                            value="workflows"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Workflow automation</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="features"
+                                            value="ai-assistance"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >AI assistance for writing and
+                                                organizing</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="features"
+                                            value="team-features"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Team collaboration features</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="features"
+                                            value="custom-domains"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Custom domain support</span
+                                            >
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-start gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="features"
+                                            value="analytics"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all mt-0.5"
+                                        >
+                                        </div>
+                                        <div class="flex-1">
+                                            <span
+                                                class="text-neutral-300 group-hover:text-white transition-colors"
+                                                >Email analytics and insights</span
+                                            >
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    for="feature_request"
+                                    class="block text-sm font-medium mb-2"
+                                    >Any other features you'd love to see?</label
+                                >
+                                <textarea
+                                    id="feature_request"
+                                    name="feature_request"
+                                    rows="4"
+                                    class="w-full bg-neutral-900 border border-neutral-700 px-4 py-3 focus:outline-none focus:border-neutral-500 transition-colors resize-none"
+                                    placeholder="Share your ideas..."
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="h-px bg-neutral-800"></div>
+
+                    <div class="survey-section">
+                        <div class="flex items-center gap-4 mb-8">
+                            <div
+                                class="w-12 h-12 bg-neutral-900 border border-neutral-700 flex items-center justify-center"
+                            >
+                                <span class="text-xl font-medium">5</span>
+                            </div>
+                            <h2 class="text-3xl font-medium">Final Thoughts</h2>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="form-group">
+                                <label class="block text-sm font-medium mb-3"
+                                    >Would you consider switching to a new email
+                                    provider if it solved your pain points?</label
+                                >
+                                <div class="space-y-3">
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="switching"
+                                            value="definitely"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Definitely</span
+                                        >
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="switching"
+                                            value="probably"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Probably</span
+                                        >
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="switching"
+                                            value="maybe"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Maybe</span
+                                        >
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 cursor-pointer group"
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="switching"
+                                            value="unlikely"
+                                            class="peer hidden"
+                                        />
+                                        <div
+                                            class="w-5 h-5 border border-neutral-700 peer-checked:bg-white peer-checked:border-white transition-all"
+                                        >
+                                        </div>
+                                        <span
+                                            class="text-neutral-300 group-hover:text-white transition-colors"
+                                            >Unlikely</span
+                                        >
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    for="additional_comments"
+                                    class="block text-sm font-medium mb-2"
+                                    >Anything else you'd like to share?</label
+                                >
+                                <textarea
+                                    id="additional_comments"
+                                    name="additional_comments"
+                                    rows="4"
+                                    class="w-full bg-neutral-900 border border-neutral-700 px-4 py-3 focus:outline-none focus:border-neutral-500 transition-colors resize-none"
+                                    placeholder="Your feedback helps us build a better email experience..."
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex items-center justify-between pt-8 border-t border-neutral-800"
+                    >
+                        <p class="text-sm text-neutral-400">
+                            Your responses help us build better email solutions
+                        </p>
+                        <button
+                            type="submit"
+                            class="bg-white text-black px-8 py-3 font-medium hover:bg-neutral-200 transition-colors"
+                        >
+                            Submit Survey
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div
+                id="success-message"
+                class="hidden mt-12 p-8 bg-neutral-900 border border-neutral-700 max-w-2xl"
+            >
+                <h3 class="text-2xl font-medium mb-4">Thank You!</h3>
+                <p class="text-neutral-400">
+                    Your feedback is invaluable. We'll use your insights to
+                    build a better email experience for everyone.
+                </p>
+                <a
+                    href="/"
+                    class="inline-block mt-6 text-white hover:text-neutral-300 transition-colors"
+                >
+                    ← Back to Home
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const form = document.getElementById("survey-form") as HTMLFormElement;
+        const successMessage = document.getElementById(
+            "success-message",
+        ) as HTMLElement;
+
+        form?.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const data: Record<string, any> = {};
+
+            formData.forEach((value, key) => {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) {
+                        data[key].push(value);
+                    } else {
+                        data[key] = [data[key], value];
+                    }
+                } else {
+                    data[key] = value;
+                }
+            });
+
+            console.log("Survey Data:", data);
+
+            form.style.display = "none";
+            successMessage?.classList.remove("hidden");
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        const sections = document.querySelectorAll(".survey-section");
+        sections.forEach((section, index) => {
+            setTimeout(() => {
+                section.classList.add("animate-in");
+            }, index * 100);
+        });
+    </script>
+
+    <style>
+        .survey-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease-out;
+        }
+
+        .survey-section.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</Layout>
