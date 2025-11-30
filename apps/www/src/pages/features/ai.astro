@@ -1,0 +1,660 @@
+---
+import {
+    Ban,
+    Bot,
+    Brain,
+    CheckCircle2,
+    FileText,
+    Lock,
+    Mail,
+    MessageSquare,
+    Search,
+    Settings,
+    Shield,
+    ShieldCheck,
+    Sparkles,
+    Target,
+    Workflow,
+    Zap,
+} from "@lucide/astro";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="AI Features | Selfmail">
+    <main class="w-full flex flex-col">
+        <h1 class="text-8xl font-medium mx-20 mt-20">AI</h1>
+        <div
+            class="h-[70vh] flex flex-row items-center bg-neutral-900 border-y border-y-neutral-700 my-16"
+        >
+            <div
+                class="flex-1 flex-col space-y-3 h-full items-center justify-center flex"
+            >
+                <div
+                    class="text-box border w-[500px] border-neutral-700 p-4 flex flex-col space-y-1"
+                    data-index="0"
+                >
+                    <h2 class="text-xl">Smart Email Summaries</h2>
+                    <p>
+                        Get instant summaries of long email threads and
+                        newsletters, saving you time and helping you focus on
+                        what matters.
+                    </p>
+                </div>
+                <div
+                    class="text-box border w-[500px] border-neutral-700 p-4 flex flex-col space-y-1"
+                    data-index="1"
+                >
+                    <h2 class="text-xl">Lightning-Fast Search</h2>
+                    <p>
+                        Find any email with natural language queries. Just ask
+                        and AI will instantly locate what you're looking for.
+                    </p>
+                </div>
+                <div
+                    class="text-box border w-[500px] border-neutral-700 p-4 flex flex-col space-y-1"
+                    data-index="2"
+                >
+                    <h2 class="text-xl">AI-Powered Writing</h2>
+                    <p>
+                        Compose professional emails faster with AI assistance.
+                        From quick replies to detailed messages, AI helps you
+                        write better.
+                    </p>
+                </div>
+            </div>
+            <div
+                class="flex-1 layers relative items-center justify-center flex flex-col"
+            >
+                <div
+                    class="feature-dot-layer layer-item rotate-45 h-80 w-80 relative top-10"
+                >
+                </div>
+                <div
+                    class="feature-lines-layer layer-item rotate-45 h-80 w-80 absolute"
+                >
+                </div>
+                <div
+                    class="feature-grid-layer layer-item rotate-45 h-80 w-80 relative bottom-10"
+                >
+                </div>
+            </div>
+        </div>
+        <p class="text-neutral-200 mx-20 text-2xl leading-relaxed">
+            AI is transforming how we communicate, but it should never come at
+            the cost of privacy. Selfmail's AI features are designed with
+            privacy first - your emails are processed using private AI models
+            that never train on your data. Every AI feature can be disabled at
+            any time, giving you complete control over how your data is
+            processed. Available exclusively on the Pro plan, our AI enhances
+            spam prevention, security mechanisms, and productivity features
+            while keeping your communication secure.
+        </p>
+        <div class="flex flex-col space-y-3 mt-20">
+            <h2 class="text-center text-4xl font-medium">Privacy-First AI</h2>
+
+            <div
+                class="mx-20 mt-5 grid lg:grid-cols-3 gap-px outline outline-neutral-700"
+            >
+                <div class="relative outline outline-neutral-700 h-32">
+                    <div
+                        class="absolute justify-center rounded-full outline outline-neutral-700 inset-0 items-center flex flex-col space-y-1"
+                    >
+                        <span class="text-4xl font-bold">0%</span>
+                        <h3 class="text-lg text-neutral-400">
+                            Data Used for Training
+                        </h3>
+                    </div>
+                </div>
+                <div class="relative outline outline-neutral-700">
+                    <div
+                        class="rounded-full inset-0 absolute outline outline-neutral-700 flex items-center justify-center space-y-1 flex-col"
+                    >
+                        <span class="text-4xl font-bold">100%</span>
+                        <h3 class="text-lg text-neutral-400">
+                            Private Processing
+                        </h3>
+                    </div>
+                </div>
+                <div class="relative outline outline-neutral-700">
+                    <div
+                        class="rounded-full inset-0 absolute outline outline-neutral-700 flex items-center justify-center space-y-1 flex-col"
+                    >
+                        <span class="text-4xl font-bold">Always</span>
+                        <h3 class="text-lg text-neutral-400">
+                            Opt-Out Available
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div
+            class="w-full px-20 flex flex-col space-y-3 mt-20 items-center mb-20"
+        >
+            <h2 class="text-4xl font-medium">Your Data, Your Control</h2>
+            <p class="text-neutral-400 text-center max-w-2xl">
+                Unlike other email providers, we never use your emails to train
+                AI models. All processing happens in isolated environments, and
+                you can disable AI features anytime.
+            </p>
+            <div class="grid lg:grid-cols-2 gap-8 mt-12 max-w-5xl w-full">
+                <div
+                    class="ai-feature-card border border-neutral-700 p-6 flex flex-col space-y-4"
+                >
+                    <Lock size={40} class="text-neutral-400" />
+                    <h3 class="text-2xl font-medium">Private AI Models</h3>
+                    <p class="text-neutral-400">
+                        All AI processing uses private models that run in
+                        secure, isolated environments. Your emails never leave
+                        our infrastructure and are never used to train external
+                        AI systems.
+                    </p>
+                </div>
+                <div
+                    class="ai-feature-card border border-neutral-700 p-6 flex flex-col space-y-4"
+                >
+                    <ShieldCheck size={40} class="text-neutral-400" />
+                    <h3 class="text-2xl font-medium">Zero Data Training</h3>
+                    <p class="text-neutral-400">
+                        We guarantee that your email data will never be used to
+                        train AI models. Your private communications remain
+                        private, period.
+                    </p>
+                </div>
+                <div
+                    class="ai-feature-card border border-neutral-700 p-6 flex flex-col space-y-4"
+                >
+                    <Settings size={40} class="text-neutral-400" />
+                    <h3 class="text-2xl font-medium">Complete Control</h3>
+                    <p class="text-neutral-400">
+                        Every AI feature can be toggled on or off individually.
+                        Don't want AI summaries? Turn them off. Prefer manual
+                        spam filtering? You decide.
+                    </p>
+                </div>
+                <div
+                    class="ai-feature-card border border-neutral-700 p-6 flex flex-col space-y-4"
+                >
+                    <Target size={40} class="text-neutral-400" />
+                    <h3 class="text-2xl font-medium">Pro Plan Exclusive</h3>
+                    <p class="text-neutral-400">
+                        AI features are available exclusively on the Pro plan,
+                        helping us maintain the computational resources needed
+                        for private, high-quality AI processing.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="w-full px-20 flex flex-col space-y-8 mt-20 mb-20">
+            <h2 class="text-4xl font-medium text-center">
+                AI Workflow in Action
+            </h2>
+            <p class="text-neutral-400 text-center max-w-2xl mx-auto">
+                See how AI seamlessly integrates into your email workflow
+            </p>
+
+            <div class="workflow-container max-w-6xl mx-auto w-full mt-12">
+                <div class="workflow-step">
+                    <div class="step-connector"></div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <Mail size={32} class="text-neutral-100" />
+                        </div>
+                        <div class="step-details">
+                            <h3 class="text-2xl font-medium">Email Arrives</h3>
+                            <p class="text-neutral-400 mt-2">
+                                Incoming email lands in your inbox from a client
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-connector"></div>
+                    <div class="step-content">
+                        <div
+                            class="step-icon bg-linear-to-br from-purple-600 to-blue-600"
+                        >
+                            <Shield size={32} class="text-white" />
+                        </div>
+                        <div class="step-details">
+                            <h3 class="text-2xl font-medium">
+                                AI Security Scan
+                            </h3>
+                            <p class="text-neutral-400 mt-2">
+                                Instantly analyzed for phishing, malicious
+                                links, and suspicious patterns
+                            </p>
+                            <div class="flex gap-2 mt-3">
+                                <span
+                                    class="px-3 py-1 bg-green-500/10 text-green-500 text-sm rounded-full"
+                                    >Safe</span
+                                >
+                                <span
+                                    class="px-3 py-1 bg-neutral-800 text-neutral-400 text-sm rounded-full"
+                                    >0.3s scan time</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-connector"></div>
+                    <div class="step-content">
+                        <div
+                            class="step-icon bg-linear-to-br from-blue-600 to-cyan-600"
+                        >
+                            <Brain size={32} class="text-white" />
+                        </div>
+                        <div class="step-details">
+                            <h3 class="text-2xl font-medium">
+                                Smart Categorization
+                            </h3>
+                            <p class="text-neutral-400 mt-2">
+                                AI reads context and automatically tags,
+                                prioritizes, and organizes
+                            </p>
+                            <div class="flex gap-2 mt-3">
+                                <span
+                                    class="px-3 py-1 bg-blue-500/10 text-blue-400 text-sm rounded-full"
+                                    >Client Project</span
+                                >
+                                <span
+                                    class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full"
+                                    >High Priority</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-connector"></div>
+                    <div class="step-content">
+                        <div
+                            class="step-icon bg-linear-to-br from-cyan-600 to-teal-600"
+                        >
+                            <FileText size={32} class="text-white" />
+                        </div>
+                        <div class="step-details">
+                            <h3 class="text-2xl font-medium">
+                                Generate Summary
+                            </h3>
+                            <p class="text-neutral-400 mt-2">
+                                Long email? AI creates a concise summary with
+                                key action items
+                            </p>
+                            <div
+                                class="mt-3 p-3 bg-neutral-900 border border-neutral-700 rounded text-sm text-neutral-300"
+                            >
+                                <span class="text-neutral-500">Summary:</span> Client
+                                requests timeline update for Q1 deliverables. Needs
+                                response by Friday.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-content">
+                        <div
+                            class="step-icon bg-linear-to-br from-teal-600 to-green-600"
+                        >
+                            <MessageSquare size={32} class="text-white" />
+                        </div>
+                        <div class="step-details">
+                            <h3 class="text-2xl font-medium">
+                                AI Draft Response
+                            </h3>
+                            <p class="text-neutral-400 mt-2">
+                                Click to generate a professional reply based on
+                                context and your writing style
+                            </p>
+                            <button
+                                class="mt-3 px-4 py-2 bg-neutral-100 text-black rounded hover:bg-neutral-200 transition-colors flex items-center gap-2"
+                            >
+                                <Sparkles size={16} />
+                                Generate Reply
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full px-20 flex flex-col space-y-8 mt-32 mb-20">
+            <h2 class="text-4xl font-medium text-center">
+                Powerful AI Features
+            </h2>
+
+            <div class="features-grid max-w-6xl mx-auto w-full mt-12">
+                <div class="feature-item group">
+                    <div class="feature-header">
+                        <Search
+                            size={28}
+                            class="text-neutral-300 group-hover:text-blue-400 transition-colors"
+                        />
+                        <h3 class="text-xl font-medium">Smart Search</h3>
+                    </div>
+                    <p class="text-neutral-400">
+                        "Find emails from Sarah about the budget" - Natural
+                        language search that actually works
+                    </p>
+                </div>
+
+                <div class="feature-item group">
+                    <div class="feature-header">
+                        <Sparkles
+                            size={28}
+                            class="text-neutral-300 group-hover:text-purple-400 transition-colors"
+                        />
+                        <h3 class="text-xl font-medium">Writing Assistant</h3>
+                    </div>
+                    <p class="text-neutral-400">
+                        AI-powered composition with tone adjustment, grammar
+                        fixes, and style suggestions
+                    </p>
+                </div>
+
+                <div class="feature-item group">
+                    <div class="feature-header">
+                        <Ban
+                            size={28}
+                            class="text-neutral-300 group-hover:text-red-400 transition-colors"
+                        />
+                        <h3 class="text-xl font-medium">Spam Prevention</h3>
+                    </div>
+                    <p class="text-neutral-400">
+                        Advanced pattern recognition catches sophisticated spam
+                        and phishing attempts
+                    </p>
+                </div>
+
+                <div class="feature-item group">
+                    <div class="feature-header">
+                        <Bot
+                            size={28}
+                            class="text-neutral-300 group-hover:text-green-400 transition-colors"
+                        />
+                        <h3 class="text-xl font-medium">Auto-Organization</h3>
+                    </div>
+                    <p class="text-neutral-400">
+                        Emails automatically categorized, labeled, and
+                        prioritized based on content
+                    </p>
+                </div>
+
+                <div class="feature-item group">
+                    <div class="feature-header">
+                        <Zap
+                            size={28}
+                            class="text-neutral-300 group-hover:text-yellow-400 transition-colors"
+                        />
+                        <h3 class="text-xl font-medium">Quick Actions</h3>
+                    </div>
+                    <p class="text-neutral-400">
+                        AI suggests one-click responses and actions based on
+                        email content
+                    </p>
+                </div>
+
+                <div class="feature-item group">
+                    <div class="feature-header">
+                        <Workflow
+                            size={28}
+                            class="text-neutral-300 group-hover:text-cyan-400 transition-colors"
+                        />
+                        <h3 class="text-xl font-medium">Smart Workflows</h3>
+                    </div>
+                    <p class="text-neutral-400">
+                        Create automated email workflows with AI-powered
+                        triggers and actions
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="w-full px-20 flex flex-col items-center mb-20">
+            <div
+                class="max-w-3xl w-full bg-neutral-900 border border-neutral-700 p-8"
+            >
+                <h2 class="text-3xl font-medium mb-6">Transparency Promise</h2>
+                <div class="flex flex-col space-y-4 text-neutral-300">
+                    <div class="flex items-start space-x-3">
+                        <CheckCircle2
+                            size={24}
+                            class="text-green-500 shrink-0"
+                        />
+                        <p>Your emails are never used to train AI models</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <CheckCircle2
+                            size={24}
+                            class="text-green-500 shrink-0"
+                        />
+                        <p>
+                            All AI processing happens in private, isolated
+                            environments
+                        </p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <CheckCircle2
+                            size={24}
+                            class="text-green-500 shrink-0"
+                        />
+                        <p>You can disable any AI feature at any time</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <CheckCircle2
+                            size={24}
+                            class="text-green-500 shrink-0"
+                        />
+                        <p>
+                            AI features are only available on Pro plan to ensure
+                            quality and privacy
+                        </p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <CheckCircle2
+                            size={24}
+                            class="text-green-500 shrink-0"
+                        />
+                        <p>Full transparency in how AI processes your data</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .feature-dot-layer {
+            background: radial-gradient(circle, #5e5e5e 2px, transparent 2px);
+            background-size: 10px 10px;
+            transform: rotate(45deg);
+            rotate: x 50deg;
+        }
+        .feature-lines-layer {
+            background-image: linear-gradient(#5e5e5e 1px, transparent 1px),
+                linear-gradient(#5e5e5e 1px, transparent 1px);
+            background-size: 10px 10px;
+            transform: rotate(45deg);
+            rotate: x 50deg;
+        }
+        .feature-grid-layer {
+            background-image: linear-gradient(#5e5e5e 1px, transparent 1px),
+                linear-gradient(90deg, #5e5e5e 1px, transparent 1px);
+            background-size: 20px 20px;
+            transform: rotate(45deg);
+            border: 1px solid #5e5e5e;
+            rotate: x 50deg;
+        }
+
+        .layers:hover .layer-item:not(:hover) {
+            opacity: 0.5;
+            z-index: 15;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .layer-item {
+            z-index: 5;
+            background-color: transparent;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .text-box {
+            transition: all 0.3s ease-in-out;
+            opacity: 0.4;
+        }
+
+        .text-box.active {
+            opacity: 1;
+            border-color: #a3a3a3;
+        }
+
+        .ai-feature-card {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .ai-feature-card:hover {
+            border-color: #a3a3a3;
+            transform: translateY(-4px);
+        }
+
+        .workflow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            position: relative;
+        }
+
+        .workflow-step {
+            position: relative;
+        }
+
+        .step-content {
+            display: flex;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .step-icon {
+            min-width: 80px;
+            height: 80px;
+            background: #262626;
+            border: 1px solid #404040;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .workflow-step:hover .step-icon {
+            transform: scale(1.05);
+            border-color: #525252;
+        }
+
+        .step-details {
+            flex: 1;
+            padding: 0.5rem 0;
+        }
+
+        .step-connector {
+            position: absolute;
+            left: 40px;
+            top: 80px;
+            width: 2px;
+            height: calc(100% + 2rem);
+            background: linear-gradient(to bottom, #404040, transparent);
+        }
+
+        .workflow-step:last-child .step-connector {
+            display: none;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-item {
+            padding: 1.5rem;
+            border: 1px solid #404040;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .feature-item:hover {
+            border-color: #525252;
+            transform: translateY(-4px);
+            background: #171717;
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        @media (max-width: 768px) {
+            .step-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .step-connector {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script>
+        const dots = document.querySelector(
+            ".feature-dot-layer",
+        ) as HTMLDivElement;
+        const lines = document.querySelector(
+            ".feature-lines-layer",
+        ) as HTMLDivElement;
+        const grid = document.querySelector(
+            ".feature-grid-layer",
+        ) as HTMLDivElement;
+        const textBoxes =
+            document.querySelectorAll<HTMLDivElement>(".text-box");
+
+        if (!dots || !lines || !grid) {
+            throw new Error("Could not find feature layers");
+        }
+
+        const layers = [dots, lines, grid];
+        let currentIndex = 0;
+
+        const highlightLayer = (index: number) => {
+            layers.forEach((layer, i) => {
+                layer.style.opacity = i === index ? "1" : "0.3";
+                layer.style.zIndex = i === index ? "20" : "5";
+            });
+
+            textBoxes.forEach((box, i) => {
+                if (i === index) {
+                    box.classList.add("active");
+                } else {
+                    box.classList.remove("active");
+                }
+            });
+        };
+
+        const cycleHighlight = () => {
+            highlightLayer(currentIndex);
+            currentIndex = (currentIndex + 1) % layers.length;
+        };
+
+        highlightLayer(0);
+        setInterval(cycleHighlight, 3000);
+    </script>
+</Layout>

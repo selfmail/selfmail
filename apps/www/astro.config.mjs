@@ -21,6 +21,9 @@ export default defineConfig({
 		},
 	},
 
+	adapter: cloudflare(),
+	output: "server",
+
 	vite: {
 		plugins: [tailwindcss()],
 	},

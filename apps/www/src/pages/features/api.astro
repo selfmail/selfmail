@@ -1,0 +1,344 @@
+---
+import { Code } from "astro:components";
+import Layout from "@/layouts/Layout.astro";
+
+const sendCode = `await fetch('https://api.selfmail.app/v1/send', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer sk_...',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    to: 'user@example.com',
+    subject: 'Hello!',
+    html: '<p>Email body</p>'
+  })
+})`;
+
+const receiveCode = `{
+  "event": "email.received",
+  "data": {
+    "from": "sender@example.com",
+    "to": "you@selfmail.app",
+    "subject": "New message",
+    "text": "Message content",
+    "timestamp": 1732982400
+  }
+}`;
+
+const authCode = `// Create API key
+const key = await createAPIKey({
+  name: 'Production',
+  permissions: [
+    'email:send',
+    'email:read'
+  ],
+  rateLimit: {
+    requests: 1000,
+    period: 'hour'
+  }
+})
+// Returns: sk_live_...`;
+---
+
+<Layout title="API | Selfmail">
+    <main class="w-full flex flex-col">
+        <h1 class="text-8xl font-medium mx-20 mt-20">API</h1>
+
+        <div
+            class="h-[70vh] flex flex-row items-center bg-neutral-900 border-y border-y-neutral-700 my-16"
+        >
+            <div
+                class="flex-1 flex-col space-y-3 h-full items-center justify-center flex"
+            >
+                <div
+                    class="code-preview transition-all duration-300 ease-in-out opacity-40 data-[active=true]:opacity-100 data-[active=true]:border-neutral-500 border w-[500px] border-neutral-700 p-4 flex flex-col space-y-1"
+                    data-index="0"
+                >
+                    <h2 class="text-xl">Send Emails</h2>
+                    <p>
+                        Simple HTTP requests to send emails from your apps, AI
+                        agents, or website forms.
+                    </p>
+                </div>
+                <div
+                    class="code-preview transition-all duration-300 ease-in-out opacity-40 data-[active=true]:opacity-100 data-[active=true]:border-neutral-500 border w-[500px] border-neutral-700 p-4 flex flex-col space-y-1"
+                    data-index="1"
+                >
+                    <h2 class="text-xl">Receive Emails</h2>
+                    <p>
+                        Webhook endpoints to receive incoming emails in
+                        real-time for processing.
+                    </p>
+                </div>
+                <div
+                    class="code-preview transition-all duration-300 ease-in-out opacity-40 data-[active=true]:opacity-100 data-[active=true]:border-neutral-500 border w-[500px] border-neutral-700 p-4 flex flex-col space-y-1"
+                    data-index="2"
+                >
+                    <h2 class="text-xl">Secure Authentication</h2>
+                    <p>
+                        API keys with fine-grained permissions and rate limiting
+                        for security.
+                    </p>
+                </div>
+            </div>
+            <div
+                class="flex-1 api-code-display items-center justify-center flex flex-col"
+            >
+                <div
+                    class="code-block border border-neutral-700 rounded-lg w-[500px] overflow-hidden"
+                >
+                    <div class="code-content" data-code="send">
+                        <Code
+                            class={"p-4"}
+                            code={sendCode}
+                            lang="js"
+                            theme="vesper"
+                        />
+                    </div>
+                    <div class="code-content hidden" data-code="receive">
+                        <Code
+                            code={receiveCode}
+                            lang="json"
+                            class="p-4"
+                            theme="vesper"
+                        />
+                    </div>
+                    <div class="code-content hidden" data-code="auth">
+                        <Code
+                            code={authCode}
+                            lang="js"
+                            theme="vesper"
+                            class="p-4"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-neutral-200 mx-20 text-2xl leading-relaxed">
+            The Selfmail API provides a simple, powerful interface for
+            integrating email into your applications. Whether you're building AI
+            agents that need to communicate, adding contact forms to your
+            website, or automating email workflows, our API makes it effortless.
+            With straightforward REST endpoints and comprehensive webhooks, you
+            can send and receive emails programmatically in minutes.
+        </p>
+
+        <div class="flex flex-col space-y-3 mt-20">
+            <h2 class="text-center text-4xl font-medium">Use Cases</h2>
+            <div class="mx-20 mt-10 grid lg:grid-cols-3 gap-8">
+                <div
+                    class="transition-all duration-300 ease-in-out hover:-translate-y-1 border border-neutral-700 p-6 flex flex-col space-y-3 hover:border-neutral-500"
+                >
+                    <div class="text-5xl">🤖</div>
+                    <h3 class="text-2xl font-medium">AI Agents</h3>
+                    <p class="text-neutral-400">
+                        Enable your AI assistants to send and receive emails
+                        autonomously. Perfect for customer support bots,
+                        automated outreach, and intelligent email processing.
+                    </p>
+                </div>
+                <div
+                    class="transition-all duration-300 ease-in-out hover:-translate-y-1 border border-neutral-700 p-6 flex flex-col space-y-3 hover:border-neutral-500"
+                >
+                    <div class="text-5xl">📝</div>
+                    <h3 class="text-2xl font-medium">Website Forms</h3>
+                    <p class="text-neutral-400">
+                        Connect your contact forms, newsletter signups, and
+                        notification systems. Get instant email delivery without
+                        managing SMTP servers.
+                    </p>
+                </div>
+                <div
+                    class="transition-all duration-300 ease-in-out hover:-translate-y-1 border border-neutral-700 p-6 flex flex-col space-y-3 hover:border-neutral-500"
+                >
+                    <div class="text-5xl">⚡</div>
+                    <h3 class="text-2xl font-medium">Automation</h3>
+                    <p class="text-neutral-400">
+                        Build custom email workflows, integrate with your
+                        existing tools, and automate repetitive communication
+                        tasks with simple API calls.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full px-20 flex flex-col space-y-8 mt-20 mb-20">
+            <h2 class="text-4xl font-medium text-center">
+                Usage-Based Pricing
+            </h2>
+            <p class="text-neutral-400 text-center max-w-2xl mx-auto">
+                Pay only for what you use. No hidden fees, no monthly
+                commitments. Scale from zero to millions of emails.
+            </p>
+
+            <div
+                class="pricing-calculator bg-neutral-900 border border-neutral-700 p-8 max-w-4xl mx-auto w-full"
+            >
+                <div class="flex flex-col space-y-6">
+                    <div class="flex flex-col space-y-3">
+                        <label class="text-lg">Monthly Email Volume</label>
+                        <input
+                            type="range"
+                            id="emailSlider"
+                            min="0"
+                            max="1000000"
+                            value="10000"
+                            step="1000"
+                            class="w-full h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:bg-neutral-400 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:rounded-full [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:bg-neutral-400 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0"
+                        />
+                        <div
+                            class="flex justify-between text-sm text-neutral-400"
+                        >
+                            <span>0</span>
+                            <span
+                                id="emailCount"
+                                class="text-2xl text-neutral-100 font-bold"
+                                >10,000</span
+                            >
+                            <span>1M+</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mt-6">
+                        <div
+                            class="bg-black border border-neutral-700 p-4 rounded"
+                        >
+                            <div class="text-neutral-400 text-sm">
+                                Emails per month
+                            </div>
+                            <div
+                                id="volumeDisplay"
+                                class="text-3xl font-bold mt-2"
+                            >
+                                10,000
+                            </div>
+                        </div>
+                        <div
+                            class="bg-black border border-neutral-700 p-4 rounded"
+                        >
+                            <div class="text-neutral-400 text-sm">
+                                Estimated cost
+                            </div>
+                            <div
+                                id="costDisplay"
+                                class="text-3xl font-bold mt-2 text-green-400"
+                            >
+                                $10.00
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-sm text-neutral-400 mt-4">
+                        * Pricing: $1 per 1,000 emails. Volume discounts
+                        available for enterprise.
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col space-y-4 mt-12">
+                <h3 class="text-2xl font-medium text-center">
+                    Getting Started
+                </h3>
+                <div class="grid lg:grid-cols-3 gap-6 mx-20">
+                    <div
+                        class="transition-all duration-300 ease-in-out hover:border-neutral-500 border border-neutral-700 p-6 flex flex-col space-y-3"
+                    >
+                        <div class="text-4xl font-bold text-neutral-700">
+                            01
+                        </div>
+                        <h4 class="text-xl font-medium">Create Account</h4>
+                        <p class="text-neutral-400">
+                            Sign up for free and get instant API access with
+                            1,000 emails included.
+                        </p>
+                    </div>
+                    <div
+                        class="transition-all duration-300 ease-in-out hover:border-neutral-500 border border-neutral-700 p-6 flex flex-col space-y-3"
+                    >
+                        <div class="text-4xl font-bold text-neutral-700">
+                            02
+                        </div>
+                        <h4 class="text-xl font-medium">Generate API Key</h4>
+                        <p class="text-neutral-400">
+                            Create your secure API key in the dashboard with
+                            custom permissions.
+                        </p>
+                    </div>
+                    <div
+                        class="transition-all duration-300 ease-in-out hover:border-neutral-500 border border-neutral-700 p-6 flex flex-col space-y-3"
+                    >
+                        <div class="text-4xl font-bold text-neutral-700">
+                            03
+                        </div>
+                        <h4 class="text-xl font-medium">Start Building</h4>
+                        <p class="text-neutral-400">
+                            Use our REST API to send your first email in under 5
+                            minutes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const codePreviews =
+            document.querySelectorAll<HTMLDivElement>(".code-preview");
+        const codeContents =
+            document.querySelectorAll<HTMLDivElement>(".code-content");
+
+        let currentIndex = 0;
+        const codeTypes = ["send", "receive", "auth"];
+
+        const highlightCode = (index: number) => {
+            codePreviews.forEach((preview, i) => {
+                if (i === index) {
+                    preview.setAttribute("data-active", "true");
+                } else {
+                    preview.removeAttribute("data-active");
+                }
+            });
+
+            codeContents.forEach((content) => {
+                const codeType = content.getAttribute("data-code");
+                if (codeType === codeTypes[index]) {
+                    content.classList.remove("hidden");
+                } else {
+                    content.classList.add("hidden");
+                }
+            });
+        };
+
+        const cycleCode = () => {
+            highlightCode(currentIndex);
+            currentIndex = (currentIndex + 1) % codeTypes.length;
+        };
+
+        highlightCode(0);
+        setInterval(cycleCode, 4000);
+
+        const slider = document.getElementById(
+            "emailSlider",
+        ) as HTMLInputElement;
+        const emailCount = document.getElementById("emailCount");
+        const volumeDisplay = document.getElementById("volumeDisplay");
+        const costDisplay = document.getElementById("costDisplay");
+
+        const updatePricing = () => {
+            const volume = Number.parseInt(slider.value);
+            const cost = (volume / 1000) * 1;
+
+            if (emailCount) emailCount.textContent = volume.toLocaleString();
+            if (volumeDisplay)
+                volumeDisplay.textContent = volume.toLocaleString();
+            if (costDisplay) costDisplay.textContent = `$${cost.toFixed(2)}`;
+        };
+
+        if (slider) {
+            slider.addEventListener("input", updatePricing);
+            updatePricing();
+        }
+    </script>
+</Layout>
