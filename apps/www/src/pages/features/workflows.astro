@@ -1,0 +1,466 @@
+---
+import {
+    ArrowRight,
+    Code,
+    GitBranch,
+    Mail,
+    MailPlus,
+    Sparkles,
+    Webhook,
+    Zap,
+} from "@lucide/astro";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="Workflows | Selfmail">
+    <main class="w-full flex flex-col">
+        <h1 class="text-8xl font-medium mx-20 mt-20">Workflows</h1>
+        <div
+            class="h-[70vh] flex flex-row items-center bg-neutral-900 border-y border-y-neutral-700 my-16"
+        >
+            <div
+                class="flex-1 flex-col space-y-3 h-full items-center justify-center flex"
+            >
+                <div
+                    class="text-box border w-[500px] border-neutral-700 p-4 flex flex-col space-y-1"
+                    data-index="0"
+                >
+                    <h2 class="text-xl">Visual Builder</h2>
+                    <p>
+                        Design complex email automations with our intuitive
+                        drag-and-drop interface. No code required.
+                    </p>
+                </div>
+                <div
+                    class="text-box border w-[500px] border-neutral-700 p-4 flex flex-col space-y-1"
+                    data-index="1"
+                >
+                    <h2 class="text-xl">Smart Triggers</h2>
+                    <p>
+                        Start workflows from incoming emails, API calls, or
+                        outgoing messages. Complete flexibility.
+                    </p>
+                </div>
+                <div
+                    class="text-box border w-[500px] border-neutral-700 p-4 flex flex-col space-y-1"
+                    data-index="2"
+                >
+                    <h2 class="text-xl">Powerful Actions</h2>
+                    <p>
+                        Send emails, call webhooks, or integrate with external
+                        APIs. Build anything you need.
+                    </p>
+                </div>
+            </div>
+            <div
+                class="flex-1 flex flex-col space-y-6 h-full items-center justify-center px-8"
+            >
+                <div
+                    class="workflow-example-card border border-neutral-700 p-6 w-full max-w-md bg-neutral-900"
+                >
+                    <div class="flex items-center gap-3 mb-3">
+                        <div
+                            class="w-10 h-10 bg-neutral-800 flex items-center justify-center"
+                        >
+                            <Mail size={20} class="text-blue-400" />
+                        </div>
+                        <h3 class="text-lg font-medium">
+                            Support Ticket Auto-Reply
+                        </h3>
+                    </div>
+                    <p class="text-sm text-neutral-400">
+                        Automatically send confirmation emails when support
+                        tickets arrive
+                    </p>
+                </div>
+
+                <div
+                    class="workflow-example-card border border-neutral-700 p-6 w-full max-w-md bg-neutral-900"
+                >
+                    <div class="flex items-center gap-3 mb-3">
+                        <div
+                            class="w-10 h-10 bg-neutral-800 flex items-center justify-center"
+                        >
+                            <Webhook size={20} class="text-purple-400" />
+                        </div>
+                        <h3 class="text-lg font-medium">Order Processing</h3>
+                    </div>
+                    <p class="text-sm text-neutral-400">
+                        Trigger webhooks to update CRM when order confirmations
+                        are sent
+                    </p>
+                </div>
+
+                <div
+                    class="workflow-example-card border border-neutral-700 p-6 w-full max-w-md bg-neutral-900"
+                >
+                    <div class="flex items-center gap-3 mb-3">
+                        <div
+                            class="w-10 h-10 bg-neutral-800 flex items-center justify-center"
+                        >
+                            <GitBranch size={20} class="text-green-400" />
+                        </div>
+                        <h3 class="text-lg font-medium">Smart Email Routing</h3>
+                    </div>
+                    <p class="text-sm text-neutral-400">
+                        Route emails to different departments based on subject
+                        and content
+                    </p>
+                </div>
+            </div>
+        </div>
+        <p class="text-neutral-200 mx-20 text-2xl leading-relaxed">
+            Workflows transform how you handle email communication. Available
+            exclusively on the Pro plan, our workflow builder lets you create
+            sophisticated automations that respond to incoming emails, trigger
+            on API calls, and execute complex business logic. From simple
+            auto-replies to intricate multi-step processes, workflows give you
+            the power to automate your entire email operation.
+        </p>
+
+        <div class="w-full px-20 flex flex-col space-y-8 mt-32 mb-20">
+            <h2 class="text-4xl font-medium text-center">How Workflows Work</h2>
+
+            <div
+                class="flex items-center justify-center gap-8 max-w-5xl mx-auto w-full mt-12 p-12 bg-neutral-900 border border-neutral-700"
+            >
+                <div
+                    class="flex flex-col items-center gap-4 p-8 bg-neutral-800 border border-neutral-700 min-w-[200px] transition-all hover:-translate-y-1 hover:border-neutral-600"
+                >
+                    <div
+                        class="w-16 h-16 flex items-center justify-center bg-neutral-900"
+                    >
+                        <Zap size={32} class="text-yellow-400" />
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl font-medium">Trigger</h3>
+                        <p class="text-neutral-400 text-sm">
+                            Incoming email, API call, or outgoing message
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-center">
+                    <ArrowRight size={24} class="text-neutral-600" />
+                </div>
+
+                <div
+                    class="flex flex-col items-center gap-4 p-8 bg-neutral-800 border border-neutral-700 min-w-[200px] transition-all hover:-translate-y-1 hover:border-neutral-600"
+                >
+                    <div
+                        class="w-16 h-16 flex items-center justify-center bg-neutral-900"
+                    >
+                        <GitBranch size={32} class="text-blue-400" />
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl font-medium">Rules & Conditions</h3>
+                        <p class="text-neutral-400 text-sm">
+                            Filter by sender, subject, content, or custom logic
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-center">
+                    <ArrowRight size={24} class="text-neutral-600" />
+                </div>
+
+                <div
+                    class="flex flex-col items-center gap-4 p-8 bg-neutral-800 border border-neutral-700 min-w-[200px] transition-all hover:-translate-y-1 hover:border-neutral-600"
+                >
+                    <div
+                        class="w-16 h-16 flex items-center justify-center bg-neutral-900"
+                    >
+                        <Sparkles size={32} class="text-purple-400" />
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl font-medium">Actions</h3>
+                        <p class="text-neutral-400 text-sm">
+                            Send emails, call webhooks, update databases
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full px-20 flex flex-col space-y-8 mt-32">
+            <h2 class="text-4xl font-medium text-center">Trigger Types</h2>
+            <p class="text-neutral-400 text-center max-w-2xl mx-auto">
+                Start your workflows with the right trigger for your use case
+            </p>
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto w-full mt-12"
+            >
+                <div
+                    class="p-8 bg-neutral-900 border border-neutral-700 transition-all hover:-translate-y-1 hover:border-neutral-600"
+                >
+                    <Mail size={48} class="text-neutral-400" />
+                    <h3 class="text-2xl font-medium mt-4">Incoming Email</h3>
+                    <p class="text-neutral-400 mt-2">
+                        Trigger workflows when emails arrive in your inbox.
+                        Perfect for auto-replies, ticket creation, and
+                        processing orders.
+                    </p>
+                    <div
+                        class="mt-4 p-4 bg-neutral-800 border border-neutral-700"
+                    >
+                        <code class="text-sm text-neutral-300"
+                            >support@company.com → Create ticket</code
+                        >
+                    </div>
+                </div>
+
+                <div
+                    class="p-8 bg-neutral-900 border border-neutral-700 transition-all hover:-translate-y-1 hover:border-neutral-600"
+                >
+                    <Code size={48} class="text-neutral-400" />
+                    <h3 class="text-2xl font-medium mt-4">API Route</h3>
+                    <p class="text-neutral-400 mt-2">
+                        Start workflows via HTTP requests. Integrate with your
+                        apps, webhooks, and external services.
+                    </p>
+                    <div
+                        class="mt-4 p-4 bg-neutral-800 border border-neutral-700"
+                    >
+                        <code class="text-sm text-neutral-300"
+                            >POST /workflows/order-confirmation</code
+                        >
+                    </div>
+                </div>
+
+                <div
+                    class="p-8 bg-neutral-900 border border-neutral-700 transition-all hover:-translate-y-1 hover:border-neutral-600"
+                >
+                    <MailPlus size={48} class="text-neutral-400" />
+                    <h3 class="text-2xl font-medium mt-4">Outgoing Email</h3>
+                    <p class="text-neutral-400 mt-2">
+                        React to sent emails. Track responses, log activities,
+                        or trigger follow-ups automatically.
+                    </p>
+                    <div
+                        class="mt-4 p-4 bg-neutral-800 border border-neutral-700"
+                    >
+                        <code class="text-sm text-neutral-300"
+                            >Email sent → Schedule follow-up</code
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full px-20 flex flex-col space-y-8 mt-32 mb-20">
+            <h2 class="text-4xl font-medium text-center">
+                Powerful Actions at Your Fingertips
+            </h2>
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto w-full mt-12"
+            >
+                <div
+                    class="p-6 bg-neutral-900 border border-neutral-700 transition-all hover:border-neutral-600 hover:-translate-y-0.5"
+                >
+                    <div class="flex items-center gap-3 mb-3">
+                        <Mail size={28} class="text-green-400" />
+                        <h3 class="text-xl font-medium">Send Email</h3>
+                    </div>
+                    <p class="text-neutral-400">
+                        Compose and send emails with our powerful editor.
+                        Support for templates, variables, and rich formatting.
+                    </p>
+                </div>
+
+                <div
+                    class="p-6 bg-neutral-900 border border-neutral-700 transition-all hover:border-neutral-600 hover:-translate-y-0.5"
+                >
+                    <div class="flex items-center gap-3 mb-3">
+                        <Webhook size={28} class="text-orange-400" />
+                        <h3 class="text-xl font-medium">Call Webhook</h3>
+                    </div>
+                    <p class="text-neutral-400">
+                        Send data to external services. Integrate with Slack,
+                        Discord, or any HTTP endpoint.
+                    </p>
+                </div>
+
+                <div
+                    class="p-6 bg-neutral-900 border border-neutral-700 transition-all hover:border-neutral-600 hover:-translate-y-0.5"
+                >
+                    <div class="flex items-center gap-3 mb-3">
+                        <Code size={28} class="text-blue-400" />
+                        <h3 class="text-xl font-medium">API Request</h3>
+                    </div>
+                    <p class="text-neutral-400">
+                        Make custom API calls to third-party services. Full
+                        control over headers and payloads.
+                    </p>
+                </div>
+
+                <div
+                    class="p-6 bg-neutral-900 border border-neutral-700 transition-all hover:border-neutral-600 hover:-translate-y-0.5"
+                >
+                    <div class="flex items-center gap-3 mb-3">
+                        <GitBranch size={28} class="text-purple-400" />
+                        <h3 class="text-xl font-medium">Conditional Logic</h3>
+                    </div>
+                    <p class="text-neutral-400">
+                        Branch workflows based on conditions. Create complex
+                        decision trees with if-else logic.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full px-20 flex flex-col items-center mt-32 mb-20">
+            <div class="workflow-builder-preview max-w-6xl w-full">
+                <h2 class="text-4xl font-medium text-center mb-8">
+                    Visual Workflow Builder
+                </h2>
+                <p class="text-neutral-400 text-center mb-12">
+                    Design complex automations with our intuitive interface
+                </p>
+
+                <div
+                    class="relative min-h-[500px] bg-neutral-900 border border-neutral-700 p-12 overflow-hidden"
+                >
+                    <div
+                        class="absolute inset-0 opacity-50"
+                        style="background-image: linear-gradient(#262626 1px, transparent 1px), linear-gradient(90deg, #262626 1px, transparent 1px); background-size: 20px 20px;"
+                    >
+                    </div>
+                    <div class="relative flex flex-col items-center gap-8">
+                        <div
+                            class="relative flex flex-col items-center gap-2 px-8 py-6 bg-neutral-800 border-2 border-yellow-400 min-w-[180px] transition-all hover:border-neutral-400 hover:scale-105"
+                        >
+                            <div
+                                class="absolute -top-3 text-xs px-3 py-1 bg-neutral-900 border border-neutral-700 font-semibold tracking-wide"
+                            >
+                                TRIGGER
+                            </div>
+                            <Mail size={24} />
+                            <span class="text-sm text-neutral-300"
+                                >New Email</span
+                            >
+                        </div>
+
+                        <div
+                            class="w-0.5 h-10 bg-linear-to-b from-neutral-700 to-transparent"
+                        >
+                        </div>
+
+                        <div
+                            class="relative flex flex-col items-center gap-2 px-8 py-6 bg-neutral-800 border-2 border-blue-400 min-w-[180px] transition-all hover:border-neutral-400 hover:scale-105"
+                        >
+                            <div
+                                class="absolute -top-3 text-xs px-3 py-1 bg-neutral-900 border border-neutral-700 font-semibold tracking-wide"
+                            >
+                                CONDITION
+                            </div>
+                            <GitBranch size={24} />
+                            <span class="text-sm text-neutral-300"
+                                >Subject contains</span
+                            >
+                        </div>
+
+                        <div
+                            class="relative w-full h-20 flex items-center justify-center"
+                        >
+                            <div
+                                class="absolute w-24 h-0.5 bg-neutral-700 -rotate-45 -translate-x-12"
+                            >
+                            </div>
+                            <div
+                                class="absolute w-24 h-0.5 bg-neutral-700 rotate-45 translate-x-12"
+                            >
+                            </div>
+                        </div>
+
+                        <div class="flex gap-16 mt-12">
+                            <div
+                                class="relative flex flex-col items-center gap-2 px-8 py-6 bg-neutral-800 border-2 border-purple-400 min-w-[180px] transition-all hover:border-neutral-400 hover:scale-105"
+                            >
+                                <div
+                                    class="absolute -top-3 text-xs px-3 py-1 bg-neutral-900 border border-neutral-700 font-semibold tracking-wide"
+                                >
+                                    ACTION
+                                </div>
+                                <Mail size={24} />
+                                <span class="text-sm text-neutral-300"
+                                    >Auto Reply</span
+                                >
+                            </div>
+
+                            <div
+                                class="relative flex flex-col items-center gap-2 px-8 py-6 bg-neutral-800 border-2 border-purple-400 min-w-[180px] transition-all hover:border-neutral-400 hover:scale-105"
+                            >
+                                <div
+                                    class="absolute -top-3 text-xs px-3 py-1 bg-neutral-900 border border-neutral-700 font-semibold tracking-wide"
+                                >
+                                    ACTION
+                                </div>
+                                <Webhook size={24} />
+                                <span class="text-sm text-neutral-300"
+                                    >Call Webhook</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .text-box {
+            transition: all 0.3s ease-in-out;
+            opacity: 0.4;
+        }
+
+        .text-box.active {
+            opacity: 1;
+            border-color: #a3a3a3;
+        }
+
+        .workflow-example-card {
+            transition: all 0.3s ease-in-out;
+            opacity: 0.4;
+        }
+    </style>
+
+    <script>
+        const textBoxes =
+            document.querySelectorAll<HTMLDivElement>(".text-box");
+        const workflowCards = document.querySelectorAll<HTMLDivElement>(
+            ".workflow-example-card",
+        );
+
+        let currentIndex = 0;
+
+        const highlightBox = (index: number) => {
+            textBoxes.forEach((box, i) => {
+                if (i === index) {
+                    box.classList.add("active");
+                } else {
+                    box.classList.remove("active");
+                }
+            });
+
+            workflowCards.forEach((card, i) => {
+                if (i === index) {
+                    card.style.opacity = "1";
+                    card.style.borderColor = "#a3a3a3";
+                } else {
+                    card.style.opacity = "0.4";
+                    card.style.borderColor = "#404040";
+                }
+            });
+        };
+
+        const cycleHighlight = () => {
+            highlightBox(currentIndex);
+            currentIndex = (currentIndex + 1) % textBoxes.length;
+        };
+
+        highlightBox(0);
+        setInterval(cycleHighlight, 3000);
+    </script>
+</Layout>
