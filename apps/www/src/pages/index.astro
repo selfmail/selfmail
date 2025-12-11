@@ -5,7 +5,7 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Selfmail | The open-source business first email provider.">
-	<main class="w-full flex flex-col">
+	<div class="w-full flex flex-col">
 		<div class="flex mt-24 flex-col items-center justify-center">
 			<h1 class="text-center text-4xl sm:text-6xl md:text-7xl">
 				<span class="text-neutral-300">The Business First</span><br /> Email
@@ -119,10 +119,29 @@ import Layout from "../layouts/Layout.astro";
 				<div
 					class="outline relative outline-neutral-700 col-span-8 row-span-1 overflow-hidden"
 				>
+					<div class="absolute inset-0 flex items-center">
+						<div class="flex gap-16" id="carousel">
+							<div class="text-6xl opacity-30 shrink-0">🏢</div>
+							<div class="text-6xl opacity-30 shrink-0">🚀</div>
+							<div class="text-6xl opacity-30 shrink-0">💼</div>
+							<div class="text-6xl opacity-30 shrink-0">🏭</div>
+							<div class="text-6xl opacity-30 shrink-0">🏛️</div>
+						</div>
+					</div>
 					<div
-						class="flex flex-col absolute inset-0 rounded-full outline outline-neutral-700"
+						class="absolute top-0 bottom-0 left-0 w-1/4 bg-linear-to-r from-(--color-background) to-transparent pointer-events-none z-10"
 					>
-						<h2>Companies</h2>
+					</div>
+					<div
+						class="absolute top-0 bottom-0 right-0 w-1/4 bg-linear-to-l from-(--color-background) to-transparent pointer-events-none z-10"
+					>
+					</div>
+					<div
+						class="flex items-center justify-center flex-col absolute inset-0 rounded-full outline outline-neutral-700 pointer-events-none z-20"
+					>
+						<h2 class="text-4xl font-medium relative z-10">
+							Trusted by thousands of companies
+						</h2>
 					</div>
 				</div>
 			</div>
@@ -143,7 +162,7 @@ import Layout from "../layouts/Layout.astro";
 			</div>
 			<EmailViewer />
 		</div>
-	</main>
+	</div>
 	<div class="vertical-lines mx-20 h-72 mt-32 relative">
 		<a
 			href="https://dashboard.selfmail.app/auth/register"
@@ -169,3 +188,40 @@ import Layout from "../layouts/Layout.astro";
 		border: dashed 2px rgba(168, 235, 184, 0.613);
 	}
 </style>
+
+<script>
+	const carousel = document.getElementById("carousel");
+	if (carousel) {
+		const icons = ["🏢", "🚀", "💼", "🏭", "🏛️"];
+
+		for (let i = 0; i < 20; i++) {
+			const icon = document.createElement("div");
+			icon.className = "text-6xl opacity-30 shrink-0";
+			icon.textContent = icons[i % icons.length];
+			carousel.appendChild(icon);
+		}
+
+		carousel.style.willChange = "transform";
+		let position = 0;
+		const speed = 1;
+		const carouselEl = carousel;
+
+		function animate() {
+			position -= speed;
+			carouselEl.style.transform = `translateX(${position}px)`;
+
+			const firstChild = carouselEl.firstElementChild as HTMLElement;
+			if (
+				firstChild &&
+				Math.abs(position) >= firstChild.offsetWidth + 64
+			) {
+				position += firstChild.offsetWidth + 64;
+				carouselEl.appendChild(firstChild);
+			}
+
+			requestAnimationFrame(animate);
+		}
+
+		animate();
+	}
+</script>
