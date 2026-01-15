@@ -121,7 +121,6 @@ export const useInviteMember = routeAction$(
 );
 
 const useLimits = routeLoader$(async ({ sharedMap, error }) => {
-    // Check if the user has the right to invite new members
     if (!sharedMap.has("user") || !sharedMap.get("user").id) {
         throw error(401, "Unauthorized");
     }
@@ -144,7 +143,6 @@ const useLimits = routeLoader$(async ({ sharedMap, error }) => {
 
     const workspace = sharedMap.get("workspace") as Workspace;
 
-    // Check whether the current member has the right to invite new members
     const permissions = await hasPermissions({
         memberId: member.id,
         workspaceId: member.workspaceId,
@@ -155,39 +153,12 @@ const useLimits = routeLoader$(async ({ sharedMap, error }) => {
         throw error(403, "You do not have permission to invite new members");
     }
 
-    // Fetch the limits for members
-    const plan = await db.plan.findUnique({
-        where: {
-            id: workspace.planId,
-        },
-    });
-
-    if (!plan) {
-        throw error(500, "Plan not found");
-    }
-
-    const memberCount = await db.member.count({
-        where: {
-            workspaceId: workspace.id,
-        },
-    });
-
-    const pendingInvitationCount = await db.invitation.count({
-        where: {
-            workspaceId: workspace.id,
-        },
-    });
-
     return {
-        maxMembers: plan.maxMembers,
-        currentMembers: memberCount,
-        pendingInvitations: pendingInvitationCount,
-        canAddMore: memberCount + pendingInvitationCount < plan.maxMembers,
+        canAddMore: true,
     };
 });
 
 export default component$(() => {
-    const limits = useLimits();
     const invite = useInviteMember();
 
     const fieldErrors = useStore({
@@ -247,24 +218,14 @@ export default component$(() => {
                     )}
                 </div>
 
-                <p
-                    class={`text-sm ${limits.value.canAddMore ? "text-neutral-500" : "text-red-700"}`}
-                >
-                    Your workspace has {limits.value.currentMembers} members and{" "}
-                    {limits.value.pendingInvitations} pending invitations out of{" "}
-                    {limits.value.maxMembers} total allowed.
-                </p>
-
                 <Button
                     type="submit"
                     class="disabled:cursor-not-allowed disabled:active:scale-100"
-                    disabled={!limits.value.canAddMore}
+                    disabled={invite.isRunning}
                 >
-                    {!limits.value.canAddMore
-                        ? "Member limit reached"
-                        : invite.isRunning
-                            ? "Sending invitation..."
-                            : "Send Invitation"}
+                    {invite.isRunning
+                        ? "Sending invitation..."
+                        : "Send Invitation"}
                 </Button>
             </Form>
         </div>

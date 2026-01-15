@@ -1,12 +1,12 @@
 import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
 import {
-    Form,
-    Link,
-    routeAction$,
-    routeLoader$,
-    useLocation,
-    z,
-    zod$,
+  Form,
+  Link,
+  routeAction$,
+  routeLoader$,
+  useLocation,
+  z,
+  zod$,
 } from "@builder.io/qwik-city";
 import { init } from "@paralleldrive/cuid2";
 import { LuPlus } from "@qwikest/icons/lucide";
@@ -18,299 +18,184 @@ import { Input } from "~/components/ui/Input";
 import type { MemberInSharedMap, WorkspaceInSharedMap } from "../../types";
 
 export const useCreateAddress = routeAction$(
-    async (
-        { address: { domain, emailHandle } },
-        { sharedMap, error, redirect, params },
-    ) => {
-        if (!sharedMap.has("member") || !sharedMap.get("member").id) {
-            throw error(401, "Unauthorized");
-        }
-
-        const member = sharedMap.get("member") as MemberInSharedMap;
-
-        // Check address limits before proceeding - count only member's addresses
-        const memberWithPlan = await db.member.findUnique({
-            where: { id: member.id },
-            include: {
-                workspace: {
-                    include: {
-                        plan: true,
-                    },
-                },
-            },
-        });
-
-        if (!memberWithPlan || !memberWithPlan.workspace.plan) {
-            throw error(500, "Member or plan not found");
-        }
-
-        const plan = memberWithPlan.workspace.plan;
-        const currentAddresses = await db.memberAddress.count({
-            where: {
-                memberId: member.id,
-            },
-        });
-
-        if (currentAddresses >= plan.addressesPerSeat) {
-            return {
-                fieldErrors: {
-                    emailHandle: `Address limit reached. Your plan allows ${plan.addressesPerSeat} addresses per member.`,
-                },
-                failed: true,
-            };
-        }
-
-        const existingAddress = await db.address.findUnique({
-            where: {
-                email: `${emailHandle}@${domain}`,
-            },
-        });
-
-        if (existingAddress) {
-            return {
-                fieldErrors: {
-                    emailHandle: "An address with this email already exists",
-                },
-                failed: true,
-            };
-        }
-
-        // check whether the domain exists
-        const existingDomain = await db.domain.findUnique({
-            where: {
-                domain,
-            },
-        });
-
-        if (!existingDomain) {
-            return {
-                fieldErrors: {
-                    domain: "Domain does not exist",
-                },
-                failed: true,
-            };
-        }
-
-        const createId = init({
-            length: 8,
-        });
-
-        // create new address
-        const address = await db.address.create({
-            data: {
-                id: createId(),
-                email: `${emailHandle}@${domain}`,
-                handle: emailHandle,
-                MemberAddress: {
-                    create: {
-                        memberId: member.id,
-                    },
-                },
-                Domain: {
-                    connect: {
-                        domain,
-                    },
-                },
-            },
-        });
-
-        if (!address) {
-            return {
-                fieldErrors: {
-                    address: "Failed to create address",
-                },
-                failed: true,
-            };
-        }
-
-        Activity.capture({
-            color: "positive",
-            description: `Created new address: ${address.email}`,
-            title: "Address Created",
-            type: "note",
-            workspaceId: member.workspaceId,
-            userId: member.userId,
-        });
-
-        Analytics.captureDashboardEvent({
-            distinctId: member.id,
-            event: "address.created",
-            properties: {
-                domain,
-            },
-        });
-
-        redirect(302, `/workspace/${params.workspaceSlug}/address/${address.id}`);
-    },
-    zod$({
-        address: z.object({
-            domain: z.string().min(1, "Domain is required").max(255),
-            emailHandle: z.string().min(1, "Email Handle is required").max(255),
-        }),
-    }),
-);
-
-const useLimits = routeLoader$(async ({ sharedMap, error }) => {
-    // Check if the user has the right to add new addresses
-    if (!sharedMap.has("user") || !sharedMap.get("user").id) {
-        throw error(401, "Unauthorized");
-    }
-
-    if (!sharedMap.has("member") || !sharedMap.get("member").id) {
-        throw error(401, "Unauthorized");
+  async (
+    { address: { domain, emailHandle } },
+    { sharedMap, error, redirect, params }
+  ) => {
+    if (!(sharedMap.has("member") && sharedMap.get("member").id)) {
+      throw error(401, "Unauthorized");
     }
 
     const member = sharedMap.get("member") as MemberInSharedMap;
 
-    try {
-        // Get member with workspace and plan info
-        const memberWithPlan = await db.member.findUnique({
-            where: { id: member.id },
-            include: {
-                workspace: {
-                    include: {
-                        plan: true,
-                    },
-                },
-            },
-        });
-
-        if (!memberWithPlan || !memberWithPlan.workspace.plan) {
-            throw error(500, "Member or plan not found");
-        }
-
-        const plan = memberWithPlan.workspace.plan;
-
-        // Count addresses belonging to this specific member
-        const currentAddresses = await db.memberAddress.count({
-            where: {
-                memberId: member.id,
-            },
-        });
-
-        // Each member gets addressesPerSeat addresses
-        const maxAddresses = plan.addressesPerSeat;
-
-        return {
-            maxAddresses,
-            currentAddresses,
-            addressesPerSeat: plan.addressesPerSeat,
-            canAddMore: currentAddresses < maxAddresses,
-        };
-    } catch (err) {
-        console.error("Error checking limits:", err);
-        throw error(500, "Failed to check address limits");
-    }
-});
-
-const useAvaiableDomains = routeLoader$(async ({ sharedMap }) => {
-    const workspace = sharedMap.get("workspace") as WorkspaceInSharedMap;
-
-    if (!workspace) {
-        return [];
-    }
-
-    const domains = await db.domain.findMany({
-        where: {
-            verified: true,
-        },
+    const existingAddress = await db.address.findUnique({
+      where: {
+        email: `${emailHandle}@${domain}`,
+      },
     });
 
-    return domains.map((domain) => domain.domain);
+    if (existingAddress) {
+      return {
+        fieldErrors: {
+          emailHandle: "An address with this email already exists",
+        },
+        failed: true,
+      };
+    }
+
+    // check whether the domain exists
+    const existingDomain = await db.domain.findUnique({
+      where: {
+        domain,
+      },
+    });
+
+    if (!existingDomain) {
+      return {
+        fieldErrors: {
+          domain: "Domain does not exist",
+        },
+        failed: true,
+      };
+    }
+
+    const createId = init({
+      length: 8,
+    });
+
+    // create new address
+    const address = await db.address.create({
+      data: {
+        id: createId(),
+        email: `${emailHandle}@${domain}`,
+        handle: emailHandle,
+        MemberAddress: {
+          create: {
+            memberId: member.id,
+          },
+        },
+        Domain: {
+          connect: {
+            domain,
+          },
+        },
+      },
+    });
+
+    if (!address) {
+      return {
+        fieldErrors: {
+          address: "Failed to create address",
+        },
+        failed: true,
+      };
+    }
+
+    Activity.capture({
+      color: "positive",
+      description: `Created new address: ${address.email}`,
+      title: "Address Created",
+      type: "note",
+      workspaceId: member.workspaceId,
+      userId: member.userId,
+    });
+
+    Analytics.captureDashboardEvent({
+      distinctId: member.id,
+      event: "address.created",
+      properties: {
+        domain,
+      },
+    });
+
+    redirect(302, `/workspace/${params.workspaceSlug}/address/${address.id}`);
+  },
+  zod$({
+    address: z.object({
+      domain: z.string().min(1, "Domain is required").max(255),
+      emailHandle: z.string().min(1, "Email Handle is required").max(255),
+    }),
+  })
+);
+
+const useAvailableDomains = routeLoader$(async ({ sharedMap }) => {
+  const workspace = sharedMap.get("workspace") as WorkspaceInSharedMap;
+
+  if (!workspace) {
+    return [];
+  }
+
+  const domains = await db.domain.findMany({
+    where: {
+      verified: true,
+    },
+  });
+
+  return domains.map((domain) => domain.domain);
 });
 
 export default component$(() => {
-    const create = useCreateAddress();
-    const location = useLocation();
-    const domains = useAvaiableDomains();
-    const limits = useLimits();
+  const create = useCreateAddress();
+  const location = useLocation();
+  const domains = useAvailableDomains();
 
-    const fieldErrors = useStore({
-        emailHandle: "",
-        domain: "",
-    });
+  const fieldErrors = useStore({
+    emailHandle: "",
+    domain: "",
+  });
 
-    useVisibleTask$(async ({ track }) => {
-        track(() => create.value?.fieldErrors);
+  useVisibleTask$(({ track }) => {
+    track(() => create.value?.fieldErrors);
 
-        if (create.value?.failed) {
-            const errors = create.value.fieldErrors as Record<string, string>;
-            console.log(errors);
-            fieldErrors.emailHandle = errors.emailHandle || "";
-            fieldErrors.domain = errors.domain || "";
+    if (create.value?.failed) {
+      const errors = create.value.fieldErrors as Record<string, string>;
+      fieldErrors.emailHandle = errors.emailHandle || "";
+      fieldErrors.domain = errors.domain || "";
 
-            console.log(fieldErrors);
+      return;
+    }
+  });
 
-            return;
-        }
-    });
+  return (
+    <div class="flex min-h-screen w-full items-center justify-center bg-neutral-50">
+      <Form action={create} class="flex w-full max-w-md flex-col gap-4">
+        <h1 class="font-medium text-2xl">Create a new Address</h1>
 
-    return (
-        <div class="flex min-h-screen w-full items-center justify-center bg-neutral-50">
-            <Form action={create} class="flex w-full max-w-md flex-col gap-4">
-                <h1 class="font-medium text-2xl">Create a new Address</h1>
-
-                {/* Limits information */}
-                <div class="rounded-lg border border-neutral-200 bg-white p-4">
-                    <h3 class="mb-2 font-medium text-neutral-700 text-sm">
-                        Address Limits
-                    </h3>
-                    <p
-                        class={`text-sm ${limits.value.canAddMore ? "text-neutral-600" : "text-red-600"}`}
-                    >
-                        You are using {limits.value.currentAddresses} of{" "}
-                        {limits.value.maxAddresses} allowed addresses
-                        <span class="text-neutral-500">
-                            {" "}({limits.value.addressesPerSeat} addresses per member)
-                        </span>
-                    </p>
-                    {!limits.value.canAddMore && (
-                        <p class="mt-1 text-red-600 text-sm">
-                            You have reached your address limit. Upgrade your plan to create
-                            more addresses.
-                        </p>
-                    )}
-                </div>
-
-                <Input name="address.emailHandle" placeholder="Email Handle" required />
-                {fieldErrors.emailHandle && (
-                    <p class="text-red-700">{fieldErrors.emailHandle}</p>
-                )}
-                <select
-                    class="flex h-9 w-full rounded-md border border-neutral-100 bg-neutral-100 px-3 py-2 text-sm outline-none ring-offset-background transition-all file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground hover:bg-neutral-200 focus-visible:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 disabled:cursor-not-allowed disabled:opacity-50"
-                    name="address.domain"
-                >
-                    {domains.value?.map((domain) => (
-                        <option key={domain} value={domain}>{`@${domain}`}</option>
-                    ))}
-                    {(domains.value?.length === 0 || !domains.value) && (
-                        <option disabled>
-                            No domains available. Please add a domain to your workspace.
-                        </option>
-                    )}
-                </select>
-                {fieldErrors.domain && <p class="text-red-700">{fieldErrors.domain}</p>}
-                <Link
-                    href={`/workspace/${location.params.workspaceSlug}/domains/new`}
-                    class="flex items-center space-x-2 text-neutral-500 text-sm"
-                >
-                    <LuPlus class="inline-block h-4 w-4" />
-                    <span class="text-neutral-500 underline">
-                        Add a new Domain to your workspace.
-                    </span>
-                </Link>
-                <Button
-                    type="submit"
-                    class="disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100"
-                    disabled={!limits.value.canAddMore || create.isRunning}
-                >
-                    {!limits.value.canAddMore
-                        ? "Address Limit Reached"
-                        : create.isRunning
-                            ? "Creating..."
-                            : "Create Address"}
-                </Button>
-            </Form>
-        </div>
-    );
+        <Input name="address.emailHandle" placeholder="Email Handle" required />
+        {fieldErrors.emailHandle && (
+          <p class="text-red-700">{fieldErrors.emailHandle}</p>
+        )}
+        <select
+          class="flex h-9 w-full rounded-md border border-neutral-100 bg-neutral-100 px-3 py-2 text-sm outline-none ring-offset-background transition-all file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground hover:bg-neutral-200 focus-visible:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 disabled:cursor-not-allowed disabled:opacity-50"
+          name="address.domain"
+        >
+          {domains.value?.map((domain) => (
+            <option key={domain} value={domain}>{`@${domain}`}</option>
+          ))}
+          {(domains.value?.length === 0 || !domains.value) && (
+            <option disabled>
+              No domains available. Please add a domain to your workspace.
+            </option>
+          )}
+        </select>
+        {fieldErrors.domain && <p class="text-red-700">{fieldErrors.domain}</p>}
+        <Link
+          class="flex items-center space-x-2 text-neutral-500 text-sm"
+          href={`/workspace/${location.params.workspaceSlug}/domains/new`}
+        >
+          <LuPlus class="inline-block h-4 w-4" />
+          <span class="text-neutral-500 underline">
+            Add a new Domain to your workspace.
+          </span>
+        </Link>
+        <Button
+          class="disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100"
+          disabled={create.isRunning}
+          type="submit"
+        >
+          {create.isRunning ? "Creating..." : "Create Address"}
+        </Button>
+      </Form>
+    </div>
+  );
 });
