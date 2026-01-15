@@ -24,10 +24,11 @@
 		"vps:infisical": "infisical run --env=prod --recursive --projectId=836adf6b-f5d6-4c95-a017-2382e0628c57 -- docker compose -f docker-compose.yml up  -d"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.2.3",
+		"@biomejs/biome": "2.3.11",
 		"husky": "^9.1.7",
 		"lint-staged": "^15.5.2",
-		"turbo": "^2.7.4"
+		"turbo": "^2.7.4",
+		"ultracite": "7.0.11"
 	},
 	"lint-staged": {
 		"*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [

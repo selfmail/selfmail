@@ -28,3 +28,4 @@ i18n.cache
 /certs/*
 
 test-do-not-push
+.infisical.json
