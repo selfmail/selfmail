@@ -9,13 +9,6 @@ model Workspace {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    planId        String
-    plan          Plan     @relation(fields: [planId], references: [id])
-    planChangedAt DateTime @default(now())
-
-    overlimit   Boolean   @default(false)
-    overlimitAt DateTime?
-
     slug            String            @unique @default(uuid())
     ownerId         String
     owner           User              @relation(fields: [ownerId], references: [id])
@@ -25,10 +18,6 @@ model Workspace {
     SmtpCredentials SmtpCredentials[]
     Activity        Activity[]
     Invitation      Invitation[]
-    WorkspaceSeats  WorkspaceSeats?
-    Subscription    Subscription[]
-    PaymentRecord   PaymentRecord[]
-    BillingAlert    BillingAlert[]
 
     @@index([ownerId])
 }
