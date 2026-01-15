@@ -1,24 +1,23 @@
 {
-	"name": "api",
-	"version": "1.0.50",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "bun run --watch src/index.ts"
-	},
-	"dependencies": {
-		"@polar-sh/elysia": "latest",
-		"@polar-sh/sdk": "latest",
-		"bullmq": "^5.61.2",
-		"elysia": "latest",
-		"ioredis": "latest",
-		"stripe": "^19.1.0",
-		"zod": "^4.1.12"
-	},
-	"devDependencies": {
-		"bun-types": "latest",
-		"database": "workspace:*",
-		"services": "workspace:*",
-		"transactional": "workspace:*"
-	},
-	"module": "src/index.js"
+  "name": "api",
+  "version": "1.0.50",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch src/index.ts"
+  },
+  "dependencies": {
+    "@polar-sh/elysia": "latest",
+    "@polar-sh/sdk": "latest",
+    "bullmq": "^5.61.2",
+    "elysia": "latest",
+    "ioredis": "latest",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "database": "workspace:*",
+    "services": "workspace:*",
+    "transactional": "workspace:*"
+  },
+  "module": "src/index.js"
 }

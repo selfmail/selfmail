@@ -1,31 +1,66 @@
-// Authentication
 model User {
-    id       String @id @default(uuid())
-    name     String
-    password String
-    email    String @unique
+    id String @id @default(cuid())
 
-    workspaceLimit Int @default(3) // max number of workspaces a user can create, contact support to increase
-
-    // Two-factor authentication fields
-    twoFactorEnabled Boolean @default(false)
-    twoFactorSecret  String?
-    backupCodes      String? // JSON array of hashed backup codes
-
+    email         String    @unique
     emailVerified DateTime?
 
-    // a single user can be member of different workspaces
-    member            Member[]
-    EmailVerification EmailVerification[]
-    Session           Session[]
-    SmtpCredentials   SmtpCredentials[]
-    Activity          Activity[]
-    TwoFactorToken    TwoFactorToken[]
-    Workspace         Workspace[]
-    Notification      Notification[]
-    Invitation        Invitation[]
+    name  String?
+    image String?
+
+    accounts Account[]
+    sessions Session[]
+
+    createdAt          DateTime            @default(now())
+    updatedAt          DateTime            @updatedAt
+    activities         Activity[]
+    emailVerifications EmailVerification[]
+    twoFactorTokens    TwoFactorToken[]
+    magicLinks         MagicLink[]
+    workspaces         Workspace[]
+    smtpCredentials    SmtpCredentials[]
+    notifications      Notification[]
+    invitations        Invitation[]
+    members            Member[]
 
     @@unique([id, email])
+}
+
+model Account {
+    id String @id @default(cuid())
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    provider          AuthProvider
+    providerAccountId String
+
+    accessToken  String?
+    refreshToken String?
+    expiresAt    Int?
+    tokenType    String?
+    scope        String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id     String @id @default(cuid())
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    sessionToken String   @unique
+    expires      DateTime
+
+    createdAt DateTime @default(now())
+}
+
+enum AuthProvider {
+    GITHUB
+    GOOGLE
+    EMAIL
 }
 
 model EmailVerification {
@@ -46,20 +81,6 @@ model EmailVerification {
     @@unique([email, userId])
 }
 
-model Session {
-    id String @id @default(uuid())
-
-    // the user that is being verified
-    userId String
-    user   User   @relation(fields: [userId], references: [id])
-
-    // the session token
-    token String @unique
-
-    // the date when the session was created
-    expiresAt DateTime
-}
-
 // Two-Factor Authentication
 model TwoFactorToken {
     id        String   @id @default(uuid())
@@ -70,5 +91,19 @@ model TwoFactorToken {
     expiresAt DateTime
 
     @@index([userId])
+    @@index([token])
+}
+
+// Magic Link Authentication
+model MagicLink {
+    id        String   @id @default(uuid())
+    email     String
+    token     String   @unique
+    userId    String?
+    user      User?    @relation(fields: [userId], references: [id])
+    createdAt DateTime @default(now())
+    expiresAt DateTime
+
+    @@index([email])
     @@index([token])
 }

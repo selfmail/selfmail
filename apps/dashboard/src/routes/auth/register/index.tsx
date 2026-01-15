@@ -1,256 +1,220 @@
-import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
+import { component$, useSignal } from "@builder.io/qwik";
 import {
-    type DocumentHead,
-    Form,
-    routeAction$,
-    routeLoader$,
-    useLocation,
-    useNavigate,
-    z,
-    zod$,
+  type DocumentHead,
+  Link,
+  routeAction$,
+  routeLoader$,
+  useLocation,
 } from "@builder.io/qwik-city";
-import { init } from "@paralleldrive/cuid2";
-import { LuInfo } from "@qwikest/icons/lucide";
-import bcrypt from "bcrypt";
-import { db } from "database";
+import { LuGithub, LuMail } from "@qwikest/icons/lucide";
+import { generateState } from "arctic";
+import GoogleIcon from "~/components/icons/google.svg?jsx";
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
+import { github, google } from "~/lib/oauth";
+import { useSendMagicLink } from "../../../lib/magic-link/send";
 
-const useCookies = routeLoader$(async ({ cookie }) => {
-    console.log("cookies", cookie.has("session"));
+export const useGithubLogin = routeAction$((_, { cookie, redirect }) => {
+  const state = generateState();
+
+  cookie.set("github_oauth_state", state, {
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    maxAge: 60 * 10,
+    sameSite: "lax",
+  });
+
+  const url = github.createAuthorizationURL(state, ["user:email"]);
+  throw redirect(302, url.toString());
 });
 
-export const useRegister = routeAction$(
-    async ({ account: { confirmPassword, email, password, name } }, { query }) => {
-        if (password !== confirmPassword) {
-            return {
-                fieldErrors: {
-                    "account.confirmPassword": "Passwords do not match",
-                },
-                failed: true,
-            };
-        }
+export const useGoogleLogin = routeAction$((_, { cookie, redirect }) => {
+  const state = generateState();
+  const codeVerifier = generateState();
 
-        const userAlreadyExists = await db.user.findUnique({
-            where: {
-                email,
-            },
-        });
+  cookie.set("google_oauth_state", state, {
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    maxAge: 60 * 10,
+    sameSite: "lax",
+  });
 
-        if (userAlreadyExists) {
-            return {
-                fieldErrors: {
-                    "account.email": "A user with this email already exists",
-                },
-                failed: true,
-            };
-        }
+  cookie.set("google_code_verifier", codeVerifier, {
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    maxAge: 60 * 10,
+    sameSite: "lax",
+  });
 
-        // Hash the password with bcrypt using 12 salt rounds for security
-        const saltRounds = 12;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
+  const url = google.createAuthorizationURL(state, codeVerifier, [
+    "openid",
+    "email",
+    "profile",
+  ]);
+  throw redirect(302, url.toString());
+});
 
-        const user = await db.user.create({
-            data: {
-                email,
-                name,
-                password: hashedPassword,
-            },
-        });
-
-        if (!user) {
-            return {
-                fieldErrors: {
-                    "account.email": "Something went wrong, please try again later",
-                },
-                failed: true,
-            };
-        }
-
-        // checks for the invitation
-        if (query.has("invitationToken")) {
-            const invitation = await db.invitation.findUnique({
-                where: {
-                    userToken: query.get("invitationToken") || "",
-                },
-            });
-
-            if (invitation) {
-                await db.invitation.update({
-                    where: {
-                        id: invitation?.id || "",
-                    },
-                    data: {
-                        userId: user.id
-                    }
-                })
-            }
-        }
-
-        const createId = init({
-            length: 32,
-        });
-
-        const verification = await db.emailVerification.create({
-            data: {
-                token: createId(),
-                expiresAt: new Date(Date.now() + 1000 * 60 * 60).toISOString(), // 1 hour
-                userId: user.id,
-                email,
-            },
-        });
-
-        if (!verification) {
-            return {
-                fieldErrors: {
-                    "account.email":
-                        "Something went wrong, please try again later or contact support",
-                },
-                failed: true,
-            };
-        }
-
-        // TODO: send verification email
-
-        return {
-            fieldErrors: {},
-            failed: false,
-        };
-    },
-    zod$({
-        account: z
-            .object({
-                name: z.string().min(2, "Name must be at least 2 characters"),
-                email: z.string().email("Invalid email address"),
-                password: z.string().min(8, "Password must be at least 8 characters"),
-                confirmPassword: z
-                    .string()
-                    .min(8, "Confirm Password must be at least 8 characters"),
-            })
-            .refine((data) => data.password === data.confirmPassword, {
-                path: ["confirmPassword"],
-                message: "Passwords do not match",
-            }),
-    }),
-);
+export const useCheckInvitation = routeLoader$(({ url }) => {
+  const invitationToken = url.searchParams.get("invitationToken");
+  return { invitationToken };
+});
 
 export default component$(() => {
-    const navigation = useNavigate();
-    const register = useRegister();
-    const location = useLocation()
-    const invitationToken = `?invitationToken=${location.url.searchParams.get(
-        "invitationToken",
-    ) || ""}`;
+  const location = useLocation();
+  const githubLogin = useGithubLogin();
+  const googleLogin = useGoogleLogin();
+  const sendMagicLink = useSendMagicLink();
+  const invitation = useCheckInvitation();
+  const emailSent = useSignal(false);
 
-    const fieldErrors = useStore({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-    });
+  const invitationParam = invitation.value.invitationToken
+    ? `?invitationToken=${invitation.value.invitationToken}`
+    : "";
 
-    useVisibleTask$(async ({ track }) => {
-        track(() => register.value?.fieldErrors);
+  return (
+    <div class="flex min-h-dvh w-full items-center justify-center bg-neutral-50">
+      <div class="flex w-full max-w-md flex-col gap-6 p-6">
+        {location.url.searchParams.get("error") && (
+          <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+            <p class="text-red-800 text-sm">
+              {location.url.searchParams.get("error")}
+            </p>
+          </div>
+        )}
 
-        if (register.value?.failed) {
-            const errors = register.value.fieldErrors as Record<string, string>;
-            fieldErrors.name = errors["account.name"] || "";
-            fieldErrors.email = errors["account.email"] || "";
-            fieldErrors.password = errors["account.password"] || "";
-            fieldErrors.confirmPassword = errors["account.confirmPassword"] || "";
-        } else if (
-            !register.value?.failed &&
-            register.formData?.keys().next().done
-        ) {
-            throw await navigation(
-                "/auth/login?success=Account%20created%20successfully.%20Please%20check%20your%20email%20to%20verify%20your%20account",
-            );
-        }
-    });
+        {emailSent.value && (
+          <div class="rounded-lg border border-green-200 bg-green-50 p-4">
+            <p class="text-green-800 text-sm">
+              Check your email! We've sent you a magic link to sign in.
+            </p>
+          </div>
+        )}
 
-    return (
-        <div class="flex min-h-screen w-full items-center justify-center bg-neutral-50">
-            <Form action={register} class="flex w-full max-w-md flex-col gap-4">
-                <h1 class="font-medium text-2xl">Register</h1>
-                <Input
-                    class="bg-neutral-200"
-                    placeholder="Name"
-                    name="account.name"
-                    required
-                />
-                {fieldErrors.name && <p class="text-red-500">{fieldErrors.name}</p>}
-                <Input
-                    class="bg-neutral-200"
-                    placeholder="Email"
-                    name="account.email"
-                    type="email"
-                    required
-                />
-                {fieldErrors.email && <p class="text-red-500">{fieldErrors.email}</p>}
-                <Input
-                    class="bg-neutral-200"
-                    placeholder="Password"
-                    name="account.password"
-                    type="password"
-                    required
-                />
-                {fieldErrors.password && (
-                    <p class="text-red-500">{fieldErrors.password}</p>
-                )}
-                <Input
-                    class="bg-neutral-200"
-                    placeholder="Confirm Password"
-                    name="account.confirmPassword"
-                    type="password"
-                    required
-                />
-                {fieldErrors.confirmPassword && (
-                    <p class="text-red-500">{fieldErrors.confirmPassword}</p>
-                )}
-                <span class="flex items-center space-x-2 text-neutral-500 text-sm">
-                    <LuInfo class="inline-block h-4 w-4" />
-                    <span>
-                        You agree to our{" "}
-                        <a href="https://selfmail.app/terms" class="underline">
-                            Terms of Service
-                        </a>{" "}
-                        and{" "}
-                        <a href="https://selfmail.app/privacy" class="underline">
-                            Privacy Policy
-                        </a>
-                        .
-                    </span>
-                </span>
-                <Button disabled={register.isRunning}>
-                    {register.isRunning ? "Registering..." : "Register"}
-                </Button>
-                <span class="text-neutral-500 text-sm">
-                    Already have an account?{" "}
-                    <a href={`/auth/login${invitationToken}`} class="underline">
-                        Login
-                    </a>
-                </span>
-            </Form>
+        <div class="flex flex-col gap-2">
+          <h1 class="font-semibold text-3xl">Create an account</h1>
+          <p class="text-neutral-600 text-sm">
+            Get started with Selfmail today
+          </p>
         </div>
-    );
+
+        <div class="flex flex-col gap-3">
+          <form
+            onSubmit$={async () => {
+              await githubLogin.submit();
+            }}
+            preventdefault:submit
+          >
+            <Button
+              class="w-full gap-2 border border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-100"
+              disabled={githubLogin.isRunning}
+              type="submit"
+            >
+              <LuGithub class="size-5 text-neutral-900" />
+              <span class="font-bold">Continue with GitHub</span>
+            </Button>
+          </form>
+
+          <form
+            onSubmit$={async () => {
+              await googleLogin.submit();
+            }}
+            preventdefault:submit
+          >
+            <Button
+              class="w-full gap-2 border border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-100"
+              disabled={googleLogin.isRunning}
+              type="submit"
+            >
+              <GoogleIcon class="size-5" />
+              <span class="font-bold">Continue with Google</span>
+            </Button>
+          </form>
+
+          <div class="relative my-2">
+            <div class="absolute inset-0 flex items-center">
+              <span class="w-full border-neutral-200 border-t" />
+            </div>
+            <div class="relative flex justify-center text-xs uppercase">
+              <span class="bg-neutral-50 px-2 text-neutral-500">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
+          <form
+            onSubmit$={async (e) => {
+              const formData = new FormData(e.target as HTMLFormElement);
+              const email = formData.get("email");
+              if (email) {
+                await sendMagicLink.submit({ email: email as string });
+                emailSent.value = true;
+              }
+            }}
+            preventdefault:submit
+          >
+            <div class="flex gap-2">
+              <Input
+                class="flex-1 bg-white"
+                name="email"
+                placeholder="Enter your email"
+                required
+                type="email"
+              />
+              <Button
+                class="gap-2"
+                disabled={sendMagicLink.isRunning}
+                type="submit"
+              >
+                <LuMail class="size-4" />
+                Send link
+              </Button>
+            </div>
+          </form>
+        </div>
+
+        <p class="text-center text-neutral-500 text-xs">
+          By continuing, you agree to our{" "}
+          <a class="underline" href="https://selfmail.app/terms">
+            Terms of Service
+          </a>{" "}
+          and{" "}
+          <a class="underline" href="https://selfmail.app/privacy">
+            Privacy Policy
+          </a>
+        </p>
+
+        <p class="text-center text-neutral-600 text-sm">
+          Already have an account?{" "}
+          <Link
+            class="text-blue-600 underline"
+            href={`/auth/login${invitationParam}`}
+          >
+            Sign in
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
 });
 
 export const head: DocumentHead = {
-    title: "Register - Selfmail",
-    meta: [
-        {
-            name: "description",
-            content:
-                "Create a new Selfmail Account. Selfmail is an open-source business email platform.",
-        },
-        // Open graph
-        {
-            property: "og:title",
-            content: "Register - Selfmail",
-        },
-        {
-            property: "og:description",
-            content: "Create a new Selfmail Account.",
-        },
-    ],
+  title: "Create Account - Selfmail",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Create a new Selfmail account. Sign up with GitHub, Google, or email to get started with our open-source business email platform.",
+    },
+    {
+      property: "og:title",
+      content: "Create Account - Selfmail",
+    },
+    {
+      property: "og:description",
+      content: "Create a new Selfmail account and get started today.",
+    },
+  ],
 };

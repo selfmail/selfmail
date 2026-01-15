@@ -1,51 +1,51 @@
 {
-	"name": "dashboard",
-	"description": "Dashboard for Selfmail written in Qwik.",
-	"engines": {
-		"node": "^18.17.0 || ^20.3.0 || >=21.0.0"
-	},
-	"engines-annotation": "Mostly required by sharp which needs a Node-API v9 compatible runtime",
-	"private": true,
-	"type": "module",
-	"scripts": {
-		"build": "qwik build",
-		"build.client": "vite build",
-		"build.preview": "vite build --ssr src/entry.preview.tsx",
-		"build.types": "tsc --incremental --noEmit",
-		"deploy": "echo 'Run \"npm run qwik add\" to install a server adapter'",
-		"dev": "vite --mode ssr",
-		"dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
-		"preview": "qwik build preview && vite preview --open",
-		"start": "vite --open --mode ssr",
-		"qwik": "qwik"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "2.2.4",
-		"@builder.io/qwik": "^1.16.1",
-		"@builder.io/qwik-city": "^1.16.1",
-		"@paralleldrive/cuid2": "^2.2.2",
-		"@qwik-ui/headless": "^0.7.3",
-		"@qwikest/icons": "^0.0.13",
-		"@tailwindcss/vite": "^4.1.4",
-		"@types/bcrypt": "^6.0.0",
-		"@types/node": "20.19.0",
-		"bcrypt": "^6.0.0",
-		"database": "workspace:*",
-		"globals": "16.3.0",
-		"prettier-plugin-tailwindcss": "^0.6.11",
-		"qwik-sonner": "^1.0.3",
-		"services": "workspace:*",
-		"tailwindcss": "^4.1.4",
-		"typescript": "5.4.5",
-		"typescript-plugin-css-modules": "latest",
-		"ultracite": "5.4.6",
-		"undici": "*",
-		"vite": "7.1.4",
-		"vite-tsconfig-paths": "^4.2.1"
-	},
-	"dependencies": {
-		"posthog-js": "^1.277.0",
-		"posthog-node": "^5.10.1",
-		"stripe": "^19.1.0"
-	}
+  "name": "dashboard",
+  "description": "Dashboard for Selfmail written in Qwik.",
+  "engines": {
+    "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+  },
+  "engines-annotation": "Mostly required by sharp which needs a Node-API v9 compatible runtime",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "qwik build",
+    "build.client": "vite build",
+    "build.preview": "vite build --ssr src/entry.preview.tsx",
+    "build.types": "tsc --incremental --noEmit",
+    "deploy": "echo 'Run \"npm run qwik add\" to install a server adapter'",
+    "dev": "vite --mode ssr",
+    "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
+    "preview": "qwik build preview && vite preview --open",
+    "start": "vite --open --mode ssr",
+    "qwik": "qwik"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.4",
+    "@builder.io/qwik": "^1.16.1",
+    "@builder.io/qwik-city": "^1.16.1",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "@qwik-ui/headless": "^0.7.3",
+    "@qwikest/icons": "^0.0.13",
+    "@tailwindcss/vite": "^4.1.4",
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "20.19.0",
+    "bcrypt": "^6.0.0",
+    "database": "workspace:*",
+    "globals": "16.3.0",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "qwik-sonner": "^1.0.3",
+    "services": "workspace:*",
+    "tailwindcss": "^4.1.4",
+    "typescript": "5.4.5",
+    "typescript-plugin-css-modules": "latest",
+    "ultracite": "5.4.6",
+    "undici": "*",
+    "vite": "7.1.4",
+    "vite-tsconfig-paths": "^4.2.1"
+  },
+  "dependencies": {
+    "arctic": "^3.7.0",
+    "posthog-js": "^1.277.0",
+    "posthog-node": "^5.10.1"
+  }
 }

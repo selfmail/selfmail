@@ -62,7 +62,6 @@ export default component$(() => {
     },
     workspace: {
       members: "/members",
-      billing: "/billing",
       activity: "/activity",
       storage: "/storage",
       settings: "/settings",

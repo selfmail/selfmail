@@ -10,32 +10,32 @@ export const middlewareAuthentication = async (
 			};
 		}
 
-		const session = await db.session.findFirst({
+	const session = await db.session.findFirst({
+		where: {
+			sessionToken: sessionToken,
+		},
+		include: {
+			user: true,
+		},
+	});
+
+	if (!session) {
+		return {
+			authenticated: false,
+		};
+	}
+
+	if (session.expires < new Date()) {
+		await db.session.deleteMany({
 			where: {
-				token: sessionToken,
-			},
-			include: {
-				user: true,
+				sessionToken: sessionToken,
 			},
 		});
 
-		if (!session) {
-			return {
-				authenticated: false,
-			};
-		}
-
-		if (session.expiresAt < new Date()) {
-			await db.session.deleteMany({
-				where: {
-					token: sessionToken,
-				},
-			});
-
-			return {
-				authenticated: false,
-			};
-		}
+		return {
+			authenticated: false,
+		};
+	}
 
 		return {
 			authenticated: true,
