@@ -6,5 +6,12 @@
     "ultracite/biome/qwik",
     "ultracite/biome/astro",
     "ultracite/biome/next"
-  ]
+  ],
+  "linter": {
+    "rules": {
+      "complexity": {
+        "noStaticOnlyClass": "off"
+      }
+    }
+  }
 }
