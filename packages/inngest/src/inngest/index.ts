@@ -11,11 +11,6 @@ const helloWorld = inngest.createFunction(
     return { message: `Hello ${event.data.email}!` };
   }
 );
-await inngest.send({
-  name: "test/hello.world",
-  data: {
-    email: "hey@example.com",
-  },
-});
+
 // Add the function to the exported array:
 export const functions = [helloWorld];
