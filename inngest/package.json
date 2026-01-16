@@ -1,0 +1,23 @@
+{
+  "name": "@selfmail/inngest",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "scripts": {
+    "dev": "bun --watch run ./src/index.ts"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "inngest": "^3.49.2"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/inngest/index.ts",
+      "types": "./src/inngest/index.ts"
+    }
+  }
+}
