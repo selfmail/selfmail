@@ -113,7 +113,7 @@ export default component$(() => {
               type="submit"
             >
               <LuGithub class="size-5 text-neutral-900" />
-              <span class="font-bold">Continue with GitHub</span>
+              <span class="font-medium">Continue with GitHub</span>
             </Button>
           </form>
 
@@ -129,7 +129,7 @@ export default component$(() => {
               type="submit"
             >
               <GoogleIcon class="size-5" />
-              <span class="font-bold">Continue with Google</span>
+              <span class="font-medium">Continue with Google</span>
             </Button>
           </form>
 

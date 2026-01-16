@@ -11,8 +11,8 @@ import { generateState } from "arctic";
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
 import { middlewareAuthentication } from "~/lib/auth";
+import { createMagicLink } from "~/lib/magic-link/create";
 import { github, google } from "~/lib/oauth";
-import { useSendMagicLink } from "../../../lib/magic-link/send";
 
 export const useGithubLogin = routeAction$((_, { cookie, redirect }) => {
   const state = generateState();
@@ -75,6 +75,25 @@ const useAlreadyLoggedIn = routeLoader$(async ({ cookie }) => {
       email: user.email,
       name: user.name,
     },
+  };
+});
+
+const useSendMagicLink = routeAction$(async (data, { cookie }) => {
+  const sessionToken = cookie.get("selfmail-session-token")?.value;
+
+  if (sessionToken) {
+    const { authenticated } = await middlewareAuthentication(sessionToken);
+    if (authenticated) {
+      return;
+    }
+  }
+
+  const email = data.email as string;
+
+  await createMagicLink({ email });
+
+  return {
+    success: true,
   };
 });
 
@@ -155,7 +174,7 @@ export default component$(() => {
               type="submit"
             >
               <LuGithub class="size-5 text-neutral-900" />
-              Continue with GitHub
+              <span class="font-medium">Continue with GitHub</span>
             </Button>
           </form>
 
@@ -189,7 +208,7 @@ export default component$(() => {
                   fill="#EA4335"
                 />
               </svg>
-              Continue with Google
+              <span class="font-medium">Continue with Google</span>
             </Button>
           </form>
 
