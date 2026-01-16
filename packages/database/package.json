@@ -2,10 +2,14 @@
   "name": "database",
   "module": "src/index.ts",
   "type": "module",
+  "prisma": {
+    "schema": "./prisma"
+  },
   "scripts": {
     "db:push": "infisical run --env=dev -- prisma db push",
     "db:push-reset": "infisical run --env=dev -- prisma db push --force-reset",
-    "generate": "prisma generate"
+    "generate": "prisma generate",
+    "studio": "prisma studio"
   },
   "exports": {
     ".": {
@@ -21,6 +25,8 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/adapter-ppg": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "dotenv": "^17.2.3"
   }

@@ -1,14 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "../generated/prisma/client";
 
-const createPrismaClient = () => new PrismaClient();
+const connectionString = `${process.env.DATABASE_URL}`;
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: ReturnType<typeof createPrismaClient> | undefined;
-};
-
-export const db = globalForPrisma.prisma ?? createPrismaClient();
-
-globalForPrisma.prisma = db;
+const adapter = new PrismaPg({ connectionString });
+export const db = new PrismaClient({ adapter });
 
 export type {
   Account,
@@ -44,4 +40,4 @@ export type {
   TwoFactorToken,
   User,
   Workspace,
-} from "@prisma/client";
+} from "../generated/prisma/client";
