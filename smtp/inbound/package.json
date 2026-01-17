@@ -1,29 +1,30 @@
 {
-	"name": "inbound",
-	"module": "index.ts",
-	"type": "module",
-	"private": true,
-	"devDependencies": {
-		"@types/bun": "latest",
-		"@types/mailparser": "^3.4.6",
-		"@types/smtp-server": "^3.5.12",
-		"database": "workspace:*"
-	},
-	"scripts": {
-		"dev": "bun --watch run ./src/index.ts",
-		"smtp": "bun --watch run ./src/index.ts"
-	},
-	"dependencies": {
-		"dmarc-parse": "^1.2.1",
-		"mailparser": "^3.7.4",
-		"services": "workspace:*",
-		"smtp-queue": "workspace:*",
-		"smtp-server": "^3.16.0",
-		"spam": "workspace:*",
-		"spf-check": "^0.4.3",
-		"zod": "^4.1.12"
-	},
-	"peerDependencies": {
-		"typescript": "^5.8.3"
-	}
+  "name": "inbound",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/mailparser": "^3.4.6",
+    "@types/smtp-server": "^3.5.12",
+    "database": "workspace:*"
+  },
+  "scripts": {
+    "dev": "bun --watch run ./src/index.ts",
+    "smtp": "bun --watch run ./src/index.ts"
+  },
+  "dependencies": {
+    "@selfmail/logging": "workspace:*",
+    "dmarc-parse": "^1.2.1",
+    "mailparser": "^3.7.4",
+    "services": "workspace:*",
+    "smtp-queue": "workspace:*",
+    "smtp-server": "^3.16.0",
+    "spam": "workspace:*",
+    "spf-check": "^0.4.3",
+    "zod": "^4.1.12"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.3"
+  }
 }
