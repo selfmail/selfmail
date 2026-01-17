@@ -2,21 +2,21 @@ import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 import { Link, useNavigate } from "@builder.io/qwik-city";
 import { LuCheck, LuChevronsUpDown } from "@qwikest/icons/lucide";
 
-type Workspace = {
+interface Workspace {
   id: string;
   slug: string;
   name: string;
   image: string | null;
-};
+}
 
-type OrgSwitcherProps = {
+interface OrgSwitcherProps {
   currentWorkspace: {
     id: string;
     name: string;
     image: string | null;
   };
   workspaces: Workspace[];
-};
+}
 
 export const OrgSwitcher = component$<OrgSwitcherProps>(
   ({ currentWorkspace, workspaces }) => {
