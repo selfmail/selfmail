@@ -1,4 +1,4 @@
-# @selfmail/inbound
+# @selfmail/redis
 
 To install dependencies:
 
