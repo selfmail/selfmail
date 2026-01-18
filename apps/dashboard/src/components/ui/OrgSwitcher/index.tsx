@@ -1,22 +1,28 @@
 import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 import { Link, useNavigate } from "@builder.io/qwik-city";
-import { LuCheck, LuChevronsUpDown } from "@qwikest/icons/lucide";
+import {
+	LuCheck,
+	LuChevronsUpDown,
+	LuLogOut,
+	LuPlus,
+	LuSettings,
+} from "@qwikest/icons/lucide";
 
-interface Workspace {
-  id: string;
-  slug: string;
-  name: string;
-  image: string | null;
-}
+type Workspace = {
+	id: string;
+	slug: string;
+	name: string;
+	image: string | null;
+};
 
-interface OrgSwitcherProps {
-  currentWorkspace: {
-    id: string;
-    name: string;
-    image: string | null;
-  };
-  workspaces: Workspace[];
-}
+type OrgSwitcherProps = {
+	currentWorkspace: {
+		id: string;
+		name: string;
+		image: string | null;
+	};
+	workspaces: Workspace[];
+};
 
 export const OrgSwitcher = component$<OrgSwitcherProps>(
   ({ currentWorkspace, workspaces }) => {
@@ -117,18 +123,40 @@ export const OrgSwitcher = component$<OrgSwitcherProps>(
                     <span class="text-sm">{workspace.name}</span>
                   </div>
                   {workspace.id === currentWorkspace.id && (
-                    <LuCheck class="h-4 w-4 text-blue-600" />
+                    <LuCheck class="h-4 w-4 text-neutral-600" />
                   )}
                 </button>
               ))}
             </div>
+            <div class="border-neutral-200 border-t pt-2">
+              <Link
+                class="flex w-full cursor-pointer flex-row items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition hover:bg-neutral-100"
+                href="/settings"
+                onClick$={closePopover}
+              >
+                <LuSettings class="h-4 w-4 text-neutral-500" />
+                User Settings
+              </Link>
+              <button
+                class="flex w-full cursor-pointer flex-row items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition hover:bg-neutral-100"
+                onClick$={async () => {
+                  closePopover();
+                  await nav("/auth/logout");
+                }}
+                type="button"
+              >
+                <LuLogOut class="h-4 w-4 text-neutral-500" />
+                Logout
+              </button>
+            </div>
             <div class="mt-2 border-neutral-200 border-t pt-2">
               <Link
-                class="flex w-full cursor-pointer flex-row items-center rounded-md px-2 py-2 text-left text-sm transition hover:bg-neutral-100"
+                class="flex w-full cursor-pointer flex-row items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition hover:bg-neutral-100"
                 href="/create"
                 onClick$={closePopover}
               >
-                + Create workspace
+                <LuPlus class="h-4 w-4 text-neutral-500" />
+                Create workspace
               </Link>
             </div>
           </div>

@@ -1,15 +1,17 @@
-import { $, component$ } from "@builder.io/qwik";
+import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import {
   Link,
   routeLoader$,
   server$,
   useLocation,
+  useNavigate,
   z,
 } from "@builder.io/qwik-city";
 import { LuChevronLeft } from "@qwikest/icons/lucide";
 import { db } from "database";
 import EmailList from "~/components/dashboard/email-list";
+import EmailPreview from "~/components/dashboard/email-preview";
 import {
   middlewareAuthentication,
   verifyWorkspaceMembership,
@@ -86,10 +88,84 @@ const fetchEmails = server$(async function ({
           id: true,
         },
       },
+      contact: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
     },
   });
 
   return emails;
+});
+
+const fetchEmailById = server$(async function (emailId: string) {
+  const parsed = z.string().uuid().safeParse(emailId);
+
+  if (!parsed.success) {
+    throw new Error("Invalid email ID");
+  }
+
+  let currentMember = this.sharedMap.get("member") as MemberInSharedMap;
+
+  if (!currentMember) {
+    const sessionToken = this.cookie.get("selfmail-session-token")?.value;
+    const workspaceSlug = this.params.workspaceSlug;
+
+    if (!(workspaceSlug && sessionToken)) {
+      throw new Error("No workspace slug or session token provided.");
+    }
+
+    const { authenticated, user } =
+      await middlewareAuthentication(sessionToken);
+
+    if (!(authenticated && user)) {
+      throw new Error("User is not authenticated. Please log in.");
+    }
+
+    const { isMember, member, workspace } = await verifyWorkspaceMembership(
+      user.id,
+      workspaceSlug
+    );
+
+    if (!(isMember && member && workspace)) {
+      throw new Error("User is not a member of this workspace. Access denied.");
+    }
+    currentMember = member;
+  }
+
+  const email = await db.email.findFirst({
+    where: {
+      id: parsed.data,
+      addressId: this.params.addressId,
+      address: {
+        MemberAddress: {
+          some: {
+            memberId: currentMember.id,
+          },
+        },
+      },
+    },
+    include: {
+      contact: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
+    },
+  });
+
+  if (!email) {
+    throw new Error("Email not found");
+  }
+
+  return email;
 });
 
 const useAddress = routeLoader$(async ({ sharedMap, params }) => {
@@ -151,61 +227,72 @@ export default component$(() => {
   const count = useEmailCount();
   const address = useAddress();
   const location = useLocation();
+  const nav = useNavigate();
+  const selectedEmail = useSignal<Awaited<
+    ReturnType<typeof fetchEmailById>
+  > | null>(null);
+
+  useTask$(async ({ track }) => {
+    track(() => location.url.searchParams.get("emailId"));
+    const emailId = location.url.searchParams.get("emailId");
+
+    if (emailId) {
+      try {
+        selectedEmail.value = await fetchEmailById(emailId);
+      } catch {
+        selectedEmail.value = null;
+      }
+    } else {
+      selectedEmail.value = null;
+    }
+  });
 
   const getEmailsAction = $(async (params: { page: number; take: number }) => {
     const emails = await fetchEmails(params);
     return emails;
   });
 
+  const handleClosePreview = $(() => {
+    const currentPath = location.url.pathname;
+    nav(currentPath);
+  });
+
+  const handleFullscreen = $(() => {
+    const emailId = location.url.searchParams.get("emailId");
+    if (emailId) {
+      nav(`/workspace/${location.params.workspaceSlug}/email/${emailId}`);
+    }
+  });
+
   const Email = $(() => <div>Email Component</div>);
 
-  const colors = [
-    "from-blue-50/30 to-transparent",
-    "from-purple-50/30 to-transparent",
-    "from-pink-50/30 to-transparent",
-    "from-green-50/30 to-transparent",
-    "from-yellow-50/30 to-transparent",
-    "from-orange-50/30 to-transparent",
-    "from-teal-50/30 to-transparent",
-    "from-cyan-50/30 to-transparent",
-    "from-indigo-50/30 to-transparent",
-    "from-rose-50/30 to-transparent",
-  ];
-
-  const getColorFromId = (id: string) => {
-    let hash = 0;
-    for (let i = 0; i < id.length; i++) {
-      hash += id.charCodeAt(i);
-    }
-    return colors[hash % colors.length];
-  };
-
-  const bgColor = getColorFromId(address.value.id);
-
   return (
-    <div class="-mx-5 -mt-12 lg:-mx-26 xl:-mx-32 relative">
-      <div
-        class={`fade-in pointer-events-none absolute inset-0 animate-in bg-gradient-to-b duration-1000 ${bgColor}`}
-      />
-      <div class="relative px-5 pt-12 lg:px-26 xl:px-32">
-        <div class="flex w-full flex-row items-center justify-between">
-          <div class="flex flex-col gap-1">
-            <h1 class="flex flex-row items-center space-x-1 font-medium text-2xl">
-              <Link
-                class="text-neutral-500"
-                href={`/workspace/${location.params.workspaceSlug}`}
-              >
-                <LuChevronLeft />
-              </Link>
-              <span>Emails for {address.value.email}</span>
-            </h1>
-            <p class="text-neutral-600">{count.value} emails</p>
-          </div>
+    <>
+      <div class="flex w-full flex-row items-center justify-between">
+        <div class="flex flex-col gap-1">
+          <h1 class="flex flex-row items-center space-x-1 font-medium text-2xl">
+            <Link
+              class="text-neutral-500"
+              href={`/workspace/${location.params.workspaceSlug}`}
+            >
+              <LuChevronLeft />
+            </Link>
+            <span>Emails for {address.value.email}</span>
+          </h1>
+          <p class="text-neutral-600">{count.value} emails</p>
         </div>
-        {/* @ts-expect-error Server Component */}
-        <EmailList EmailComponent={Email} fetchEmails={getEmailsAction} />
       </div>
-    </div>
+      {/* @ts-expect-error Server Component */}
+      <EmailList EmailComponent={Email} fetchEmails={getEmailsAction} />
+
+      {selectedEmail.value && (
+        <EmailPreview
+          email={selectedEmail.value}
+          onClose={handleClosePreview}
+          onFullscreen={handleFullscreen}
+        />
+      )}
+    </>
   );
 });
 
