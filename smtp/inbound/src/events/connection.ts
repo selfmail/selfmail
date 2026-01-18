@@ -134,8 +134,7 @@ export async function validateConnection(
         ip,
         remaining: rateLimitResult.remaining,
       });
-      callback(error);
-      return;
+      return callback(error);
     }
 
     const spamCheck = detectSpamPatterns(session);
@@ -143,8 +142,7 @@ export async function validateConnection(
       const error = new Error(`Connection rejected: ${spamCheck.reason}`);
       error.name = "SpamDetectionError";
       logger.warn("Spam pattern detected", { ip, reason: spamCheck.reason });
-      callback(error);
-      return;
+      return callback(error);
     }
 
     if (
@@ -176,8 +174,7 @@ export async function validateConnection(
           ip,
           provider: dnsblResult.provider,
         });
-        callback(error);
-        return;
+        return callback(error);
       }
     }
 
@@ -185,7 +182,7 @@ export async function validateConnection(
       ip,
       helo: session.hostNameAppearsAs || "none",
     });
-    callback(null);
+    return callback(null);
   } catch (error) {
     logger.error(
       "Connection validation error",
@@ -194,6 +191,6 @@ export async function validateConnection(
     );
     const err = new Error("Internal server error during connection validation");
     err.name = "ValidationError";
-    callback(err);
+    return callback(err);
   }
 }
