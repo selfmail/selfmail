@@ -1,6 +1,7 @@
 import {
   $,
   component$,
+  type QRL,
   type QwikJSX,
   useStore,
   useTask$,
@@ -44,7 +45,7 @@ interface Props {
 interface EmailItemProps {
   email: Email;
   isLast: boolean;
-  formatRelativeTime: (date: Date) => string;
+  formatRelativeTime: QRL<(date: Date) => string>;
   onEmailClick: (emailId: string) => void;
 }
 
@@ -82,7 +83,7 @@ const EmailItem = component$<EmailItemProps>(
                 />
               </div>
             ) : (
-              <div class="flex size-10 items-center justify-center rounded-full border border-neutral-200 bg-gradient-to-br from-neutral-100 to-neutral-200">
+              <div class="flex size-10 items-center justify-center rounded-full border border-neutral-200 bg-linear-to-br from-neutral-100 to-neutral-200">
                 <span class="font-medium text-neutral-700 text-sm">
                   {fromDisplay.charAt(0).toUpperCase()}
                 </span>

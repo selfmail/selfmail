@@ -1,19 +1,26 @@
-import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
+import { $, component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
 import {
   Form,
   Link,
   routeAction$,
   routeLoader$,
+  server$,
   useLocation,
+  useNavigate,
   z,
   zod$,
 } from "@builder.io/qwik-city";
 import { db } from "database";
 import { toast } from "qwik-sonner";
+import AlertDialog from "~/components/ui/AlertDialog";
 import BackHeading from "~/components/ui/BackHeading";
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
-import { permissions } from "~/lib/permissions";
+import {
+  middlewareAuthentication,
+  verifyWorkspaceMembership,
+} from "~/lib/auth";
+import { hasPermissions, permissions } from "~/lib/permissions";
 import type { MemberInSharedMap, WorkspaceInSharedMap } from "../types";
 
 const useWorkspaceData = routeLoader$(async ({ sharedMap, error }) => {
@@ -123,10 +130,115 @@ export const useUpdateWorkspace = routeAction$(
   })
 );
 
+const deleteWorkspace = server$(async function (workspaceId: string) {
+  const parse = await z.string().min(8).max(9).safeParseAsync(workspaceId);
+  if (!parse.success) {
+    throw new Error("Invalid workspace ID");
+  }
+
+  let currentMember = this.sharedMap.get("member") as MemberInSharedMap;
+
+  if (!currentMember) {
+    const sessionToken = this.cookie.get("selfmail-session-token")?.value;
+    const workspaceSlug = this.params.workspaceSlug;
+
+    if (!(workspaceSlug && sessionToken)) {
+      throw new Error("No workspace slug or session token provided.");
+    }
+
+    const { authenticated, user } =
+      await middlewareAuthentication(sessionToken);
+
+    if (!(authenticated && user)) {
+      throw new Error("User is not authenticated. Please log in.");
+    }
+
+    const { isMember, member, workspace } = await verifyWorkspaceMembership(
+      user.id,
+      workspaceSlug,
+    );
+
+    if (!(isMember && member) || !workspace) {
+      throw new Error("User is not a member of this workspace. Access denied.");
+    }
+    currentMember = member;
+  }
+
+  const userPermission = await hasPermissions({
+    memberId: currentMember.id,
+    workspaceId: currentMember.workspaceId,
+    permissions: ["settings:delete"],
+  });
+
+  if (!userPermission) {
+    return {
+      success: false,
+      message: "You do not have permission to delete this workspace.",
+    };
+  }
+
+  try {
+    await db.$transaction([
+      db.address.deleteMany({
+        where: {
+          Domain: {
+            workspaceId,
+          },
+        },
+      }),
+      db.domain.deleteMany({
+        where: {
+          workspaceId,
+        },
+      }),
+      db.smtpCredentials.deleteMany({
+        where: {
+          workspaceId,
+        },
+      }),
+      db.activity.deleteMany({
+        where: {
+          workspaceId,
+        },
+      }),
+      db.invitation.deleteMany({
+        where: {
+          workspaceId,
+        },
+      }),
+      db.member.deleteMany({
+        where: {
+          workspaceId,
+        },
+      }),
+      db.role.deleteMany({
+        where: {
+          workspaceId,
+        },
+      }),
+      db.workspace.delete({
+        where: {
+          id: workspaceId,
+        },
+      }),
+    ]);
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to delete workspace",
+    };
+  }
+
+  return {
+    success: true,
+  };
+});
+
 export default component$(() => {
   const workspaceData = useWorkspaceData();
   const updateAction = useUpdateWorkspace();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const fieldErrors = useStore({
     name: "",
@@ -257,9 +369,23 @@ export default component$(() => {
             </div>
 
             <div class="mt-4">
-              <Button class="bg-red-600 hover:bg-red-700">
+              <AlertDialog
+                class="bg-red-600 hover:bg-red-700"
+                description={`Are you sure you want to delete ${workspaceData.value.workspace.name}? This will permanently delete the workspace and all associated data including domains, email addresses, members, roles, and activities. This action cannot be undone.`}
+                proceedAction={$(async () => {
+                  const result = await deleteWorkspace(workspaceData.value.workspace.id);
+                  if (result.success) {
+                    toast.success("Workspace deleted successfully");
+                    navigate("/");
+                  } else {
+                    toast.error(result.message || "Failed to delete workspace");
+                  }
+                })}
+                proceedActionText="Delete Workspace"
+                title="Delete Workspace?"
+              >
                 Delete Workspace
-              </Button>
+              </AlertDialog>
             </div>
           </div>
         )}
