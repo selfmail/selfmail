@@ -140,8 +140,8 @@ export default component$(() => {
             href="/"
           >
             <p class="text-blue-800 text-sm">
-              Welcome back, {user.value.user.name}! You are already logged in.
-              Click here to go to your dashboard.
+              Welcome back! You are already logged in. Click here to go to your
+              dashboard.
             </p>
           </Link>
         )}

@@ -143,12 +143,20 @@ export default component$(() => {
         <>
             <div class="flex flex-row items-center justify-between">
                 <BackHeading>Member Profile Settings</BackHeading>
-                <Link
-                    href={`/workspace/${location.params.workspaceSlug}/settings`}
-                    class="text-blue-500"
-                >
-                    Workspace Settings
-                </Link>
+                <div class="flex gap-4">
+                    <Link
+                        href={`/workspace/${location.params.workspaceSlug}/settings`}
+                        class="text-blue-500"
+                    >
+                        Workspace Settings
+                    </Link>
+                    <Link
+                        href="/account"
+                        class="text-blue-500"
+                    >
+                        Account Settings
+                    </Link>
+                </div>
             </div>
 
             <div class="flex flex-col space-y-6">

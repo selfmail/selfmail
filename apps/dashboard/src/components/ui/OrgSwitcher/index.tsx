@@ -128,14 +128,14 @@ export const OrgSwitcher = component$<OrgSwitcherProps>(
                 </button>
               ))}
             </div>
-            <div class="border-neutral-200 border-t pt-2">
+            <div class="mt-2 border-neutral-200 border-t pt-2">
               <Link
                 class="flex w-full cursor-pointer flex-row items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition hover:bg-neutral-100"
-                href="/settings"
+                href="/account"
                 onClick$={closePopover}
               >
                 <LuSettings class="h-4 w-4 text-neutral-500" />
-                User Settings
+                Account Settings
               </Link>
               <button
                 class="flex w-full cursor-pointer flex-row items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition hover:bg-neutral-100"
