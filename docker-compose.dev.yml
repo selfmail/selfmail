@@ -1,0 +1,76 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: selfmail-postgres-dev
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=selfmail
+      - POSTGRES_PASSWORD=selfmail
+      - POSTGRES_DB=selfmail
+      - TZ=${TZ:-UTC}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U selfmail"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: selfmail-redis-dev
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    environment:
+      - TZ=${TZ:-UTC}
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rspamd:
+    image: rspamd/rspamd:latest
+    container_name: selfmail-rspamd-dev
+    restart: unless-stopped
+    ports:
+      - "11332:11332" # Proxy/Milter
+      - "11333:11333" # HTTP/JSON API
+      - "11334:11334" # Web UI
+    volumes:
+      - ./rspamd/etc:/etc/rspamd
+      - ./rspamd/var:/var/lib/rspamd
+    environment:
+      - TZ=${TZ:-UTC}
+
+  clamav:
+    image: clamav/clamav:latest
+    platform: linux/amd64
+    container_name: selfmail-clamav-dev
+    restart: unless-stopped
+    ports:
+      - "3310:3310"
+    environment:
+      - TZ=${TZ:-UTC}
+    volumes:
+      - clamav-data:/var/lib/clamav
+
+  inngest:
+    image: inngest/inngest:latest
+    container_name: selfmail-inngest-dev
+    restart: unless-stopped
+    ports:
+      - "8288:8288"
+    environment:
+      - TZ=${TZ:-UTC}
+
+volumes:
+  postgres-data:
+  redis-data:
+  clamav-data:

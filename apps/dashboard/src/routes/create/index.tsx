@@ -8,10 +8,15 @@ import {
   z,
   zod$,
 } from "@builder.io/qwik-city";
+import { init } from "@paralleldrive/cuid2";
 import { db, type Workspace } from "database";
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
 import { middlewareAuthentication } from "~/lib/auth";
+
+const createId = init({
+  length: 8,
+});
 
 export const onRequest: RequestHandler = async ({
   next,
@@ -33,29 +38,14 @@ export const onRequest: RequestHandler = async ({
 };
 
 export const useCreateWorkspace = routeAction$(
-  async ({ workspace: { name, slug } }, { sharedMap, error }) => {
+  async ({ workspace: { name } }, { sharedMap, error }) => {
     if (!(sharedMap.has("user") && sharedMap.get("user").id)) {
       throw error(401, "Unauthorized");
     }
 
-    // check whether a workspace with the same slug already exists
-    const existingWorkspace = await db.workspace.findUnique({
-      where: {
-        slug,
-      },
-    });
-
-    if (existingWorkspace) {
-      return {
-        fieldErrors: {
-          slug: "A workspace with this slug already exists",
-        },
-        failed: true,
-      };
-    }
+    const slug = createId();
     let workspace: Workspace;
 
-    // create new workspace
     try {
       workspace = await db.workspace.create({
         data: {
@@ -113,14 +103,6 @@ export const useCreateWorkspace = routeAction$(
         .string()
         .min(3, "Name must be at least 3 characters")
         .max(50, "Name must be at most 50 characters"),
-      slug: z
-        .string()
-        .min(3, "Slug must be at least 3 characters")
-        .max(50, "Slug must be at most 50 characters")
-        .regex(
-          /^[a-zA-Z0-9-]+$/,
-          "Slug can only contain letters, numbers, and hyphens"
-        ),
     }),
   })
 );
@@ -130,7 +112,6 @@ export default component$(() => {
   const navigate = useNavigate();
   const fieldErrors = useStore({
     name: "",
-    slug: "",
   });
 
   useVisibleTask$(({ track }) => {
@@ -138,12 +119,10 @@ export default component$(() => {
     if (create.value?.failed) {
       const errors = create.value.fieldErrors as Record<string, string>;
       fieldErrors.name = errors.name || "";
-      fieldErrors.slug = errors.slug || "";
 
       return;
     }
     if (create.value?.success) {
-      // Due to a permissions bug (or caching issue) we navigate to the workspace list
       navigate("/");
     }
   });
@@ -154,8 +133,6 @@ export default component$(() => {
         <h1 class="font-bold text-2xl">Create a new Workspace</h1>
         <Input name="workspace.name" placeholder="Workspace Name" required />
         {fieldErrors.name && <p class="text-red-700">{fieldErrors.name}</p>}
-        <Input name="workspace.slug" placeholder="Workspace Slug" required />
-        {fieldErrors.slug && <p class="text-red-700">{fieldErrors.slug}</p>}
         <Button>{create.isRunning ? "Creating..." : "Create Workspace"}</Button>
       </Form>
     </div>
