@@ -67,6 +67,7 @@ export const ModelName = {
   EmailVerification: 'EmailVerification',
   TwoFactorToken: 'TwoFactorToken',
   MagicLink: 'MagicLink',
+  Draft: 'Draft',
   Role: 'Role',
   RolePermission: 'RolePermission',
   MemberPermission: 'MemberPermission',
@@ -319,6 +320,25 @@ export const MagicLinkScalarFieldEnum = {
 } as const
 
 export type MagicLinkScalarFieldEnum = (typeof MagicLinkScalarFieldEnum)[keyof typeof MagicLinkScalarFieldEnum]
+
+
+export const DraftScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  from: 'from',
+  to: 'to',
+  cc: 'cc',
+  bcc: 'bcc',
+  subject: 'subject',
+  body: 'body',
+  public: 'public',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  memberId: 'memberId',
+  workspaceId: 'workspaceId'
+} as const
+
+export type DraftScalarFieldEnum = (typeof DraftScalarFieldEnum)[keyof typeof DraftScalarFieldEnum]
 
 
 export const RoleScalarFieldEnum = {

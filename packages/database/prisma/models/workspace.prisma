@@ -18,6 +18,7 @@ model Workspace {
     SmtpCredentials SmtpCredentials[]
     Activity        Activity[]
     Invitation      Invitation[]
+    Draft           Draft[]
 
     @@index([ownerId])
 }
@@ -170,6 +171,7 @@ model Member {
     SmtpCredentials SmtpCredentials[]
     Notification    Notification[]
     Invitation      Invitation[]
+    Draft           Draft[]
 
     @@unique(name: "userWorkspaceId", fields: [workspaceId, userId])
 }

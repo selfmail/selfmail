@@ -1,0 +1,26 @@
+model Draft {
+    id String @id @default(uuid())
+
+    title   String
+    from    String
+    to      String?
+    cc      String?
+    bcc     String?
+    subject String?
+    body    String?
+
+    public Boolean @default(false)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    memberId String
+    member   Member @relation(fields: [memberId], references: [id])
+
+    workspaceId String
+    workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+    @@index([memberId])
+    @@index([workspaceId])
+    @@index([public])
+}

@@ -400,6 +400,7 @@ export const ModelName = {
   EmailVerification: 'EmailVerification',
   TwoFactorToken: 'TwoFactorToken',
   MagicLink: 'MagicLink',
+  Draft: 'Draft',
   Role: 'Role',
   RolePermission: 'RolePermission',
   MemberPermission: 'MemberPermission',
@@ -425,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "activity" | "address" | "memberAddress" | "contact" | "email" | "blocked" | "adminUser" | "adminSession" | "adminAccount" | "adminVerification" | "user" | "account" | "session" | "emailVerification" | "twoFactorToken" | "magicLink" | "role" | "rolePermission" | "memberPermission" | "permission" | "workspace" | "domain" | "smtpCredentials" | "notification" | "invitation" | "member"
+    modelProps: "activity" | "address" | "memberAddress" | "contact" | "email" | "blocked" | "adminUser" | "adminSession" | "adminAccount" | "adminVerification" | "user" | "account" | "session" | "emailVerification" | "twoFactorToken" | "magicLink" | "draft" | "role" | "rolePermission" | "memberPermission" | "permission" | "workspace" | "domain" | "smtpCredentials" | "notification" | "invitation" | "member"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1613,6 +1614,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Draft: {
+      payload: Prisma.$DraftPayload<ExtArgs>
+      fields: Prisma.DraftFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DraftFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DraftFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftPayload>
+        }
+        findFirst: {
+          args: Prisma.DraftFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DraftFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftPayload>
+        }
+        findMany: {
+          args: Prisma.DraftFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftPayload>[]
+        }
+        create: {
+          args: Prisma.DraftCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftPayload>
+        }
+        createMany: {
+          args: Prisma.DraftCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DraftCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftPayload>[]
+        }
+        delete: {
+          args: Prisma.DraftDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftPayload>
+        }
+        update: {
+          args: Prisma.DraftUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftPayload>
+        }
+        deleteMany: {
+          args: Prisma.DraftDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DraftUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DraftUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftPayload>[]
+        }
+        upsert: {
+          args: Prisma.DraftUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftPayload>
+        }
+        aggregate: {
+          args: Prisma.DraftAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDraft>
+        }
+        groupBy: {
+          args: Prisma.DraftGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DraftGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DraftCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DraftCountAggregateOutputType> | number
+        }
+      }
+    }
     Role: {
       payload: Prisma.$RolePayload<ExtArgs>
       fields: Prisma.RoleFieldRefs
@@ -2618,6 +2693,25 @@ export const MagicLinkScalarFieldEnum = {
 export type MagicLinkScalarFieldEnum = (typeof MagicLinkScalarFieldEnum)[keyof typeof MagicLinkScalarFieldEnum]
 
 
+export const DraftScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  from: 'from',
+  to: 'to',
+  cc: 'cc',
+  bcc: 'bcc',
+  subject: 'subject',
+  body: 'body',
+  public: 'public',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  memberId: 'memberId',
+  workspaceId: 'workspaceId'
+} as const
+
+export type DraftScalarFieldEnum = (typeof DraftScalarFieldEnum)[keyof typeof DraftScalarFieldEnum]
+
+
 export const RoleScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -3110,6 +3204,7 @@ export type GlobalOmitConfig = {
   emailVerification?: Prisma.EmailVerificationOmit
   twoFactorToken?: Prisma.TwoFactorTokenOmit
   magicLink?: Prisma.MagicLinkOmit
+  draft?: Prisma.DraftOmit
   role?: Prisma.RoleOmit
   rolePermission?: Prisma.RolePermissionOmit
   memberPermission?: Prisma.MemberPermissionOmit

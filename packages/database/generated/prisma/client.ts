@@ -120,6 +120,11 @@ export type TwoFactorToken = Prisma.TwoFactorTokenModel
  */
 export type MagicLink = Prisma.MagicLinkModel
 /**
+ * Model Draft
+ * 
+ */
+export type Draft = Prisma.DraftModel
+/**
  * Model Role
  * 
  */
