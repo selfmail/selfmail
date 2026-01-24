@@ -44,12 +44,10 @@ export const onRequest: RequestHandler = async ({
   await next();
 };
 
-export default component$(() => {
-  return (
-    <div class="flex min-h-screen w-full flex-col items-center bg-neutral-50">
-      <div class="flex w-full flex-col gap-12 px-5 py-6 lg:px-26 xl:px-32">
-        <Slot />
-      </div>
+export default component$(() => (
+  <div class="flex min-h-screen w-full flex-col items-center bg-neutral-50">
+    <div class="flex w-full flex-col gap-12 px-5 py-6 lg:px-26 xl:px-32">
+      <Slot />
     </div>
-  );
-});
+  </div>
+));

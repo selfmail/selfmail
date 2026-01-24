@@ -155,10 +155,10 @@ const deleteWorkspace = server$(async function (workspaceId: string) {
 
     const { isMember, member, workspace } = await verifyWorkspaceMembership(
       user.id,
-      workspaceSlug,
+      workspaceSlug
     );
 
-    if (!(isMember && member) || !workspace) {
+    if (!(isMember && member && workspace)) {
       throw new Error("User is not a member of this workspace. Access denied.");
     }
     currentMember = member;
@@ -302,10 +302,7 @@ export default component$(() => {
           >
             Manage Member
           </Link>
-          <Link
-            class="text-blue-500"
-            href="/account"
-          >
+          <Link class="text-blue-500" href="/account">
             Account Settings
           </Link>
         </div>
@@ -381,7 +378,9 @@ export default component$(() => {
                 class="bg-red-600 hover:bg-red-700"
                 description={`Are you sure you want to delete ${workspaceData.value.workspace.name}? This will permanently delete the workspace and all associated data including domains, email addresses, members, roles, and activities. This action cannot be undone.`}
                 proceedAction={$(async () => {
-                  const result = await deleteWorkspace(workspaceData.value.workspace.id);
+                  const result = await deleteWorkspace(
+                    workspaceData.value.workspace.id
+                  );
                   if (result.success) {
                     toast.success("Workspace deleted successfully");
                     navigate("/");

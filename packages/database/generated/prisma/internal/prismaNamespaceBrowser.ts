@@ -512,6 +512,47 @@ export const NullsOrder = {
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
+export const ActivityOrderByRelevanceFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  workspaceId: 'workspaceId',
+  userId: 'userId'
+} as const
+
+export type ActivityOrderByRelevanceFieldEnum = (typeof ActivityOrderByRelevanceFieldEnum)[keyof typeof ActivityOrderByRelevanceFieldEnum]
+
+
+export const AddressOrderByRelevanceFieldEnum = {
+  id: 'id',
+  handle: 'handle',
+  email: 'email',
+  domainId: 'domainId'
+} as const
+
+export type AddressOrderByRelevanceFieldEnum = (typeof AddressOrderByRelevanceFieldEnum)[keyof typeof AddressOrderByRelevanceFieldEnum]
+
+
+export const MemberAddressOrderByRelevanceFieldEnum = {
+  memberId: 'memberId',
+  addressId: 'addressId'
+} as const
+
+export type MemberAddressOrderByRelevanceFieldEnum = (typeof MemberAddressOrderByRelevanceFieldEnum)[keyof typeof MemberAddressOrderByRelevanceFieldEnum]
+
+
+export const ContactOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  image: 'image',
+  addressId: 'addressId',
+  email: 'email'
+} as const
+
+export type ContactOrderByRelevanceFieldEnum = (typeof ContactOrderByRelevanceFieldEnum)[keyof typeof ContactOrderByRelevanceFieldEnum]
+
+
 export const JsonNullValueFilter = {
   DbNull: DbNull,
   JsonNull: JsonNull,
@@ -519,4 +560,262 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const EmailOrderByRelevanceFieldEnum = {
+  id: 'id',
+  messageId: 'messageId',
+  subject: 'subject',
+  text: 'text',
+  html: 'html',
+  warning: 'warning',
+  virusStatus: 'virusStatus',
+  processingError: 'processingError',
+  rawEmail: 'rawEmail',
+  addressId: 'addressId',
+  contactId: 'contactId'
+} as const
+
+export type EmailOrderByRelevanceFieldEnum = (typeof EmailOrderByRelevanceFieldEnum)[keyof typeof EmailOrderByRelevanceFieldEnum]
+
+
+export const BlockedOrderByRelevanceFieldEnum = {
+  id: 'id',
+  email: 'email',
+  domain: 'domain',
+  reason: 'reason'
+} as const
+
+export type BlockedOrderByRelevanceFieldEnum = (typeof BlockedOrderByRelevanceFieldEnum)[keyof typeof BlockedOrderByRelevanceFieldEnum]
+
+
+export const AdminUserOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  image: 'image'
+} as const
+
+export type AdminUserOrderByRelevanceFieldEnum = (typeof AdminUserOrderByRelevanceFieldEnum)[keyof typeof AdminUserOrderByRelevanceFieldEnum]
+
+
+export const AdminSessionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  token: 'token',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  userId: 'userId'
+} as const
+
+export type AdminSessionOrderByRelevanceFieldEnum = (typeof AdminSessionOrderByRelevanceFieldEnum)[keyof typeof AdminSessionOrderByRelevanceFieldEnum]
+
+
+export const AdminAccountOrderByRelevanceFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  providerId: 'providerId',
+  userId: 'userId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  idToken: 'idToken',
+  scope: 'scope',
+  password: 'password'
+} as const
+
+export type AdminAccountOrderByRelevanceFieldEnum = (typeof AdminAccountOrderByRelevanceFieldEnum)[keyof typeof AdminAccountOrderByRelevanceFieldEnum]
+
+
+export const AdminVerificationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  value: 'value'
+} as const
+
+export type AdminVerificationOrderByRelevanceFieldEnum = (typeof AdminVerificationOrderByRelevanceFieldEnum)[keyof typeof AdminVerificationOrderByRelevanceFieldEnum]
+
+
+export const UserOrderByRelevanceFieldEnum = {
+  id: 'id',
+  email: 'email',
+  name: 'name',
+  image: 'image'
+} as const
+
+export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
+
+
+export const AccountOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  providerAccountId: 'providerAccountId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  tokenType: 'tokenType',
+  scope: 'scope'
+} as const
+
+export type AccountOrderByRelevanceFieldEnum = (typeof AccountOrderByRelevanceFieldEnum)[keyof typeof AccountOrderByRelevanceFieldEnum]
+
+
+export const SessionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  sessionToken: 'sessionToken'
+} as const
+
+export type SessionOrderByRelevanceFieldEnum = (typeof SessionOrderByRelevanceFieldEnum)[keyof typeof SessionOrderByRelevanceFieldEnum]
+
+
+export const EmailVerificationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  email: 'email',
+  token: 'token'
+} as const
+
+export type EmailVerificationOrderByRelevanceFieldEnum = (typeof EmailVerificationOrderByRelevanceFieldEnum)[keyof typeof EmailVerificationOrderByRelevanceFieldEnum]
+
+
+export const TwoFactorTokenOrderByRelevanceFieldEnum = {
+  id: 'id',
+  token: 'token',
+  userId: 'userId'
+} as const
+
+export type TwoFactorTokenOrderByRelevanceFieldEnum = (typeof TwoFactorTokenOrderByRelevanceFieldEnum)[keyof typeof TwoFactorTokenOrderByRelevanceFieldEnum]
+
+
+export const MagicLinkOrderByRelevanceFieldEnum = {
+  id: 'id',
+  email: 'email',
+  token: 'token',
+  userId: 'userId'
+} as const
+
+export type MagicLinkOrderByRelevanceFieldEnum = (typeof MagicLinkOrderByRelevanceFieldEnum)[keyof typeof MagicLinkOrderByRelevanceFieldEnum]
+
+
+export const DraftOrderByRelevanceFieldEnum = {
+  id: 'id',
+  title: 'title',
+  from: 'from',
+  to: 'to',
+  cc: 'cc',
+  bcc: 'bcc',
+  subject: 'subject',
+  body: 'body',
+  memberId: 'memberId',
+  workspaceId: 'workspaceId'
+} as const
+
+export type DraftOrderByRelevanceFieldEnum = (typeof DraftOrderByRelevanceFieldEnum)[keyof typeof DraftOrderByRelevanceFieldEnum]
+
+
+export const RoleOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  workspaceId: 'workspaceId'
+} as const
+
+export type RoleOrderByRelevanceFieldEnum = (typeof RoleOrderByRelevanceFieldEnum)[keyof typeof RoleOrderByRelevanceFieldEnum]
+
+
+export const RolePermissionOrderByRelevanceFieldEnum = {
+  roleId: 'roleId',
+  permissionId: 'permissionId'
+} as const
+
+export type RolePermissionOrderByRelevanceFieldEnum = (typeof RolePermissionOrderByRelevanceFieldEnum)[keyof typeof RolePermissionOrderByRelevanceFieldEnum]
+
+
+export const MemberPermissionOrderByRelevanceFieldEnum = {
+  memberId: 'memberId',
+  permissionName: 'permissionName'
+} as const
+
+export type MemberPermissionOrderByRelevanceFieldEnum = (typeof MemberPermissionOrderByRelevanceFieldEnum)[keyof typeof MemberPermissionOrderByRelevanceFieldEnum]
+
+
+export const PermissionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type PermissionOrderByRelevanceFieldEnum = (typeof PermissionOrderByRelevanceFieldEnum)[keyof typeof PermissionOrderByRelevanceFieldEnum]
+
+
+export const WorkspaceOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  image: 'image',
+  slug: 'slug',
+  ownerId: 'ownerId'
+} as const
+
+export type WorkspaceOrderByRelevanceFieldEnum = (typeof WorkspaceOrderByRelevanceFieldEnum)[keyof typeof WorkspaceOrderByRelevanceFieldEnum]
+
+
+export const DomainOrderByRelevanceFieldEnum = {
+  id: 'id',
+  domain: 'domain',
+  workspaceId: 'workspaceId',
+  verificationToken: 'verificationToken'
+} as const
+
+export type DomainOrderByRelevanceFieldEnum = (typeof DomainOrderByRelevanceFieldEnum)[keyof typeof DomainOrderByRelevanceFieldEnum]
+
+
+export const SmtpCredentialsOrderByRelevanceFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  username: 'username',
+  password: 'password',
+  memberId: 'memberId',
+  workspaceId: 'workspaceId',
+  addressId: 'addressId',
+  userId: 'userId'
+} as const
+
+export type SmtpCredentialsOrderByRelevanceFieldEnum = (typeof SmtpCredentialsOrderByRelevanceFieldEnum)[keyof typeof SmtpCredentialsOrderByRelevanceFieldEnum]
+
+
+export const NotificationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  memberId: 'memberId',
+  title: 'title',
+  message: 'message'
+} as const
+
+export type NotificationOrderByRelevanceFieldEnum = (typeof NotificationOrderByRelevanceFieldEnum)[keyof typeof NotificationOrderByRelevanceFieldEnum]
+
+
+export const InvitationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  email: 'email',
+  token: 'token',
+  userToken: 'userToken',
+  roleId: 'roleId',
+  workspaceId: 'workspaceId',
+  invitedById: 'invitedById',
+  userId: 'userId'
+} as const
+
+export type InvitationOrderByRelevanceFieldEnum = (typeof InvitationOrderByRelevanceFieldEnum)[keyof typeof InvitationOrderByRelevanceFieldEnum]
+
+
+export const MemberOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  profileName: 'profileName',
+  description: 'description',
+  image: 'image',
+  workspaceId: 'workspaceId'
+} as const
+
+export type MemberOrderByRelevanceFieldEnum = (typeof MemberOrderByRelevanceFieldEnum)[keyof typeof MemberOrderByRelevanceFieldEnum]
 

@@ -2,13 +2,9 @@ import { component$ } from "@builder.io/qwik";
 import Wait from "~/components/dashboard/wait";
 import BackHeading from "~/components/ui/BackHeading";
 
-export default component$(() => {
-    return (
-        <>
-            <BackHeading>
-                Selfmail for Devs
-            </BackHeading>
-            <Wait />
-        </>
-    )
-})
+export default component$(() => (
+  <>
+    <BackHeading>Selfmail for Devs</BackHeading>
+    <Wait />
+  </>
+));

@@ -234,9 +234,7 @@ export default component$(() => {
     }
   });
 
-  const Email = $(() => {
-    return <div>Email Component</div>;
-  });
+  const Email = $(() => <div>Email Component</div>);
 
   return (
     <>
