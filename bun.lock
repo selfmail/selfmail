@@ -34,8 +34,8 @@
       "name": "dashboard",
       "dependencies": {
         "arctic": "^3.7.0",
-        "posthog-js": "^1.328.0",
-        "posthog-node": "^5.21.1",
+        "posthog-js": "^1.334.0",
+        "posthog-node": "^5.24.1",
       },
       "devDependencies": {
         "@biomejs/biome": "2.2.4",
@@ -57,7 +57,7 @@
         "typescript": "5.4.5",
         "typescript-plugin-css-modules": "latest",
         "ultracite": "5.4.6",
-        "undici": "^7.18.2",
+        "undici": "^7.19.0",
         "vite": "7.1.4",
         "vite-tsconfig-paths": "^4.3.2",
       },
@@ -150,6 +150,20 @@
         "@types/bun": "latest",
         "@types/clamscan": "^2.4.1",
         "database": "workspace:*",
+      },
+      "peerDependencies": {
+        "typescript": "^5",
+      },
+    },
+    "packages/spam": {
+      "name": "spam",
+      "dependencies": {
+        "ioredis": "^5.8.2",
+        "sanitize-html": "^2.17.0",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+        "@types/sanitize-html": "^2.16.0",
       },
       "peerDependencies": {
         "typescript": "^5",
@@ -281,20 +295,6 @@
       "devDependencies": {
         "@types/bun": "latest",
         "@types/smtp-server": "^3.5.12",
-      },
-      "peerDependencies": {
-        "typescript": "^5",
-      },
-    },
-    "smtp/spam": {
-      "name": "spam",
-      "dependencies": {
-        "ioredis": "^5.8.2",
-        "sanitize-html": "^2.17.0",
-      },
-      "devDependencies": {
-        "@types/bun": "latest",
-        "@types/sanitize-html": "^2.16.0",
       },
       "peerDependencies": {
         "typescript": "^5",
@@ -2768,7 +2768,7 @@
 
     "space-separated-tokens": ["space-separated-tokens@2.0.2", "", {}, "sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q=="],
 
-    "spam": ["spam@workspace:smtp/spam"],
+    "spam": ["spam@workspace:packages/spam"],
 
     "spamc": ["spamc@0.0.5", "", {}, "sha512-jYXItuZuiWZyG9fIdvgTUbp2MNRuyhuSwvvhhpPJd4JK/9oSZxkD7zAj53GJtowSlXwCJzLg6sCKAoE9wXsKgg=="],
 
