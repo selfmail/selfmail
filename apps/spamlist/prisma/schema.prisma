@@ -1,0 +1,56 @@
+// Prisma Schema for the spamlist.
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SpamScope {
+  IP
+  CIDR
+  DOMAIN
+  HELO
+  ASN
+}
+
+enum SpamAction {
+  BLOCK
+  SCORE
+  RATE_LIMIT
+}
+
+enum SpamPhase {
+  CONNECT
+  MAIL_FROM
+  RCPT_TO
+  DATA
+}
+
+enum SpamSource {
+  MANUAL
+  DNSBL
+  AUTO
+  ABUSE
+}
+
+model SpamRule {
+  id      String     @id @default(cuid())
+  scope   SpamScope
+  value   String
+  action  SpamAction
+  weight  Int?
+  phase   SpamPhase
+  source  SpamSource
+  reason  String?
+  enabled Boolean    @default(true)
+
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([scope, value])
+  @@index([enabled, expiresAt])
+}

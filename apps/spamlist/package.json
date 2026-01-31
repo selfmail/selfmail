@@ -1,0 +1,25 @@
+{
+  "name": "@selfmail/spamlist",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "dotenv": "^17.2.3",
+    "prisma": "^7.3.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.3.0"
+  },
+  "scripts": {
+    "dev": "bun --watch run src/index.ts"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/lib/index.ts",
+      "types": "./src/lib/index.ts"
+    }
+  }
+}
