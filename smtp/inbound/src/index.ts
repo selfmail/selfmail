@@ -1,5 +1,6 @@
 import { SMTPServer } from "smtp-server";
 import { validateConnection } from "./events/connection";
+import { handleData } from "./events/data";
 import { validateMailFrom } from "./events/mail-from";
 import { validateRcptTo } from "./events/rcpt-to";
 
@@ -11,6 +12,7 @@ const server = new SMTPServer({
   onConnect: validateConnection,
   onMailFrom: validateMailFrom,
   onRcptTo: validateRcptTo,
+  onData: handleData,
 });
 
 server.listen(25, () => {
