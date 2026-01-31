@@ -2,11 +2,13 @@ import dns from "node:dns";
 import { promisify } from "node:util";
 import { createLogger } from "@selfmail/logging";
 import { Ratelimit } from "@selfmail/redis";
-import type { SMTPServerSession } from "smtp-server";
+import type { SelfmailSmtpSession } from "../types/session";
 
 /**
  * Checking for rate limiting, reverse DNS, some logic stuff
  * and whether the IP is on some trustfully spam lists.
+ *
+ * TODO: Implement spam list checking.
  */
 
 const logger = createLogger("smtp-inbound-connection");
@@ -17,7 +19,7 @@ const rateLimiter = new Ratelimit({
 });
 
 export async function validateConnection(
-  session: SMTPServerSession,
+  session: SelfmailSmtpSession,
   callback: (err?: Error) => void
 ) {
   // Get unique identifier for rate limiting
@@ -25,7 +27,8 @@ export async function validateConnection(
 
   try {
     // Rate limiting check
-    const isRateLimited = await rateLimiter.isRateLimited(clientAddress);
+    const isRateLimited = await rateLimiter.check(clientAddress);
+
     if (isRateLimited) {
       logger.warn(
         `Connection from ${clientAddress} rejected due to rate limiting.`
@@ -39,10 +42,7 @@ export async function validateConnection(
     const reverseLookup = promisify(dns.reverse);
     const hostnames = await reverseLookup(clientAddress).catch(() => []);
     if (hostnames.length === 0) {
-      logger.warn(
-        `Connection from ${clientAddress} rejected due to failed reverse DNS lookup.`
-      );
-      return callback(new Error("421 Reverse DNS lookup failed."));
+      session.envelope.spamScore += 2;
     }
 
     logger.info(
@@ -50,9 +50,16 @@ export async function validateConnection(
     );
     return callback();
   } catch (error) {
-    logger.error(
-      `Error during connection validation for ${clientAddress}: ${error.message}`
-    );
+    if (error instanceof Error) {
+      logger.error(
+        `Error during connection validation for ${clientAddress}: ${error.message}`
+      );
+    } else {
+      logger.error(
+        `Unknown error during connection validation for ${clientAddress}.`
+      );
+    }
+
     return callback(
       new Error("421 Internal server error during connection validation.")
     );

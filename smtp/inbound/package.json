@@ -10,9 +10,10 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "smtp-server": "^3.18.0",
-    "zod": "^4.3.5",
+    "@selfmail/logging": "workspace:*",
     "@selfmail/redis": "workspace:*",
-    "@selfmail/logging": "workspace:*"
+    "effect": "^3.19.15",
+    "smtp-server": "^3.18.0",
+    "zod": "^4.3.5"
   }
 }
