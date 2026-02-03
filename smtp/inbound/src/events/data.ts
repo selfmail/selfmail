@@ -1,7 +1,7 @@
 import { createLogger } from "@selfmail/logging";
 import { simpleParser } from "mailparser";
 import type { SMTPServerDataStream } from "smtp-server";
-import { RspamdClient } from "spam";
+import { ClamAVClient, RspamdClient } from "spam";
 import type { SelfmailSmtpSession } from "../types/session";
 
 const logger = createLogger("smtp-inbound-data");
@@ -12,6 +12,11 @@ const MAX_EMAIL_SIZE = 25 * 1024 * 1024;
 const rspamd = new RspamdClient({
   host: process.env.RSPAMD_HOST || "localhost",
   port: Number(process.env.RSPAMD_PORT) || 11_333,
+});
+
+const clamav = new ClamAVClient({
+  host: process.env.CLAMAV_HOST || "localhost",
+  port: Number(process.env.CLAMAV_PORT) || 3310,
 });
 
 async function streamToBuffer(stream: SMTPServerDataStream): Promise<Buffer> {
@@ -56,6 +61,23 @@ export async function handleData(
     });
 
     const totalScore = session.envelope.spamScore + spamResult.score;
+
+    if (parsed.attachments && parsed.attachments.length > 0) {
+      const scanResults = await clamav.scanBuffers(
+        parsed.attachments.map((att) => ({
+          buffer: att.content,
+          filename: att.filename,
+        }))
+      );
+
+      const infected = scanResults.filter((r) => r.isInfected);
+      if (infected.length > 0) {
+        const viruses = infected.flatMap((r) => r.viruses).join(", ");
+        logger.warn(`Rejected virus from ${mailFrom}: ${viruses}`);
+        callback(new Error("550 Message rejected: virus detected."));
+        return;
+      }
+    }
 
     if (spamResult.action === "reject" || totalScore >= SPAM_THRESHOLD) {
       logger.warn(
