@@ -14,6 +14,13 @@ interface RateLimiterOptions {
   keyPrefix?: string;
 }
 
+export class RateLimitRedisError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "RateLimitRedisError";
+  }
+}
+
 export class Ratelimit {
   private readonly client: RedisClient;
   private readonly limit: number;
@@ -21,7 +28,10 @@ export class Ratelimit {
   private readonly keyPrefix: string;
 
   constructor(options: RateLimiterOptions = {}) {
-    this.client = new RedisClient(options.url);
+    // if (!(options.url && process.env.REDIS_URL)) {
+    //   throw new RateLimitRedisError("Redis URL is required for RateLimiter");
+    // }
+    this.client = new RedisClient(options.url || "redis://localhost:6379");
     this.limit = options.limit ?? 100;
     this.windowSeconds = options.windowSeconds ?? 3600;
     this.keyPrefix = options.keyPrefix ?? "ratelimit";

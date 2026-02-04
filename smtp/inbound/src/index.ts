@@ -4,7 +4,7 @@ import { handleData } from "./events/data";
 import { validateMailFrom } from "./events/mail-from";
 import { validateRcptTo } from "./events/rcpt-to";
 
-const server = new SMTPServer({
+export const server = new SMTPServer({
   disabledCommands: ["STARTTLS", "AUTH"],
   banner: "Welcome to Selfmail SMTP Server",
   logger: process.env.NODE_ENV === "development",

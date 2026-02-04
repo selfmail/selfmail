@@ -7,7 +7,7 @@ const logger = createLogger("smtp-inbound-rcpt-to");
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_RECIPIENTS = 100;
 
-function extractDomain(email: string): string | null {
+export function extractDomain(email: string): string | null {
   const parts = email.split("@");
   if (parts.length !== 2) {
     return null;
