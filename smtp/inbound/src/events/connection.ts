@@ -1,17 +1,9 @@
-import dns from "node:dns";
-import { promisify } from "node:util";
+import dns from "node:dns/promises";
 import { createLogger } from "@selfmail/logging";
 import { RateLimitRedisError, Ratelimit } from "@selfmail/redis";
 import z from "zod";
 import type { Callback } from "../types";
 import type { SelfmailSmtpSession } from "../types/session";
-
-/**
- * Checking for rate limiting, reverse DNS, some logic stuff
- * and whether the IP is on some trustfully spam lists.
- *
- * TODO: Implement spam list checking.
- */
 
 const logger = createLogger("smtp-inbound-connection");
 const rateLimiter = new Ratelimit({
@@ -59,65 +51,55 @@ export abstract class Connection {
         logger.warn(
           `Connection from ${clientAddress} rejected due to invalid IP.`
         );
-        return callback(new Error("421 Invalid IP address."));
+        session.envelope.spamScore += 5;
       }
     } catch (error) {
       logger.error(
         `Error during IP validation for ${clientAddress}: ${error instanceof Error ? error.message : "Unknown error"}`
       );
-      return callback(
-        new Error("421 Internal server error during IP validation.")
-      );
+      session.envelope.spamScore += 5;
     }
 
-    // Reverse DNS lookup
-  }
-}
-
-export async function validateConnection(
-  session: SelfmailSmtpSession,
-  callback: (err?: Error) => void
-) {
-  // Get unique identifier for rate limiting
-  const clientAddress = session.remoteAddress || "unknown";
-
-  try {
-    // Rate limiting check
-    const isRateLimited = await rateLimiter.check(clientAddress);
-
-    if (isRateLimited) {
-      logger.warn(
-        `Connection from ${clientAddress} rejected due to rate limiting.`
+    // RDNS lookup
+    try {
+      const rdnsResult = await Connection.reverseDNSLookup(clientAddress);
+      if (rdnsResult.ok) {
+        logger.info(
+          `Valid reverse DNS for ${clientAddress}: ${rdnsResult.ptr}`
+        );
+      } else {
+        logger.info(
+          `No valid reverse DNS for ${clientAddress}. PTRs: ${rdnsResult.ptrs.join(", ")}`
+        );
+        session.envelope.spamScore += 2;
+      }
+    } catch (error) {
+      logger.error(
+        `Error during reverse DNS lookup for ${clientAddress}: ${error instanceof Error ? error.message : "Unknown error"}`
       );
-      return callback(
-        new Error("421 Too many connections, please try again later.")
-      );
-    }
-
-    // Reverse DNS lookup
-    const reverseLookup = promisify(dns.reverse);
-    const hostnames = await reverseLookup(clientAddress).catch(() => []);
-    if (hostnames.length === 0) {
       session.envelope.spamScore += 2;
     }
 
-    logger.info(
-      `Connection from ${clientAddress} accepted. Hostnames: ${hostnames.join(", ")}`
-    );
     return callback();
-  } catch (error) {
-    if (error instanceof Error) {
-      logger.error(
-        `Error during connection validation for ${clientAddress}: ${error.message}`
-      );
-    } else {
-      logger.error(
-        `Unknown error during connection validation for ${clientAddress}.`
-      );
+  }
+  static async reverseDNSLookup(
+    ip: string
+  ): Promise<{ ok: true; ptr: string } | { ok: false; ptrs: string[] }> {
+    try {
+      const ptrs = await dns.reverse(ip);
+      for (const ptr of ptrs) {
+        try {
+          const fwd = await dns.lookup(ptr);
+          if (fwd.address === ip) {
+            return { ok: true, ptr };
+          }
+        } catch {
+          // Ignore lookup failures and continue to next PTR record
+        }
+      }
+      return { ok: false, ptrs };
+    } catch {
+      return { ok: false, ptrs: [] };
     }
-
-    return callback(
-      new Error("421 Internal server error during connection validation.")
-    );
   }
 }
