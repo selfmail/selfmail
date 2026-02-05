@@ -1,5 +1,5 @@
 import { SMTPServer } from "smtp-server";
-import { validateConnection } from "./events/connection";
+import { Connection } from "./events/connection";
 import { handleData } from "./events/data";
 import { validateMailFrom } from "./events/mail-from";
 import { validateRcptTo } from "./events/rcpt-to";
@@ -9,7 +9,7 @@ export const server = new SMTPServer({
   banner: "Welcome to Selfmail SMTP Server",
   logger: process.env.NODE_ENV === "development",
 
-  onConnect: validateConnection,
+  onConnect: Connection.init,
   onMailFrom: validateMailFrom,
   onRcptTo: validateRcptTo,
   onData: handleData,
