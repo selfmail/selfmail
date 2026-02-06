@@ -1,7 +1,7 @@
 import { SMTPServer } from "smtp-server";
 import { Connection } from "./events/connection";
 import { handleData } from "./events/data";
-import { validateMailFrom } from "./events/mail-from";
+import { MailFrom } from "./events/mail-from";
 import { validateRcptTo } from "./events/rcpt-to";
 
 export const server = new SMTPServer({
@@ -10,7 +10,7 @@ export const server = new SMTPServer({
   logger: process.env.NODE_ENV === "development",
 
   onConnect: Connection.init,
-  onMailFrom: validateMailFrom,
+  onMailFrom: MailFrom.init,
   onRcptTo: validateRcptTo,
   onData: handleData,
 });
