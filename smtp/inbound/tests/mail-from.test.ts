@@ -8,6 +8,7 @@ describe("MailFrom validation, parsing and error handling", () => {
       "@missingusername.com",
       "username@.com",
       "username@com",
+      "user+tag@example.com.co",
       "username@domain..com",
     ];
 
@@ -18,5 +19,22 @@ describe("MailFrom validation, parsing and error handling", () => {
         expect(error).toBeInstanceOf(InvalidEmailError);
       }
     }
+  });
+
+  test("Should accept valid email formats", () => {
+    const validEmails = [
+      "hey@example.com",
+      "henri@d.co.uk",
+      "user+tag@example.com",
+    ];
+
+    for (const email of validEmails) {
+      expect(MailFrom.parseEmail(email)).resolves.toBeUndefined();
+    }
+  });
+
+  test("Should correctly return MX Records for valid domains", async () => {
+    const mxRecords = await MailFrom.checkMxRecords("gmail.com");
+    expect(mxRecords).toBeBoolean();
   });
 });

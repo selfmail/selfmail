@@ -16,6 +16,7 @@
     "mailparser": "^3.7.2",
     "smtp-server": "^3.18.0",
     "spam": "workspace:*",
-    "zod": "^4.3.5"
+    "zod": "^4.3.5",
+    "@selfmail/recipients": "workspace:*"
   }
 }

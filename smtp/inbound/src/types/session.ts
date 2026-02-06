@@ -4,5 +4,6 @@ export type SelfmailSmtpSession = SMTPServerSession & {
   envelope: {
     spamScore: number;
     bounceEmail: boolean;
+    postmasterEmail: boolean;
   };
 };
