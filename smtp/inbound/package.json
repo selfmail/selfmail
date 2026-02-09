@@ -9,6 +9,9 @@
   "peerDependencies": {
     "typescript": "^5"
   },
+  "scripts": {
+    "dev:smtp": "bun run src/index.ts"
+  },
   "dependencies": {
     "@selfmail/logging": "workspace:*",
     "@selfmail/redis": "workspace:*",

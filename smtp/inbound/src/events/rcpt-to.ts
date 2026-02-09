@@ -27,6 +27,7 @@ export abstract class RcptTo {
     session: SelfmailSmtpSession,
     callback: Callback
   ) {
+    console.log("Processing recipient:", address.address);
     // Parsing Emails
     try {
       await RcptTo.parseEmail(address.address);
@@ -34,12 +35,12 @@ export abstract class RcptTo {
       if (error instanceof InvalidEmailError) {
         logger.warn(`Invalid recipient email: ${address.address}`);
         callback(new Error("501 Invalid recipient address format."));
-      } else {
-        const message =
-          error instanceof Error ? error.message : "Unknown error";
-        logger.error(`Error parsing recipient email: ${message}`);
-        callback(new Error("451 Temporary error validating recipient."));
+        return;
       }
+      const message = error instanceof Error ? error.message : "Unknown error";
+      logger.error(`Error parsing recipient email: ${message}`);
+      callback(new Error("451 Temporary error validating recipient."));
+      return;
     }
 
     // Check whether it's a postmaster email
@@ -64,6 +65,10 @@ export abstract class RcptTo {
     if (!exists) {
       logger.warn(`Recipient does not exist: ${address.address}`);
       callback(new Error("550 No such user."));
+      return;
     }
+
+    callback();
+    return;
   }
 }

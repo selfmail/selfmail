@@ -68,7 +68,7 @@ export abstract class Connection {
     try {
       const isRateLimited = await rateLimiter.check(clientAddress);
 
-      if (isRateLimited) {
+      if (isRateLimited.allowed === false) {
         logger.warn(
           `Connection from ${clientAddress} rejected due to rate limiting.`
         );

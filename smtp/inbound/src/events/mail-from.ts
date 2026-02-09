@@ -222,6 +222,8 @@ export abstract class MailFrom {
         break;
     }
 
+    console.log("Continue processing mail");
+
     return callback();
   }
 }

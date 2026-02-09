@@ -1,8 +1,8 @@
 import { SMTPServer } from "smtp-server";
 import { Connection } from "./events/connection";
-import { handleData } from "./events/data";
+import { Data } from "./events/data";
 import { MailFrom } from "./events/mail-from";
-import { validateRcptTo } from "./events/rcpt-to";
+import { RcptTo } from "./events/rcpt-to";
 
 export const server = new SMTPServer({
   disabledCommands: ["STARTTLS", "AUTH"],
@@ -11,8 +11,8 @@ export const server = new SMTPServer({
 
   onConnect: Connection.init,
   onMailFrom: MailFrom.init,
-  onRcptTo: validateRcptTo,
-  onData: handleData,
+  onRcptTo: RcptTo.init,
+  onData: Data.init,
 });
 
 server.listen(25, () => {
