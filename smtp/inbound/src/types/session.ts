@@ -5,5 +5,11 @@ export type SelfmailSmtpSession = SMTPServerSession & {
     spamScore: number;
     bounceEmail: boolean;
     postmasterEmail: boolean;
+
+    mailboxes: {
+      email: string;
+      type: string;
+      target: string;
+    }[];
   };
 };

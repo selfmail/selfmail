@@ -5,6 +5,9 @@
   "devDependencies": {
     "@types/bun": "latest"
   },
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "peerDependencies": {
     "typescript": "^5"
   },

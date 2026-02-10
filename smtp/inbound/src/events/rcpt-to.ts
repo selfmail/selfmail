@@ -68,6 +68,22 @@ export abstract class RcptTo {
       return;
     }
 
+    if (session.envelope.mailboxes) {
+      session.envelope.mailboxes.push({
+        email: exists.email,
+        type: exists.type,
+        target: exists.target,
+      });
+    } else {
+      session.envelope.mailboxes = [
+        {
+          email: exists.email,
+          type: exists.type,
+          target: exists.target,
+        },
+      ];
+    }
+
     callback();
     return;
   }
