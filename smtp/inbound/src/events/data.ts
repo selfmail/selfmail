@@ -1,3 +1,4 @@
+import { saveEmail } from "@selfmail/inbound-queue";
 import { createLogger } from "@selfmail/logging";
 import { simpleParser } from "mailparser";
 import type { SMTPServerDataStream } from "smtp-server";
@@ -89,8 +90,19 @@ export abstract class Data {
         return callback(new Error("550 Message rejected due to virus."));
       }
 
-      // Queue Email for Delivery
-      console.log(parsed);
+      try {
+        console.log("hey");
+      } catch (e) {
+        logger.error(
+          `Internal error during queueing email from ${clientAddress}: ${e instanceof Error ? e.message : "Unknown error"}`
+        );
+        return callback(new Error("451 Temporary error processing message."));
+      }
+
+      await saveEmail({});
+
+      callback();
+      return;
     } catch (error) {
       if (error instanceof MessageSizeExceededError) {
         logger.warn(

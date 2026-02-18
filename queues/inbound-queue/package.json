@@ -1,0 +1,26 @@
+{
+  "name": "@selfmail/inbound-queue",
+  "description": "Queue for handling SMTP Events.",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run --watch src/worker.ts"
+  },
+  "exports": {
+    ".": "./src/create.ts",
+    "./worker": "./src/worker.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "bullmq": "^5.61.2",
+    "database": "workspace:*",
+    "ioredis": "^5.8.2",
+    "zod": "^4.1.12"
+  }
+}
