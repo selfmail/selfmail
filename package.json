@@ -11,7 +11,7 @@
   "scripts": {
     "check": "biome check --write .",
     "prepare": "husky",
-    "dev": "infisical run --env=dev -- turbo dev -F !spam -F !database -F !scripts -F !services   -F !@selfmail/inbound  -F !outbound-queue -F !transactional-queue",
+    "dev": "infisical run --env=dev -- turbo dev -F !spam -F !database -F !scripts -F !services -F !@selfmail/inbound-queue  -F !@selfmail/inbound  -F !outbound-queue -F !desktop -F !transactional-queue",
     "dev:smtp": "infisical run --env=dev -- turbo dev   -F inbound",
     "smtp": "turbo dev   -F inbound",
     "build": "turbo build",
@@ -27,7 +27,7 @@
     "@biomejs/biome": "2.3.11",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.2",
-    "turbo": "^2.8.3",
+    "turbo": "^2.8.14",
     "ultracite": "7.0.11"
   },
   "lint-staged": {

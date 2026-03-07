@@ -5,15 +5,19 @@
   "private": true,
   "scripts": {
     "dev": "electron src/index.ts",
-    "dev-web": "vite --port 5173"
+    "dev-web": "vite --port 5173",
+    "check": "ultracite check",
+    "fix": "ultracite fix"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.5",
     "@types/bun": "latest",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
     "babel-plugin-react-compiler": "^1.0.0",
     "globals": "^16.5.0",
-    "@vitejs/plugin-react": "^5.1.1",
+    "ultracite": "7.2.5",
     "vite": "^8.0.0-beta.13"
   },
   "overrides": {
@@ -23,6 +27,8 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.2.1",
+    "tailwindcss": "^4.2.1",
     "wouter": "^3.9.0"
   }
 }
