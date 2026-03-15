@@ -12,14 +12,14 @@ export const Route = createFileRoute("/help/")({
 
 function RouteComponent() {
   return (
-    <>
+    <div className="absolute inset-0 flex flex-col items-center sm:static sm:justify-center">
       <a
-        className="absolute top-5 font-medium text-xl"
+        className="absolute top-5 text-center font-medium text-xl"
         href="https://selfmail.app"
       >
         Selfmail
       </a>
-      <div className="w-full flex-col gap-4 px-5 sm:px-10 md:w-100 md:px-0">
+      <div className="w-full flex-col gap-4 px-5 pt-16 sm:px-10 sm:pt-0 md:w-100 md:px-0">
         <h1 className="pb-4 text-center font-medium text-2xl">
           Help & Support
         </h1>
@@ -72,6 +72,7 @@ function RouteComponent() {
               I can't access my passkey.
             </AccordionTrigger>
             <AccordionContent>
+              {/* TODO: Implement passkey issue resolution */}
               In this case, please try again later or, if this issue keeps
               occurring, please contact us via the contact form{" "}
               <Link
@@ -137,6 +138,6 @@ function RouteComponent() {
           .
         </p>
       </div>
-    </>
+    </div>
   );
 }
