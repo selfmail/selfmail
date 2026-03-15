@@ -20,6 +20,7 @@ export type {
   Blocked,
   Contact,
   Domain,
+  Draft,
   Email,
   EmailVerification,
   Invitation,

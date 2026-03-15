@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Building2Icon } from "lucide-react";
 import { Google } from "#/components/ui/svgs/google";
 
@@ -10,6 +10,15 @@ export const Route = createFileRoute("/register/")({
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    event.preventDefault();
+    await navigate({ to: "/register/success" });
+  };
+
   return (
     <>
       <a
@@ -22,7 +31,7 @@ function RouteComponent() {
         <h1 className="pb-4 text-center font-medium text-3xl">
           Create Your Account
         </h1>
-        <form className="flex flex-col gap-4 pt-2">
+        <form className="flex flex-col gap-4 pt-2" onSubmit={handleSubmit}>
           <input
             className="w-full rounded-full border-2 border-neutral-200 px-6 py-3 outline-none ring-neutral-200 transition-colors duration-200 focus-within:border-neutral-400 focus-within:ring-2 focus:outline-none"
             placeholder="Your Full Name"

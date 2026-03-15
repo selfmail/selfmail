@@ -31,3 +31,6 @@ test-do-not-push
 .infisical.json
 
 skills-lock.json
+
+.conductor
+.idea

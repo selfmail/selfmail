@@ -1,75 +1,75 @@
 {
-	"name": "services",
-	"module": "src/index.ts",
-	"type": "module",
-	"private": true,
-	"devDependencies": {
-		"@types/bun": "latest",
-		"@prisma/client": "^6.18.0",
-		"@types/clamscan": "^2.4.1",
-		"database": "workspace:*"
-	},
-	"exports": {
-		".": {
-			"import": "./src/index.ts",
-			"types": "./src/index.ts"
-		},
-		"./limits": {
-			"import": "./src/limits.ts",
-			"types": "./src/limits.ts"
-		},
-		"./logs": {
-			"import": "./src/logs.ts",
-			"types": "./src/logs.ts"
-		},
-		"./analytics": {
-			"import": "./src/analytics.ts",
-			"types": "./src/analytics.ts"
-		},
-		"./ratelimit": {
-			"import": "./src/ratelimit.ts",
-			"types": "./src/ratelimit.ts"
-		},
-		"./activity": {
-			"import": "./src/activity.ts",
-			"types": "./src/activity.ts"
-		},
-		"./queue": {
-			"import": "./src/queue.ts",
-			"types": "./src/queue.ts"
-		},
-		"./spam": {
-			"import": "./src/spam.ts",
-			"types": "./src/spam.ts"
-		},
-		"./mail": {
-			"import": "./src/mail.ts",
-			"types": "./src/mail.ts"
-		},
-		"./notify": {
-			"import": "./src/notify.ts",
-			"types": "./src/notify.ts"
-		},
-		"./transactional": {
-			"import": "./src/transactional.ts",
-			"types": "./src/transactional.ts"
-		},
-		"./jwt": {
-			"import": "./src/jwt.ts",
-			"types": "./src/jwt.ts"
-		}
-	},
-	"peerDependencies": {
-		"typescript": "^5"
-	},
-	"dependencies": {
-		"bullmq": "^5.58.4",
-		"clamscan": "^2.4.0",
-		"ioredis": "^5.7.0",
-		"jose": "^6.1.0",
-		"nodemailer": "^7.0.6",
-		"posthog-node": "^5.10.0",
-		"sanitize-html": "^2.17.0",
-		"zod": "^4.1.12"
-	}
+  "name": "services",
+  "module": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@prisma/client": "^6.18.0",
+    "@types/clamscan": "^2.4.1",
+    "@selfmail/db": "workspace:*"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    },
+    "./limits": {
+      "import": "./src/limits.ts",
+      "types": "./src/limits.ts"
+    },
+    "./logs": {
+      "import": "./src/logs.ts",
+      "types": "./src/logs.ts"
+    },
+    "./analytics": {
+      "import": "./src/analytics.ts",
+      "types": "./src/analytics.ts"
+    },
+    "./ratelimit": {
+      "import": "./src/ratelimit.ts",
+      "types": "./src/ratelimit.ts"
+    },
+    "./activity": {
+      "import": "./src/activity.ts",
+      "types": "./src/activity.ts"
+    },
+    "./queue": {
+      "import": "./src/queue.ts",
+      "types": "./src/queue.ts"
+    },
+    "./spam": {
+      "import": "./src/spam.ts",
+      "types": "./src/spam.ts"
+    },
+    "./mail": {
+      "import": "./src/mail.ts",
+      "types": "./src/mail.ts"
+    },
+    "./notify": {
+      "import": "./src/notify.ts",
+      "types": "./src/notify.ts"
+    },
+    "./transactional": {
+      "import": "./src/transactional.ts",
+      "types": "./src/transactional.ts"
+    },
+    "./jwt": {
+      "import": "./src/jwt.ts",
+      "types": "./src/jwt.ts"
+    }
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "bullmq": "^5.58.4",
+    "clamscan": "^2.4.0",
+    "ioredis": "^5.7.0",
+    "jose": "^6.1.0",
+    "nodemailer": "^7.0.6",
+    "posthog-node": "^5.10.0",
+    "sanitize-html": "^2.17.0",
+    "zod": "^4.1.12"
+  }
 }
