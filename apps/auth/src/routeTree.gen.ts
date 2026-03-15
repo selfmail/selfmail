@@ -10,12 +10,23 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SupportIndexRouteImport } from './routes/support/index'
 import { Route as RegisterIndexRouteImport } from './routes/register/index'
+import { Route as OtpIndexRouteImport } from './routes/otp/index'
+import { Route as MagicLinkIndexRouteImport } from './routes/magic-link/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as HelpIndexRouteImport } from './routes/help/index'
+import { Route as ContactIndexRouteImport } from './routes/contact/index'
+import { Route as OtpBackupCodesIndexRouteImport } from './routes/otp/backup-codes/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportIndexRoute = SupportIndexRouteImport.update({
+  id: '/support/',
+  path: '/support/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterIndexRoute = RegisterIndexRouteImport.update({
@@ -23,40 +34,117 @@ const RegisterIndexRoute = RegisterIndexRouteImport.update({
   path: '/register/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OtpIndexRoute = OtpIndexRouteImport.update({
+  id: '/otp/',
+  path: '/otp/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MagicLinkIndexRoute = MagicLinkIndexRouteImport.update({
+  id: '/magic-link/',
+  path: '/magic-link/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginIndexRoute = LoginIndexRouteImport.update({
   id: '/login/',
   path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HelpIndexRoute = HelpIndexRouteImport.update({
+  id: '/help/',
+  path: '/help/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactIndexRoute = ContactIndexRouteImport.update({
+  id: '/contact/',
+  path: '/contact/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OtpBackupCodesIndexRoute = OtpBackupCodesIndexRouteImport.update({
+  id: '/otp/backup-codes/',
+  path: '/otp/backup-codes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contact/': typeof ContactIndexRoute
+  '/help/': typeof HelpIndexRoute
   '/login/': typeof LoginIndexRoute
+  '/magic-link/': typeof MagicLinkIndexRoute
+  '/otp/': typeof OtpIndexRoute
   '/register/': typeof RegisterIndexRoute
+  '/support/': typeof SupportIndexRoute
+  '/otp/backup-codes/': typeof OtpBackupCodesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contact': typeof ContactIndexRoute
+  '/help': typeof HelpIndexRoute
   '/login': typeof LoginIndexRoute
+  '/magic-link': typeof MagicLinkIndexRoute
+  '/otp': typeof OtpIndexRoute
   '/register': typeof RegisterIndexRoute
+  '/support': typeof SupportIndexRoute
+  '/otp/backup-codes': typeof OtpBackupCodesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/contact/': typeof ContactIndexRoute
+  '/help/': typeof HelpIndexRoute
   '/login/': typeof LoginIndexRoute
+  '/magic-link/': typeof MagicLinkIndexRoute
+  '/otp/': typeof OtpIndexRoute
   '/register/': typeof RegisterIndexRoute
+  '/support/': typeof SupportIndexRoute
+  '/otp/backup-codes/': typeof OtpBackupCodesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login/' | '/register/'
+  fullPaths:
+    | '/'
+    | '/contact/'
+    | '/help/'
+    | '/login/'
+    | '/magic-link/'
+    | '/otp/'
+    | '/register/'
+    | '/support/'
+    | '/otp/backup-codes/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register'
-  id: '__root__' | '/' | '/login/' | '/register/'
+  to:
+    | '/'
+    | '/contact'
+    | '/help'
+    | '/login'
+    | '/magic-link'
+    | '/otp'
+    | '/register'
+    | '/support'
+    | '/otp/backup-codes'
+  id:
+    | '__root__'
+    | '/'
+    | '/contact/'
+    | '/help/'
+    | '/login/'
+    | '/magic-link/'
+    | '/otp/'
+    | '/register/'
+    | '/support/'
+    | '/otp/backup-codes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContactIndexRoute: typeof ContactIndexRoute
+  HelpIndexRoute: typeof HelpIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
+  MagicLinkIndexRoute: typeof MagicLinkIndexRoute
+  OtpIndexRoute: typeof OtpIndexRoute
   RegisterIndexRoute: typeof RegisterIndexRoute
+  SupportIndexRoute: typeof SupportIndexRoute
+  OtpBackupCodesIndexRoute: typeof OtpBackupCodesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -68,11 +156,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/support/': {
+      id: '/support/'
+      path: '/support'
+      fullPath: '/support/'
+      preLoaderRoute: typeof SupportIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register/': {
       id: '/register/'
       path: '/register'
       fullPath: '/register/'
       preLoaderRoute: typeof RegisterIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/otp/': {
+      id: '/otp/'
+      path: '/otp'
+      fullPath: '/otp/'
+      preLoaderRoute: typeof OtpIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/magic-link/': {
+      id: '/magic-link/'
+      path: '/magic-link'
+      fullPath: '/magic-link/'
+      preLoaderRoute: typeof MagicLinkIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login/': {
@@ -82,13 +191,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/help/': {
+      id: '/help/'
+      path: '/help'
+      fullPath: '/help/'
+      preLoaderRoute: typeof HelpIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact/': {
+      id: '/contact/'
+      path: '/contact'
+      fullPath: '/contact/'
+      preLoaderRoute: typeof ContactIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/otp/backup-codes/': {
+      id: '/otp/backup-codes/'
+      path: '/otp/backup-codes'
+      fullPath: '/otp/backup-codes/'
+      preLoaderRoute: typeof OtpBackupCodesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContactIndexRoute: ContactIndexRoute,
+  HelpIndexRoute: HelpIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
+  MagicLinkIndexRoute: MagicLinkIndexRoute,
+  OtpIndexRoute: OtpIndexRoute,
   RegisterIndexRoute: RegisterIndexRoute,
+  SupportIndexRoute: SupportIndexRoute,
+  OtpBackupCodesIndexRoute: OtpBackupCodesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

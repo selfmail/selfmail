@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Building2Icon, KeyRoundIcon } from "lucide-react";
 import { Google } from "#/components/ui/svgs/google";
 
@@ -66,15 +66,21 @@ function RouteComponent() {
               Register here
             </a>
           </p>
-          <p className="neutral-700 text-balance text-center text-sm">
-            By signing in, you agree to our{" "}
-            <a className="text-blue-500 hover:underline" href="/terms">
-              Terms of Service
-            </a>{" "}
-            and{" "}
-            <a className="text-blue-500 hover:underline" href="/privacy">
-              Privacy Policy
-            </a>
+          <p className="text-balance text-center text-neutral-700 text-sm">
+            Problems?{" "}
+            <Link
+              className="hit-area-2 text-blue-500 hover:underline"
+              to="/help"
+            >
+              Get help
+            </Link>{" "}
+            or{" "}
+            <Link
+              className="hit-area-2 text-blue-500 hover:underline"
+              to="/support"
+            >
+              contact our support team
+            </Link>
             .
           </p>
         </form>
