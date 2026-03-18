@@ -1,16 +1,10 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { m } from "#/paraglide/messages";
 
 export const Route = createFileRoute("/")({
-  beforeLoad(_) {
-    Route.redirect({
-      to: "/login",
-    });
-  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  throw redirect({
-    to: "/login",
-  });
+  return <p>{m.redirect_message()}</p>;
 }

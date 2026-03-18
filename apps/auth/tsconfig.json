@@ -2,6 +2,7 @@
   "include": ["**/*.ts", "**/*.tsx"],
   "compilerOptions": {
     "target": "ES2022",
+    "allowJs": true,
     "jsx": "react-jsx",
     "module": "ESNext",
     "baseUrl": ".",
