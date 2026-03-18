@@ -1,4 +1,5 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Agentation } from "agentation";
@@ -30,7 +31,7 @@ export const Route = createRootRoute({
   }),
   shellComponent: RootDocument,
 });
-
+const queryClient = new QueryClient();
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -38,23 +39,25 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
-      <body className="wrap-anywhere flex h-screen w-full flex-col items-center justify-center bg-white font-sans text-neutral-900 antialiased dark:bg-neutral-900 dark:text-neutral-100">
-        {children}
-        <Footer />
-        <TanStackDevtools
-          config={{
-            position: "bottom-right",
-          }}
-          plugins={[
-            {
-              name: "Tanstack Router",
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
-        <Scripts />
-        <Agentation />
-      </body>
+      <QueryClientProvider client={queryClient}>
+        <body className="wrap-anywhere flex h-screen w-full flex-col items-center justify-center bg-white font-sans text-neutral-900 antialiased dark:bg-neutral-900 dark:text-neutral-100">
+          {children}
+          <Footer />
+          <TanStackDevtools
+            config={{
+              position: "bottom-right",
+            }}
+            plugins={[
+              {
+                name: "Tanstack Router",
+                render: <TanStackRouterDevtoolsPanel />,
+              },
+            ]}
+          />
+          <Scripts />
+          <Agentation />
+        </body>
+      </QueryClientProvider>
     </html>
   );
 }

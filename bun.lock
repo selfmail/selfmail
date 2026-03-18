@@ -219,6 +219,15 @@
         "typescript": "^5",
       },
     },
+    "packages/logs": {
+      "name": "@selfmail/logs",
+      "devDependencies": {
+        "@types/bun": "latest",
+      },
+      "peerDependencies": {
+        "typescript": "^5",
+      },
+    },
     "packages/recipients": {
       "name": "@selfmail/recipients",
       "dependencies": {
@@ -1401,6 +1410,8 @@
     "@selfmail/inngest": ["@selfmail/inngest@workspace:packages/inngest"],
 
     "@selfmail/logging": ["@selfmail/logging@workspace:packages/logging"],
+
+    "@selfmail/logs": ["@selfmail/logs@workspace:packages/logs"],
 
     "@selfmail/recipients": ["@selfmail/recipients@workspace:packages/recipients"],
 
