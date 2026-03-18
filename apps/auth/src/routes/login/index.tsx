@@ -4,6 +4,7 @@ import { Building2Icon, KeyRoundIcon } from "lucide-react";
 import { useState } from "react";
 import { Google } from "#/components/ui/svgs/google";
 import { loginFn } from "#/lib/login";
+import { m } from "#/paraglide/messages";
 
 export const Route = createFileRoute("/login/")({
   component: RouteComponent,
@@ -29,7 +30,9 @@ function RouteComponent() {
         Selfmail
       </a>
       <div className="flex w-full flex-col gap-2 px-5 sm:px-10 md:w-100 md:px-0">
-        <h1 className="pb-4 text-center font-medium text-3xl">Welcome Back!</h1>
+        <h1 className="pb-4 text-center font-medium text-3xl">
+          {m["login.title"]()}
+        </h1>
         <form
           className="flex flex-col gap-4 pt-2"
           onSubmit={(e) => {

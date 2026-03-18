@@ -9,6 +9,13 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 const config = defineConfig({
   plugins: [
+    paraglideVitePlugin({
+      project: "./project.inlang",
+      outdir: "./src/paraglide",
+      outputStructure: "message-modules",
+      cookieName: "PARAGLIDE_LOCALE",
+      strategy: ["cookie", "preferredLanguage", "baseLocale"],
+    }),
     devtools(),
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
     tsconfigPaths({ projects: ["./tsconfig.json"] }),
@@ -18,19 +25,6 @@ const config = defineConfig({
       babel: {
         plugins: ["babel-plugin-react-compiler"],
       },
-    }),
-    paraglideVitePlugin({
-      project: "./project.inlang",
-      outdir: "./app/paraglide",
-      outputStructure: "message-modules",
-      cookieName: "PARAGLIDE_LOCALE",
-      strategy: ["url", "cookie", "preferredLanguage", "baseLocale"],
-      urlPatterns: [
-        {
-          pattern: "/:path(.*)?",
-          localized: [["en", "/en/:path(.*)?"]],
-        },
-      ],
     }),
   ],
 });

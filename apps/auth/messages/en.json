@@ -1,4 +1,14 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "redirect_message": "You are being redirected..."
+  "redirect_message": "You are being redirected...",
+  "login": {
+    "title": "Welcome Back!",
+    "description": "Melden Sie sich mit Ihrem Konto an, um fortzufahren.",
+    "email_label": "E-Mail-Adresse",
+    "password_label": "Passwort",
+    "submit_button": "Anmelden",
+    "forgot_password_link": "Passwort vergessen?"
+  },
+  "wtf": "Was zum Teufel ist das?",
+  "hallo": "Hallo, {name}!"
 }
