@@ -8,7 +8,7 @@
     "email_placeholder": "Your email address",
     "password_label": "Passwort",
     "submit_button": "Anmelden",
-    "forgot_password_link": "Passwort vergessen?",
+    "forgot_password_link": "Forgot password?",
     "proceed_button": "Proceed",
     "sign_in_google": "Sign in with Google",
     "sign_in_passkey": "Sign in with Passkey",
@@ -126,7 +126,5 @@
     "support_before_link": "Don't have access to your backup codes? Please",
     "support_link": "contact support",
     "support_after_link": "for further assistance."
-  },
-  "wtf": "Was zum Teufel ist das?",
-  "hallo": "Hallo, {name}!"
+  }
 }

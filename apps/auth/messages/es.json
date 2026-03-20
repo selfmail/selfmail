@@ -1,0 +1,130 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "redirect_message": "Está siendo redirigido...",
+  "login": {
+    "title": "¡Bienvenido de nuevo!",
+    "description": "Inicia sesión con tu cuenta para continuar.",
+    "email_label": "Dirección de correo electrónico",
+    "email_placeholder": "Tu dirección de correo electrónico",
+    "password_label": "Contraseña",
+    "submit_button": "Iniciar sesión",
+    "forgot_password_link": "¿Olvidaste tu contraseña?",
+    "proceed_button": "Continuar",
+    "sign_in_google": "Iniciar sesión con Google",
+    "sign_in_passkey": "Iniciar sesión con clave de acceso",
+    "enterprises": "Empresas",
+    "register_text": "¿No tienes una cuenta?",
+    "register_link": "Regístrate aquí",
+    "problems": {
+      "text": "¿Problemas?",
+      "get_help_link": "Obtener ayuda",
+      "or": "o",
+      "contact_support_link": "contacta a nuestro equipo de soporte"
+    }
+  },
+  "footer": {
+    "privacy_policy": "Política de privacidad",
+    "terms_of_service": "Términos de servicio"
+  },
+  "magic_link": {
+    "title": "Verificación exitosa",
+    "description": "Tu enlace mágico ha sido verificado. Ahora has iniciado sesión y puedes acceder a tu cuenta.",
+    "cta": "Ir al panel"
+  },
+  "help": {
+    "title": "Ayuda y soporte",
+    "faq": {
+      "email_access": {
+        "title": "No puedo acceder a mi dirección de correo electrónico.",
+        "description_before_link": "Si no puedes acceder a la dirección de correo electrónico vinculada a tu cuenta, por favor contáctanos a través del formulario de contacto",
+        "description_link": "aquí",
+        "description_after_link": ". También contáctanos si tienes otra dirección de correo electrónico que te gustaría vincular a tu cuenta."
+      },
+      "unknown_error": {
+        "title": "Se ha producido un error desconocido.",
+        "description_before_link": "En este caso, por favor inténtalo de nuevo más tarde o, si este problema persiste, contáctanos a través del formulario de contacto",
+        "description_link": "aquí",
+        "description_after_link": ". Copia tu ID de solicitud del mensaje de error e inclúyelo en tu mensaje para que podamos investigar el problema."
+      },
+      "passkey": {
+        "title": "No puedo acceder a mi clave de acceso.",
+        "description_before_link": "En este caso, por favor inténtalo de nuevo más tarde o, si este problema persiste, contáctanos a través del formulario de contacto",
+        "description_link": "aquí",
+        "description_after_link": ". Copia tu ID de solicitud del mensaje de error e inclúyelo en tu mensaje para que podamos investigar el problema."
+      },
+      "email_delivery": {
+        "title": "No he recibido un correo electrónico.",
+        "description_before_link": "Por favor inténtalo de nuevo más tarde. Si no ocurre ningún error, revisa tu carpeta de spam o contáctanos",
+        "description_link": "aquí",
+        "description_after_link": ". Para poder ayudarte, necesitas proporcionarnos tu correo electrónico."
+      },
+      "two_factor": {
+        "title": "He perdido mi dispositivo 2FA o códigos de respaldo.",
+        "description_before_link": "Si has perdido tu dispositivo 2FA (por ejemplo, no puedes acceder a tu aplicación de autenticación), por favor usa tus códigos de respaldo. Si también los has perdido, necesitas",
+        "description_link": "contactarnos aquí",
+        "description_after_link": ". Es posible que necesites proporcionar una prueba de identidad para que podamos verificar que eres el propietario legítimo de la cuenta. Después de una verificación exitosa, podemos ayudarte a recuperar el acceso a tu cuenta."
+      }
+    },
+    "still_questions_before_link": "¿Aún tienes preguntas? Por favor contáctanos a través del formulario de contacto",
+    "still_questions_link": "aquí",
+    "still_questions_after_link": "."
+  },
+  "contact": {
+    "title": "Contáctenos",
+    "name_placeholder": "Su Nombre Completo",
+    "email_placeholder": "Su Dirección de Correo Electrónico",
+    "problem_aria_label": "Seleccione un problema",
+    "problem_placeholder": "Seleccione un Problema",
+    "problems": {
+      "email_access": "No puedo acceder a mi dirección de correo electrónico.",
+      "passkey": "No puedo acceder a mi clave de acceso.",
+      "email_delivery": "No he recibido un correo electrónico.",
+      "two_factor": "Perdí mi dispositivo 2FA o códigos de respaldo.",
+      "other": "Otro"
+    },
+    "subject_placeholder": "Asunto",
+    "message_placeholder": "¿Cómo podemos ayudarle?",
+    "submit_button": "Enviar Mensaje",
+    "help_hint_before_link": "¿Necesita respuestas rápidas primero? Visite nuestra",
+    "help_hint_link": "página de Ayuda",
+    "help_hint_after_link": "."
+  },
+  "register": {
+    "title": "Cree Su Cuenta",
+    "name_placeholder": "Su Nombre Completo",
+    "email_placeholder": "Su Dirección de Correo Electrónico",
+    "password_placeholder": "Cree una Contraseña",
+    "submit_button": "Crear Cuenta",
+    "sign_in_google": "Iniciar sesión con Google",
+    "enterprise_setup": "Configuración Empresarial",
+    "login_text": "¿Ya tiene una Cuenta?",
+    "login_link": "Inicia sesión aquí",
+    "terms_text_before_link": "Al crear una cuenta, aceptas nuestros",
+    "terms_link": "Términos de Servicio",
+    "terms_text_middle": "y",
+    "privacy_link": "Política de Privacidad",
+    "terms_text_after_link": "."
+  },
+  "register_success": {
+    "title": "Cuenta Creada Exitosamente - Revisa tu Bandeja de Entrada",
+    "description": "Todo salió bien. Hemos enviado un correo de verificación con un enlace mágico a tu bandeja de entrada. Por favor, ábrelo y haz clic en el enlace para verificar tu dirección de correo electrónico."
+  },
+  "otp": {
+    "title": "Ingresa el Código OTP",
+    "description": "Tienes una aplicación de autenticación conectada a tu cuenta. Por favor, ingresa el código de 6 dígitos de tu aplicación para verificar tu identidad y acceder a tu cuenta.",
+    "submit_button": "Verificar Código",
+    "backup_before_link": "¿Perdiste el acceso a la aplicación de autenticación?",
+    "backup_link": "Usar códigos de respaldo"
+  },
+  "otp_backup": {
+    "title": "Usar Código de Respaldo",
+    "description": "Ingresa uno de tus códigos de respaldo guardados para continuar iniciando sesión si ya no tienes acceso a tu aplicación de autenticación.",
+    "code_placeholder": "Ingresa el código de respaldo",
+    "submit_button": "Verificar Código de Respaldo",
+    "otp_before_link": "¿Encontraste nuevamente tu aplicación de autenticación?",
+    "otp_link": "Volver al inicio de sesión con OTP",
+    "support_before_link": "¿No tienes acceso a tus códigos de respaldo? Por favor,",
+    "support_link": "contacta con soporte",
+    "support_after_link": "para obtener más ayuda."
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "redirect_message": "Vous êtes en cours de redirection...",
+  "login": {
+    "title": "Bon retour !",
+    "description": "Connectez-vous avec votre compte pour continuer.",
+    "email_label": "Adresse e-mail",
+    "email_placeholder": "Votre adresse e-mail",
+    "password_label": "Mot de passe",
+    "submit_button": "Se connecter",
+    "forgot_password_link": "Mot de passe oublié ?",
+    "proceed_button": "Continuer",
+    "sign_in_google": "Se connecter avec Google",
+    "sign_in_passkey": "Se connecter avec une clé d'accès",
+    "enterprises": "Entreprises",
+    "register_text": "Vous n'avez pas de compte ?",
+    "register_link": "S'inscrire ici",
+    "problems": {
+      "text": "Des problèmes ?",
+      "get_help_link": "Obtenir de l'aide",
+      "or": "ou",
+      "contact_support_link": "contacter notre équipe d'assistance"
+    }
+  },
+  "footer": {
+    "privacy_policy": "Politique de confidentialité",
+    "terms_of_service": "Conditions d'utilisation"
+  },
+  "magic_link": {
+    "title": "Vérification réussie",
+    "description": "Votre lien magique a été vérifié. Vous êtes maintenant connecté et pouvez accéder à votre compte.",
+    "cta": "Accéder au tableau de bord"
+  },
+  "help": {
+    "title": "Aide et assistance",
+    "faq": {
+      "email_access": {
+        "title": "Je ne peux pas accéder à mon adresse e-mail.",
+        "description_before_link": "Si vous ne pouvez pas accéder à l'adresse e-mail associée à votre compte, veuillez nous contacter via le formulaire de contact",
+        "description_link": "ici",
+        "description_after_link": ". Veuillez également nous contacter si vous avez une autre adresse e-mail que vous souhaitez associer à votre compte."
+      },
+      "unknown_error": {
+        "title": "Une erreur inconnue s'est produite.",
+        "description_before_link": "Dans ce cas, veuillez réessayer plus tard ou, si ce problème persiste, veuillez nous contacter via le formulaire de contact",
+        "description_link": "ici",
+        "description_after_link": ". Copiez votre identifiant de requête depuis le message d'erreur et incluez-le dans votre message, afin que nous puissions enquêter sur le problème."
+      },
+      "passkey": {
+        "title": "Je ne peux pas accéder à ma clé d'accès.",
+        "description_before_link": "Dans ce cas, veuillez réessayer plus tard ou, si ce problème persiste, veuillez nous contacter via le formulaire de contact",
+        "description_link": "ici",
+        "description_after_link": ". Copiez votre identifiant de requête depuis le message d'erreur et incluez-le dans votre message, afin que nous puissions enquêter sur le problème."
+      },
+      "email_delivery": {
+        "title": "Je n'ai pas reçu d'e-mail.",
+        "description_before_link": "Veuillez réessayer plus tard. Si aucune erreur ne se produit, veuillez consulter votre dossier spam ou nous contacter",
+        "description_link": "ici",
+        "description_after_link": ". Afin de vous aider, vous devez nous fournir votre adresse e-mail."
+      },
+      "two_factor": {
+        "title": "J'ai perdu mon appareil 2FA ou mes codes de secours.",
+        "description_before_link": "Si vous avez perdu votre appareil 2FA (par exemple, vous ne pouvez plus accéder à votre application d'authentification), veuillez utiliser vos codes de secours. Si vous les avez également perdus, vous devez",
+        "description_link": "nous contacter ici",
+        "description_after_link": ". Vous devrez peut-être fournir une preuve d'identité afin que nous puissions vérifier que vous êtes le propriétaire légitime du compte. Après vérification réussie, nous pourrons vous aider à récupérer l'accès à votre compte."
+      }
+    },
+    "still_questions_before_link": "Vous avez encore des questions ? Veuillez nous contacter via le formulaire de contact",
+    "still_questions_link": "ici",
+    "still_questions_after_link": "."
+  },
+  "contact": {
+    "title": "Nous Contacter",
+    "name_placeholder": "Votre Nom Complet",
+    "email_placeholder": "Votre Adresse E-Mail",
+    "problem_aria_label": "Sélectionner un problème",
+    "problem_placeholder": "Sélectionner un Problème",
+    "problems": {
+      "email_access": "Je ne peux pas accéder à mon adresse e-mail.",
+      "passkey": "Je ne peux pas accéder à ma clé d'accès.",
+      "email_delivery": "Je n'ai pas reçu d'e-mail.",
+      "two_factor": "J'ai perdu mon appareil d'authentification à deux facteurs ou mes codes de secours.",
+      "other": "Autre"
+    },
+    "subject_placeholder": "Objet",
+    "message_placeholder": "Comment pouvons-nous vous aider ?",
+    "submit_button": "Envoyer le Message",
+    "help_hint_before_link": "Besoin de réponses rapides d'abord ? Consultez notre",
+    "help_hint_link": "page d'aide",
+    "help_hint_after_link": "."
+  },
+  "register": {
+    "title": "Créer Votre Compte",
+    "name_placeholder": "Votre Nom Complet",
+    "email_placeholder": "Votre Adresse E-Mail",
+    "password_placeholder": "Créer un Mot de Passe",
+    "submit_button": "Créer un Compte",
+    "sign_in_google": "Se connecter avec Google",
+    "enterprise_setup": "Configuration Entreprise",
+    "login_text": "Vous avez déjà un compte ?",
+    "login_link": "Se connecter ici",
+    "terms_text_before_link": "En créant un compte, vous acceptez nos",
+    "terms_link": "Conditions d'utilisation",
+    "terms_text_middle": "et notre",
+    "privacy_link": "Politique de confidentialité",
+    "terms_text_after_link": "."
+  },
+  "register_success": {
+    "title": "Compte créé avec succès - Vérifiez votre boîte de réception",
+    "description": "Tout s'est bien passé. Nous avons envoyé un e-mail de vérification avec un lien magique dans votre boîte de réception. Veuillez l'ouvrir et cliquer sur le lien pour vérifier votre adresse e-mail."
+  },
+  "otp": {
+    "title": "Saisissez le code OTP",
+    "description": "Vous avez une application d'authentification connectée à votre compte. Veuillez saisir le code à 6 chiffres de votre application pour vérifier votre identité et accéder à votre compte.",
+    "submit_button": "Vérifier le code",
+    "backup_before_link": "Vous n'avez plus accès à votre application d'authentification ?",
+    "backup_link": "Utiliser les codes de secours"
+  },
+  "otp_backup": {
+    "title": "Utiliser un code de secours",
+    "description": "Saisissez l'un de vos codes de secours enregistrés pour continuer à vous connecter si vous n'avez plus accès à votre application d'authentification.",
+    "code_placeholder": "Saisissez le code de secours",
+    "submit_button": "Vérifier le code de secours",
+    "otp_before_link": "Vous avez retrouvé votre application d'authentification ?",
+    "otp_link": "Retour à la connexion OTP",
+    "support_before_link": "Vous n'avez pas accès à vos codes de secours ? Veuillez",
+    "support_link": "contacter l'assistance",
+    "support_after_link": "pour obtenir de l'aide."
+  }
+}

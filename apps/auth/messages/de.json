@@ -3,6 +3,7 @@
   "redirect_message": "Sie werden weitergeleitet...",
   "login": {
     "title": "Willkommen zurück!",
+    "description": "Melden Sie sich mit Ihrem Konto an, um fortzufahren.",
     "email_label": "E-Mail-Adresse",
     "email_placeholder": "Ihre E-Mail-Adresse",
     "password_label": "Passwort",
@@ -125,6 +126,5 @@
     "support_before_link": "Kein Zugriff auf Ihre Backup-Codes? Bitte",
     "support_link": "Support kontaktieren",
     "support_after_link": "für weitere Unterstützung."
-  },
-  "wtf": "Was zum Teufel ist das?"
+  }
 }
