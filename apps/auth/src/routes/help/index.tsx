@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { m } from "#/paraglide/messages";
 import {
   Accordion,
   AccordionContent,
@@ -21,7 +22,7 @@ function RouteComponent() {
       </a>
       <div className="w-full flex-col gap-4 px-5 pt-16 sm:px-10 sm:pt-0 md:w-100 md:px-0">
         <h1 className="pb-4 text-center font-medium text-2xl">
-          Help & Support
+          {m["help.title"]()}
         </h1>
         <Accordion className={"flex flex-col gap-4"}>
           <AccordionItem
@@ -29,19 +30,17 @@ function RouteComponent() {
             value="email-issues"
           >
             <AccordionTrigger className={"hit-area-4 cursor-pointer text-lg"}>
-              I can't access my E-Mail address.
+              {m["help.faq.email_access.title"]()}
             </AccordionTrigger>
             <AccordionContent>
-              If you can't access your E-Mail address connected to your account,
-              please contact us via the contact form{" "}
+              {m["help.faq.email_access.description_before_link"]()}{" "}
               <Link
                 className="hit-area-2 text-blue-500 hover:underline"
                 to="/contact"
               >
-                here
+                {m["help.faq.email_access.description_link"]()}
               </Link>
-              . Please also contact us, if you have another email address you'd
-              like to connect to your account.
+              {m["help.faq.email_access.description_after_link"]()}
             </AccordionContent>
           </AccordionItem>
           <AccordionItem
@@ -49,19 +48,17 @@ function RouteComponent() {
             value="unknown-error"
           >
             <AccordionTrigger className={"hit-area-4 cursor-pointer text-lg"}>
-              Unknown error occurred.
+              {m["help.faq.unknown_error.title"]()}
             </AccordionTrigger>
             <AccordionContent>
-              In this case, please try again later or, if this issue keeps
-              occurring, please contact us via the contact form{" "}
+              {m["help.faq.unknown_error.description_before_link"]()}{" "}
               <Link
                 className="hit-area-2 text-blue-500 hover:underline"
                 to="/contact"
               >
-                here
+                {m["help.faq.unknown_error.description_link"]()}
               </Link>
-              . Copy your request ID from the error message and include it in
-              your message to us, so we can investigate the issue.
+              {m["help.faq.unknown_error.description_after_link"]()}
             </AccordionContent>
           </AccordionItem>
           <AccordionItem
@@ -69,20 +66,17 @@ function RouteComponent() {
             value="passkey-issues"
           >
             <AccordionTrigger className={"hit-area-4 cursor-pointer text-lg"}>
-              I can't access my passkey.
+              {m["help.faq.passkey.title"]()}
             </AccordionTrigger>
             <AccordionContent>
-              {/* TODO: Implement passkey issue resolution */}
-              In this case, please try again later or, if this issue keeps
-              occurring, please contact us via the contact form{" "}
+              {m["help.faq.passkey.description_before_link"]()}{" "}
               <Link
                 className="hit-area-2 text-blue-500 hover:underline"
                 to="/contact"
               >
-                here
+                {m["help.faq.passkey.description_link"]()}
               </Link>
-              . Copy your request ID from the error message and include it in
-              your message to us, so we can investigate the issue.
+              {m["help.faq.passkey.description_after_link"]()}
             </AccordionContent>
           </AccordionItem>
           <AccordionItem
@@ -90,18 +84,17 @@ function RouteComponent() {
             value="email-sending-issues"
           >
             <AccordionTrigger className={"hit-area-4 cursor-pointer text-lg"}>
-              Haven't received an E-Mail.
+              {m["help.faq.email_delivery.title"]()}
             </AccordionTrigger>
             <AccordionContent>
-              Please try again later, if no error occurs, please take a look
-              into your spam folder or contact us{" "}
+              {m["help.faq.email_delivery.description_before_link"]()}{" "}
               <Link
                 className="hit-area-2 text-blue-500 hover:underline"
                 to="/contact"
               >
-                here
+                {m["help.faq.email_delivery.description_link"]()}
               </Link>
-              . In order to help you, you need to provide us your email.
+              {m["help.faq.email_delivery.description_after_link"]()}
             </AccordionContent>
           </AccordionItem>
           <AccordionItem
@@ -109,33 +102,29 @@ function RouteComponent() {
             value="2fa-issues"
           >
             <AccordionTrigger className={"hit-area-4 cursor-pointer text-lg"}>
-              Lost my 2FA device or backup codes.
+              {m["help.faq.two_factor.title"]()}
             </AccordionTrigger>
             <AccordionContent>
-              If you've lost your 2FA device (e.g. you can't access your
-              authenticator app), please use your backup codes. If you also lost
-              them, you need to{" "}
+              {m["help.faq.two_factor.description_before_link"]()}{" "}
               <Link
                 className="hit-area-2 text-blue-500 hover:underline"
                 to="/contact"
               >
-                contact us here
+                {m["help.faq.two_factor.description_link"]()}
               </Link>
-              . You may need to provide proof of identity, so we can verify that
-              you are the rightful owner of the account. After successful
-              verification, we can help you regain access to your account.
+              {m["help.faq.two_factor.description_after_link"]()}
             </AccordionContent>
           </AccordionItem>
         </Accordion>
         <p className="text-balance pt-4 text-center">
-          Still have questions? Please contact us via the contact form{" "}
+          {m["help.still_questions_before_link"]()}{" "}
           <Link
             className="hit-area-2 text-blue-500 hover:underline"
             to="/contact"
           >
-            here
+            {m["help.still_questions_link"]()}
           </Link>
-          .
+          {m["help.still_questions_after_link"]()}
         </p>
       </div>
     </div>

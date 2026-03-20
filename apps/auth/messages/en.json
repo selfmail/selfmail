@@ -3,11 +3,129 @@
   "redirect_message": "You are being redirected...",
   "login": {
     "title": "Welcome Back!",
-    "description": "Melden Sie sich mit Ihrem Konto an, um fortzufahren.",
+    "description": "Sign in with your account to continue.",
     "email_label": "E-Mail-Adresse",
+    "email_placeholder": "Your email address",
     "password_label": "Passwort",
     "submit_button": "Anmelden",
-    "forgot_password_link": "Passwort vergessen?"
+    "forgot_password_link": "Passwort vergessen?",
+    "proceed_button": "Proceed",
+    "sign_in_google": "Sign in with Google",
+    "sign_in_passkey": "Sign in with Passkey",
+    "enterprises": "Enterprises",
+    "register_text": "Don't have an account?",
+    "register_link": "Register here",
+    "problems": {
+      "text": "Problems?",
+      "get_help_link": "Get help",
+      "or": "or",
+      "contact_support_link": "contact our support team"
+    }
+  },
+  "footer": {
+    "privacy_policy": "Privacy Policy",
+    "terms_of_service": "Terms of Service"
+  },
+  "magic_link": {
+    "title": "Verification Successful",
+    "description": "Your magic link has been verified. You are now signed in and can access your account.",
+    "cta": "Go to Dashboard"
+  },
+  "help": {
+    "title": "Help & Support",
+    "faq": {
+      "email_access": {
+        "title": "I can't access my E-Mail address.",
+        "description_before_link": "If you can't access your E-Mail address connected to your account, please contact us via the contact form",
+        "description_link": "here",
+        "description_after_link": ". Please also contact us, if you have another email address you'd like to connect to your account."
+      },
+      "unknown_error": {
+        "title": "Unknown error occurred.",
+        "description_before_link": "In this case, please try again later or, if this issue keeps occurring, please contact us via the contact form",
+        "description_link": "here",
+        "description_after_link": ". Copy your request ID from the error message and include it in your message to us, so we can investigate the issue."
+      },
+      "passkey": {
+        "title": "I can't access my passkey.",
+        "description_before_link": "In this case, please try again later or, if this issue keeps occurring, please contact us via the contact form",
+        "description_link": "here",
+        "description_after_link": ". Copy your request ID from the error message and include it in your message to us, so we can investigate the issue."
+      },
+      "email_delivery": {
+        "title": "Haven't received an E-Mail.",
+        "description_before_link": "Please try again later, if no error occurs, please take a look into your spam folder or contact us",
+        "description_link": "here",
+        "description_after_link": ". In order to help you, you need to provide us your email."
+      },
+      "two_factor": {
+        "title": "Lost my 2FA device or backup codes.",
+        "description_before_link": "If you've lost your 2FA device (e.g. you can't access your authenticator app), please use your backup codes. If you also lost them, you need to",
+        "description_link": "contact us here",
+        "description_after_link": ". You may need to provide proof of identity, so we can verify that you are the rightful owner of the account. After successful verification, we can help you regain access to your account."
+      }
+    },
+    "still_questions_before_link": "Still have questions? Please contact us via the contact form",
+    "still_questions_link": "here",
+    "still_questions_after_link": "."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "name_placeholder": "Your Full Name",
+    "email_placeholder": "Your E-Mail Address",
+    "problem_aria_label": "Select a problem",
+    "problem_placeholder": "Select a Problem",
+    "problems": {
+      "email_access": "I can't access my E-Mail address.",
+      "passkey": "I can't access my passkey.",
+      "email_delivery": "Haven't received an E-Mail.",
+      "two_factor": "Lost my 2FA device or backup codes.",
+      "other": "Other"
+    },
+    "subject_placeholder": "Subject",
+    "message_placeholder": "How can we help you?",
+    "submit_button": "Send Message",
+    "help_hint_before_link": "Need quick answers first? Visit our",
+    "help_hint_link": "Help page",
+    "help_hint_after_link": "."
+  },
+  "register": {
+    "title": "Create Your Account",
+    "name_placeholder": "Your Full Name",
+    "email_placeholder": "Your E-Mail Address",
+    "password_placeholder": "Create a Password",
+    "submit_button": "Create Account",
+    "sign_in_google": "Sign in with Google",
+    "enterprise_setup": "Enterprise Setup",
+    "login_text": "Already have an Account?",
+    "login_link": "Sign in here",
+    "terms_text_before_link": "By creating an account, you agree to our",
+    "terms_link": "Terms of Service",
+    "terms_text_middle": "and",
+    "privacy_link": "Privacy Policy",
+    "terms_text_after_link": "."
+  },
+  "register_success": {
+    "title": "Account Created Successfully - Check your Inbox",
+    "description": "Everything went alright. We sent a verification email with a magic link to your inbox. Please open it and click the link to verify your email address."
+  },
+  "otp": {
+    "title": "Enter OTP Code",
+    "description": "You have an authenticator app connected to your account. Please enter the 6-digit code from your app to verify your identity and access your account.",
+    "submit_button": "Verify Code",
+    "backup_before_link": "Lost access to authenticator app?",
+    "backup_link": "Use backup codes"
+  },
+  "otp_backup": {
+    "title": "Use Backup Code",
+    "description": "Enter one of your saved backup codes to continue signing in if you no longer have access to your authenticator app.",
+    "code_placeholder": "Enter backup code",
+    "submit_button": "Verify Backup Code",
+    "otp_before_link": "Found your authenticator app again?",
+    "otp_link": "Go back to OTP login",
+    "support_before_link": "Don't have access to your backup codes? Please",
+    "support_link": "contact support",
+    "support_after_link": "for further assistance."
   },
   "wtf": "Was zum Teufel ist das?",
   "hallo": "Hallo, {name}!"

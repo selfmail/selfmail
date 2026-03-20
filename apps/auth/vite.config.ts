@@ -13,7 +13,7 @@ const config = defineConfig({
       project: "./project.inlang",
       outdir: "./src/paraglide",
       outputStructure: "message-modules",
-      cookieName: "PARAGLIDE_LOCALE",
+      cookieName: "LOCALE",
       strategy: ["cookie", "preferredLanguage", "baseLocale"],
     }),
     devtools(),

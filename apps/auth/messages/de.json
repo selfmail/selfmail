@@ -3,11 +3,128 @@
   "redirect_message": "Sie werden weitergeleitet...",
   "login": {
     "title": "Willkommen zurück!",
-    "description": "Melden Sie sich mit Ihrem Konto an, um fortzufahren.",
     "email_label": "E-Mail-Adresse",
+    "email_placeholder": "Ihre E-Mail-Adresse",
     "password_label": "Passwort",
     "submit_button": "Anmelden",
-    "forgot_password_link": "Passwort vergessen?"
+    "forgot_password_link": "Passwort vergessen?",
+    "proceed_button": "Weiter",
+    "sign_in_google": "Mit Google anmelden",
+    "sign_in_passkey": "Mit Passkey anmelden",
+    "enterprises": "Unternehmen",
+    "register_text": "Noch kein Konto?",
+    "register_link": "Hier registrieren",
+    "problems": {
+      "text": "Probleme?",
+      "get_help_link": "Hilfe erhalten",
+      "or": "oder",
+      "contact_support_link": "Kontaktieren Sie den Support"
+    }
+  },
+  "footer": {
+    "privacy_policy": "Datenschutzrichtlinie",
+    "terms_of_service": "Nutzungsbedingungen"
+  },
+  "magic_link": {
+    "title": "Verifizierung erfolgreich",
+    "description": "Ihr Magic Link wurde verifiziert. Sie sind jetzt angemeldet und können auf Ihr Konto zugreifen.",
+    "cta": "Zum Dashboard"
+  },
+  "help": {
+    "title": "Hilfe & Support",
+    "faq": {
+      "email_access": {
+        "title": "Ich kann nicht auf meine E-Mail-Adresse zugreifen.",
+        "description_before_link": "Wenn Sie keinen Zugriff auf die mit Ihrem Konto verknüpfte E-Mail-Adresse haben, kontaktieren Sie uns bitte über das Kontaktformular",
+        "description_link": "hier",
+        "description_after_link": ". Kontaktieren Sie uns bitte auch, wenn Sie eine andere E-Mail-Adresse mit Ihrem Konto verknüpfen möchten."
+      },
+      "unknown_error": {
+        "title": "Ein unbekannter Fehler ist aufgetreten.",
+        "description_before_link": "Bitte versuchen Sie es später erneut oder kontaktieren Sie uns über das Kontaktformular, wenn dieses Problem weiterhin auftritt",
+        "description_link": "hier",
+        "description_after_link": ". Kopieren Sie die Request-ID aus der Fehlermeldung und fügen Sie sie Ihrer Nachricht hinzu, damit wir das Problem untersuchen können."
+      },
+      "passkey": {
+        "title": "Ich kann nicht auf meinen Passkey zugreifen.",
+        "description_before_link": "Bitte versuchen Sie es später erneut oder kontaktieren Sie uns über das Kontaktformular, wenn dieses Problem weiterhin auftritt",
+        "description_link": "hier",
+        "description_after_link": ". Kopieren Sie die Request-ID aus der Fehlermeldung und fügen Sie sie Ihrer Nachricht hinzu, damit wir das Problem untersuchen können."
+      },
+      "email_delivery": {
+        "title": "Ich habe keine E-Mail erhalten.",
+        "description_before_link": "Bitte versuchen Sie es später erneut. Wenn kein Fehler auftritt, prüfen Sie Ihren Spam-Ordner oder kontaktieren Sie uns",
+        "description_link": "hier",
+        "description_after_link": ". Damit wir Ihnen helfen können, müssen Sie uns Ihre E-Mail-Adresse mitteilen."
+      },
+      "two_factor": {
+        "title": "Ich habe mein 2FA-Gerät oder meine Backup-Codes verloren.",
+        "description_before_link": "Wenn Sie Ihr 2FA-Gerät verloren haben (z. B. keinen Zugriff auf Ihre Authenticator-App), verwenden Sie bitte Ihre Backup-Codes. Wenn Sie diese ebenfalls verloren haben, müssen Sie",
+        "description_link": "uns hier kontaktieren",
+        "description_after_link": ". Möglicherweise müssen Sie einen Identitätsnachweis erbringen, damit wir verifizieren können, dass Sie der rechtmäßige Kontoinhaber sind. Nach erfolgreicher Verifizierung helfen wir Ihnen, den Zugriff auf Ihr Konto wiederherzustellen."
+      }
+    },
+    "still_questions_before_link": "Noch Fragen? Bitte kontaktieren Sie uns über das Kontaktformular",
+    "still_questions_link": "hier",
+    "still_questions_after_link": "."
+  },
+  "contact": {
+    "title": "Kontakt",
+    "name_placeholder": "Ihr vollständiger Name",
+    "email_placeholder": "Ihre E-Mail-Adresse",
+    "problem_aria_label": "Problem auswählen",
+    "problem_placeholder": "Ein Problem auswählen",
+    "problems": {
+      "email_access": "Ich kann nicht auf meine E-Mail-Adresse zugreifen.",
+      "passkey": "Ich kann nicht auf meinen Passkey zugreifen.",
+      "email_delivery": "Ich habe keine E-Mail erhalten.",
+      "two_factor": "Ich habe mein 2FA-Gerät oder meine Backup-Codes verloren.",
+      "other": "Sonstiges"
+    },
+    "subject_placeholder": "Betreff",
+    "message_placeholder": "Wie können wir Ihnen helfen?",
+    "submit_button": "Nachricht senden",
+    "help_hint_before_link": "Benötigen Sie zuerst schnelle Antworten? Besuchen Sie unsere",
+    "help_hint_link": "Hilfeseite",
+    "help_hint_after_link": "."
+  },
+  "register": {
+    "title": "Konto erstellen",
+    "name_placeholder": "Ihr vollständiger Name",
+    "email_placeholder": "Ihre E-Mail-Adresse",
+    "password_placeholder": "Passwort erstellen",
+    "submit_button": "Konto erstellen",
+    "sign_in_google": "Mit Google anmelden",
+    "enterprise_setup": "Unternehmens-Setup",
+    "login_text": "Sie haben bereits ein Konto?",
+    "login_link": "Hier anmelden",
+    "terms_text_before_link": "Mit der Erstellung eines Kontos stimmen Sie unseren",
+    "terms_link": "Nutzungsbedingungen",
+    "terms_text_middle": "und der",
+    "privacy_link": "Datenschutzrichtlinie",
+    "terms_text_after_link": "zu."
+  },
+  "register_success": {
+    "title": "Konto erfolgreich erstellt – prüfen Sie Ihren Posteingang",
+    "description": "Alles hat geklappt. Wir haben Ihnen eine Verifizierungs-E-Mail mit einem Magic Link an Ihren Posteingang gesendet. Öffnen Sie diese und klicken Sie auf den Link, um Ihre E-Mail-Adresse zu verifizieren."
+  },
+  "otp": {
+    "title": "OTP-Code eingeben",
+    "description": "Sie haben eine Authenticator-App mit Ihrem Konto verbunden. Bitte geben Sie den 6-stelligen Code aus Ihrer App ein, um Ihre Identität zu verifizieren und auf Ihr Konto zuzugreifen.",
+    "submit_button": "Code verifizieren",
+    "backup_before_link": "Kein Zugriff auf die Authenticator-App?",
+    "backup_link": "Backup-Codes verwenden"
+  },
+  "otp_backup": {
+    "title": "Backup-Code verwenden",
+    "description": "Geben Sie einen Ihrer gespeicherten Backup-Codes ein, um die Anmeldung fortzusetzen, wenn Sie keinen Zugriff mehr auf Ihre Authenticator-App haben.",
+    "code_placeholder": "Backup-Code eingeben",
+    "submit_button": "Backup-Code verifizieren",
+    "otp_before_link": "Wieder Zugriff auf Ihre Authenticator-App?",
+    "otp_link": "Zurück zur OTP-Anmeldung",
+    "support_before_link": "Kein Zugriff auf Ihre Backup-Codes? Bitte",
+    "support_link": "Support kontaktieren",
+    "support_after_link": "für weitere Unterstützung."
   },
   "wtf": "Was zum Teufel ist das?"
 }

@@ -43,7 +43,7 @@ function RouteComponent() {
           <input
             className="w-full rounded-full border-2 border-neutral-200 px-6 py-3 outline-none ring-neutral-200 transition-colors duration-200 focus-within:border-neutral-400 focus-within:ring-2 focus:outline-none"
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Your E-Mail Address"
+            placeholder={m["login.email_placeholder"]()}
             type="email"
             value={email}
           />
@@ -51,7 +51,7 @@ function RouteComponent() {
             className="2 hit-area-2 w-full cursor-pointer rounded-full bg-neutral-900 px-6 py-3 text-white transition-colors duration-200 focus-within:bg-neutral-700 focus-within:ring-2 focus-within:ring-neutral-700 focus-within:ring-offset-2 hover:bg-neutral-700 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-500"
             type="submit"
           >
-            Proceed
+            {m["login.proceed_button"]()}
           </button>
           <div className="h-0.5 w-full rounded-full bg-neutral-200" />
           <div className="flex flex-col gap-2">
@@ -60,7 +60,9 @@ function RouteComponent() {
               type="button"
             >
               <Google className="absolute left-6 h-4 w-4" />
-              <span className="ml-8 w-full text-left">Sign in with Google</span>
+              <span className="ml-8 w-full text-left">
+                {m["login.sign_in_google"]()}
+              </span>
             </button>
             <button
               className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-neutral-200 px-6 py-3 transition-colors duration-200 hover:bg-neutral-100"
@@ -69,7 +71,7 @@ function RouteComponent() {
               <KeyRoundIcon className="absolute left-6 h-4 w-4" />
 
               <span className="ml-8 w-full text-left">
-                Sign in with Passkey
+                {m["login.sign_in_passkey"]()}
               </span>
             </button>
             <button
@@ -78,32 +80,34 @@ function RouteComponent() {
             >
               <Building2Icon className="absolute left-6 h-4 w-4" />
 
-              <span className="ml-8 w-full text-left">Enterprises</span>
+              <span className="ml-8 w-full text-left">
+                {m["login.enterprises"]()}
+              </span>
             </button>
           </div>
           <p className="pt-4 text-center">
-            Don't have an Account?{" "}
+            {m["login.register_text"]()}{" "}
             <a
               className="hit-area-2 text-blue-500 hover:underline"
               href="/register"
             >
-              Register here
+              {m["login.register_link"]()}
             </a>
           </p>
           <p className="text-balance text-center text-neutral-700 text-sm">
-            Problems?{" "}
+            {m["login.problems.text"]()}{" "}
             <Link
               className="hit-area-2 text-blue-500 hover:underline"
               to="/help"
             >
-              Get help
+              {m["login.problems.get_help_link"]()}
             </Link>{" "}
-            or{" "}
+            {m["login.problems.or"]()}{" "}
             <Link
               className="hit-area-2 text-blue-500 hover:underline"
               to="/contact"
             >
-              contact our support team
+              {m["login.problems.contact_support_link"]()}
             </Link>
             .
           </p>
