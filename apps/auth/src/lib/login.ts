@@ -1,17 +1,18 @@
-import { db } from "@selfmail/db";
 import { createServerFn } from "@tanstack/react-start";
 
-export const loginFn = createServerFn({ method: "POST" })
-  .inputValidator((data: { email: string }) => data)
-  .handler(async ({ data }) => {
-    // TODO: add posthog analytics, ratelimiting, proper error handling, user logic, cookie handling, organization handling, etc.
-    const dbUser = await db.user.findUnique({
-      where: { email: data.email },
-    });
-
-    console.log("dbUser", dbUser);
-
-    if (!dbUser) {
-      throw new Error("Invalid email or password");
+export const handleLoginForm = createServerFn({
+  method: "POST",
+})
+  .inputValidator((data: { email: string }) => {
+    if (!data.email) {
+      throw new Error("Email is required");
     }
+    return data;
+  })
+  .handler((ctx) => {
+    console.log("Handling login form with data:", ctx.data);
+
+    console.log("Login successful, redirecting...");
+
+    return "Form submitted successfully";
   });

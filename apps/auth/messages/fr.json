@@ -15,6 +15,10 @@
     "enterprises": "Entreprises",
     "register_text": "Vous n'avez pas de compte ?",
     "register_link": "S'inscrire ici",
+    "errors": {
+      "email_required": "L'adresse e-mail est requise",
+      "email_invalid": "Veuillez saisir une adresse e-mail valide"
+    },
     "problems": {
       "text": "Des problèmes ?",
       "get_help_link": "Obtenir de l'aide",

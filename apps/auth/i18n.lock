@@ -17,6 +17,8 @@ checksums:
     login/enterprises: a933348763c26d1f9a726e4fe6794d0c
     login/register_text: 613efdc05ae6d04b7136d199645c56ac
     login/register_link: f302c44821363b07f9852038af927b06
+    login/errors/email_required: 26c1cc9143c4863de2601fa704aa81e5
+    login/errors/email_invalid: 8de4bc8832b11b380bc4cbcedc16e48b
     login/problems/text: 4d2d8e6f53d9ef513c0427d479a2bcda
     login/problems/get_help_link: b055bf36dfa6e856d498314b57c96b13
     login/problems/or: 7b133c38bec0d5ee23cc6bcf9a8de50b
