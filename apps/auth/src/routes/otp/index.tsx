@@ -7,6 +7,15 @@ import {
 import { m } from "#/paraglide/messages";
 
 export const Route = createFileRoute("/otp/")({
+  head: () => ({
+    meta: [
+      { title: m["meta.otp.title"]() },
+      {
+        name: "description",
+        content: m["meta.otp.description"](),
+      },
+    ],
+  }),
   component: RouteComponent,
 });
 

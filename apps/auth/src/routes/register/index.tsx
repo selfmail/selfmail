@@ -116,6 +116,15 @@ const { useAppForm } = createFormHook({
 });
 
 export const Route = createFileRoute("/register/")({
+  head: () => ({
+    meta: [
+      { title: m["meta.register.title"]() },
+      {
+        name: "description",
+        content: m["meta.register.description"](),
+      },
+    ],
+  }),
   component: RouteComponent,
   beforeLoad() {
     // TODO: Check for any active session before showing page

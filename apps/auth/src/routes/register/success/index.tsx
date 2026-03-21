@@ -2,6 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { m } from "#/paraglide/messages";
 
 export const Route = createFileRoute("/register/success/")({
+  head: () => ({
+    meta: [
+      { title: m["meta.register_success.title"]() },
+      {
+        name: "description",
+        content: m["meta.register_success.description"](),
+      },
+    ],
+  }),
   component: RouteComponent,
 });
 

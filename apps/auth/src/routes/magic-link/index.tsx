@@ -2,6 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { m } from "#/paraglide/messages";
 
 export const Route = createFileRoute("/magic-link/")({
+  head: () => ({
+    meta: [
+      { title: m["meta.magic_link.title"]() },
+      {
+        name: "description",
+        content: m["meta.magic_link.description"](),
+      },
+    ],
+  }),
   component: RouteComponent,
 });
 

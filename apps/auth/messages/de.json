@@ -130,5 +130,39 @@
     "support_before_link": "Kein Zugriff auf Ihre Backup-Codes? Bitte",
     "support_link": "Support kontaktieren",
     "support_after_link": "für weitere Unterstützung."
+  },
+  "meta": {
+    "login": {
+      "title": "Anmelden | Selfmail",
+      "description": "Melden Sie sich mit Ihrem Selfmail-Konto an, um auf Ihr sicheres Postfach zuzugreifen."
+    },
+    "register": {
+      "title": "Konto erstellen | Selfmail",
+      "description": "Registrieren Sie sich bei Selfmail und erhalten Sie Ihr privates, sicheres Postfach."
+    },
+    "register_success": {
+      "title": "Konto erstellt | Selfmail",
+      "description": "Bestätigen Sie Ihre E-Mail-Adresse, um Ihre Selfmail-Registrierung abzuschließen."
+    },
+    "magic_link": {
+      "title": "E-Mail bestätigt | Selfmail",
+      "description": "Ihre E-Mail wurde bestätigt. Greifen Sie jetzt auf Ihr Selfmail-Konto zu."
+    },
+    "otp": {
+      "title": "Zwei-Faktor-Authentifizierung | Selfmail",
+      "description": "Geben Sie Ihren Authentifizierungscode ein, um Ihre Identität zu verifizieren und auf Ihr Konto zuzugreifen."
+    },
+    "otp_backup": {
+      "title": "Backup-Code | Selfmail",
+      "description": "Verwenden Sie Ihren Backup-Code zur Anmeldung, falls Sie nicht auf Ihre Authentifizierungs-App zugreifen können."
+    },
+    "help": {
+      "title": "Hilfe & Support | Selfmail",
+      "description": "Finden Sie Antworten auf häufig gestellte Fragen und erhalten Sie Unterstützung für Ihr Selfmail-Konto."
+    },
+    "contact": {
+      "title": "Support kontaktieren | Selfmail",
+      "description": "Kontaktieren Sie unser Selfmail-Supportteam für Unterstützung."
+    }
   }
 }

@@ -130,5 +130,39 @@
     "support_before_link": "¿No tienes acceso a tus códigos de respaldo? Por favor,",
     "support_link": "contacta con soporte",
     "support_after_link": "para obtener más ayuda."
+  },
+  "meta": {
+    "login": {
+      "title": "Iniciar Sesión | Selfmail",
+      "description": "Inicia sesión con tu cuenta de Selfmail para acceder a tu buzón seguro."
+    },
+    "register": {
+      "title": "Crea Tu Cuenta | Selfmail",
+      "description": "Regístrate en Selfmail y obtén tu buzón privado y seguro."
+    },
+    "register_success": {
+      "title": "Cuenta Creada | Selfmail",
+      "description": "Verifica tu dirección de correo electrónico para completar tu registro en Selfmail."
+    },
+    "magic_link": {
+      "title": "Correo Verificado | Selfmail",
+      "description": "Tu correo electrónico ha sido verificado. Accede a tu cuenta de Selfmail ahora."
+    },
+    "otp": {
+      "title": "Autenticación de Dos Factores | Selfmail",
+      "description": "Ingresa tu código de autenticación para verificar tu identidad y acceder a tu cuenta."
+    },
+    "otp_backup": {
+      "title": "Código de Respaldo | Selfmail",
+      "description": "Usa tu código de respaldo para iniciar sesión si no puedes acceder a tu aplicación de autenticación."
+    },
+    "help": {
+      "title": "Ayuda y Soporte | Selfmail",
+      "description": "Encuentra respuestas a preguntas frecuentes y obtén soporte para tu cuenta de Selfmail."
+    },
+    "contact": {
+      "title": "Contactar Soporte | Selfmail",
+      "description": "Comunícate con nuestro equipo de soporte de Selfmail para recibir asistencia."
+    }
   }
 }

@@ -130,5 +130,39 @@
     "support_before_link": "Vous n'avez pas accès à vos codes de secours ? Veuillez",
     "support_link": "contacter l'assistance",
     "support_after_link": "pour obtenir de l'aide."
+  },
+  "meta": {
+    "login": {
+      "title": "Connexion | Selfmail",
+      "description": "Connectez-vous avec votre compte Selfmail pour accéder à votre boîte de réception sécurisée."
+    },
+    "register": {
+      "title": "Créer votre compte | Selfmail",
+      "description": "Inscrivez-vous à Selfmail et obtenez votre boîte de réception privée et sécurisée."
+    },
+    "register_success": {
+      "title": "Compte créé | Selfmail",
+      "description": "Vérifiez votre adresse e-mail pour finaliser votre inscription à Selfmail."
+    },
+    "magic_link": {
+      "title": "E-mail vérifié | Selfmail",
+      "description": "Votre e-mail a été vérifié. Accédez maintenant à votre compte Selfmail."
+    },
+    "otp": {
+      "title": "Authentification à deux facteurs | Selfmail",
+      "description": "Saisissez votre code d'authentification pour vérifier votre identité et accéder à votre compte."
+    },
+    "otp_backup": {
+      "title": "Code de secours | Selfmail",
+      "description": "Utilisez votre code de secours pour vous connecter si vous ne pouvez pas accéder à votre application d'authentification."
+    },
+    "help": {
+      "title": "Aide et assistance | Selfmail",
+      "description": "Trouvez des réponses aux questions fréquentes et obtenez de l'aide pour votre compte Selfmail."
+    },
+    "contact": {
+      "title": "Contacter l'assistance | Selfmail",
+      "description": "Contactez notre équipe d'assistance Selfmail pour obtenir de l'aide."
+    }
   }
 }

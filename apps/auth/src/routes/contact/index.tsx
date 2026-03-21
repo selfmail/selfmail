@@ -9,6 +9,15 @@ import {
 import { m } from "#/paraglide/messages";
 
 export const Route = createFileRoute("/contact/")({
+  head: () => ({
+    meta: [
+      { title: m["meta.contact.title"]() },
+      {
+        name: "description",
+        content: m["meta.contact.description"](),
+      },
+    ],
+  }),
   component: RouteComponent,
 });
 

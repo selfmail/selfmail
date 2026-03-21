@@ -2,6 +2,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { m } from "#/paraglide/messages";
 
 export const Route = createFileRoute("/otp/backup-codes/")({
+  head: () => ({
+    meta: [
+      { title: m["meta.otp_backup.title"]() },
+      {
+        name: "description",
+        content: m["meta.otp_backup.description"](),
+      },
+    ],
+  }),
   component: RouteComponent,
 });
 

@@ -130,5 +130,39 @@
     "support_before_link": "Don't have access to your backup codes? Please",
     "support_link": "contact support",
     "support_after_link": "for further assistance."
+  },
+  "meta": {
+    "login": {
+      "title": "Log In | Selfmail",
+      "description": "Sign in with your Selfmail account to access your secure mailbox."
+    },
+    "register": {
+      "title": "Create Your Account | Selfmail",
+      "description": "Sign up for Selfmail and get your private, secure mailbox."
+    },
+    "register_success": {
+      "title": "Account Created | Selfmail",
+      "description": "Verify your email address to complete your Selfmail registration."
+    },
+    "magic_link": {
+      "title": "Email Verified | Selfmail",
+      "description": "Your email has been verified. Access your Selfmail account now."
+    },
+    "otp": {
+      "title": "Two-Factor Authentication | Selfmail",
+      "description": "Enter your authenticator code to verify your identity and access your account."
+    },
+    "otp_backup": {
+      "title": "Backup Code | Selfmail",
+      "description": "Use your backup code to sign in if you can't access your authenticator app."
+    },
+    "help": {
+      "title": "Help & Support | Selfmail",
+      "description": "Find answers to common questions and get support for your Selfmail account."
+    },
+    "contact": {
+      "title": "Contact Support | Selfmail",
+      "description": "Get in touch with our Selfmail support team for assistance."
+    }
   }
 }

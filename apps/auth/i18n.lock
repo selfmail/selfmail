@@ -98,3 +98,19 @@ checksums:
     otp_backup/support_before_link: 42dd0acc657cf7828db05cc5734d6a0b
     otp_backup/support_link: 7f38dcf6e1a6535ccec5a79f60f57242
     otp_backup/support_after_link: 3bb0b975ff090d712c1cb10a4648f734
+    meta/login/title: 4688d2800c5d53d112f9578a0defb615
+    meta/login/description: 8ed3d0acdae926e75caee04774af72d3
+    meta/register/title: f7de9c5a065508b959a1d3b39994e164
+    meta/register/description: a241a79ce4482c759a16769a8b75bde7
+    meta/register_success/title: b88352a2095ed811652e3958f1bb9b93
+    meta/register_success/description: 8abdae2771a193029d008ce59bb78ea0
+    meta/magic_link/title: 1c90fa832d51e85fe1e22ae507d124f4
+    meta/magic_link/description: a169518501ee5191c5bae7676d6d631b
+    meta/otp/title: a1e5f3ccf8bb756221c116f14d480aa9
+    meta/otp/description: 5b905aeaaeedd796111f54f001449cdf
+    meta/otp_backup/title: 5f54e0e5b7472bfa735e1087ac679ab0
+    meta/otp_backup/description: b2a2ace4ab26548d618740b3cbe0a87b
+    meta/help/title: abc3f49bfc62d5df21a458bfeb12ac05
+    meta/help/description: caf39adef82cdf263e224881c06721ac
+    meta/contact/title: 93d77662e53d465583f4c78e5dfb7274
+    meta/contact/description: c30a9a6cc480768f903488baf9c75022
