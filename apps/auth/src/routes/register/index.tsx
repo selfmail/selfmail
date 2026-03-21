@@ -1,24 +1,156 @@
+import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Building2Icon } from "lucide-react";
+import type { ReactNode } from "react";
+import { type ZodError, z } from "zod";
 import { Google } from "#/components/ui/svgs/google";
+import { handleRegisterForm } from "#/lib/register";
 import { m } from "#/paraglide/messages";
+
+const { fieldContext, formContext, useFieldContext, useFormContext } =
+  createFormHookContexts();
+
+const TextField = ({ placeholder }: { placeholder: string }) => {
+  const field = useFieldContext<string>();
+  const [firstError] = field.state.meta.errors as ZodError[];
+
+  return (
+    <div>
+      <input
+        className="w-full rounded-full border-2 border-neutral-200 px-6 py-3 outline-none ring-neutral-200 transition-colors duration-200 focus-within:border-neutral-400 focus-within:ring-2 focus:outline-none"
+        name={field.name}
+        onBlur={field.handleBlur}
+        onChange={(event) => {
+          field.handleChange(event.target.value);
+        }}
+        placeholder={placeholder}
+        type="text"
+        value={field.state.value}
+      />
+      {firstError ? (
+        <p className="px-2 pt-1 text-red-600 text-sm">
+          {String(firstError.message)}
+        </p>
+      ) : null}
+    </div>
+  );
+};
+
+const EmailField = ({ placeholder }: { placeholder: string }) => {
+  const field = useFieldContext<string>();
+  const [firstError] = field.state.meta.errors as ZodError[];
+
+  return (
+    <div>
+      <input
+        className="w-full rounded-full border-2 border-neutral-200 px-6 py-3 outline-none ring-neutral-200 transition-colors duration-200 focus-within:border-neutral-400 focus-within:ring-2 focus:outline-none"
+        name={field.name}
+        onBlur={field.handleBlur}
+        onChange={(event) => {
+          field.handleChange(event.target.value);
+        }}
+        placeholder={placeholder}
+        type="email"
+        value={field.state.value}
+      />
+      {firstError ? (
+        <p className="px-2 pt-1 text-red-600 text-sm">
+          {String(firstError.message)}
+        </p>
+      ) : null}
+    </div>
+  );
+};
+
+const PasswordField = ({ placeholder }: { placeholder: string }) => {
+  const field = useFieldContext<string>();
+  const [firstError] = field.state.meta.errors as ZodError[];
+
+  return (
+    <div>
+      <input
+        className="w-full rounded-full border-2 border-neutral-200 px-6 py-3 outline-none ring-neutral-200 transition-colors duration-200 focus-within:border-neutral-400 focus-within:ring-2 focus:outline-none"
+        name={field.name}
+        onBlur={field.handleBlur}
+        onChange={(event) => {
+          field.handleChange(event.target.value);
+        }}
+        placeholder={placeholder}
+        type="password"
+        value={field.state.value}
+      />
+      {firstError ? (
+        <p className="px-2 pt-1 text-red-600 text-sm">
+          {String(firstError.message)}
+        </p>
+      ) : null}
+    </div>
+  );
+};
+
+const SubmitButton = ({ children }: { children: ReactNode }) => {
+  const form = useFormContext();
+
+  return (
+    <button
+      className="hit-area-4 w-full cursor-pointer rounded-full bg-neutral-900 px-6 py-3 text-white transition-colors duration-200 focus-within:bg-neutral-700 focus-within:ring-2 focus-within:ring-neutral-700 focus-within:ring-offset-2 hover:bg-neutral-700 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-500"
+      disabled={form.state.isSubmitting}
+      type="submit"
+    >
+      {children}
+    </button>
+  );
+};
+
+const { useAppForm } = createFormHook({
+  fieldComponents: {
+    TextField,
+    EmailField,
+    PasswordField,
+  },
+  formComponents: {
+    SubmitButton,
+  },
+  fieldContext,
+  formContext,
+});
 
 export const Route = createFileRoute("/register/")({
   component: RouteComponent,
   beforeLoad() {
-    // Check for any active session before showing page
+    // TODO: Check for any active session before showing page
   },
 });
 
 function RouteComponent() {
   const navigate = useNavigate();
 
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    event.preventDefault();
-    await navigate({ to: "/register/success" });
-  };
+  const registerSchema = z.object({
+    name: z.string().min(1, "Name is required"),
+    email: z
+      .email(m["login.errors.email_invalid"]())
+      .min(1, m["login.errors.email_required"]()),
+    password: z.string().min(8, "Password must be at least 8 characters long"),
+  });
+
+  const form = useAppForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+    onSubmit: async (values) => {
+      const res = await handleRegisterForm({
+        data: values.value,
+      });
+      if (res === "Form submitted successfully") {
+        await navigate({ to: "/register/success" });
+      }
+    },
+    validators: {
+      onSubmit: registerSchema,
+    },
+  });
 
   return (
     <>
@@ -32,28 +164,40 @@ function RouteComponent() {
         <h1 className="pb-4 text-center font-medium text-3xl">
           {m["register.title"]()}
         </h1>
-        <form className="flex flex-col gap-4 pt-2" onSubmit={handleSubmit}>
-          <input
-            className="w-full rounded-full border-2 border-neutral-200 px-6 py-3 outline-none ring-neutral-200 transition-colors duration-200 focus-within:border-neutral-400 focus-within:ring-2 focus:outline-none"
-            placeholder={m["register.name_placeholder"]()}
-            type="text"
-          />
-          <input
-            className="w-full rounded-full border-2 border-neutral-200 px-6 py-3 outline-none ring-neutral-200 transition-colors duration-200 focus-within:border-neutral-400 focus-within:ring-2 focus:outline-none"
-            placeholder={m["register.email_placeholder"]()}
-            type="email"
-          />
-          <input
-            className="w-full rounded-full border-2 border-neutral-200 px-6 py-3 outline-none ring-neutral-200 transition-colors duration-200 focus-within:border-neutral-400 focus-within:ring-2 focus:outline-none"
-            placeholder={m["register.password_placeholder"]()}
-            type="password"
-          />
-          <button
-            className="hit-area-4 w-full cursor-pointer rounded-full bg-neutral-900 px-6 py-3 text-white transition-colors duration-200 focus-within:bg-neutral-700 focus-within:ring-2 focus-within:ring-neutral-700 focus-within:ring-offset-2 hover:bg-neutral-700 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-500"
-            type="submit"
-          >
-            {m["register.submit_button"]()}
-          </button>
+        <form
+          className="flex flex-col gap-4 pt-2"
+          encType="multipart/form-data"
+          method="post"
+          onSubmit={(e) => {
+            form.handleSubmit();
+
+            e.preventDefault();
+          }}
+        >
+          <form.AppField name="name">
+            {(field) => (
+              <field.TextField placeholder={m["register.name_placeholder"]()} />
+            )}
+          </form.AppField>
+          <form.AppField name="email">
+            {(field) => (
+              <field.EmailField
+                placeholder={m["register.email_placeholder"]()}
+              />
+            )}
+          </form.AppField>
+          <form.AppField name="password">
+            {(field) => (
+              <field.PasswordField
+                placeholder={m["register.password_placeholder"]()}
+              />
+            )}
+          </form.AppField>
+          <form.AppForm>
+            <form.SubmitButton>
+              {m["register.submit_button"]()}
+            </form.SubmitButton>
+          </form.AppForm>
           <div className="h-0.5 w-full rounded-full bg-neutral-200" />
           <div className="flex flex-col gap-2">
             <button
