@@ -6,12 +6,12 @@ checksums:
     redirect_message: e71b14ef41aebca0781a5ec9446f5cb5
     login/title: cf132cc042537b183302321371d40278
     login/description: c2dab1cebb9e0b7304240eb2c82bde97
-    login/email_label: 871a01b9f29d369d1867bacdf293bc82
+    login/email_label: 3855bcad6a9d3a916507480f703880ae
     login/email_placeholder: 6ee18a3ac1b05dec8a624b33ecd26756
     login/password_label: 1706207234f605126ecacbc59556e972
     login/submit_button: 064454737f97081703813464fd6a7e61
     login/forgot_password_link: 707454f0ef158b81060a11f2d9cbce57
-    login/proceed_button: b8d1cccacabd4d66f74364570f2df025
+    login/proceed_button: f4f219abeb5a465ecb1c7efaf50246de
     login/sign_in_google: f84b1b8574fb23734c002b401cad49e2
     login/sign_in_passkey: 52d426521930c4c529b894cfbb4953e2
     login/enterprises: a933348763c26d1f9a726e4fe6794d0c

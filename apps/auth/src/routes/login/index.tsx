@@ -62,15 +62,6 @@ const { useAppForm } = createFormHook({
 });
 
 export const Route = createFileRoute("/login/")({
-  head: () => ({
-    meta: [
-      { title: m["meta.login.title"]() },
-      {
-        name: "description",
-        content: m["meta.login.description"](),
-      },
-    ],
-  }),
   component: RouteComponent,
 });
 
@@ -91,8 +82,8 @@ function RouteComponent() {
       });
     },
     validators: {
-      onBlur: loginSchema,
       onSubmit: loginSchema,
+      onBlur: loginSchema,
     },
   });
 

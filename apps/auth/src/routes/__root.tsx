@@ -4,6 +4,7 @@ import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Agentation } from "agentation";
 import Footer from "#/components/Footer";
+import { TooltipProvider } from "#/components/ui/tooltip.js";
 import { getLocale } from "../paraglide/runtime.js";
 import appCss from "../styles.css?url";
 
@@ -42,8 +43,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <QueryClientProvider client={queryClient}>
         <body className="wrap-anywhere flex h-screen w-full flex-col items-center justify-center bg-white font-sans text-neutral-900 antialiased dark:bg-neutral-900 dark:text-neutral-100">
-          {children}
-          <Footer />
+          <TooltipProvider>
+            {children}
+            <Footer />
+          </TooltipProvider>
           <TanStackDevtools
             config={{
               position: "bottom-right",

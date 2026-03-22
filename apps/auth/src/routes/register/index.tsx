@@ -62,32 +62,6 @@ const EmailField = ({ placeholder }: { placeholder: string }) => {
   );
 };
 
-const PasswordField = ({ placeholder }: { placeholder: string }) => {
-  const field = useFieldContext<string>();
-  const [firstError] = field.state.meta.errors as ZodError[];
-
-  return (
-    <div>
-      <input
-        className="w-full rounded-full border-2 border-neutral-200 px-6 py-3 outline-none ring-neutral-200 transition-colors duration-200 focus-within:border-neutral-400 focus-within:ring-2 focus:outline-none"
-        name={field.name}
-        onBlur={field.handleBlur}
-        onChange={(event) => {
-          field.handleChange(event.target.value);
-        }}
-        placeholder={placeholder}
-        type="password"
-        value={field.state.value}
-      />
-      {firstError ? (
-        <p className="px-2 pt-1 text-red-600 text-sm">
-          {String(firstError.message)}
-        </p>
-      ) : null}
-    </div>
-  );
-};
-
 const SubmitButton = ({ children }: { children: ReactNode }) => {
   const form = useFormContext();
 
@@ -106,7 +80,6 @@ const { useAppForm } = createFormHook({
   fieldComponents: {
     TextField,
     EmailField,
-    PasswordField,
   },
   formComponents: {
     SubmitButton,
@@ -139,14 +112,12 @@ function RouteComponent() {
     email: z
       .email(m["login.errors.email_invalid"]())
       .min(1, m["login.errors.email_required"]()),
-    password: z.string().min(8, "Password must be at least 8 characters long"),
   });
 
   const form = useAppForm({
     defaultValues: {
       name: "",
       email: "",
-      password: "",
     },
     onSubmit: async (values) => {
       const res = await handleRegisterForm({
@@ -195,13 +166,6 @@ function RouteComponent() {
               />
             )}
           </form.AppField>
-          <form.AppField name="password">
-            {(field) => (
-              <field.PasswordField
-                placeholder={m["register.password_placeholder"]()}
-              />
-            )}
-          </form.AppField>
           <form.AppForm>
             <form.SubmitButton>
               {m["register.submit_button"]()}
@@ -246,7 +210,7 @@ function RouteComponent() {
             {m["register.terms_text_middle"]()}{" "}
             <a className="text-blue-500 hover:underline" href="/privacy">
               {m["register.privacy_link"]()}
-            </a>
+            </a>{" "}
             {m["register.terms_text_after_link"]()}
           </p>
         </form>
