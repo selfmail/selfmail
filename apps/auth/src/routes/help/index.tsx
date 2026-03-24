@@ -24,7 +24,7 @@ function RouteComponent() {
   return (
     <div className="absolute inset-0 flex flex-col items-center sm:static sm:justify-center">
       <a
-        className="absolute top-5 text-center font-medium text-xl"
+        className="absolute top-5 hidden text-center font-medium text-xl sm:block"
         href="https://selfmail.app"
       >
         Selfmail

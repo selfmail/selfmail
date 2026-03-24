@@ -1,10 +1,10 @@
 import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Building2Icon } from "lucide-react";
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 import { type ZodError, z } from "zod";
 import { Google } from "#/components/ui/svgs/google";
-import { handleRegisterForm } from "#/lib/register";
+import { handleRegisterForm, type RegisterResult } from "#/lib/register";
 import { m } from "#/paraglide/messages";
 
 const { fieldContext, formContext, useFieldContext, useFormContext } =
@@ -106,6 +106,7 @@ export const Route = createFileRoute("/register/")({
 
 function RouteComponent() {
   const navigate = useNavigate();
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const registerSchema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -114,18 +115,37 @@ function RouteComponent() {
       .min(1, m["login.errors.email_required"]()),
   });
 
+  const getSubmitErrorMessage = (
+    result: Extract<RegisterResult, { status: "error" }>
+  ) => {
+    switch (result.error.code) {
+      case "EMAIL_TAKEN":
+        return "An account with this email already exists. Try logging in instead.";
+      default:
+        return `${result.error.message} Request ID: ${result.error.requestId}`;
+    }
+  };
+
   const form = useAppForm({
     defaultValues: {
       name: "",
       email: "",
     },
     onSubmit: async (values) => {
-      const res = await handleRegisterForm({
+      setSubmitError(null);
+
+      const result = await handleRegisterForm({
         data: values.value,
       });
-      if (res === "Form submitted successfully") {
+
+      console.log(result);
+
+      if (result.status === "success") {
         await navigate({ to: "/register/success" });
+        return;
       }
+
+      setSubmitError(getSubmitErrorMessage(result));
     },
     validators: {
       onSubmit: registerSchema,
@@ -135,7 +155,7 @@ function RouteComponent() {
   return (
     <>
       <a
-        className="absolute top-5 font-medium text-xl"
+        className="absolute top-5 hidden font-medium text-xl sm:block"
         href="https://selfmail.app"
       >
         Selfmail
@@ -154,6 +174,15 @@ function RouteComponent() {
             e.preventDefault();
           }}
         >
+          {submitError ? (
+            <div
+              aria-live="polite"
+              className="text-pretty rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 text-sm"
+              role="alert"
+            >
+              {submitError}
+            </div>
+          ) : null}
           <form.AppField name="name">
             {(field) => (
               <field.TextField placeholder={m["register.name_placeholder"]()} />

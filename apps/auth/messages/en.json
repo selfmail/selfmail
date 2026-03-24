@@ -110,8 +110,8 @@
     "terms_text_after_link": "."
   },
   "register_success": {
-    "title": "Account Created Successfully - Check your Inbox",
-    "description": "Everything went alright. We sent a verification email with a magic link to your inbox. Please open it and click the link to verify your email address."
+    "title": "Account Created Successfully",
+    "description": "Everything went alright. Your Selfmail account has been created and is ready for the next authentication step."
   },
   "otp": {
     "title": "Enter OTP Code",
@@ -142,7 +142,7 @@
     },
     "register_success": {
       "title": "Account Created | Selfmail",
-      "description": "Verify your email address to complete your Selfmail registration."
+      "description": "Your Selfmail account has been created successfully."
     },
     "magic_link": {
       "title": "Email Verified | Selfmail",

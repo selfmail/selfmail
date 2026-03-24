@@ -58,7 +58,6 @@ model Session {
 }
 
 enum AuthProvider {
-    GITHUB
     GOOGLE
     EMAIL
 }

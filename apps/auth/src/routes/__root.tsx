@@ -39,13 +39,20 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang={getLocale()} suppressHydrationWarning>
       <head>
+        {/* biome-ignore lint: need this in order for the themes to work  */}
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
       <QueryClientProvider client={queryClient}>
         <body className="wrap-anywhere relative flex h-screen w-full flex-col items-center justify-center bg-white font-sans text-neutral-900 antialiased dark:bg-neutral-900 dark:text-neutral-100">
           <TooltipProvider>
-            <div className="absolute top-4 left-4 z-10">
+            <div className="absolute inset-x-0 top-4 z-10 flex items-center justify-between px-4 sm:hidden">
+              <a className="font-medium text-sm" href="https://selfmail.app">
+                Selfmail
+              </a>
+              <LanguageSelect />
+            </div>
+            <div className="absolute top-4 left-4 z-10 hidden sm:block">
               <LanguageSelect />
             </div>
             {children}

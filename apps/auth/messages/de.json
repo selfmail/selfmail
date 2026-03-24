@@ -110,8 +110,8 @@
     "terms_text_after_link": "zu."
   },
   "register_success": {
-    "title": "Konto erfolgreich erstellt – prüfen Sie Ihren Posteingang",
-    "description": "Alles hat geklappt. Wir haben Ihnen eine Verifizierungs-E-Mail mit einem Magic Link an Ihren Posteingang gesendet. Öffnen Sie diese und klicken Sie auf den Link, um Ihre E-Mail-Adresse zu verifizieren."
+    "title": "Konto erfolgreich erstellt",
+    "description": "Alles hat geklappt. Ihr Selfmail-Konto wurde erstellt und ist für den nächsten Authentifizierungsschritt bereit."
   },
   "otp": {
     "title": "OTP-Code eingeben",
@@ -142,7 +142,7 @@
     },
     "register_success": {
       "title": "Konto erstellt | Selfmail",
-      "description": "Bestätigen Sie Ihre E-Mail-Adresse, um Ihre Selfmail-Registrierung abzuschließen."
+      "description": "Ihr Selfmail-Konto wurde erfolgreich erstellt."
     },
     "magic_link": {
       "title": "E-Mail bestätigt | Selfmail",

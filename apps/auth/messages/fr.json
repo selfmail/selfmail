@@ -110,8 +110,8 @@
     "terms_text_after_link": "."
   },
   "register_success": {
-    "title": "Compte créé avec succès - Vérifiez votre boîte de réception",
-    "description": "Tout s'est bien passé. Nous avons envoyé un e-mail de vérification avec un lien magique dans votre boîte de réception. Veuillez l'ouvrir et cliquer sur le lien pour vérifier votre adresse e-mail."
+    "title": "Compte créé avec succès",
+    "description": "Tout s'est bien passé. Votre compte Selfmail a été créé et est prêt pour la prochaine étape d'authentification."
   },
   "otp": {
     "title": "Saisissez le code OTP",
@@ -142,7 +142,7 @@
     },
     "register_success": {
       "title": "Compte créé | Selfmail",
-      "description": "Vérifiez votre adresse e-mail pour finaliser votre inscription à Selfmail."
+      "description": "Votre compte Selfmail a été créé avec succès."
     },
     "magic_link": {
       "title": "E-mail vérifié | Selfmail",

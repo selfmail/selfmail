@@ -49,7 +49,6 @@ export type Sort = (typeof Sort)[keyof typeof Sort]
 
 
 export const AuthProvider = {
-  GITHUB: 'GITHUB',
   GOOGLE: 'GOOGLE',
   EMAIL: 'EMAIL'
 } as const

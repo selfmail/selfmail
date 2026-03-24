@@ -18,7 +18,7 @@ function RouteComponent() {
   return (
     <>
       <a
-        className="absolute top-5 font-medium text-xl"
+        className="absolute top-5 hidden font-medium text-xl sm:block"
         href="https://selfmail.app"
       >
         Selfmail
