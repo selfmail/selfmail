@@ -111,7 +111,12 @@
   },
   "register_success": {
     "title": "Compte créé avec succès",
-    "description": "Tout s'est bien passé. Votre compte Selfmail a été créé et est prêt pour la prochaine étape d'authentification."
+    "description": "Tout s'est bien passé. Votre compte Selfmail a été créé et est prêt pour l'étape d'authentification suivante."
+  },
+  "login_success": {
+    "title": "Lien magique envoyé",
+    "description": "Nous avons envoyé un lien magique à votre adresse e-mail. Veuillez consulter votre boîte de réception et cliquer sur le lien pour vous connecter.",
+    "resend": "Renvoyer l'e-mail"
   },
   "otp": {
     "title": "Saisissez le code OTP",

@@ -111,7 +111,12 @@
   },
   "register_success": {
     "title": "Konto erfolgreich erstellt",
-    "description": "Alles hat geklappt. Ihr Selfmail-Konto wurde erstellt und ist für den nächsten Authentifizierungsschritt bereit."
+    "description": "Alles hat geklappt. Ihr Selfmail-Konto wurde erstellt und ist bereit für den nächsten Authentifizierungsschritt."
+  },
+  "login_success": {
+    "title": "Magic Link versendet",
+    "description": "Wir haben einen Magic Link an Ihre E-Mail-Adresse gesendet. Bitte überprüfen Sie Ihr Postfach und klicken Sie auf den Link, um sich anzumelden.",
+    "resend": "E-Mail erneut senden"
   },
   "otp": {
     "title": "OTP-Code eingeben",

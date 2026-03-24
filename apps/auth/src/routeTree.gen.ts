@@ -18,6 +18,7 @@ import { Route as HelpIndexRouteImport } from './routes/help/index'
 import { Route as ContactIndexRouteImport } from './routes/contact/index'
 import { Route as RegisterSuccessIndexRouteImport } from './routes/register/success/index'
 import { Route as OtpBackupCodesIndexRouteImport } from './routes/otp/backup-codes/index'
+import { Route as LoginSuccessIndexRouteImport } from './routes/login/success/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,6 +65,11 @@ const OtpBackupCodesIndexRoute = OtpBackupCodesIndexRouteImport.update({
   path: '/otp/backup-codes/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginSuccessIndexRoute = LoginSuccessIndexRouteImport.update({
+  id: '/login/success/',
+  path: '/login/success/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/magic-link/': typeof MagicLinkIndexRoute
   '/otp/': typeof OtpIndexRoute
   '/register/': typeof RegisterIndexRoute
+  '/login/success/': typeof LoginSuccessIndexRoute
   '/otp/backup-codes/': typeof OtpBackupCodesIndexRoute
   '/register/success/': typeof RegisterSuccessIndexRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/magic-link': typeof MagicLinkIndexRoute
   '/otp': typeof OtpIndexRoute
   '/register': typeof RegisterIndexRoute
+  '/login/success': typeof LoginSuccessIndexRoute
   '/otp/backup-codes': typeof OtpBackupCodesIndexRoute
   '/register/success': typeof RegisterSuccessIndexRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/magic-link/': typeof MagicLinkIndexRoute
   '/otp/': typeof OtpIndexRoute
   '/register/': typeof RegisterIndexRoute
+  '/login/success/': typeof LoginSuccessIndexRoute
   '/otp/backup-codes/': typeof OtpBackupCodesIndexRoute
   '/register/success/': typeof RegisterSuccessIndexRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/magic-link/'
     | '/otp/'
     | '/register/'
+    | '/login/success/'
     | '/otp/backup-codes/'
     | '/register/success/'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/magic-link'
     | '/otp'
     | '/register'
+    | '/login/success'
     | '/otp/backup-codes'
     | '/register/success'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/magic-link/'
     | '/otp/'
     | '/register/'
+    | '/login/success/'
     | '/otp/backup-codes/'
     | '/register/success/'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   MagicLinkIndexRoute: typeof MagicLinkIndexRoute
   OtpIndexRoute: typeof OtpIndexRoute
   RegisterIndexRoute: typeof RegisterIndexRoute
+  LoginSuccessIndexRoute: typeof LoginSuccessIndexRoute
   OtpBackupCodesIndexRoute: typeof OtpBackupCodesIndexRoute
   RegisterSuccessIndexRoute: typeof RegisterSuccessIndexRoute
 }
@@ -212,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OtpBackupCodesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login/success/': {
+      id: '/login/success/'
+      path: '/login/success'
+      fullPath: '/login/success/'
+      preLoaderRoute: typeof LoginSuccessIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   MagicLinkIndexRoute: MagicLinkIndexRoute,
   OtpIndexRoute: OtpIndexRoute,
   RegisterIndexRoute: RegisterIndexRoute,
+  LoginSuccessIndexRoute: LoginSuccessIndexRoute,
   OtpBackupCodesIndexRoute: OtpBackupCodesIndexRoute,
   RegisterSuccessIndexRoute: RegisterSuccessIndexRoute,
 }

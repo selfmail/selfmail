@@ -1,10 +1,10 @@
 import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Building2Icon, KeyRoundIcon } from "lucide-react";
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 import { type ZodError, z } from "zod";
 import { Google } from "#/components/ui/svgs/google";
-import { handleLoginForm } from "#/lib/login";
+import { handleLoginForm, type LoginResult } from "#/lib/login";
 import { m } from "#/paraglide/messages";
 
 const { fieldContext, formContext, useFieldContext, useFormContext } =
@@ -66,20 +66,42 @@ export const Route = createFileRoute("/login/")({
 });
 
 function RouteComponent() {
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
   const loginSchema = z.object({
     email: z
       .email(m["login.errors.email_invalid"]())
       .min(1, m["login.errors.email_required"]()),
   });
 
+  const getSubmitErrorMessage = (
+    result: Extract<LoginResult, { status: "error" }>
+  ) => {
+    switch (result.error.code) {
+      case "ACCOUNT_NOT_FOUND":
+        return "No account exists for this email address yet.";
+      default:
+        return `${result.error.message} Request ID: ${result.error.requestId}`;
+    }
+  };
+
   const form = useAppForm({
     defaultValues: {
       email: "",
     },
     onSubmit: async (values) => {
-      await handleLoginForm({
+      setSubmitError(null);
+      const result = await handleLoginForm({
         data: values.value,
       });
+
+      if (result.status === "success") {
+        await navigate({ to: "/login/success" });
+        return;
+      }
+
+      setSubmitError(getSubmitErrorMessage(result));
     },
     validators: {
       onSubmit: loginSchema,
@@ -109,6 +131,15 @@ function RouteComponent() {
             e.preventDefault();
           }}
         >
+          {submitError ? (
+            <div
+              aria-live="polite"
+              className="text-pretty rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 text-sm"
+              role="alert"
+            >
+              {submitError}
+            </div>
+          ) : null}
           <form.AppField name="email">
             {(field) => (
               <field.EmailField placeholder={m["login.email_placeholder"]()} />

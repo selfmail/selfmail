@@ -82,8 +82,11 @@ checksums:
     register/terms_text_middle: ce8b9bb44f031705708a70e068bb73c8
     register/privacy_link: 7459744a63ef8af4e517a09024bd7c08
     register/terms_text_after_link: f05f450fffcb17520c441ab9789f40ce
-    register_success/title: 5cd7279430abad45c470037be05081d0
-    register_success/description: 900a200344443febccbd5aa2ee6d2d6c
+    register_success/title: abe565fb351418eec4dacded4cc9ac18
+    register_success/description: 9dd139b5e535a57944870421e390695a
+    login_success/title: 53fa23cb6790257eb1347bf5ee5b9eb5
+    login_success/description: 9ee6fad38a0189872014b799f627a2f2
+    login_success/resend: 5cd54dbdd17c450921acf8d4109677d8
     otp/title: 8c6eb062b86bd2813454febe0120b5b9
     otp/description: a522f50dd9ef54ea7640b8202181b99b
     otp/submit_button: fdd40f2bee0b24110f72374ab1fe8732
@@ -103,7 +106,7 @@ checksums:
     meta/register/title: f7de9c5a065508b959a1d3b39994e164
     meta/register/description: a241a79ce4482c759a16769a8b75bde7
     meta/register_success/title: b88352a2095ed811652e3958f1bb9b93
-    meta/register_success/description: 8abdae2771a193029d008ce59bb78ea0
+    meta/register_success/description: 466b89c9952a7850ef658c7ce1f55f28
     meta/magic_link/title: 1c90fa832d51e85fe1e22ae507d124f4
     meta/magic_link/description: a169518501ee5191c5bae7676d6d631b
     meta/otp/title: a1e5f3ccf8bb756221c116f14d480aa9

@@ -113,6 +113,11 @@
     "title": "Account Created Successfully",
     "description": "Everything went alright. Your Selfmail account has been created and is ready for the next authentication step."
   },
+  "login_success": {
+    "title": "Magic Link Sent",
+    "description": "We have sent a magic link to your email address. Please check your inbox and click the link to log in.",
+    "resend": "Resend Email"
+  },
   "otp": {
     "title": "Enter OTP Code",
     "description": "You have an authenticator app connected to your account. Please enter the 6-digit code from your app to verify your identity and access your account.",
