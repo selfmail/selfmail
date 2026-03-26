@@ -150,8 +150,8 @@
       "description": "Tu cuenta de Selfmail ha sido creada correctamente."
     },
     "magic_link": {
-      "title": "Correo Verificado | Selfmail",
-      "description": "Tu correo electrónico ha sido verificado. Accede a tu cuenta de Selfmail ahora."
+      "title": "Verificación del enlace mágico | Selfmail",
+      "description": "Completa tu inicio de sesión en Selfmail de forma segura y obtén ayuda si algo sale mal."
     },
     "otp": {
       "title": "Autenticación de Dos Factores | Selfmail",

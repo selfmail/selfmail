@@ -2,6 +2,8 @@ import { db } from "@selfmail/db";
 import { createLogger } from "@selfmail/logging";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { enforceAuthRateLimit } from "#/lib/ratelimit";
+import { hashToken, setTempSessionCookie } from "#/lib/session";
 
 const logger = createLogger("auth-login");
 
@@ -11,14 +13,11 @@ const loginSchema = z.object({
     .transform((email) => email.trim().toLowerCase()),
 });
 
-type LoginErrorCode = "ACCOUNT_NOT_FOUND" | "UNKNOWN_ERROR";
+type LoginErrorCode = "ACCOUNT_NOT_FOUND" | "RATE_LIMITED" | "UNKNOWN_ERROR";
 
 export type LoginResult =
   | {
       status: "success";
-      email: string;
-      magicLinkUrl: string;
-      expiresAt: string;
     }
   | {
       status: "error";
@@ -31,6 +30,7 @@ export type LoginResult =
 
 const createRequestId = () => crypto.randomUUID();
 const createMagicLinkToken = () => crypto.randomUUID().replaceAll("-", "");
+const createTempSessionToken = () => crypto.randomUUID().replaceAll("-", "");
 
 export const handleLoginForm = createServerFn({
   method: "POST",
@@ -39,6 +39,18 @@ export const handleLoginForm = createServerFn({
   .handler(async (ctx): Promise<LoginResult> => {
     const requestId = createRequestId();
     const { email } = ctx.data;
+    const rateLimit = await enforceAuthRateLimit("login", email);
+
+    if (!rateLimit.allowed) {
+      return {
+        status: "error",
+        error: {
+          code: "RATE_LIMITED",
+          message: `Too many login attempts. Please wait until ${rateLimit.resetAt.toISOString()} and try again.`,
+          requestId,
+        },
+      };
+    }
 
     logger.info("Magic link login started", {
       email,
@@ -70,8 +82,11 @@ export const handleLoginForm = createServerFn({
       }
 
       const token = createMagicLinkToken();
+      const tempSessionToken = createTempSessionToken();
       const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
-      const magicLinkUrl = `${process.env.AUTH_APP_URL ?? "http://localhost:3010"}/magic-link?token=${token}`;
+      const magicLinkUrl = `${process.env.AUTH_APP_URL ?? "http://localhost:3010"}/magic?token=${token}`;
+      const tokenHash = await hashToken(token);
+      const browserTokenHash = await hashToken(tempSessionToken);
 
       await db.$transaction([
         db.magicLink.deleteMany({
@@ -79,23 +94,21 @@ export const handleLoginForm = createServerFn({
         }),
         db.magicLink.create({
           data: {
+            browserTokenHash,
             email,
-            token,
+            token: tokenHash,
             expiresAt,
             userId: user.id,
           },
         }),
       ]);
 
+      setTempSessionCookie(tempSessionToken);
+
+      // TODO: replace with real sending functionality
       logger.info("Dummy magic link created", {
         email,
         requestId,
-        magicLinkUrl,
-        expiresAt: expiresAt.toISOString(),
-      });
-
-      console.info("Dummy magic link delivery", {
-        email,
         magicLinkUrl,
         expiresAt: expiresAt.toISOString(),
       });

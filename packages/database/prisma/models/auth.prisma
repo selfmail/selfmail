@@ -98,6 +98,7 @@ model MagicLink {
     id        String   @id @default(uuid())
     email     String
     token     String   @unique
+    browserTokenHash String?
     userId    String?
     user      User?    @relation(fields: [userId], references: [id])
     createdAt DateTime @default(now())

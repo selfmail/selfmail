@@ -2,6 +2,7 @@ import { db } from "@selfmail/db";
 import { createLogger } from "@selfmail/logging";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { enforceAuthRateLimit } from "#/lib/ratelimit";
 
 const logger = createLogger("auth-register");
 
@@ -14,6 +15,7 @@ const registerSchema = z.object({
 
 type RegisterErrorCode =
   | "EMAIL_TAKEN"
+  | "RATE_LIMITED"
   | "VALIDATION_ERROR"
   | "UNKNOWN_ERROR";
 
@@ -39,6 +41,18 @@ export const handleRegisterForm = createServerFn({ method: "POST" })
   .handler(async (ctx): Promise<RegisterResult> => {
     const requestId = createRequestId();
     const { email, name } = ctx.data;
+    const rateLimit = await enforceAuthRateLimit("register", email);
+
+    if (!rateLimit.allowed) {
+      return {
+        status: "error",
+        error: {
+          code: "RATE_LIMITED",
+          message: `Too many registration attempts. Please wait until ${rateLimit.resetAt.toISOString()} and try again.`,
+          requestId,
+        },
+      };
+    }
 
     logger.info("Register attempt started", {
       email,

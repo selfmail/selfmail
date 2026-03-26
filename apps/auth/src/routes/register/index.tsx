@@ -99,9 +99,6 @@ export const Route = createFileRoute("/register/")({
     ],
   }),
   component: RouteComponent,
-  beforeLoad() {
-    // TODO: Check for any active session before showing page
-  },
 });
 
 function RouteComponent() {
@@ -121,6 +118,8 @@ function RouteComponent() {
     switch (result.error.code) {
       case "EMAIL_TAKEN":
         return "An account with this email already exists. Try logging in instead.";
+      case "RATE_LIMITED":
+        return "Too many registration attempts. Please wait a few minutes and try again.";
       default:
         return `${result.error.message} Request ID: ${result.error.requestId}`;
     }

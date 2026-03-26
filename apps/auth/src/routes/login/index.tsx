@@ -1,5 +1,9 @@
 import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  useNavigate,
+} from "@tanstack/react-router";
 import { Building2Icon, KeyRoundIcon } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { type ZodError, z } from "zod";
@@ -63,11 +67,14 @@ const { useAppForm } = createFormHook({
 
 export const Route = createFileRoute("/login/")({
   component: RouteComponent,
+  validateSearch: z.object({
+    error: z.string().optional(),
+  }),
 });
 
 function RouteComponent() {
+  const { error: routeError } = Route.useSearch();
   const [submitError, setSubmitError] = useState<string | null>(null);
-
   const navigate = useNavigate();
   const loginSchema = z.object({
     email: z
@@ -81,6 +88,8 @@ function RouteComponent() {
     switch (result.error.code) {
       case "ACCOUNT_NOT_FOUND":
         return "No account exists for this email address yet.";
+      case "RATE_LIMITED":
+        return "Too many sign-in attempts. Please wait a few minutes and try again.";
       default:
         return `${result.error.message} Request ID: ${result.error.requestId}`;
     }
@@ -109,6 +118,8 @@ function RouteComponent() {
     },
   });
 
+  const formError = submitError ?? routeError ?? null;
+
   return (
     <>
       <a
@@ -131,13 +142,13 @@ function RouteComponent() {
             e.preventDefault();
           }}
         >
-          {submitError ? (
+          {formError ? (
             <div
               aria-live="polite"
               className="text-pretty rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 text-sm"
               role="alert"
             >
-              {submitError}
+              {formError}
             </div>
           ) : null}
           <form.AppField name="email">

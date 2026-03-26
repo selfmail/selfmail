@@ -2685,6 +2685,7 @@ export const MagicLinkScalarFieldEnum = {
   id: 'id',
   email: 'email',
   token: 'token',
+  browserTokenHash: 'browserTokenHash',
   userId: 'userId',
   createdAt: 'createdAt',
   expiresAt: 'expiresAt'
@@ -3060,6 +3061,7 @@ export const MagicLinkOrderByRelevanceFieldEnum = {
   id: 'id',
   email: 'email',
   token: 'token',
+  browserTokenHash: 'browserTokenHash',
   userId: 'userId'
 } as const
 

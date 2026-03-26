@@ -1,19 +1,11 @@
 {
-  "name": "@selfmail/redis",
+  "name": "web-ratelimit",
   "module": "src/index.ts",
   "type": "module",
-  "dependencies": {
-    "ioredis": "^5.10.0"
-  },
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
-  },
-  "exports": {
-    ".": {
-      "import": "./src/index.ts"
-    }
   }
 }
