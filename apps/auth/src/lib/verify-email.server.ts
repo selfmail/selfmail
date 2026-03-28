@@ -38,12 +38,13 @@ export const verifyEmailToken = async ({
 	const requestId = createRequestId();
 
 	try {
+		const tokenHash = await hashToken(token);
 		const emailVerification = await db.emailVerification.findUnique({
 			include: {
 				user: true,
 			},
 			where: {
-				token,
+				token: tokenHash,
 			},
 		});
 
@@ -125,7 +126,7 @@ export const verifyEmailToken = async ({
 		logger.error(
 			"Email verification failed unexpectedly",
 			error instanceof Error ? error : undefined,
-			{ requestId, token },
+			{ requestId },
 		);
 
 		return {

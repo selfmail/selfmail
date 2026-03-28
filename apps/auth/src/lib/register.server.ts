@@ -43,7 +43,8 @@ export const handleRegister = async ({
 	try {
 		const browserToken = createBrowserToken();
 		const browserTokenHash = await hashToken(browserToken);
-		const token = createVerificationToken();
+		const rawToken = createVerificationToken();
+		const tokenHash = await hashToken(rawToken);
 
 		await db.$transaction(async (tx) => {
 			const user = await tx.user.create({
@@ -64,7 +65,7 @@ export const handleRegister = async ({
 					email,
 					userId: user.id,
 					browserTokenHash,
-					token,
+					token: tokenHash,
 					expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
 				},
 			});
@@ -75,7 +76,6 @@ export const handleRegister = async ({
 		logger.info("Register attempt succeeded", {
 			email,
 			requestId,
-			verificationUrl: `${process.env.AUTH_APP_URL ?? "http://localhost:3010"}/verify?token=${token}`,
 		});
 
 		return {
@@ -195,7 +195,8 @@ export const resendRegisterVerification = async ({
 		}
 
 		const browserTokenHash = await hashToken(browserToken);
-		const token = createVerificationToken();
+		const rawToken = createVerificationToken();
+		const tokenHash = await hashToken(rawToken);
 
 		await db.emailVerification.upsert({
 			where: {
@@ -208,12 +209,12 @@ export const resendRegisterVerification = async ({
 				email,
 				userId: user.id,
 				browserTokenHash,
-				token,
+				token: tokenHash,
 				expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
 			},
 			update: {
 				browserTokenHash,
-				token,
+				token: tokenHash,
 				expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
 			},
 		});
@@ -221,7 +222,6 @@ export const resendRegisterVerification = async ({
 		logger.info("Verification email resent", {
 			email,
 			requestId,
-			verificationUrl: `${process.env.AUTH_APP_URL ?? "http://localhost:3010"}/verify?token=${token}`,
 		});
 
 		return {

@@ -9,10 +9,6 @@ export const handleCheckOtpForm = createServerFn({
     }
     return data;
   })
-  .handler((ctx) => {
-    console.log("Handling check OTP form with data:", ctx.data);
-
-    console.log("Check OTP successful, redirecting...");
-
+  .handler((_ctx) => {
     return "Form submitted successfully";
   });

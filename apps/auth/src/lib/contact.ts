@@ -9,10 +9,6 @@ export const handleLoginForm = createServerFn({
     }
     return data;
   })
-  .handler((ctx) => {
-    console.log("Handling login form with data:", ctx.data);
-
-    console.log("Login successful, redirecting...");
-
+  .handler((_ctx) => {
     return "Form submitted successfully";
   });

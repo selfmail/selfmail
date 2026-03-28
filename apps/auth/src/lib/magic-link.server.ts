@@ -132,7 +132,7 @@ export const verifyMagicLink = async ({
 		logger.error(
 			"Magic link verification failed unexpectedly",
 			error instanceof Error ? error : undefined,
-			{ requestId, token },
+			{ requestId },
 		);
 
 		return {

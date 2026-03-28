@@ -61,7 +61,6 @@ export const handleLogin = async ({
 		const token = createMagicLinkToken();
 		const tempSessionToken = createBrowserToken();
 		const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
-		const magicLinkUrl = `${process.env.AUTH_APP_URL ?? "http://localhost:3010"}/magic?token=${token}`;
 		const tokenHash = await hashToken(token);
 		const browserTokenHash = await hashToken(tempSessionToken);
 
@@ -82,10 +81,9 @@ export const handleLogin = async ({
 
 		setTempSessionCookie(tempSessionToken);
 
-		logger.info("Dummy magic link created", {
+		logger.info("Magic link created", {
 			email,
 			requestId,
-			magicLinkUrl,
 			expiresAt: expiresAt.toISOString(),
 		});
 

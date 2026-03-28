@@ -15,3 +15,13 @@ export const getAppRedirectUrlFn = createServerFn({
 
 	return getAppRedirectUrl();
 });
+
+export const logoutFn = createServerFn({
+	method: "POST",
+}).handler(async () => {
+	const { destroySession } = await import("#/lib/session.server");
+
+	await destroySession();
+
+	return { success: true };
+});

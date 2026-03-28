@@ -65,20 +65,15 @@ export const enforceAuthRateLimit = async (
 					: ipResult.resetAt,
 		};
 	} catch (error) {
-		logger.warn("Auth rate limit skipped because Redis check failed", {
-			action,
-			error:
-				error instanceof Error
-					? {
-							message: error.message,
-							name: error.name,
-						}
-					: "unknown",
-		});
+		logger.error(
+			"Auth rate limit denied because Redis check failed",
+			error instanceof Error ? error : undefined,
+			{ action },
+		);
 
 		return {
-			allowed: true,
-			resetAt: new Date(),
+			allowed: false,
+			resetAt: new Date(Date.now() + 15 * 60 * 1000),
 		};
 	}
 };

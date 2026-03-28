@@ -71,26 +71,27 @@ export const hashToken = async (value: string) => {
 };
 
 export const createSession = async (userId: string) => {
-	const sessionToken = createToken();
+	const rawToken = createToken();
+	const sessionTokenHash = await hashToken(rawToken);
 	const expires = new Date(Date.now() + SESSION_DURATION_SECONDS * 1000);
 
 	await db.session.create({
 		data: {
 			expires,
-			sessionToken,
+			sessionToken: sessionTokenHash,
 			userId,
 		},
 	});
 
 	setCookie(
 		SESSION_COOKIE_NAME,
-		sessionToken,
+		rawToken,
 		getCookieConfig(SESSION_DURATION_SECONDS),
 	);
 
 	return {
 		expires,
-		sessionToken,
+		sessionToken: rawToken,
 	};
 };
 
@@ -129,18 +130,20 @@ export const getAppRedirectUrl = () => {
 };
 
 export const getCurrentUser = async () => {
-	const sessionToken = getCookie(SESSION_COOKIE_NAME);
+	const rawToken = getCookie(SESSION_COOKIE_NAME);
 
-	if (!sessionToken) {
+	if (!rawToken) {
 		return null;
 	}
+
+	const sessionTokenHash = await hashToken(rawToken);
 
 	const session = await db.session.findUnique({
 		include: {
 			user: true,
 		},
 		where: {
-			sessionToken,
+			sessionToken: sessionTokenHash,
 		},
 	});
 
@@ -152,7 +155,7 @@ export const getCurrentUser = async () => {
 	if (session.expires < new Date()) {
 		await db.session.deleteMany({
 			where: {
-				sessionToken,
+				sessionToken: sessionTokenHash,
 			},
 		});
 		clearSessionCookie();
@@ -161,4 +164,19 @@ export const getCurrentUser = async () => {
 	}
 
 	return session.user;
+};
+
+export const destroySession = async () => {
+	const rawToken = getCookie(SESSION_COOKIE_NAME);
+
+	if (rawToken) {
+		const sessionTokenHash = await hashToken(rawToken);
+		await db.session.deleteMany({
+			where: {
+				sessionToken: sessionTokenHash,
+			},
+		});
+	}
+
+	clearSessionCookie();
 };
