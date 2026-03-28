@@ -23,6 +23,9 @@ checksums:
     login/problems/get_help_link: b055bf36dfa6e856d498314b57c96b13
     login/problems/or: 7b133c38bec0d5ee23cc6bcf9a8de50b
     login/problems/contact_support_link: 538ed71c00a2a3883be9548f9b7c5bfb
+    login/dashboard_hint/text: 40f7378b35f44743a961920c80658e2b
+    login/dashboard_hint/link: d77be88efce2319f0371fa6fb84445da
+    login/dashboard_hint/dismiss_label: 93d48adaf3a7a7de5ebfa09090d2e6fa
     footer/privacy_policy: 7459744a63ef8af4e517a09024bd7c08
     footer/terms_of_service: 5add91f519e39025708e54a7eb7a9fc5
     magic_link/title: 0d65c5276c4760655fb873a81a237151
@@ -103,8 +106,12 @@ checksums:
     register/terms_text_middle: ce8b9bb44f031705708a70e068bb73c8
     register/privacy_link: 7459744a63ef8af4e517a09024bd7c08
     register/terms_text_after_link: f05f450fffcb17520c441ab9789f40ce
+    register/dashboard_hint/text: 40f7378b35f44743a961920c80658e2b
+    register/dashboard_hint/link: d77be88efce2319f0371fa6fb84445da
+    register/dashboard_hint/dismiss_label: 93d48adaf3a7a7de5ebfa09090d2e6fa
     register_success/title: abe565fb351418eec4dacded4cc9ac18
     register_success/description: 9dd139b5e535a57944870421e390695a
+    register_success/resend: 5cd54dbdd17c450921acf8d4109677d8
     login_success/title: 53fa23cb6790257eb1347bf5ee5b9eb5
     login_success/description: 9ee6fad38a0189872014b799f627a2f2
     login_success/resend: 5cd54dbdd17c450921acf8d4109677d8

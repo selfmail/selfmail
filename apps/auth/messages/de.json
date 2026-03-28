@@ -24,6 +24,11 @@
       "get_help_link": "Hilfe erhalten",
       "or": "oder",
       "contact_support_link": "Kontaktieren Sie den Support"
+    },
+    "dashboard_hint": {
+      "text": "Sie sind bereits angemeldet. Sie können direkt zu Ihrem Dashboard gehen",
+      "link": "Dashboard öffnen",
+      "dismiss_label": "Dashboard-Hinweis schließen"
     }
   },
   "footer": {
@@ -140,11 +145,17 @@
     "terms_link": "Nutzungsbedingungen",
     "terms_text_middle": "und der",
     "privacy_link": "Datenschutzrichtlinie",
-    "terms_text_after_link": "zu."
+    "terms_text_after_link": "zu.",
+    "dashboard_hint": {
+      "text": "Sie sind bereits angemeldet. Sie können direkt zu Ihrem Dashboard gehen",
+      "link": "Dashboard öffnen",
+      "dismiss_label": "Dashboard-Hinweis schließen"
+    }
   },
   "register_success": {
     "title": "Konto erfolgreich erstellt",
-    "description": "Alles hat geklappt. Ihr Selfmail-Konto wurde erstellt und ist bereit für den nächsten Authentifizierungsschritt."
+    "description": "Alles hat geklappt. Ihr Selfmail-Konto wurde erstellt und ist bereit für den nächsten Authentifizierungsschritt.",
+    "resend": "E-Mail erneut senden"
   },
   "login_success": {
     "title": "Magic Link versendet",

@@ -24,6 +24,11 @@
       "get_help_link": "Obtener ayuda",
       "or": "o",
       "contact_support_link": "contacta a nuestro equipo de soporte"
+    },
+    "dashboard_hint": {
+      "text": "Ya has iniciado sesión. Puedes ir directamente a tu panel de control",
+      "link": "Abrir panel de control",
+      "dismiss_label": "Descartar sugerencia del panel de control"
     }
   },
   "footer": {
@@ -140,11 +145,17 @@
     "terms_link": "Términos de Servicio",
     "terms_text_middle": "y",
     "privacy_link": "Política de Privacidad",
-    "terms_text_after_link": "."
+    "terms_text_after_link": ".",
+    "dashboard_hint": {
+      "text": "Ya has iniciado sesión. Puedes ir directamente a tu panel de control",
+      "link": "Abrir panel de control",
+      "dismiss_label": "Descartar sugerencia del panel de control"
+    }
   },
   "register_success": {
     "title": "Cuenta creada correctamente",
-    "description": "Todo salió bien. Tu cuenta de Selfmail ha sido creada y está lista para el siguiente paso de autenticación."
+    "description": "Todo salió bien. Tu cuenta de Selfmail ha sido creada y está lista para el siguiente paso de autenticación.",
+    "resend": "Reenviar correo electrónico"
   },
   "login_success": {
     "title": "Enlace mágico enviado",
