@@ -24,6 +24,11 @@
       "get_help_link": "Get help",
       "or": "or",
       "contact_support_link": "contact our support team"
+    },
+    "dashboard_hint": {
+      "text": "You are already signed in. You can go straight to your dashboard",
+      "link": "Open dashboard",
+      "dismiss_label": "Dismiss dashboard hint"
     }
   },
   "footer": {
@@ -140,11 +145,17 @@
     "terms_link": "Terms of Service",
     "terms_text_middle": "and",
     "privacy_link": "Privacy Policy",
-    "terms_text_after_link": "."
+    "terms_text_after_link": ".",
+    "dashboard_hint": {
+      "text": "You are already signed in. You can go straight to your dashboard",
+      "link": "Open dashboard",
+      "dismiss_label": "Dismiss dashboard hint"
+    }
   },
   "register_success": {
     "title": "Account Created Successfully",
-    "description": "Everything went alright. Your Selfmail account has been created and is ready for the next authentication step."
+    "description": "Everything went alright. Your Selfmail account has been created and is ready for the next authentication step.",
+    "resend": "Resend Email"
   },
   "login_success": {
     "title": "Magic Link Sent",

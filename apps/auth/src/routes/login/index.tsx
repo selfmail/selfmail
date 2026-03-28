@@ -1,224 +1,278 @@
 import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
-import {
-  createFileRoute,
-  Link,
-  useNavigate,
-} from "@tanstack/react-router";
-import { Building2Icon, KeyRoundIcon } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Building2Icon, KeyRoundIcon, XIcon } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { type ZodError, z } from "zod";
 import { Google } from "#/components/ui/svgs/google";
 import { handleLoginForm, type LoginResult } from "#/lib/login";
+import { getAppRedirectUrlFn, getCurrentUserFn } from "#/lib/session";
 import { m } from "#/paraglide/messages";
 
 const { fieldContext, formContext, useFieldContext, useFormContext } =
-  createFormHookContexts();
+	createFormHookContexts();
 
 const EmailField = ({ placeholder }: { placeholder: string }) => {
-  const field = useFieldContext<string>();
-  const [firstError] = field.state.meta.errors as ZodError[];
+	const field = useFieldContext<string>();
+	const [firstError] = field.state.meta.errors as ZodError[];
 
-  return (
-    <div>
-      <input
-        className="w-full rounded-full border-2 border-neutral-200 px-6 py-3 outline-none ring-neutral-200 transition-colors duration-200 focus-within:border-neutral-400 focus-within:ring-2 focus:outline-none"
-        name={field.name}
-        onBlur={field.handleBlur}
-        onChange={(event) => {
-          field.handleChange(event.target.value);
-        }}
-        placeholder={placeholder}
-        type="email"
-        value={field.state.value}
-      />
-      {firstError ? (
-        <p className="px-2 pt-1 text-red-600 text-sm">
-          {String(firstError.message)}
-        </p>
-      ) : null}
-    </div>
-  );
+	return (
+		<div>
+			<input
+				className="w-full rounded-full border-2 border-neutral-200 px-6 py-3 outline-none ring-neutral-200 transition-colors duration-200 focus-within:border-neutral-400 focus-within:ring-2 focus:outline-none"
+				name={field.name}
+				onBlur={field.handleBlur}
+				onChange={(event) => {
+					field.handleChange(event.target.value);
+				}}
+				placeholder={placeholder}
+				type="email"
+				value={field.state.value}
+			/>
+			{firstError ? (
+				<p className="px-2 pt-1 text-red-600 text-sm">
+					{String(firstError.message)}
+				</p>
+			) : null}
+		</div>
+	);
 };
 
 const SubmitButton = ({ children }: { children: ReactNode }) => {
-  const form = useFormContext();
+	const form = useFormContext();
 
-  return (
-    <button
-      className="hit-area-2 w-full cursor-pointer rounded-full bg-neutral-900 px-6 py-3 text-white transition-colors duration-200 focus-within:bg-neutral-700 focus-within:ring-2 focus-within:ring-neutral-700 focus-within:ring-offset-2 hover:bg-neutral-700 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-500"
-      disabled={form.state.isSubmitting}
-      type="submit"
-    >
-      {children}
-    </button>
-  );
+	return (
+		<button
+			className="hit-area-2 w-full cursor-pointer rounded-full bg-neutral-900 px-6 py-3 text-white transition-colors duration-200 focus-within:bg-neutral-700 focus-within:ring-2 focus-within:ring-neutral-700 focus-within:ring-offset-2 hover:bg-neutral-700 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-500"
+			disabled={form.state.isSubmitting}
+			type="submit"
+		>
+			{children}
+		</button>
+	);
 };
 
 const { useAppForm } = createFormHook({
-  fieldComponents: {
-    EmailField,
-  },
-  formComponents: {
-    SubmitButton,
-  },
-  fieldContext,
-  formContext,
+	fieldComponents: {
+		EmailField,
+	},
+	formComponents: {
+		SubmitButton,
+	},
+	fieldContext,
+	formContext,
 });
 
 export const Route = createFileRoute("/login/")({
-  component: RouteComponent,
-  validateSearch: z.object({
-    error: z.string().optional(),
-  }),
+	component: RouteComponent,
+	loader: async () => ({
+		currentUser: await getCurrentUserFn(),
+		dashboardUrl: await getAppRedirectUrlFn(),
+	}),
+	validateSearch: z.object({
+		error: z.string().optional(),
+	}),
 });
 
+const DashboardHint = ({
+	dashboardUrl,
+	onDismiss,
+}: {
+	dashboardUrl: string;
+	onDismiss: () => void;
+}) => {
+	return (
+		<div className="rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
+			<div className="flex items-start gap-3">
+				<p className="flex-1 text-pretty">
+					{m["login.dashboard_hint.text"]()}{" "}
+					<a
+						className="font-medium text-neutral-900 underline underline-offset-2"
+						href={dashboardUrl}
+					>
+						{m["login.dashboard_hint.link"]()}
+					</a>
+					.
+				</p>
+				<button
+					aria-label={m["login.dashboard_hint.dismiss_label"]()}
+					className="rounded-full p-1 text-neutral-500 transition-colors duration-200 hover:bg-neutral-200 hover:text-neutral-900"
+					onClick={(event) => {
+						event.preventDefault();
+						event.stopPropagation();
+						onDismiss();
+					}}
+					type="button"
+				>
+					<XIcon className="size-4" />
+				</button>
+			</div>
+		</div>
+	);
+};
+
 function RouteComponent() {
-  const { error: routeError } = Route.useSearch();
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const navigate = useNavigate();
-  const loginSchema = z.object({
-    email: z
-      .email(m["login.errors.email_invalid"]())
-      .min(1, m["login.errors.email_required"]()),
-  });
+	const { error: routeError } = Route.useSearch();
+	const { currentUser, dashboardUrl } = Route.useLoaderData();
+	const [isDashboardHintDismissed, setIsDashboardHintDismissed] =
+		useState(false);
+	const [submitError, setSubmitError] = useState<string | null>(null);
+	const navigate = useNavigate();
+	const loginSchema = z.object({
+		email: z
+			.email(m["login.errors.email_invalid"]())
+			.min(1, m["login.errors.email_required"]()),
+	});
 
-  const getSubmitErrorMessage = (
-    result: Extract<LoginResult, { status: "error" }>
-  ) => {
-    switch (result.error.code) {
-      case "ACCOUNT_NOT_FOUND":
-        return "No account exists for this email address yet.";
-      case "RATE_LIMITED":
-        return "Too many sign-in attempts. Please wait a few minutes and try again.";
-      default:
-        return `${result.error.message} Request ID: ${result.error.requestId}`;
-    }
-  };
+	const getSubmitErrorMessage = (
+		result: Extract<LoginResult, { status: "error" }>,
+	) => {
+		switch (result.error.code) {
+			case "ACCOUNT_NOT_FOUND":
+				return "No account exists for this email address yet.";
+			case "RATE_LIMITED":
+				return "Too many sign-in attempts. Please wait a few minutes and try again.";
+			default:
+				return `${result.error.message} Request ID: ${result.error.requestId}`;
+		}
+	};
 
-  const form = useAppForm({
-    defaultValues: {
-      email: "",
-    },
-    onSubmit: async (values) => {
-      setSubmitError(null);
-      const result = await handleLoginForm({
-        data: values.value,
-      });
+	const form = useAppForm({
+		defaultValues: {
+			email: "",
+		},
+		onSubmit: async (values) => {
+			setSubmitError(null);
+			const result = await handleLoginForm({
+				data: values.value,
+			});
 
-      if (result.status === "success") {
-        await navigate({ to: "/login/success" });
-        return;
-      }
+			if (result.status === "success") {
+				await navigate({
+					to: "/login/success",
+					search: {
+						email: values.value.email,
+					},
+				});
+				return;
+			}
 
-      setSubmitError(getSubmitErrorMessage(result));
-    },
-    validators: {
-      onSubmit: loginSchema,
-      onBlur: loginSchema,
-    },
-  });
+			setSubmitError(getSubmitErrorMessage(result));
+		},
+		validators: {
+			onSubmit: loginSchema,
+			onBlur: loginSchema,
+		},
+	});
 
-  const formError = submitError ?? routeError ?? null;
+	const formError = submitError ?? routeError ?? null;
 
-  return (
-    <>
-      <a
-        className="absolute top-5 hidden font-medium text-xl sm:block"
-        href="https://selfmail.app"
-      >
-        Selfmail
-      </a>
-      <div className="flex w-full flex-col gap-2 px-5 sm:px-10 md:w-100 md:px-0">
-        <h1 className="pb-4 text-center font-medium text-3xl">
-          {m["login.title"]()}
-        </h1>
-        <form
-          className="flex flex-col gap-4 pt-2"
-          encType="multipart/form-data"
-          method="post"
-          onSubmit={(e) => {
-            form.handleSubmit();
+	return (
+		<>
+			<a
+				className="absolute top-5 hidden font-medium text-xl sm:block"
+				href="https://selfmail.app"
+			>
+				Selfmail
+			</a>
+			<div className="flex w-full flex-col gap-2 px-5 sm:px-10 md:w-100 md:px-0">
+				<h1 className="pb-4 text-center font-medium text-3xl">
+					{m["login.title"]()}
+				</h1>
+				<form
+					className="flex flex-col gap-4 pt-2"
+					encType="multipart/form-data"
+					method="post"
+					onSubmit={(e) => {
+						form.handleSubmit();
 
-            e.preventDefault();
-          }}
-        >
-          {formError ? (
-            <div
-              aria-live="polite"
-              className="text-pretty rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 text-sm"
-              role="alert"
-            >
-              {formError}
-            </div>
-          ) : null}
-          <form.AppField name="email">
-            {(field) => (
-              <field.EmailField placeholder={m["login.email_placeholder"]()} />
-            )}
-          </form.AppField>
-          <form.AppForm>
-            <form.SubmitButton>{m["login.proceed_button"]()}</form.SubmitButton>
-          </form.AppForm>
-          <div className="h-0.5 w-full rounded-full bg-neutral-200" />
-          <div className="flex flex-col gap-2">
-            <button
-              className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-neutral-200 px-6 py-3 transition-colors duration-200 hover:bg-neutral-100"
-              type="button"
-            >
-              <Google className="absolute left-6 h-4 w-4" />
-              <span className="ml-8 w-full text-left">
-                {m["login.sign_in_google"]()}
-              </span>
-            </button>
-            <button
-              className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-neutral-200 px-6 py-3 transition-colors duration-200 hover:bg-neutral-100"
-              type="button"
-            >
-              <KeyRoundIcon className="absolute left-6 h-4 w-4" />
+						e.preventDefault();
+					}}
+				>
+					{currentUser && !isDashboardHintDismissed ? (
+						<DashboardHint
+							dashboardUrl={dashboardUrl}
+							onDismiss={() => {
+								setIsDashboardHintDismissed(true);
+							}}
+						/>
+					) : null}
+					{formError ? (
+						<div
+							aria-live="polite"
+							className="text-pretty rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 text-sm"
+							role="alert"
+						>
+							{formError}
+						</div>
+					) : null}
+					<form.AppField name="email">
+						{(field) => (
+							<field.EmailField placeholder={m["login.email_placeholder"]()} />
+						)}
+					</form.AppField>
+					<form.AppForm>
+						<form.SubmitButton>{m["login.proceed_button"]()}</form.SubmitButton>
+					</form.AppForm>
+					<div className="h-0.5 w-full rounded-full bg-neutral-200" />
+					<div className="flex flex-col gap-2">
+						<button
+							className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-neutral-200 px-6 py-3 transition-colors duration-200 hover:bg-neutral-100"
+							type="button"
+						>
+							<Google className="absolute left-6 h-4 w-4" />
+							<span className="ml-8 w-full text-left">
+								{m["login.sign_in_google"]()}
+							</span>
+						</button>
+						<button
+							className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-neutral-200 px-6 py-3 transition-colors duration-200 hover:bg-neutral-100"
+							type="button"
+						>
+							<KeyRoundIcon className="absolute left-6 h-4 w-4" />
 
-              <span className="ml-8 w-full text-left">
-                {m["login.sign_in_passkey"]()}
-              </span>
-            </button>
-            <button
-              className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-neutral-200 px-6 py-3 transition-colors duration-200 hover:bg-neutral-100"
-              type="button"
-            >
-              <Building2Icon className="absolute left-6 h-4 w-4" />
+							<span className="ml-8 w-full text-left">
+								{m["login.sign_in_passkey"]()}
+							</span>
+						</button>
+						<button
+							className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-neutral-200 px-6 py-3 transition-colors duration-200 hover:bg-neutral-100"
+							type="button"
+						>
+							<Building2Icon className="absolute left-6 h-4 w-4" />
 
-              <span className="ml-8 w-full text-left">
-                {m["login.enterprises"]()}
-              </span>
-            </button>
-          </div>
-          <p className="pt-4 text-center">
-            {m["login.register_text"]()}{" "}
-            <a
-              className="hit-area-2 text-blue-500 hover:underline"
-              href="/register"
-            >
-              {m["login.register_link"]()}
-            </a>
-          </p>
-          <p className="text-balance text-center text-neutral-700 text-sm">
-            {m["login.problems.text"]()}{" "}
-            <Link
-              className="hit-area-2 text-blue-500 hover:underline"
-              to="/help"
-            >
-              {m["login.problems.get_help_link"]()}
-            </Link>{" "}
-            {m["login.problems.or"]()}{" "}
-            <Link
-              className="hit-area-2 text-blue-500 hover:underline"
-              to="/contact"
-            >
-              {m["login.problems.contact_support_link"]()}
-            </Link>
-            .
-          </p>
-        </form>
-      </div>
-    </>
-  );
+							<span className="ml-8 w-full text-left">
+								{m["login.enterprises"]()}
+							</span>
+						</button>
+					</div>
+					<p className="pt-4 text-center">
+						{m["login.register_text"]()}{" "}
+						<a
+							className="hit-area-2 text-blue-500 hover:underline"
+							href="/register"
+						>
+							{m["login.register_link"]()}
+						</a>
+					</p>
+					<p className="text-balance text-center text-neutral-700 text-sm">
+						{m["login.problems.text"]()}{" "}
+						<Link
+							className="hit-area-2 text-blue-500 hover:underline"
+							to="/help"
+						>
+							{m["login.problems.get_help_link"]()}
+						</Link>{" "}
+						{m["login.problems.or"]()}{" "}
+						<Link
+							className="hit-area-2 text-blue-500 hover:underline"
+							to="/contact"
+						>
+							{m["login.problems.contact_support_link"]()}
+						</Link>
+						.
+					</p>
+				</form>
+			</div>
+		</>
+	);
 }

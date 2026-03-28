@@ -1,22 +1,12 @@
-import { db } from "@selfmail/db";
-import { createLogger } from "@selfmail/logging";
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
 	CircleAlertIcon,
 	CircleCheckBigIcon,
 	LifeBuoyIcon,
 } from "lucide-react";
 import { z } from "zod";
-import {
-	clearTempSessionCookie,
-	createSession,
-	getAppRedirectUrl,
-	getTempSessionCookie,
-	hashToken,
-} from "#/lib/session";
+import { verifyEmailTokenFn } from "#/lib/verify-email";
 import { m } from "#/paraglide/messages";
-
-const logger = createLogger("auth-verify-email");
 
 const verifySearchSchema = z.object({
 	token: z
@@ -27,128 +17,6 @@ const verifySearchSchema = z.object({
 			token && token.length >= 32 && token.length <= 64 ? token : undefined,
 		),
 });
-
-type VerifyResult =
-	| {
-			status: "error";
-			error: {
-				message: string;
-				requestId: string;
-			};
-	  }
-	| {
-			status: "login_required";
-			message: string;
-	  }
-	| {
-			status: "success";
-	  };
-
-const createRequestId = () => crypto.randomUUID();
-
-const verifyEmailToken = async (token: string): Promise<VerifyResult> => {
-	const requestId = createRequestId();
-
-	try {
-		const emailVerification = await db.emailVerification.findUnique({
-			include: {
-				user: true,
-			},
-			where: {
-				token,
-			},
-		});
-
-		if (!emailVerification) {
-			return {
-				status: "error",
-				error: {
-					message: m["verify.errors.invalid"](),
-					requestId,
-				},
-			};
-		}
-
-		if (emailVerification.expiresAt < new Date()) {
-			await db.emailVerification.delete({
-				where: {
-					id: emailVerification.id,
-				},
-			});
-			clearTempSessionCookie();
-
-			return {
-				status: "error",
-				error: {
-					message: m["verify.errors.expired"](),
-					requestId,
-				},
-			};
-		}
-
-		const tempSessionToken = getTempSessionCookie();
-		const tempSessionHash = tempSessionToken
-			? await hashToken(tempSessionToken)
-			: undefined;
-		const sameBrowser =
-			!!tempSessionHash &&
-			!!emailVerification.browserTokenHash &&
-			tempSessionHash === emailVerification.browserTokenHash;
-
-		await db.$transaction(async (tx) => {
-			if (!emailVerification.user.emailVerified) {
-				await tx.user.update({
-					data: {
-						emailVerified: new Date(),
-					},
-					where: {
-						id: emailVerification.userId,
-					},
-				});
-			}
-
-			await tx.emailVerification.delete({
-				where: {
-					id: emailVerification.id,
-				},
-			});
-		});
-
-		clearTempSessionCookie();
-
-		if (!sameBrowser) {
-			return {
-				status: "login_required",
-				message: m["verify.success.description"](),
-			};
-		}
-
-		await createSession(emailVerification.userId);
-
-		throw redirect({
-			href: getAppRedirectUrl(),
-			statusCode: 302,
-		});
-	} catch (error) {
-		if (error instanceof Response) {
-			throw error;
-		}
-
-		logger.error(
-			"Email verification failed unexpectedly",
-			error instanceof Error ? error : undefined,
-			{ requestId, token },
-		);
-
-		return {
-			status: "error",
-			error: {
-				message: m["verify.errors.unknown"](),
-				requestId,
-			},
-		};
-	}
-};
 
 export const Route = createFileRoute("/verify/")({
 	component: RouteComponent,
@@ -176,7 +44,11 @@ export const Route = createFileRoute("/verify/")({
 			};
 		}
 
-		return verifyEmailToken(deps.token);
+		return verifyEmailTokenFn({
+			data: {
+				token: deps.token,
+			},
+		});
 	},
 });
 

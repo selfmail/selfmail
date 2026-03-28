@@ -1,10 +1,11 @@
 import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Building2Icon } from "lucide-react";
+import { Building2Icon, XIcon } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { type ZodError, z } from "zod";
 import { Google } from "#/components/ui/svgs/google";
 import { handleRegisterForm, type RegisterResult } from "#/lib/register";
+import { getAppRedirectUrlFn, getCurrentUserFn } from "#/lib/session";
 import { m } from "#/paraglide/messages";
 
 const { fieldContext, formContext, useFieldContext, useFormContext } =
@@ -99,9 +100,53 @@ export const Route = createFileRoute("/register/")({
     ],
   }),
   component: RouteComponent,
+  loader: async () => ({
+    currentUser: await getCurrentUserFn(),
+    dashboardUrl: await getAppRedirectUrlFn(),
+  }),
 });
 
+const DashboardHint = ({
+  dashboardUrl,
+  onDismiss,
+}: {
+  dashboardUrl: string;
+  onDismiss: () => void;
+}) => {
+  return (
+    <div className="rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-neutral-700 text-sm">
+      <div className="flex items-start gap-3">
+        <p className="flex-1 text-pretty">
+          {m["register.dashboard_hint.text"]()}{" "}
+          <a
+            className="font-medium text-neutral-900 underline underline-offset-2"
+            href={dashboardUrl}
+          >
+            {m["register.dashboard_hint.link"]()}
+          </a>
+          .
+        </p>
+        <button
+          aria-label={m["register.dashboard_hint.dismiss_label"]()}
+          className="hit-area-2 rounded-full p-1 text-neutral-500 transition-colors duration-200 hover:bg-neutral-200 hover:text-neutral-900"
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            onDismiss();
+          }}
+          type="button"
+        >
+          <XIcon className="size-4" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 function RouteComponent() {
+  const { currentUser, dashboardUrl } = Route.useLoaderData();
+  const [isDashboardHintDismissed, setIsDashboardHintDismissed] =
+    useState(false);
   const navigate = useNavigate();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -137,10 +182,13 @@ function RouteComponent() {
         data: values.value,
       });
 
-      console.log(result);
-
       if (result.status === "success") {
-        await navigate({ to: "/register/success" });
+        await navigate({
+          to: "/register/success",
+          search: {
+            email: values.value.email,
+          },
+        });
         return;
       }
 
@@ -150,7 +198,6 @@ function RouteComponent() {
       onSubmit: registerSchema,
     },
   });
-
   return (
     <>
       <a
@@ -173,6 +220,14 @@ function RouteComponent() {
             e.preventDefault();
           }}
         >
+          {currentUser && !isDashboardHintDismissed ? (
+            <DashboardHint
+              dashboardUrl={dashboardUrl}
+              onDismiss={() => {
+                setIsDashboardHintDismissed(true);
+              }}
+            />
+          ) : null}
           {submitError ? (
             <div
               aria-live="polite"
