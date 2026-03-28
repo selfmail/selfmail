@@ -73,6 +73,7 @@ model EmailVerification {
 
     // the verification token
     token String @unique
+    browserTokenHash String?
 
     // the date when the verification was created
     expiresAt DateTime

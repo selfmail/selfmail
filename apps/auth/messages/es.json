@@ -33,7 +33,40 @@
   "magic_link": {
     "title": "Verificación exitosa",
     "description": "Tu enlace mágico ha sido verificado. Ahora has iniciado sesión y puedes acceder a tu cuenta.",
-    "cta": "Ir al panel"
+    "cta": "Ir al panel",
+    "errors": {
+      "incomplete": "Este enlace mágico está incompleto. Por favor, solicita un nuevo enlace de inicio de sesión.",
+      "invalid": "Este enlace mágico no es válido o ya ha sido utilizado.",
+      "expired": "Este enlace mágico ha caducado. Por favor, solicita uno nuevo.",
+      "browser_mismatch": "No pudimos verificar este navegador. Por favor, inicia sesión nuevamente y vuelve a abrir el enlace en el mismo navegador.",
+      "account_missing": "No pudimos encontrar la cuenta asociada a este enlace mágico. Por favor, intenta iniciar sesión nuevamente.",
+      "unknown": "No pudimos completar tu inicio de sesión en este momento. Por favor, inténtalo de nuevo o contacta con soporte si esto sigue ocurriendo."
+    },
+    "page": {
+      "title": "No pudimos completar tu inicio de sesión",
+      "request_id": "ID de solicitud:",
+      "back_to_login": "Volver al inicio de sesión",
+      "contact_support": "Contactar con soporte"
+    }
+  },
+  "verify": {
+    "errors": {
+      "invalid": "Este enlace de verificación no es válido o ya ha sido utilizado.",
+      "expired": "Este enlace de verificación ha caducado. Por favor, regístrate nuevamente o solicita un nuevo correo de verificación.",
+      "incomplete": "Este enlace de verificación está incompleto. Por favor, utiliza el enlace completo de tu correo electrónico.",
+      "unknown": "No pudimos completar la verificación de tu correo electrónico en este momento. Por favor, inténtalo de nuevo o contacta con soporte si esto sigue ocurriendo."
+    },
+    "success": {
+      "title": "Tu correo electrónico ha sido verificado",
+      "description": "Tu correo electrónico ahora está verificado. Para continuar, inicia sesión desde este navegador.",
+      "continue_to_login": "Continuar al inicio de sesión"
+    },
+    "error": {
+      "title": "No pudimos verificar tu correo electrónico",
+      "request_id": "ID de solicitud:",
+      "back_to_login": "Volver al inicio de sesión"
+    },
+    "contact_support": "Contactar con soporte"
   },
   "help": {
     "title": "Ayuda y soporte",
@@ -150,8 +183,12 @@
       "description": "Tu cuenta de Selfmail ha sido creada correctamente."
     },
     "magic_link": {
-      "title": "Verificación del enlace mágico | Selfmail",
+      "title": "Verificación de enlace mágico | Selfmail",
       "description": "Completa tu inicio de sesión en Selfmail de forma segura y obtén ayuda si algo sale mal."
+    },
+    "verify": {
+      "title": "Verifica tu correo electrónico | Selfmail",
+      "description": "Verifica tu dirección de correo electrónico de Selfmail y continúa a tu cuenta."
     },
     "otp": {
       "title": "Autenticación de Dos Factores | Selfmail",

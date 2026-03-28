@@ -2664,6 +2664,7 @@ export const EmailVerificationScalarFieldEnum = {
   userId: 'userId',
   email: 'email',
   token: 'token',
+  browserTokenHash: 'browserTokenHash',
   expiresAt: 'expiresAt'
 } as const
 
@@ -3042,7 +3043,8 @@ export const EmailVerificationOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId',
   email: 'email',
-  token: 'token'
+  token: 'token',
+  browserTokenHash: 'browserTokenHash'
 } as const
 
 export type EmailVerificationOrderByRelevanceFieldEnum = (typeof EmailVerificationOrderByRelevanceFieldEnum)[keyof typeof EmailVerificationOrderByRelevanceFieldEnum]

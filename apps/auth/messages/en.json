@@ -33,7 +33,40 @@
   "magic_link": {
     "title": "Verification Successful",
     "description": "Your magic link has been verified. You are now signed in and can access your account.",
-    "cta": "Go to Dashboard"
+    "cta": "Go to Dashboard",
+    "errors": {
+      "incomplete": "This magic link is incomplete. Please request a new login link.",
+      "invalid": "This magic link is invalid or has already been used.",
+      "expired": "This magic link has expired. Please request a new one.",
+      "browser_mismatch": "We could not verify this browser. Please sign in again and reopen the link in the same browser.",
+      "account_missing": "We could not find the account for this magic link anymore. Please try signing in again.",
+      "unknown": "We could not finish signing you in right now. Please try again or contact support if this keeps happening."
+    },
+    "page": {
+      "title": "We couldn't finish your sign-in",
+      "request_id": "Request ID:",
+      "back_to_login": "Back to login",
+      "contact_support": "Contact support"
+    }
+  },
+  "verify": {
+    "errors": {
+      "invalid": "This verification link is invalid or has already been used.",
+      "expired": "This verification link has expired. Please register again or request a new verification email.",
+      "incomplete": "This verification link is incomplete. Please use the full link from your email.",
+      "unknown": "We could not finish verifying your email right now. Please try again or contact support if this keeps happening."
+    },
+    "success": {
+      "title": "Your email has been verified",
+      "description": "Your email is now verified. To continue, sign in from this browser.",
+      "continue_to_login": "Continue to login"
+    },
+    "error": {
+      "title": "We couldn't verify your email",
+      "request_id": "Request ID:",
+      "back_to_login": "Back to login"
+    },
+    "contact_support": "Contact support"
   },
   "help": {
     "title": "Help & Support",
@@ -152,6 +185,10 @@
     "magic_link": {
       "title": "Magic Link Verification | Selfmail",
       "description": "Finish your Selfmail sign-in securely and get help if anything goes wrong."
+    },
+    "verify": {
+      "title": "Verify your email | Selfmail",
+      "description": "Verify your Selfmail email address and continue to your account."
     },
     "otp": {
       "title": "Two-Factor Authentication | Selfmail",

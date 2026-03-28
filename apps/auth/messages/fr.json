@@ -33,7 +33,40 @@
   "magic_link": {
     "title": "Vérification réussie",
     "description": "Votre lien magique a été vérifié. Vous êtes maintenant connecté et pouvez accéder à votre compte.",
-    "cta": "Accéder au tableau de bord"
+    "cta": "Accéder au tableau de bord",
+    "errors": {
+      "incomplete": "Ce lien magique est incomplet. Veuillez demander un nouveau lien de connexion.",
+      "invalid": "Ce lien magique est invalide ou a déjà été utilisé.",
+      "expired": "Ce lien magique a expiré. Veuillez en demander un nouveau.",
+      "browser_mismatch": "Nous n'avons pas pu vérifier ce navigateur. Veuillez vous connecter à nouveau et rouvrir le lien dans le même navigateur.",
+      "account_missing": "Nous n'avons pas pu retrouver le compte associé à ce lien magique. Veuillez réessayer de vous connecter.",
+      "unknown": "Nous n'avons pas pu finaliser votre connexion pour le moment. Veuillez réessayer ou contacter l'assistance si le problème persiste."
+    },
+    "page": {
+      "title": "Nous n'avons pas pu finaliser votre connexion",
+      "request_id": "ID de la demande :",
+      "back_to_login": "Retour à la connexion",
+      "contact_support": "Contacter l'assistance"
+    }
+  },
+  "verify": {
+    "errors": {
+      "invalid": "Ce lien de vérification est invalide ou a déjà été utilisé.",
+      "expired": "Ce lien de vérification a expiré. Veuillez vous réinscrire ou demander un nouvel e-mail de vérification.",
+      "incomplete": "Ce lien de vérification est incomplet. Veuillez utiliser le lien complet de votre e-mail.",
+      "unknown": "Nous n'avons pas pu finaliser la vérification de votre e-mail pour le moment. Veuillez réessayer ou contacter l'assistance si le problème persiste."
+    },
+    "success": {
+      "title": "Votre e-mail a été vérifié",
+      "description": "Votre e-mail est maintenant vérifié. Pour continuer, connectez-vous depuis ce navigateur.",
+      "continue_to_login": "Continuer vers la connexion"
+    },
+    "error": {
+      "title": "Nous n'avons pas pu vérifier votre e-mail",
+      "request_id": "ID de la demande :",
+      "back_to_login": "Retour à la connexion"
+    },
+    "contact_support": "Contacter l'assistance"
   },
   "help": {
     "title": "Aide et assistance",
@@ -151,7 +184,11 @@
     },
     "magic_link": {
       "title": "Vérification du lien magique | Selfmail",
-      "description": "Terminez votre connexion Selfmail en toute sécurité et obtenez de l’aide si un problème survient."
+      "description": "Finalisez votre connexion Selfmail en toute sécurité et obtenez de l'aide en cas de problème."
+    },
+    "verify": {
+      "title": "Vérifiez votre e-mail | Selfmail",
+      "description": "Vérifiez votre adresse e-mail Selfmail et accédez à votre compte."
     },
     "otp": {
       "title": "Authentification à deux facteurs | Selfmail",

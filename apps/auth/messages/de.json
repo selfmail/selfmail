@@ -33,7 +33,40 @@
   "magic_link": {
     "title": "Verifizierung erfolgreich",
     "description": "Ihr Magic Link wurde verifiziert. Sie sind jetzt angemeldet und können auf Ihr Konto zugreifen.",
-    "cta": "Zum Dashboard"
+    "cta": "Zum Dashboard",
+    "errors": {
+      "incomplete": "Dieser Magic-Link ist unvollständig. Bitte fordern Sie einen neuen Login-Link an.",
+      "invalid": "Dieser Magic-Link ist ungültig oder wurde bereits verwendet.",
+      "expired": "Dieser Magic-Link ist abgelaufen. Bitte fordern Sie einen neuen an.",
+      "browser_mismatch": "Wir konnten diesen Browser nicht verifizieren. Bitte melden Sie sich erneut an und öffnen Sie den Link im selben Browser.",
+      "account_missing": "Wir konnten das Konto für diesen Magic-Link nicht mehr finden. Bitte versuchen Sie, sich erneut anzumelden.",
+      "unknown": "Wir konnten Ihre Anmeldung gerade nicht abschließen. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support, falls das Problem weiterhin besteht."
+    },
+    "page": {
+      "title": "Ihre Anmeldung konnte nicht abgeschlossen werden",
+      "request_id": "Anfrage-ID:",
+      "back_to_login": "Zurück zur Anmeldung",
+      "contact_support": "Support kontaktieren"
+    }
+  },
+  "verify": {
+    "errors": {
+      "invalid": "Dieser Bestätigungslink ist ungültig oder wurde bereits verwendet.",
+      "expired": "Dieser Bestätigungslink ist abgelaufen. Bitte registrieren Sie sich erneut oder fordern Sie eine neue Bestätigungs-E-Mail an.",
+      "incomplete": "Dieser Bestätigungslink ist unvollständig. Bitte verwenden Sie den vollständigen Link aus Ihrer E-Mail.",
+      "unknown": "Wir konnten Ihre E-Mail-Adresse gerade nicht verifizieren. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support, falls das Problem weiterhin besteht."
+    },
+    "success": {
+      "title": "Ihre E-Mail-Adresse wurde verifiziert",
+      "description": "Ihre E-Mail-Adresse ist jetzt verifiziert. Um fortzufahren, melden Sie sich über diesen Browser an.",
+      "continue_to_login": "Weiter zur Anmeldung"
+    },
+    "error": {
+      "title": "Ihre E-Mail-Adresse konnte nicht verifiziert werden",
+      "request_id": "Anfrage-ID:",
+      "back_to_login": "Zurück zur Anmeldung"
+    },
+    "contact_support": "Support kontaktieren"
   },
   "help": {
     "title": "Hilfe & Support",
@@ -152,6 +185,10 @@
     "magic_link": {
       "title": "Magic-Link-Verifizierung | Selfmail",
       "description": "Schließen Sie Ihre Selfmail-Anmeldung sicher ab und erhalten Sie Hilfe, falls etwas schiefgeht."
+    },
+    "verify": {
+      "title": "E-Mail-Adresse verifizieren | Selfmail",
+      "description": "Verifizieren Sie Ihre Selfmail-E-Mail-Adresse und fahren Sie mit Ihrem Konto fort."
     },
     "otp": {
       "title": "Zwei-Faktor-Authentifizierung | Selfmail",

@@ -28,6 +28,27 @@ checksums:
     magic_link/title: 0d65c5276c4760655fb873a81a237151
     magic_link/description: 23af875949b36d66a16865a692ca4727
     magic_link/cta: a6efa97d25e36fedc0af794f6ba610f2
+    magic_link/errors/incomplete: cc65343e652bea9593c0571f67dca5f7
+    magic_link/errors/invalid: 27e8a63b3bf104eb00bcd0a2452b9cc3
+    magic_link/errors/expired: 25a2cc430a8f3ed858ac64ae7fed9bc7
+    magic_link/errors/browser_mismatch: c9245855d93a09c8f9bbcac878a7b2b5
+    magic_link/errors/account_missing: 5ec3a1ea20ac2f6d0d604d148b792d68
+    magic_link/errors/unknown: a0ffabd6b2aea008482e82ed95e2a2b2
+    magic_link/page/title: fec6d58bdfcb214e413421f22311da89
+    magic_link/page/request_id: da54914e6fc6d7a046a8c089c46be2fb
+    magic_link/page/back_to_login: 6bcc9859839f32dc2b4295e1565919a4
+    magic_link/page/contact_support: 32a4dee2033635e334a5f4d34724e3e0
+    verify/errors/invalid: c506c5239b5fa1af7e906435707e8ff1
+    verify/errors/expired: dd4273a9b5d5a99594de65f9d4da65ef
+    verify/errors/incomplete: 11f272a80cefec5af4c0b205ab12aff8
+    verify/errors/unknown: 3f0fee414b6773dded161b1ea1670c0f
+    verify/success/title: 2d0b6aab753787ceec620461c2833cdd
+    verify/success/description: 4902c9c595bf52302bdcf94e56c1b5c4
+    verify/success/continue_to_login: ec0a24e34ba0b7f52a06aac6bd90985d
+    verify/error/title: 1a0bfe031eae2c83276fc46e481bad93
+    verify/error/request_id: da54914e6fc6d7a046a8c089c46be2fb
+    verify/error/back_to_login: 6bcc9859839f32dc2b4295e1565919a4
+    verify/contact_support: 32a4dee2033635e334a5f4d34724e3e0
     help/title: 662d807b3768c9753238bd5f1c86d2f6
     help/faq/email_access/title: 066908f14e6e54e684ba9b233277e6ec
     help/faq/email_access/description_before_link: 2e7894512b500b6fbc203a85bc8c7272
@@ -107,8 +128,10 @@ checksums:
     meta/register/description: a241a79ce4482c759a16769a8b75bde7
     meta/register_success/title: b88352a2095ed811652e3958f1bb9b93
     meta/register_success/description: 466b89c9952a7850ef658c7ce1f55f28
-    meta/magic_link/title: 1c90fa832d51e85fe1e22ae507d124f4
-    meta/magic_link/description: a169518501ee5191c5bae7676d6d631b
+    meta/magic_link/title: 5fa747904a37a33dfe422153622d623b
+    meta/magic_link/description: f05f9eb7d554beaadee2af49468fcf45
+    meta/verify/title: 14f96a445c1b07ab2a3adad8ade7af4f
+    meta/verify/description: 8a794934acc9d93d04d28522e9c10095
     meta/otp/title: a1e5f3ccf8bb756221c116f14d480aa9
     meta/otp/description: 5b905aeaaeedd796111f54f001449cdf
     meta/otp_backup/title: 5f54e0e5b7472bfa735e1087ac679ab0
