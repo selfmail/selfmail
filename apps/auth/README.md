@@ -4,7 +4,7 @@ TODO:
 |-----|--------------------------------------------------|----------|
 | 1   | Hash EmailVerification.token before storage      | Critical |
 | 2   | Hash Session.sessionToken before storage         | Critical |
-| 3   | Wire up actual email delivery                    | Critical |
+| 3   | Wire up actual email delivery                    | Critical | (In future with server)
 | 4   | Remove or implement Google OAuth                 | Critical |
 | 5   | Fail closed on rate limit (or at minimum, alert) | Critical |
 | 6   | Remove console.log from server functions         | High     |
