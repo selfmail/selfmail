@@ -215,15 +215,15 @@ function RouteComponent() {
 					</form.AppForm>
 					<div className="h-0.5 w-full rounded-full bg-neutral-200" />
 					<div className="flex flex-col gap-2">
-						<button
+						<a
 							className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-neutral-200 px-6 py-3 transition-colors duration-200 hover:bg-neutral-100"
-							type="button"
+							href="/api/login/google"
 						>
 							<Google className="absolute left-6 h-4 w-4" />
 							<span className="ml-8 w-full text-left">
 								{m["login.sign_in_google"]()}
 							</span>
-						</button>
+						</a>
 						<button
 							className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-neutral-200 px-6 py-3 transition-colors duration-200 hover:bg-neutral-100"
 							type="button"

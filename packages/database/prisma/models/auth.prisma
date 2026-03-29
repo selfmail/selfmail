@@ -1,7 +1,7 @@
 model User {
     id String @id @default(cuid())
 
-    email         String    @unique
+    email         String
     emailVerified DateTime?
 
     name  String?
@@ -10,8 +10,9 @@ model User {
     accounts Account[]
     sessions Session[]
 
-    createdAt          DateTime            @default(now())
-    updatedAt          DateTime            @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
     activities         Activity[]
     emailVerifications EmailVerification[]
     twoFactorTokens    TwoFactorToken[]
@@ -22,7 +23,7 @@ model User {
     invitations        Invitation[]
     members            Member[]
 
-    @@unique([id, email])
+    @@index([email])
 }
 
 model Account {
@@ -32,10 +33,10 @@ model Account {
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     provider          AuthProvider
-    providerAccountId String
+    providerAccountId String // z.B. Google "sub"
 
-    accessToken  String?
-    refreshToken String?
+    accessToken  String? @db.Text
+    refreshToken String? @db.Text
     expiresAt    Int?
     tokenType    String?
     scope        String?
@@ -44,10 +45,12 @@ model Account {
     updatedAt DateTime @updatedAt
 
     @@unique([provider, providerAccountId])
+    @@index([userId])
 }
 
 model Session {
-    id     String @id @default(cuid())
+    id String @id @default(cuid())
+
     userId String
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -55,6 +58,8 @@ model Session {
     expires      DateTime
 
     createdAt DateTime @default(now())
+
+    @@index([userId])
 }
 
 enum AuthProvider {
@@ -65,43 +70,45 @@ enum AuthProvider {
 model EmailVerification {
     id String @id @default(uuid())
 
-    // the user that is being verified
     userId String
-    user   User   @relation(fields: [userId, email], references: [id, email])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     email String
 
-    // the verification token
-    token String @unique
+    token            String  @unique
     browserTokenHash String?
 
-    // the date when the verification was created
     expiresAt DateTime
+    createdAt DateTime @default(now())
 
-    @@unique([email, userId])
+    @@index([email])
+    @@index([userId])
 }
 
-// Two-Factor Authentication
 model TwoFactorToken {
-    id        String   @id @default(uuid())
-    token     String   @unique
-    userId    String
-    user      User     @relation(fields: [userId], references: [id])
+    id String @id @default(uuid())
+
+    token  String @unique
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
     createdAt DateTime @default(now())
     expiresAt DateTime
 
     @@index([userId])
-    @@index([token])
 }
 
-// Magic Link Authentication
 model MagicLink {
-    id        String   @id @default(uuid())
-    email     String
-    token     String   @unique
+    id String @id @default(uuid())
+
+    email String
+
+    token            String  @unique
     browserTokenHash String?
-    userId    String?
-    user      User?    @relation(fields: [userId], references: [id])
+
+    userId String?
+    user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
     createdAt DateTime @default(now())
     expiresAt DateTime
 
