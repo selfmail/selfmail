@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Building2Icon, XIcon } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { type ZodError, z } from "zod";
+import EnterpriseWorkInProgressDialog from "#/components/EnterpriseWorkInProgressDialog";
 import { Google } from "#/components/ui/svgs/google";
 import { handleRegisterForm, type RegisterResult } from "#/lib/register";
 import { getAppRedirectUrlFn, getCurrentUserFn } from "#/lib/session";
@@ -256,25 +257,28 @@ function RouteComponent() {
           </form.AppForm>
           <div className="h-0.5 w-full rounded-full bg-neutral-200" />
           <div className="flex flex-col gap-2">
-            <button
+            <a
               className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-neutral-200 px-6 py-3 transition-colors duration-200 hover:bg-neutral-100"
+              href="/api/login/google"
               type="button"
             >
               <Google className="absolute left-6 h-4 w-4" />
               <span className="ml-8 w-full text-left">
                 {m["register.sign_in_google"]()}
               </span>
-            </button>
-            <button
-              className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-neutral-200 px-6 py-3 transition-colors duration-200 hover:bg-neutral-100"
-              type="button"
-            >
-              <Building2Icon className="absolute left-6 h-4 w-4" />
+            </a>
+            <EnterpriseWorkInProgressDialog>
+              <button
+                className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-neutral-200 px-6 py-3 transition-colors duration-200 hover:bg-neutral-100"
+                type="button"
+              >
+                <Building2Icon className="absolute left-6 h-4 w-4" />
 
-              <span className="ml-8 w-full text-left">
-                {m["register.enterprise_setup"]()}
-              </span>
-            </button>
+                <span className="ml-8 w-full text-left">
+                  {m["register.enterprise_setup"]()}
+                </span>
+              </button>
+            </EnterpriseWorkInProgressDialog>
           </div>
           <p className="pt-4 text-center">
             {m["register.login_text"]()}{" "}

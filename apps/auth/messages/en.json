@@ -35,6 +35,11 @@
     "privacy_policy": "Privacy Policy",
     "terms_of_service": "Terms of Service"
   },
+  "enterprise_dialog": {
+    "title": "Enterprise access is still in progress",
+    "description": "We're still working on the enterprise login and onboarding flow. Please use the regular sign-in or registration flow for now.",
+    "close": "Close"
+  },
   "magic_link": {
     "title": "Verification Successful",
     "description": "Your magic link has been verified. You are now signed in and can access your account.",

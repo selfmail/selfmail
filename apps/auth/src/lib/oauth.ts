@@ -71,7 +71,23 @@ const getAuthUrl = (path: string, error?: string) => {
   return url;
 };
 
-const redirect = (url: string | URL) => Response.redirect(url.toString(), 302);
+const getGoogleRedirectUri = () => {
+  const configuredRedirectUri = process.env.GOOGLE_REDIRECT_URI?.trim();
+
+  if (configuredRedirectUri) {
+    return configuredRedirectUri;
+  }
+
+  return getAuthUrl(GOOGLE_CALLBACK_PATH).toString();
+};
+
+const redirect = (url: string | URL) =>
+	new Response(null, {
+		headers: {
+			Location: url.toString(),
+		},
+		status: 302,
+	});
 
 const clearGoogleOAuthCookies = () => {
   const cookieOptions = getOAuthCookieOptions();
@@ -91,7 +107,7 @@ const getGoogle = () => {
   return new Google(
     clientId,
     clientSecret,
-    getAuthUrl(GOOGLE_CALLBACK_PATH).toString()
+    getGoogleRedirectUri()
   );
 };
 

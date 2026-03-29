@@ -6,7 +6,7 @@
     "#/*": "./src/*"
   },
   "scripts": {
-    "dev": "vite dev --port 3010",
+    "dev": "portless auth.selfmail vite dev ",
     "dev:portless": "portless auth.selfmail vite dev",
     "build": "vite build",
     "preview": "vite preview",
