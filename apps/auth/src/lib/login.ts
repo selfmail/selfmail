@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { LoginUtils } from "#/utils/login.server";
 
 export type LoginResult =
   | {
@@ -24,18 +25,10 @@ export const handleLoginForm = createServerFn({
   method: "POST",
 })
   .inputValidator(loginSchema)
-  .handler(async (ctx) => {
-    const { handleLogin } = await import("#/lib/login.server");
-
-    return handleLogin(ctx.data);
-  });
+  .handler((ctx) => LoginUtils.handleLogin(ctx.data));
 
 export const resendLoginEmailFn = createServerFn({
   method: "POST",
 })
   .inputValidator(loginSchema)
-  .handler(async (ctx) => {
-    const { handleLogin } = await import("#/lib/login.server");
-
-    return handleLogin(ctx.data);
-  });
+  .handler((ctx) => LoginUtils.handleLogin(ctx.data));

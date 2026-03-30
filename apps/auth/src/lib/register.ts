@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { RegisterUtils } from "#/utils/register.server";
 
 export type RegisterResult =
   | {
@@ -28,11 +29,7 @@ const registerSchema = z.object({
 
 export const handleRegisterForm = createServerFn({ method: "POST" })
   .inputValidator(registerSchema)
-  .handler(async (ctx) => {
-    const { handleRegister } = await import("#/lib/register.server");
-
-    return handleRegister(ctx.data);
-  });
+  .handler((ctx) => RegisterUtils.handleRegister(ctx.data));
 
 export const resendRegisterVerificationFn = createServerFn({ method: "POST" })
   .inputValidator(
@@ -42,10 +39,4 @@ export const resendRegisterVerificationFn = createServerFn({ method: "POST" })
         .transform((email) => email.trim().toLowerCase()),
     })
   )
-  .handler(async (ctx) => {
-    const { resendRegisterVerification } = await import(
-      "#/lib/register.server"
-    );
-
-    return resendRegisterVerification(ctx.data);
-  });
+  .handler((ctx) => RegisterUtils.resendVerification(ctx.data));

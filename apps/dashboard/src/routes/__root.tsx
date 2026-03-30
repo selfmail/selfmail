@@ -3,8 +3,6 @@ import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Agentation } from "agentation";
 import { getLocale } from "#/paraglide/runtime";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
 import PostHogProvider from "../integrations/posthog/provider";
 
 import appCss from "../styles.css?url";
@@ -22,7 +20,7 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "Selfmail",
       },
     ],
     links: [
@@ -33,6 +31,11 @@ export const Route = createRootRoute({
     ],
   }),
   shellComponent: RootDocument,
+  notFoundComponent: () => (
+    <main className="flex min-h-screen items-center justify-center">
+      <h2 className="text-2xl">Page Not Found</h2>
+    </main>
+  ),
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -43,11 +46,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
-      <body className="wrap-anywhere font-sans antialiased selection:bg-[rgba(79,184,178,0.24)]">
+      <body className="wrap-anywhere font-sans antialiased">
         <PostHogProvider>
-          <Header />
           {children}
-          <Footer />
           {process.env.NODE_ENV === "development" && <Agentation />}
           <TanStackDevtools
             config={{

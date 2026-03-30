@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { startGoogleOAuth } from "#/lib/oauth";
+import { OAuthUtils } from "#/utils/oauth.server";
 
 export const Route = createFileRoute("/api/login/google")({
 	server: {
 		handlers: {
-			GET: () => startGoogleOAuth(),
+			GET: () => OAuthUtils.startGoogle(),
 		},
 	},
 });

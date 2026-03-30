@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { MagicLinkUtils } from "#/utils/magic-link.server";
 
 export type VerifyMagicLinkResult =
   | {
@@ -21,8 +22,4 @@ export const verifyMagicLinkToken = createServerFn({
   method: "POST",
 })
   .inputValidator(schema)
-  .handler(async (ctx) => {
-    const { verifyMagicLink } = await import("#/lib/magic-link.server");
-
-    return verifyMagicLink(ctx.data);
-  });
+  .handler((ctx) => MagicLinkUtils.verify(ctx.data));

@@ -30,14 +30,18 @@ vi.mock("@selfmail/logging", () => ({
   createLogger: vi.fn(() => logger),
 }));
 
-vi.mock("#/lib/ratelimit", () => ({
-  enforceAuthRateLimit,
+vi.mock("#/utils/ratelimit.server", () => ({
+  AuthRatelimitUtils: {
+    enforce: enforceAuthRateLimit,
+  },
 }));
 
-vi.mock("#/lib/session.server", () => ({
-  createBrowserToken,
-  hashToken,
-  setTempSessionCookie,
+vi.mock("#/utils/session.server", () => ({
+  SessionUtils: {
+    createBrowserToken,
+    hashToken,
+    setTempSessionCookie,
+  },
 }));
 
 describe("login.server", () => {
