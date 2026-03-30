@@ -5,6 +5,7 @@ const srcDir = fileURLToPath(new URL("./src/", import.meta.url));
 
 export default defineConfig({
   resolve: {
+    dedupe: ["react", "react-dom"],
     alias: [
       {
         find: /^#\/(.*)$/,

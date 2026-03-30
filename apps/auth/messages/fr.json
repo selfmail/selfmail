@@ -35,6 +35,11 @@
     "privacy_policy": "Politique de confidentialité",
     "terms_of_service": "Conditions d'utilisation"
   },
+  "enterprise_dialog": {
+    "title": "L'accès entreprise est toujours en cours",
+    "description": "Nous travaillons encore sur le flux de connexion et d'intégration pour les entreprises. Veuillez utiliser la connexion ou l'inscription standard pour le moment.",
+    "close": "Fermer"
+  },
   "magic_link": {
     "title": "Vérification réussie",
     "description": "Votre lien magique a été vérifié. Vous êtes maintenant connecté et pouvez accéder à votre compte.",

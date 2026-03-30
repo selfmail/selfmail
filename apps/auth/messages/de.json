@@ -35,6 +35,11 @@
     "privacy_policy": "Datenschutzrichtlinie",
     "terms_of_service": "Nutzungsbedingungen"
   },
+  "enterprise_dialog": {
+    "title": "Enterprise-Zugang ist noch in Bearbeitung",
+    "description": "Wir arbeiten noch an der Enterprise-Anmeldung und dem Onboarding-Prozess. Bitte nutzen Sie vorerst die reguläre Anmeldung oder Registrierung.",
+    "close": "Schließen"
+  },
   "magic_link": {
     "title": "Verifizierung erfolgreich",
     "description": "Ihr Magic Link wurde verifiziert. Sie sind jetzt angemeldet und können auf Ihr Konto zugreifen.",

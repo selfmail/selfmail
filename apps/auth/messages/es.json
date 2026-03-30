@@ -35,6 +35,11 @@
     "privacy_policy": "Política de privacidad",
     "terms_of_service": "Términos de servicio"
   },
+  "enterprise_dialog": {
+    "title": "El acceso empresarial aún está en proceso",
+    "description": "Todavía estamos trabajando en el flujo de inicio de sesión e incorporación empresarial. Por favor, utiliza el flujo de inicio de sesión o registro habitual por ahora.",
+    "close": "Cerrar"
+  },
   "magic_link": {
     "title": "Verificación exitosa",
     "description": "Tu enlace mágico ha sido verificado. Ahora has iniciado sesión y puedes acceder a tu cuenta.",

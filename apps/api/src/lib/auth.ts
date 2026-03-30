@@ -1,5 +1,16 @@
 import { db } from "database";
 
+const hashToken = async (value: string) => {
+  const digest = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(value)
+  );
+
+  return Array.from(new Uint8Array(digest), (part) =>
+    part.toString(16).padStart(2, "0")
+  ).join("");
+};
+
 export const middlewareAuthentication = async (
   sessionToken: string | undefined
 ) => {
@@ -10,9 +21,11 @@ export const middlewareAuthentication = async (
       };
     }
 
-    const session = await db.session.findFirst({
+    const sessionTokenHash = await hashToken(sessionToken);
+
+    const session = await db.session.findUnique({
       where: {
-        sessionToken,
+        sessionToken: sessionTokenHash,
       },
       include: {
         user: true,
@@ -28,7 +41,7 @@ export const middlewareAuthentication = async (
     if (session.expires < new Date()) {
       await db.session.deleteMany({
         where: {
-          sessionToken,
+          sessionToken: sessionTokenHash,
         },
       });
 

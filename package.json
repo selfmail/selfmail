@@ -11,7 +11,7 @@
   "scripts": {
     "check": "biome check --write .",
     "prepare": "husky",
-    "dev": "infisical run --env=dev -- turbo dev -F !spam  -F !scripts -F !services -F !@selfmail/inbound-queue  -F !@selfmail/inbound  -F !outbound-queue -F !desktop -F !transactional-queue",
+    "dev": "infisical run --env=dev -- turbo dev -F !spam  -F !scripts -F !dashboard-qwik -F !services -F !@selfmail/inbound-queue  -F !@selfmail/inbound  -F !outbound-queue -F !desktop -F !transactional-queue",
     "dev:smtp": "infisical run --env=dev -- turbo dev   -F inbound",
     "smtp": "turbo dev   -F inbound",
     "build": "turbo build",

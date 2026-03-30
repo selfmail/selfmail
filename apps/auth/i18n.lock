@@ -28,6 +28,9 @@ checksums:
     login/dashboard_hint/dismiss_label: 93d48adaf3a7a7de5ebfa09090d2e6fa
     footer/privacy_policy: 7459744a63ef8af4e517a09024bd7c08
     footer/terms_of_service: 5add91f519e39025708e54a7eb7a9fc5
+    enterprise_dialog/title: 0627f0359969e89bfb260694972e66bc
+    enterprise_dialog/description: 35e3fc9c7fdced5092cba02ec90277e0
+    enterprise_dialog/close: 2c2e22f8424a1031de89063bd0022e16
     magic_link/title: 0d65c5276c4760655fb873a81a237151
     magic_link/description: 23af875949b36d66a16865a692ca4727
     magic_link/cta: a6efa97d25e36fedc0af794f6ba610f2

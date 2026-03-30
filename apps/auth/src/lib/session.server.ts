@@ -1,4 +1,5 @@
 import { db } from "@selfmail/db";
+import { createLogger } from "@selfmail/logging";
 import {
 	deleteCookie,
 	getCookie,
@@ -9,6 +10,8 @@ import {
 
 const PROD_SHARED_DOMAIN = "selfmail.app";
 const DEV_SHARED_DOMAIN = "selfmail.local";
+const DEV_LOCALHOST_DOMAIN = "selfmail.localhost";
+const logger = createLogger("auth-session");
 
 export const SESSION_COOKIE_NAME = "selfmail-session-token";
 export const TEMP_SESSION_COOKIE_NAME = "selfmail-temp-session-token";
@@ -33,6 +36,13 @@ const getCookieDomain = (host: string) => {
 		hostname.endsWith(`.${DEV_SHARED_DOMAIN}`)
 	) {
 		return `.${DEV_SHARED_DOMAIN}`;
+	}
+
+	if (
+		hostname === DEV_LOCALHOST_DOMAIN ||
+		hostname.endsWith(`.${DEV_LOCALHOST_DOMAIN}`)
+	) {
+		return `.${DEV_LOCALHOST_DOMAIN}`;
 	}
 
 	return undefined;
@@ -74,6 +84,8 @@ export const createSession = async (userId: string) => {
 	const rawToken = createToken();
 	const sessionTokenHash = await hashToken(rawToken);
 	const expires = new Date(Date.now() + SESSION_DURATION_SECONDS * 1000);
+	const host = getRequestHost({ xForwardedHost: true });
+	const cookieDomain = getCookieDomain(host);
 
 	await db.session.create({
 		data: {
@@ -88,6 +100,12 @@ export const createSession = async (userId: string) => {
 		rawToken,
 		getCookieConfig(SESSION_DURATION_SECONDS),
 	);
+	logger.info("Created auth session", {
+		cookieDomain,
+		expiresAt: expires.toISOString(),
+		host,
+		userId,
+	});
 
 	return {
 		expires,
@@ -126,11 +144,26 @@ export const getAppRedirectUrl = () => {
 		return `http://${DEV_SHARED_DOMAIN}`;
 	}
 
+	if (
+		host === DEV_LOCALHOST_DOMAIN ||
+		host.endsWith(`.${DEV_LOCALHOST_DOMAIN}`)
+	) {
+		return `http://${DEV_LOCALHOST_DOMAIN}`;
+	}
+
 	return `https://${PROD_SHARED_DOMAIN}`;
 };
 
 export const getCurrentUser = async () => {
+	const host = getRequestHost({ xForwardedHost: true });
+	const cookieDomain = getCookieDomain(host);
 	const rawToken = getCookie(SESSION_COOKIE_NAME);
+
+	logger.info("Resolving auth session", {
+		cookieDomain,
+		hasSessionCookie: Boolean(rawToken),
+		host,
+	});
 
 	if (!rawToken) {
 		return null;
@@ -148,11 +181,22 @@ export const getCurrentUser = async () => {
 	});
 
 	if (!session) {
+		logger.warn("Auth session cookie did not match a stored session", {
+			cookieDomain,
+			host,
+			sessionTokenHashPrefix: sessionTokenHash.slice(0, 12),
+		});
 		clearSessionCookie();
 		return null;
 	}
 
 	if (session.expires < new Date()) {
+		logger.info("Auth session expired", {
+			cookieDomain,
+			host,
+			sessionTokenHashPrefix: sessionTokenHash.slice(0, 12),
+			userId: session.user.id,
+		});
 		await db.session.deleteMany({
 			where: {
 				sessionToken: sessionTokenHash,
@@ -162,6 +206,12 @@ export const getCurrentUser = async () => {
 
 		return null;
 	}
+
+	logger.info("Resolved auth session", {
+		cookieDomain,
+		host,
+		userId: session.user.id,
+	});
 
 	return session.user;
 };

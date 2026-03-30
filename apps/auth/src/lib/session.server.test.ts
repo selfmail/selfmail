@@ -5,6 +5,10 @@ const requestState = {
   host: "auth.selfmail.local:3010",
   protocol: "http",
 };
+const logger = {
+  info: vi.fn(),
+  warn: vi.fn(),
+};
 
 const db = {
   session: {
@@ -27,6 +31,10 @@ const setCookie = vi.fn((name: string, value: string) => {
 
 vi.mock("@selfmail/db", () => ({
   db,
+}));
+
+vi.mock("@selfmail/logging", () => ({
+  createLogger: vi.fn(() => logger),
 }));
 
 vi.mock("@tanstack/react-start/server", () => ({
@@ -68,6 +76,22 @@ describe("session.server", () => {
     );
     expect(storedToken).toBe(await hashToken(rawToken));
     expect(storedToken).not.toBe(rawToken);
+  });
+
+  it("uses the localhost shared cookie domain for localhost dev hosts", async () => {
+    const { createSession, SESSION_COOKIE_NAME } = await import("#/lib/session.server");
+
+    requestState.host = "auth.selfmail.localhost:1355";
+
+    await createSession("user-1");
+
+    expect(setCookie).toHaveBeenCalledWith(
+      SESSION_COOKIE_NAME,
+      expect.any(String),
+      expect.objectContaining({
+        domain: ".selfmail.localhost",
+      }),
+    );
   });
 
   it("clears the cookie when the stored session no longer exists", async () => {
@@ -136,6 +160,9 @@ describe("session.server", () => {
 
     requestState.host = "workspace.selfmail.local:3010";
     expect(getAppRedirectUrl()).toBe("http://selfmail.local");
+
+    requestState.host = "auth.selfmail.localhost:1355";
+    expect(getAppRedirectUrl()).toBe("http://selfmail.localhost");
 
     requestState.host = "auth.selfmail.app";
     requestState.protocol = "https";

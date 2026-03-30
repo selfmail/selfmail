@@ -3,9 +3,9 @@ import { createLogger } from "@selfmail/logging";
 import type { LoginResult } from "#/lib/login";
 import { enforceAuthRateLimit } from "#/lib/ratelimit";
 import {
-	createBrowserToken,
-	hashToken,
-	setTempSessionCookie,
+  createBrowserToken,
+  hashToken,
+  setTempSessionCookie,
 } from "#/lib/session.server";
 
 const logger = createLogger("auth-login");
@@ -14,97 +14,102 @@ const createRequestId = () => crypto.randomUUID();
 const createMagicLinkToken = () => crypto.randomUUID().replaceAll("-", "");
 
 export const handleLogin = async ({
-	email,
+  email,
 }: {
-	email: string;
+  email: string;
 }): Promise<LoginResult> => {
-	const requestId = createRequestId();
-	const rateLimit = await enforceAuthRateLimit("login", email);
+  const requestId = createRequestId();
+  const rateLimit = await enforceAuthRateLimit("login", email);
 
-	if (!rateLimit.allowed) {
-		return {
-			status: "error",
-			error: {
-				code: "RATE_LIMITED",
-				message: `Too many login attempts. Please wait until ${rateLimit.resetAt.toISOString()} and try again.`,
-				requestId,
-			},
-		};
-	}
+  if (!rateLimit.allowed) {
+    return {
+      status: "error",
+      error: {
+        code: "RATE_LIMITED",
+        message: `Too many login attempts. Please wait until ${rateLimit.resetAt.toISOString()} and try again.`,
+        requestId,
+      },
+    };
+  }
 
-	logger.info("Magic link login started", {
-		email,
-		requestId,
-	});
+  logger.info("Magic link login started", {
+    email,
+    requestId,
+  });
 
-	try {
-		const user = await db.user.findUnique({
-			where: { email },
-		});
+  try {
+    const user = await db.user.findUnique({
+      where: { email },
+    });
 
-		if (!user) {
-			logger.warn("Magic link login rejected because account does not exist", {
-				email,
-				requestId,
-			});
+    if (!user) {
+      logger.warn("Magic link login rejected because account does not exist", {
+        email,
+        requestId,
+      });
 
-			return {
-				status: "error",
-				error: {
-					code: "ACCOUNT_NOT_FOUND",
-					message: "We could not find an account for this email address.",
-					requestId,
-				},
-			};
-		}
+      return {
+        status: "error",
+        error: {
+          code: "ACCOUNT_NOT_FOUND",
+          message: "We could not find an account for this email address.",
+          requestId,
+        },
+      };
+    }
 
-		const token = createMagicLinkToken();
-		const tempSessionToken = createBrowserToken();
-		const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
-		const tokenHash = await hashToken(token);
-		const browserTokenHash = await hashToken(tempSessionToken);
+    const token = createMagicLinkToken();
+    const tempSessionToken = createBrowserToken();
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+    const tokenHash = await hashToken(token);
+    const browserTokenHash = await hashToken(tempSessionToken);
 
-		await db.$transaction([
-			db.magicLink.deleteMany({
-				where: { email },
-			}),
-			db.magicLink.create({
-				data: {
-					browserTokenHash,
-					email,
-					token: tokenHash,
-					expiresAt,
-					userId: user.id,
-				},
-			}),
-		]);
+    console.log(
+      "Magic link url:",
+      `http://auth.selfmail.localhost:1355/magic?token=${token}`
+    );
 
-		setTempSessionCookie(tempSessionToken);
+    await db.$transaction([
+      db.magicLink.deleteMany({
+        where: { email },
+      }),
+      db.magicLink.create({
+        data: {
+          browserTokenHash,
+          email,
+          token: tokenHash,
+          expiresAt,
+          userId: user.id,
+        },
+      }),
+    ]);
 
-		logger.info("Magic link created", {
-			email,
-			requestId,
-			expiresAt: expiresAt.toISOString(),
-		});
+    setTempSessionCookie(tempSessionToken);
 
-		return {
-			status: "success",
-		};
-	} catch (error) {
-		logger.error(
-			"Magic link login failed unexpectedly",
-			error instanceof Error ? error : undefined,
-			{ email, requestId },
-		);
+    logger.info("Magic link created", {
+      email,
+      requestId,
+      expiresAt: expiresAt.toISOString(),
+    });
 
-		return {
-			status: "error",
-			error: {
-				code: "UNKNOWN_ERROR",
-				message:
-					"We could not create a magic link right now. Please try again later.",
-				requestId,
-			},
-		};
-	}
+    return {
+      status: "success",
+    };
+  } catch (error) {
+    logger.error(
+      "Magic link login failed unexpectedly",
+      error instanceof Error ? error : undefined,
+      { email, requestId }
+    );
+
+    return {
+      status: "error",
+      error: {
+        code: "UNKNOWN_ERROR",
+        message:
+          "We could not create a magic link right now. Please try again later.",
+        requestId,
+      },
+    };
+  }
 };
