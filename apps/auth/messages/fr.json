@@ -1,6 +1,11 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
   "redirect_message": "Vous êtes en cours de redirection...",
+  "not_found": {
+    "title": "Page introuvable",
+    "description": "La page que vous recherchez n'existe pas ou n'est plus disponible.",
+    "cta": "Aller à la connexion"
+  },
   "login": {
     "title": "Bon retour !",
     "description": "Connectez-vous avec votre compte pour continuer.",
@@ -17,7 +22,9 @@
     "register_link": "S'inscrire ici",
     "errors": {
       "email_required": "L'adresse e-mail est requise",
-      "email_invalid": "Veuillez saisir une adresse e-mail valide"
+      "email_invalid": "Veuillez saisir une adresse e-mail valide",
+      "account_not_found": "Aucun compte n'existe encore pour cette adresse e-mail.",
+      "rate_limited": "Trop de tentatives de connexion. Veuillez patienter quelques minutes et réessayer."
     },
     "problems": {
       "text": "Des problèmes ?",
@@ -155,6 +162,11 @@
       "text": "Vous êtes déjà connecté. Vous pouvez accéder directement à votre tableau de bord",
       "link": "Ouvrir le tableau de bord",
       "dismiss_label": "Fermer l'indication du tableau de bord"
+    },
+    "errors": {
+      "name_required": "Le nom est obligatoire",
+      "email_taken": "Un compte avec cette adresse e-mail existe déjà. Essayez plutôt de vous connecter.",
+      "rate_limited": "Trop de tentatives d'inscription. Veuillez patienter quelques minutes et réessayer."
     }
   },
   "register_success": {
@@ -221,6 +233,9 @@
     "contact": {
       "title": "Contacter l'assistance | Selfmail",
       "description": "Contactez notre équipe d'assistance Selfmail pour obtenir de l'aide."
+    },
+    "not_found": {
+      "title": "Page introuvable | Selfmail"
     }
   }
 }

@@ -1,6 +1,11 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
   "redirect_message": "Sie werden weitergeleitet...",
+  "not_found": {
+    "title": "Seite nicht gefunden",
+    "description": "Die gesuchte Seite existiert nicht oder ist nicht mehr verfügbar.",
+    "cta": "Zur Anmeldung"
+  },
   "login": {
     "title": "Willkommen zurück!",
     "description": "Melden Sie sich mit Ihrem Konto an, um fortzufahren.",
@@ -17,7 +22,9 @@
     "register_link": "Hier registrieren",
     "errors": {
       "email_required": "E-Mail ist erforderlich",
-      "email_invalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
+      "email_invalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+      "account_not_found": "Für diese E-Mail-Adresse existiert noch kein Konto.",
+      "rate_limited": "Zu viele Anmeldeversuche. Bitte warten Sie einige Minuten und versuchen Sie es erneut."
     },
     "problems": {
       "text": "Probleme?",
@@ -155,6 +162,11 @@
       "text": "Sie sind bereits angemeldet. Sie können direkt zu Ihrem Dashboard gehen",
       "link": "Dashboard öffnen",
       "dismiss_label": "Dashboard-Hinweis schließen"
+    },
+    "errors": {
+      "name_required": "Name ist erforderlich",
+      "email_taken": "Ein Konto mit dieser E-Mail-Adresse existiert bereits. Versuchen Sie stattdessen, sich anzumelden.",
+      "rate_limited": "Zu viele Registrierungsversuche. Bitte warten Sie einige Minuten und versuchen Sie es erneut."
     }
   },
   "register_success": {
@@ -221,6 +233,9 @@
     "contact": {
       "title": "Support kontaktieren | Selfmail",
       "description": "Kontaktieren Sie unser Selfmail-Supportteam für Unterstützung."
+    },
+    "not_found": {
+      "title": "Seite nicht gefunden | Selfmail"
     }
   }
 }

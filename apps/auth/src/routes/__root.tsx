@@ -6,6 +6,7 @@ import { Agentation } from "agentation";
 import Footer from "#/components/Footer";
 import LanguageSelect from "#/components/LanguageSelect";
 import { TooltipProvider } from "#/components/ui/tooltip.js";
+import { m } from "#/paraglide/messages";
 import { getLocale } from "../paraglide/runtime.js";
 import appCss from "../styles.css?url";
 
@@ -22,7 +23,7 @@ export const Route = createRootRoute({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "TanStack Start Starter",
+				title: m["meta.not_found.title"](),
 			},
 		],
 		links: [
@@ -40,15 +41,13 @@ const queryClient = new QueryClient();
 function NotFound() {
 	return (
 		<div className="flex w-full max-w-sm flex-col gap-3 px-5 text-center sm:px-0">
-			<h1 className="font-medium text-2xl">Page not found</h1>
-			<p className="text-neutral-700 text-sm">
-				The page you were looking for does not exist or is no longer available.
-			</p>
+			<h1 className="font-medium text-2xl">{m["not_found.title"]()}</h1>
+			<p className="text-neutral-700 text-sm">{m["not_found.description"]()}</p>
 			<a
 				className="rounded-full bg-neutral-900 px-6 py-3 text-white transition-colors duration-200 hover:bg-neutral-700"
 				href="/login"
 			>
-				Go to login
+				{m["not_found.cta"]()}
 			</a>
 		</div>
 	);

@@ -4,6 +4,9 @@ checksums:
     greeting: e5c4880fef990edc98e20db92aff718d
   65f0b2bcf7f26084eccbea1631cf7828:
     redirect_message: e71b14ef41aebca0781a5ec9446f5cb5
+    not_found/title: 97612e6230bc7a1ebd99380bf561b732
+    not_found/description: 8ed0d5d63ab0048dc894c77c8722582c
+    not_found/cta: d127074d9b72b195009afbb6660c586f
     login/title: cf132cc042537b183302321371d40278
     login/description: c2dab1cebb9e0b7304240eb2c82bde97
     login/email_label: 3855bcad6a9d3a916507480f703880ae
@@ -19,6 +22,8 @@ checksums:
     login/register_link: f302c44821363b07f9852038af927b06
     login/errors/email_required: 26c1cc9143c4863de2601fa704aa81e5
     login/errors/email_invalid: 8de4bc8832b11b380bc4cbcedc16e48b
+    login/errors/account_not_found: fb8e5c22e639c9fc6f57c349bffe0612
+    login/errors/rate_limited: 8ed6ef5b44d9a899f196eb29a10539ae
     login/problems/text: 4d2d8e6f53d9ef513c0427d479a2bcda
     login/problems/get_help_link: b055bf36dfa6e856d498314b57c96b13
     login/problems/or: 7b133c38bec0d5ee23cc6bcf9a8de50b
@@ -112,6 +117,9 @@ checksums:
     register/dashboard_hint/text: 40f7378b35f44743a961920c80658e2b
     register/dashboard_hint/link: d77be88efce2319f0371fa6fb84445da
     register/dashboard_hint/dismiss_label: 93d48adaf3a7a7de5ebfa09090d2e6fa
+    register/errors/name_required: 9cfb07618c3bfb2d8d50f93c983e9ae6
+    register/errors/email_taken: 2e592e82b799bd16c7924f61d822e56f
+    register/errors/rate_limited: bb6e9940d75ced64c33818a46e590e9f
     register_success/title: abe565fb351418eec4dacded4cc9ac18
     register_success/description: 9dd139b5e535a57944870421e390695a
     register_success/resend: 5cd54dbdd17c450921acf8d4109677d8
@@ -150,3 +158,4 @@ checksums:
     meta/help/description: caf39adef82cdf263e224881c06721ac
     meta/contact/title: 93d77662e53d465583f4c78e5dfb7274
     meta/contact/description: c30a9a6cc480768f903488baf9c75022
+    meta/not_found/title: bbd7904caace8c779f6bdc8a3d8ea4ec

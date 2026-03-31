@@ -1,6 +1,11 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
   "redirect_message": "You are being redirected...",
+  "not_found": {
+    "title": "Page not found",
+    "description": "The page you were looking for does not exist or is no longer available.",
+    "cta": "Go to login"
+  },
   "login": {
     "title": "Welcome Back!",
     "description": "Sign in with your account to continue.",
@@ -17,7 +22,9 @@
     "register_link": "Register here",
     "errors": {
       "email_required": "Email is required",
-      "email_invalid": "Please enter a valid email address"
+      "email_invalid": "Please enter a valid email address",
+      "account_not_found": "No account exists for this email address yet.",
+      "rate_limited": "Too many sign-in attempts. Please wait a few minutes and try again."
     },
     "problems": {
       "text": "Problems?",
@@ -155,6 +162,11 @@
       "text": "You are already signed in. You can go straight to your dashboard",
       "link": "Open dashboard",
       "dismiss_label": "Dismiss dashboard hint"
+    },
+    "errors": {
+      "name_required": "Name is required",
+      "email_taken": "An account with this email already exists. Try logging in instead.",
+      "rate_limited": "Too many registration attempts. Please wait a few minutes and try again."
     }
   },
   "register_success": {
@@ -221,6 +233,9 @@
     "contact": {
       "title": "Contact Support | Selfmail",
       "description": "Get in touch with our Selfmail support team for assistance."
+    },
+    "not_found": {
+      "title": "Page not found | Selfmail"
     }
   }
 }
