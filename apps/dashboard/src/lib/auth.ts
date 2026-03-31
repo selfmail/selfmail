@@ -1,6 +1,7 @@
 import { SessionUtils } from "@selfmail/auth";
 import { db } from "@selfmail/db";
 import { createLogger } from "@selfmail/logging";
+import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie, getRequestHost } from "@tanstack/react-start/server";
 
@@ -23,7 +24,9 @@ export const getCurrentUserFn = createServerFn({
   });
 
   if (!rawToken) {
-    return null;
+    throw redirect({
+      href: getLoginHref(),
+    });
   }
 
   const sessionTokenHash = await SessionUtils.hashToken(rawToken);
@@ -44,7 +47,9 @@ export const getCurrentUserFn = createServerFn({
       sessionTokenHashPrefix: sessionTokenHash.slice(0, 12),
     });
     SessionUtils.clearSessionCookie();
-    return null;
+    throw redirect({
+      href: getLoginHref(),
+    });
   }
 
   if (session.expires < new Date()) {
@@ -60,8 +65,9 @@ export const getCurrentUserFn = createServerFn({
       },
     });
     SessionUtils.clearSessionCookie();
-
-    return null;
+    throw redirect({
+      href: getLoginHref(),
+    });
   }
 
   logger.info("Resolved auth session", {

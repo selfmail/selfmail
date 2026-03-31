@@ -63,19 +63,23 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<HeadContent />
 			</head>
 			<QueryClientProvider client={queryClient}>
-				<body className="wrap-anywhere relative flex h-dvh w-full flex-col items-center justify-center bg-white font-sans text-neutral-900 antialiased dark:bg-neutral-900 dark:text-neutral-100">
+				<body className="wrap-anywhere relative min-h-dvh w-full bg-white font-sans text-neutral-900 antialiased dark:bg-neutral-900 dark:text-neutral-100">
 					<TooltipProvider>
-						<div className="absolute inset-x-0 top-4 z-10 flex items-center justify-between px-4 sm:hidden">
-							<a className="font-medium text-sm" href="https://selfmail.app">
-								Selfmail
-							</a>
-							<LanguageSelect />
+						<div className="relative flex min-h-dvh w-full flex-col">
+							<div className="absolute inset-x-0 top-4 z-10 flex items-center justify-between px-4 sm:hidden">
+								<a className="font-medium text-sm" href="https://selfmail.app">
+									Selfmail
+								</a>
+								<LanguageSelect />
+							</div>
+							<div className="absolute top-4 left-4 z-10 hidden sm:block">
+								<LanguageSelect />
+							</div>
+							<main className="flex flex-1 items-start justify-center px-0 pb-8 pt-20 sm:pt-24">
+								{children}
+							</main>
+							<Footer />
 						</div>
-						<div className="absolute top-4 left-4 z-10 hidden sm:block">
-							<LanguageSelect />
-						</div>
-						{children}
-						<Footer />
 					</TooltipProvider>
 					<TanStackDevtools
 						config={{

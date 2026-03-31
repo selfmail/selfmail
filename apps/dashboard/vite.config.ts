@@ -1,31 +1,29 @@
-import { defineConfig } from 'vite'
-import { devtools } from '@tanstack/devtools-vite'
-import tsconfigPaths from 'vite-tsconfig-paths'
-import { paraglideVitePlugin } from '@inlang/paraglide-js'
-
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-
-import viteReact from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
+import { paraglideVitePlugin } from "@inlang/paraglide-js";
+import tailwindcss from "@tailwindcss/vite";
+import { devtools } from "@tanstack/devtools-vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import viteReact from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 const config = defineConfig({
   plugins: [
     devtools(),
     paraglideVitePlugin({
-      project: './project.inlang',
-      outdir: './src/paraglide',
-      cookieName: 'LOCALE',
-      strategy: ['cookie', 'preferredLanguage', 'baseLocale'],
+      project: "./project.inlang",
+      outdir: "./src/paraglide",
+      cookieName: "LOCALE",
+      strategy: ["cookie", "preferredLanguage", "baseLocale"],
     }),
-    tsconfigPaths({ projects: ['./tsconfig.json'] }),
+    tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tailwindcss(),
     tanstackStart(),
     viteReact({
       babel: {
-        plugins: ['babel-plugin-react-compiler'],
+        plugins: ["babel-plugin-react-compiler"],
       },
     }),
   ],
-})
+});
 
-export default config
+export default config;

@@ -9,8 +9,8 @@ import {
 } from "@tanstack/react-start/server";
 
 const PROD_SHARED_DOMAIN = "selfmail.app";
-const DEV_SHARED_DOMAIN = "selfmail.local";
-const DEV_LOCALHOST_DOMAIN = "selfmail.localhost";
+const DEV_SHARED_DOMAIN = "dashboard.selfmail.localhost:1355";
+const DEV_LOCALHOST_DOMAIN = "dashboard.selfmail.localhost:1355";
 const SESSION_DURATION_SECONDS = 60 * 60 * 24 * 7;
 const TEMP_SESSION_DURATION_SECONDS = 60 * 15;
 const logger = createLogger("auth-session");
