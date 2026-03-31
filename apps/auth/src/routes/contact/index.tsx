@@ -29,6 +29,13 @@ function RouteComponent() {
 		other: m["contact.problems.other"](),
 		passkey: m["contact.problems.passkey"](),
 	} as const;
+	const problemOptions = [
+		["email-access", problemLabels["email-access"]],
+		["passkey", problemLabels.passkey],
+		["email-delivery", problemLabels["email-delivery"]],
+		["2fa", problemLabels["2fa"]],
+		["other", problemLabels.other],
+	] as const;
 
 	return (
 		<div className="flex w-full justify-center">
@@ -68,43 +75,28 @@ function RouteComponent() {
 										return m["contact.problem_placeholder"]();
 									}
 
+									const label =
+										problemLabels[value as keyof typeof problemLabels] ?? value;
+
 									return (
-										problemLabels[value as keyof typeof problemLabels] ?? value
+										<span className="block truncate pr-2" title={label}>
+											{label}
+										</span>
 									);
 								}}
 							</SelectValue>
 						</SelectTrigger>
 						<SelectContent className="rounded-[39px] border-2 border-neutral-200 bg-white p-2 shadow-none">
-							<SelectItem
-								className="cursor-pointer rounded-full px-4 py-3 text-base focus:bg-neutral-100 focus:text-neutral-900"
-								value="email-access"
-							>
-								{m["contact.problems.email_access"]()}
-							</SelectItem>
-							<SelectItem
-								className="cursor-pointer rounded-full px-4 py-3 text-base focus:bg-neutral-100 focus:text-neutral-900"
-								value="passkey"
-							>
-								{m["contact.problems.passkey"]()}
-							</SelectItem>
-							<SelectItem
-								className="cursor-pointer rounded-full px-4 py-3 text-base focus:bg-neutral-100 focus:text-neutral-900"
-								value="email-delivery"
-							>
-								{m["contact.problems.email_delivery"]()}
-							</SelectItem>
-							<SelectItem
-								className="cursor-pointer rounded-full px-4 py-3 text-base focus:bg-neutral-100 focus:text-neutral-900"
-								value="2fa"
-							>
-								{m["contact.problems.two_factor"]()}
-							</SelectItem>
-							<SelectItem
-								className="cursor-pointer rounded-full px-4 py-3 text-base focus:bg-neutral-100 focus:text-neutral-900"
-								value="other"
-							>
-								{m["contact.problems.other"]()}
-							</SelectItem>
+							{problemOptions.map(([value, label]) => (
+								<SelectItem
+									className="cursor-pointer rounded-full px-4 py-3 text-base focus:bg-neutral-100 focus:text-neutral-900"
+									key={value}
+									title={label}
+									value={value}
+								>
+									<span className="block truncate">{label}</span>
+								</SelectItem>
+							))}
 						</SelectContent>
 					</Select>
 					<input

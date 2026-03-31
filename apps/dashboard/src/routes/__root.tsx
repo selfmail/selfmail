@@ -36,6 +36,16 @@ export const Route = createRootRoute({
       <h2 className="text-2xl">Page Not Found</h2>
     </main>
   ),
+  errorComponent: ({ error }) => (
+    <main className="flex min-h-screen items-center justify-center">
+      <div>
+        <h2 className="text-2xl">An error occurred</h2>
+        <pre className="mt-4 max-w-sm rounded bg-red-50 p-4 text-red-700 text-sm">
+          {error.message}
+        </pre>
+      </div>
+    </main>
+  ),
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
