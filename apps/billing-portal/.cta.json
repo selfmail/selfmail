@@ -1,0 +1,20 @@
+{
+  "projectName": "billing-portal",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "bun",
+  "includeExamples": false,
+  "tailwind": true,
+  "addOnOptions": {},
+  "envVarValues": {},
+  "git": false,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "react",
+  "chosenAddOns": [
+    "biome",
+    "compiler",
+    "paraglide",
+    "posthog"
+  ]
+}
