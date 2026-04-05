@@ -1,33 +1,69 @@
-import { SessionUtils } from '@selfmail/auth'
-import { redirect } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
-
-const PROD_AUTH_HREF = 'https://auth.selfmail.app/login'
-const DEV_AUTH_HREF = 'http://auth.selfmail.localhost:1355/login'
+import { SessionUtils } from "@selfmail/auth";
+import { db } from "@selfmail/db";
+import { redirect } from "@tanstack/react-router";
+import { createMiddleware, createServerFn } from "@tanstack/react-start";
+import { getLoginHref } from "#/utils/href";
 
 export const getCurrentUserFn = createServerFn({
-  method: 'GET',
+  method: "GET",
 }).handler(async () => {
-  const user = await SessionUtils.getCurrentUser()
+  const user = await SessionUtils.getCurrentUser();
 
   if (!user) {
     throw redirect({
       href: getLoginHref(),
-    })
+    });
   }
 
-  return user
-})
+  return user;
+});
 
-export const getLoginHref = () => {
-  if (typeof window === 'undefined') {
-    return process.env.SELFMAIL_AUTH_URL
-      ? new URL('/login', process.env.SELFMAIL_AUTH_URL).toString()
-      : DEV_AUTH_HREF
+export const authenticatedMiddleware = createMiddleware().server(
+  async ({ next }) => {
+    const user = await SessionUtils.getCurrentUser();
+
+    if (!user) {
+      throw redirect({
+        href: getLoginHref(),
+      });
+    }
+
+    return next({
+      context: {
+        user,
+      },
+    });
   }
+);
 
-  return window.location.hostname.endsWith('.selfmail.app') ||
-    window.location.hostname === 'selfmail.app'
-    ? PROD_AUTH_HREF
-    : DEV_AUTH_HREF
-}
+export const permissionMiddleware = (workspaceId: string) =>
+  createMiddleware()
+    .middleware([authenticatedMiddleware])
+    .server(async ({ next, context }) => {
+      const { id } = context.user;
+
+      const permissions = await db.permission.findUnique({
+        where: {
+          MemberPermissions: {
+            every: {
+              member: {
+                workspaceId,
+                userId: id,
+              },
+            },
+          },
+        },
+      });
+
+      if (!permissions) {
+        throw redirect({
+          href: `${getLoginHref()}?error=You do not have access to this workspace`,
+        });
+      }
+
+      return next({
+        context: {
+          permissions,
+        },
+      });
+    });

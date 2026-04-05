@@ -1,46 +1,66 @@
-// Locale switcher refs:
-// - Paraglide docs: https://inlang.com/m/gerre34r/library-inlang-paraglideJs
-// - Router example: https://github.com/TanStack/router/tree/main/examples/react/i18n-paraglide#switching-locale
-import { getLocale, locales, setLocale } from '#/paraglide/runtime'
-import { m } from '#/paraglide/messages'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "#/components/ui/select";
+import { getLocale, locales, setLocale } from "#/paraglide/runtime";
 
-export default function ParaglideLocaleSwitcher() {
-  const currentLocale = getLocale()
+const LANGUAGE_LABELS: Record<(typeof locales)[number], string> = {
+  de: "Deutsch",
+  en: "English",
+  es: "Español",
+  fr: "Français",
+};
+
+export default function LocaleSwitcher() {
+  const currentLocale = getLocale();
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        gap: '0.5rem',
-        alignItems: 'center',
-        color: 'inherit',
-      }}
-      aria-label={m.language_label()}
-    >
-      <span style={{ opacity: 0.85 }}>
-        {m.current_locale({ locale: currentLocale })}
-      </span>
-      <div style={{ display: 'flex', gap: '0.25rem' }}>
-        {locales.map((locale) => (
-          <button
-            key={locale}
-            onClick={() => setLocale(locale)}
-            aria-pressed={locale === currentLocale}
-            style={{
-              cursor: 'pointer',
-              padding: '0.35rem 0.75rem',
-              borderRadius: '999px',
-              border: '1px solid #d1d5db',
-              background: locale === currentLocale ? '#0f172a' : 'transparent',
-              color: locale === currentLocale ? '#f8fafc' : 'inherit',
-              fontWeight: locale === currentLocale ? 700 : 500,
-              letterSpacing: '0.01em',
+    <div className="opacity-45 transition-opacity duration-200 focus-within:opacity-100 hover:opacity-100">
+      <Select
+        defaultValue={currentLocale}
+        onValueChange={async (locale) => {
+          if (locale === currentLocale) {
+            return;
+          }
+
+          await setLocale(locale as (typeof locales)[number]);
+        }}
+      >
+        <SelectTrigger
+          aria-label="Select language"
+          className="h-8 min-w-24 rounded-full border-2 border-neutral-200 bg-transparent px-3 py-1 text-xs outline-none ring-neutral-200 transition-colors duration-200 focus-visible:border-neutral-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-200 data-[size=default]:h-8 data-[size=sm]:h-8 data-placeholder:text-neutral-500"
+          size="sm"
+        >
+          <SelectValue>
+            {(value) => {
+              if (!value || typeof value !== "string") {
+                return LANGUAGE_LABELS[currentLocale];
+              }
+
+              return (
+                LANGUAGE_LABELS[value as (typeof locales)[number]] ?? value
+              );
             }}
-          >
-            {locale.toUpperCase()}
-          </button>
-        ))}
-      </div>
+          </SelectValue>
+        </SelectTrigger>
+        <SelectContent
+          align="start"
+          className="rounded-3xl border-2 border-neutral-200 bg-white p-1 shadow-none"
+        >
+          {locales.map((locale) => (
+            <SelectItem
+              className="cursor-pointer rounded-full px-3 py-1.5 text-xs focus:bg-neutral-100 focus:text-neutral-900"
+              key={locale}
+              value={locale}
+            >
+              {LANGUAGE_LABELS[locale] ?? locale}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
-  )
+  );
 }
