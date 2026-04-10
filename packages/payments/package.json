@@ -5,6 +5,10 @@
   "devDependencies": {
     "@types/bun": "latest"
   },
+  "dependencies": {
+    "@selfmail/payments-processor-polar": "workspace:*",
+    "@selfmail/db": "workspace:*"
+  },
   "peerDependencies": {
     "typescript": "^5"
   }
