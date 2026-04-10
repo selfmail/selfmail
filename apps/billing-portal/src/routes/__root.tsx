@@ -9,6 +9,9 @@ import appCss from "../styles.css?url";
 const THEME_INIT_SCRIPT = `(function(){try{var stored=window.localStorage.getItem('theme');var mode=(stored==='light'||stored==='dark'||stored==='auto')?stored:'auto';var prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;var resolved=mode==='auto'?(prefersDark?'dark':'light'):mode;var root=document.documentElement;root.classList.remove('light','dark');root.classList.add(resolved);if(mode==='auto'){root.removeAttribute('data-theme')}else{root.setAttribute('data-theme',mode)}root.style.colorScheme=resolved;}catch(e){}})();`;
 
 export const Route = createRootRoute({
+  loader: () => ({
+    locale: getLocale(),
+  }),
   beforeLoad: () => {
     // Other redirect strategies are possible; see
     // https://github.com/TanStack/router/tree/main/examples/react/i18n-paraglide#offline-redirect
@@ -41,8 +44,10 @@ export const Route = createRootRoute({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const { locale } = Route.useLoaderData();
+
   return (
-    <html lang={getLocale()} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: required for theme bootstrapping before hydration */}
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
@@ -55,10 +60,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               <a className="font-medium text-sm" href="https://selfmail.app">
                 Selfmail
               </a>
-              <LocaleSwitcher />
+              <LocaleSwitcher initialLocale={locale} />
             </div>
             <div className="absolute top-4 left-4 z-10 hidden sm:block">
-              <LocaleSwitcher />
+              <LocaleSwitcher initialLocale={locale} />
             </div>
             <main className="flex flex-1 items-start justify-center px-0 pt-20 pb-8 sm:pt-24">
               {children}

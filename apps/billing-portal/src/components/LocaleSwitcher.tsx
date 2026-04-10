@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -14,20 +15,32 @@ const LANGUAGE_LABELS: Record<(typeof locales)[number], string> = {
   fr: "Français",
 };
 
-export default function LocaleSwitcher() {
-  const currentLocale = getLocale();
+type LocaleSwitcherProps = {
+  initialLocale: (typeof locales)[number];
+};
+
+export default function LocaleSwitcher({ initialLocale }: LocaleSwitcherProps) {
+  const [currentLocale, setCurrentLocale] =
+    useState<(typeof locales)[number]>(initialLocale);
+
+  useEffect(() => {
+    setCurrentLocale(getLocale());
+  }, []);
 
   return (
     <div className="opacity-45 transition-opacity duration-200 focus-within:opacity-100 hover:opacity-100">
       <Select
-        defaultValue={currentLocale}
         onValueChange={async (locale) => {
-          if (locale === currentLocale) {
+          const nextLocale = locale as (typeof locales)[number];
+
+          if (nextLocale === getLocale()) {
             return;
           }
 
-          await setLocale(locale as (typeof locales)[number]);
+          setCurrentLocale(nextLocale);
+          await setLocale(nextLocale);
         }}
+        value={currentLocale}
       >
         <SelectTrigger
           aria-label="Select language"
