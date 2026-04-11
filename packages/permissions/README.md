@@ -1,8 +1,6 @@
 # permissions
 
-# permissions
-
-Typical workspace permission package for Selfmail.
+Typesafe workspace permission package for Selfmail.
 
 It encapsulates permission queries against the database and exports three helpers:
 

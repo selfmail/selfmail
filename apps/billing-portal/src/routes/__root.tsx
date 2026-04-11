@@ -19,7 +19,6 @@ export const Route = createRootRoute({
       document.documentElement.setAttribute("lang", getLocale());
     }
   },
-
   head: () => ({
     meta: [
       {

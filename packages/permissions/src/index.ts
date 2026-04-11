@@ -13,20 +13,16 @@ export const permissionNames = [
 
 export type PermissionName = (typeof permissionNames)[number];
 
-export interface PermissionRequest<
-  TPermission extends string = PermissionName,
-> {
+export type PermissionRequest<TPermission extends string = PermissionName> = {
   memberId: string;
   permissions: readonly TPermission[];
   workspaceId: string;
-}
+};
 
-export interface PermissionSnapshot<
-  TPermission extends string = PermissionName,
-> {
+export type PermissionSnapshot<TPermission extends string = PermissionName> = {
   isOwner: boolean;
   permissions: readonly TPermission[];
-}
+};
 
 export type PermissionLookup = (
   request: PermissionRequest<PermissionName>

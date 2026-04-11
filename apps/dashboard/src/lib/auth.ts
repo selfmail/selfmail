@@ -1,82 +1,89 @@
-import { SessionUtils } from "@selfmail/auth";
-import { db } from "@selfmail/db";
+import { Authentication, type AuthenticationCookieStore } from "@selfmail/authentication";
+import { db, type User } from "@selfmail/db";
 import { createLogger } from "@selfmail/logging";
 import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { getCookie, getRequestHost } from "@tanstack/react-start/server";
+import {
+  deleteCookie,
+  getCookie,
+  getRequestHost,
+  getRequestProtocol,
+  setCookie,
+} from "@tanstack/react-start/server";
 
 const logger = createLogger("dashboard-auth-middleware");
 const PROD_AUTH_HREF = "https://auth.selfmail.app/login";
 const DEV_AUTH_HREF = "http://auth.selfmail.localhost:1355/login";
-const SESSION_COOKIE_NAME = SessionUtils.SESSION_COOKIE_NAME;
+
+const authentication = new Authentication<User>({
+  logger,
+  sessions: {
+    createSession: async ({
+      expires,
+      sessionTokenHash,
+      userId,
+    }: {
+      expires: Date;
+      sessionTokenHash: string;
+      userId: string;
+    }) => {
+      await db.session.create({
+        data: {
+          expires,
+          sessionToken: sessionTokenHash,
+          userId,
+        },
+      });
+    },
+    deleteSession: async (sessionTokenHash: string) => {
+      await db.session.deleteMany({
+        where: {
+          sessionToken: sessionTokenHash,
+        },
+      });
+    },
+    findSession: (sessionTokenHash: string) =>
+      db.session.findUnique({
+        include: {
+          user: true,
+        },
+        where: {
+          sessionToken: sessionTokenHash,
+        },
+      }),
+  },
+});
+
+const getAuthenticationCookies = (): AuthenticationCookieStore => ({
+  delete: (name, options) => {
+    deleteCookie(name, options);
+  },
+  get: (name) => getCookie(name),
+  set: (name, value, options) => {
+    setCookie(name, value, options);
+  },
+});
+
+const getAuthenticationRequest = () => ({
+  host: getRequestHost({ xForwardedHost: true }),
+  protocol: getRequestProtocol({ xForwardedProto: true }),
+});
 
 export const getCurrentUserFn = createServerFn({
   method: "GET",
 }).handler(async () => {
-  const host = getRequestHost({ xForwardedHost: true });
-  const cookieDomain = SessionUtils.getCookieDomain(host);
-  const rawToken = getCookie(SESSION_COOKIE_NAME);
-
-  logger.info("Resolving auth session", {
-    cookieDomain,
-    hasSessionCookie: Boolean(rawToken),
-    host,
+  const user = await authentication.getCurrentUser({
+    cookies: getAuthenticationCookies(),
+    request: getAuthenticationRequest(),
   });
 
-  if (!rawToken) {
+  if (!user) {
     throw redirect({
       href: getLoginHref(),
     });
   }
 
-  const sessionTokenHash = await SessionUtils.hashToken(rawToken);
-
-  const session = await db.session.findUnique({
-    include: {
-      user: true,
-    },
-    where: {
-      sessionToken: sessionTokenHash,
-    },
-  });
-
-  if (!session) {
-    logger.warn("Auth session cookie did not match a stored session", {
-      cookieDomain,
-      host,
-      sessionTokenHashPrefix: sessionTokenHash.slice(0, 12),
-    });
-    SessionUtils.clearSessionCookie();
-    throw redirect({
-      href: getLoginHref(),
-    });
-  }
-
-  if (session.expires < new Date()) {
-    logger.info("Auth session expired", {
-      cookieDomain,
-      host,
-      sessionTokenHashPrefix: sessionTokenHash.slice(0, 12),
-      userId: session.user.id,
-    });
-    await db.session.deleteMany({
-      where: {
-        sessionToken: sessionTokenHash,
-      },
-    });
-    SessionUtils.clearSessionCookie();
-    throw redirect({
-      href: getLoginHref(),
-    });
-  }
-
-  logger.info("Resolved auth session", {
-    cookieDomain,
-    host,
-    userId: session.user.id,
-  });
-
-  return session.user;
+  return user;
 });
 
 export const getLoginHref = () => {

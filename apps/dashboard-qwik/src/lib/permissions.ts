@@ -5,4 +5,4 @@ export {
   type PermissionName,
   type PermissionRequest,
   type PermissionSnapshot,
-} from "permissions";
+} from "@selfmail/permissions";
