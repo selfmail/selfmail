@@ -2,7 +2,7 @@
   "$schema": "https://v2-9-4.turborepo.dev/schema.json",
   "ui": "tui",
   "globalDependencies": [".env"],
-  "globalEnv": [],
+  "globalEnv": ["DATABASE_URL", "POSTHOG_API_KEY", "POSTHOG_HOST"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

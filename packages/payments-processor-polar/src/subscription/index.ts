@@ -38,16 +38,18 @@ export class PolarSubscription {
     };
   }
 
-  async createSeatBasedSubscription({
+  async upgradeToPaidSubscription({
     seats,
     includeTrial = true,
     customerEmail,
+    subscriptionId,
     productId,
     successUrl,
     returnBackUrl,
   }: {
     seats: number;
     productId: string;
+    subscriptionId: string;
     successUrl: string;
     customerEmail: string;
     returnBackUrl: string;
@@ -58,6 +60,7 @@ export class PolarSubscription {
       seats,
       allowTrial: includeTrial,
       customerEmail,
+      subscriptionId,
       successUrl,
       returnUrl: returnBackUrl,
     });

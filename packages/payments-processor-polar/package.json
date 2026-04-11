@@ -16,6 +16,9 @@
     }
   },
   "dependencies": {
-    "@polar-sh/sdk": "^0.47.0"
+    "@polar-sh/sdk": "^0.47.0",
+    "dotenv": "^17.4.1",
+    "evlog": "^2.11.1",
+    "posthog-node": "^5.29.2"
   }
 }
