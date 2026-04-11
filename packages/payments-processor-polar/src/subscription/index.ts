@@ -10,18 +10,15 @@ export class PolarSubscription {
     productId,
     userId,
     email,
-    locale,
   }: {
     productId: string;
     userId: string;
-    locale: string | undefined;
     email: string;
   }) {
     // Create the customer
     const customer = await this.polar.customers.create({
       type: "individual",
       email,
-      locale,
       externalId: userId,
     });
 
