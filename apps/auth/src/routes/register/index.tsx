@@ -1,94 +1,28 @@
-import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Building2Icon, XIcon } from "lucide-react";
-import { type ReactNode, useState } from "react";
-import { type ZodError, z } from "zod";
+import { type ChangeEvent, type FormEvent, useState } from "react";
+import { z } from "zod";
+import { AuthFormField } from "#/components/AuthFormField";
 import EnterpriseWorkInProgressDialog from "#/components/EnterpriseWorkInProgressDialog";
 import { Google } from "#/components/ui/svgs/google";
+import { getFirstFieldErrors } from "#/lib/form-errors";
 import { handleRegisterForm, type RegisterResult } from "#/lib/register";
 import { getAppRedirectUrlFn, getCurrentUserFn } from "#/lib/session";
 import { m } from "#/paraglide/messages";
 
-const { fieldContext, formContext, useFieldContext, useFormContext } =
-	createFormHookContexts();
-
-const TextField = ({ placeholder }: { placeholder: string }) => {
-	const field = useFieldContext<string>();
-	const [firstError] = field.state.meta.errors as ZodError[];
-
-	return (
-		<div>
-			<input
-				className="w-full rounded-full border-2 border-neutral-200 px-6 py-3 outline-none ring-neutral-200 transition-colors duration-200 focus-within:border-neutral-400 focus-within:ring-2 focus:outline-none"
-				name={field.name}
-				onBlur={field.handleBlur}
-				onChange={(event) => {
-					field.handleChange(event.target.value);
-				}}
-				placeholder={placeholder}
-				type="text"
-				value={field.state.value}
-			/>
-			{firstError ? (
-				<p className="px-2 pt-1 text-red-600 text-sm">
-					{String(firstError.message)}
-				</p>
-			) : null}
-		</div>
-	);
-};
-
-const EmailField = ({ placeholder }: { placeholder: string }) => {
-	const field = useFieldContext<string>();
-	const [firstError] = field.state.meta.errors as ZodError[];
-
-	return (
-		<div>
-			<input
-				className="w-full rounded-full border-2 border-neutral-200 px-6 py-3 outline-none ring-neutral-200 transition-colors duration-200 focus-within:border-neutral-400 focus-within:ring-2 focus:outline-none"
-				name={field.name}
-				onBlur={field.handleBlur}
-				onChange={(event) => {
-					field.handleChange(event.target.value);
-				}}
-				placeholder={placeholder}
-				type="email"
-				value={field.state.value}
-			/>
-			{firstError ? (
-				<p className="px-2 pt-1 text-red-600 text-sm">
-					{String(firstError.message)}
-				</p>
-			) : null}
-		</div>
-	);
-};
-
-const SubmitButton = ({ children }: { children: ReactNode }) => {
-	const form = useFormContext();
-
-	return (
-		<button
-			className="hit-area-4 w-full cursor-pointer rounded-full bg-neutral-900 px-6 py-3 text-white transition-colors duration-200 focus-within:bg-neutral-700 focus-within:ring-2 focus-within:ring-neutral-700 focus-within:ring-offset-2 hover:bg-neutral-700 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-500"
-			disabled={form.state.isSubmitting}
-			type="submit"
-		>
-			{children}
-		</button>
-	);
-};
-
-const { useAppForm } = createFormHook({
-	fieldComponents: {
-		TextField,
-		EmailField,
-	},
-	formComponents: {
-		SubmitButton,
-	},
-	fieldContext,
-	formContext,
+const registerSchema = z.object({
+	name: z.string().trim().min(1, m["register.errors.name_required"]()),
+	email: z
+		.string()
+		.trim()
+		.min(1, m["login.errors.email_required"]())
+		.email(m["login.errors.email_invalid"]())
+		.transform((email) => email.toLowerCase()),
 });
+
+type RegisterFormValues = z.input<typeof registerSchema>;
+type RegisterFieldName = keyof RegisterFormValues;
+type RegisterFieldErrors = Partial<Record<RegisterFieldName, string>>;
 
 export const Route = createFileRoute("/register/")({
 	head: () => ({
@@ -148,15 +82,17 @@ function RouteComponent() {
 	const { currentUser, dashboardUrl } = Route.useLoaderData();
 	const [isDashboardHintDismissed, setIsDashboardHintDismissed] =
 		useState(false);
-	const navigate = useNavigate();
-	const [submitError, setSubmitError] = useState<string | null>(null);
-
-	const registerSchema = z.object({
-		name: z.string().min(1, m["register.errors.name_required"]()),
-		email: z
-			.email(m["login.errors.email_invalid"]())
-			.min(1, m["login.errors.email_required"]()),
+	const [formValues, setFormValues] = useState<RegisterFormValues>({
+		name: "",
+		email: "",
 	});
+	const [fieldErrors, setFieldErrors] = useState<RegisterFieldErrors>({});
+	const [touchedFields, setTouchedFields] = useState<
+		Partial<Record<RegisterFieldName, boolean>>
+	>({});
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [submitError, setSubmitError] = useState<string | null>(null);
+	const navigate = useNavigate();
 
 	const getSubmitErrorMessage = (
 		result: Extract<RegisterResult, { status: "error" }>,
@@ -171,34 +107,99 @@ function RouteComponent() {
 		}
 	};
 
-	const form = useAppForm({
-		defaultValues: {
-			name: "",
-			email: "",
-		},
-		onSubmit: async (values) => {
-			setSubmitError(null);
+	const validateValues = (values: RegisterFormValues) => {
+		const result = registerSchema.safeParse(values);
 
+		if (result.success) {
+			return {
+				success: true as const,
+				data: result.data,
+				errors: {} as RegisterFieldErrors,
+			};
+		}
+
+		return {
+			success: false as const,
+			errors: getFirstFieldErrors<RegisterFieldName>(result.error),
+		};
+	};
+
+	const handleFieldChange =
+		(fieldName: RegisterFieldName) =>
+		(event: ChangeEvent<HTMLInputElement>) => {
+			const nextValues = {
+				...formValues,
+				[fieldName]: event.target.value,
+			};
+
+			setFormValues(nextValues);
+
+			if (submitError) {
+				setSubmitError(null);
+			}
+
+			if (!touchedFields[fieldName]) {
+				return;
+			}
+
+			setFieldErrors(validateValues(nextValues).errors);
+		};
+
+	const handleFieldBlur =
+		(fieldName: RegisterFieldName) =>
+		(event: ChangeEvent<HTMLInputElement>) => {
+			const nextValues = {
+				...formValues,
+				[fieldName]: event.target.value,
+			};
+
+			setFormValues(nextValues);
+			setFieldErrors(validateValues(nextValues).errors);
+			setTouchedFields((current) => ({
+				...current,
+				[fieldName]: true,
+			}));
+		};
+
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		setSubmitError(null);
+
+		const validation = validateValues(formValues);
+
+		if (!validation.success) {
+			setTouchedFields({
+				email: true,
+				name: true,
+			});
+			setFieldErrors(validation.errors);
+			return;
+		}
+
+		setFieldErrors({});
+		setIsSubmitting(true);
+
+		try {
 			const result = await handleRegisterForm({
-				data: values.value,
+				data: validation.data,
 			});
 
 			if (result.status === "success") {
 				await navigate({
 					to: "/register/success",
 					search: {
-						email: values.value.email,
+						email: validation.data.email,
 					},
 				});
 				return;
 			}
 
 			setSubmitError(getSubmitErrorMessage(result));
-		},
-		validators: {
-			onSubmit: registerSchema,
-		},
-	});
+		} finally {
+			setIsSubmitting(false);
+		}
+	};
+
 	return (
 		<>
 			<a
@@ -213,13 +214,9 @@ function RouteComponent() {
 				</h1>
 				<form
 					className="flex flex-col gap-4 pt-2"
-					encType="multipart/form-data"
 					method="post"
-					onSubmit={(e) => {
-						form.handleSubmit();
-
-						e.preventDefault();
-					}}
+					noValidate
+					onSubmit={handleSubmit}
 				>
 					{currentUser && !isDashboardHintDismissed ? (
 						<DashboardHint
@@ -238,23 +235,34 @@ function RouteComponent() {
 							{submitError}
 						</div>
 					) : null}
-					<form.AppField name="name">
-						{(field) => (
-							<field.TextField placeholder={m["register.name_placeholder"]()} />
-						)}
-					</form.AppField>
-					<form.AppField name="email">
-						{(field) => (
-							<field.EmailField
-								placeholder={m["register.email_placeholder"]()}
-							/>
-						)}
-					</form.AppField>
-					<form.AppForm>
-						<form.SubmitButton>
-							{m["register.submit_button"]()}
-						</form.SubmitButton>
-					</form.AppForm>
+					<AuthFormField
+						error={touchedFields.name ? fieldErrors.name : undefined}
+						id="register-name"
+						maxLength={120}
+						name="name"
+						onBlur={handleFieldBlur("name")}
+						onChange={handleFieldChange("name")}
+						placeholder={m["register.name_placeholder"]()}
+						type="text"
+						value={formValues.name}
+					/>
+					<AuthFormField
+						error={touchedFields.email ? fieldErrors.email : undefined}
+						id="register-email"
+						name="email"
+						onBlur={handleFieldBlur("email")}
+						onChange={handleFieldChange("email")}
+						placeholder={m["register.email_placeholder"]()}
+						type="email"
+						value={formValues.email}
+					/>
+					<button
+						className="hit-area-4 w-full cursor-pointer rounded-full bg-neutral-900 px-6 py-3 text-white transition-colors duration-200 focus-within:bg-neutral-700 focus-within:ring-2 focus-within:ring-neutral-700 focus-within:ring-offset-2 hover:bg-neutral-700 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-500"
+						disabled={isSubmitting}
+						type="submit"
+					>
+						{m["register.submit_button"]()}
+					</button>
 					<div className="h-0.5 w-full rounded-full bg-neutral-200" />
 					<div className="flex flex-col gap-2">
 						<a
