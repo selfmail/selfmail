@@ -65,6 +65,8 @@ export class Subscription {
     successUrl: string;
     returnBackUrl: string;
   }) {
+    // Check whether the workspace is on free plan
+
     const user = await db.member.findUnique({
       where: {
         id: memberId,
@@ -86,6 +88,8 @@ export class Subscription {
     if (!user.user?.email) {
       throw new Error("User email is required to upgrade subscription");
     }
+
+    // NOTE: No needs to check for permissions, because it's the only member from the free plan
 
     // Upgrade subscription in payment processor
     const checkoutUrl =

@@ -33,6 +33,7 @@
     "@selfmail/db": "workspace:*",
     "globals": "16.3.0",
     "prettier-plugin-tailwindcss": "^0.6.14",
+    "@selfmail/permissions": "workspace:*",
     "qwik-sonner": "^1.0.3",
     "services": "workspace:*",
     "tailwindcss": "^4.1.18",

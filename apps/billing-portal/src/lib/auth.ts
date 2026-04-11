@@ -36,7 +36,10 @@ export const authenticatedMiddleware = createMiddleware().server(
   }
 );
 
-export const permissionMiddleware = (workspaceId: string) =>
+export const permissionMiddleware = (
+  workspaceId: string,
+  permissions: string[]
+) =>
   createMiddleware()
     .middleware([authenticatedMiddleware])
     .server(async ({ next, context }) => {
