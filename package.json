@@ -20,6 +20,7 @@
     "dev:web": "turbo -F web dev",
     "dev:server": "turbo -F server dev",
     "db:push": "turbo -F database db:push",
+    "db:studio": "turbo -F @selfmail/db db:studio",
     "cloud:infisical": "infisical run --env=prod --recursive --projectId=836adf6b-f5d6-4c95-a017-2382e0628c57 -- docker compose -f docker-compose.cloud.yml up  -d",
     "vps:infisical": "infisical run --env=prod --recursive --projectId=836adf6b-f5d6-4c95-a017-2382e0628c57 -- docker compose -f docker-compose.yml up  -d"
   },
@@ -27,7 +28,7 @@
     "@biomejs/biome": "2.3.11",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.2",
-    "turbo": "^2.9.4",
+    "turbo": "^2.9.6",
     "ultracite": "7.0.11"
   },
   "lint-staged": {
@@ -39,7 +40,7 @@
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
     "dialog": "^0.3.1",
-    "electron": "^40.6.1",
-    "shadcn": "^4.1.1"
+    "electron": "^40.9.2",
+    "shadcn": "^4.5.0"
   }
 }

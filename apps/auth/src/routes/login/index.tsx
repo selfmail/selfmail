@@ -5,9 +5,9 @@ import { z } from "zod";
 import { AuthFormField } from "#/components/AuthFormField";
 import EnterpriseWorkInProgressDialog from "#/components/EnterpriseWorkInProgressDialog";
 import { Google } from "#/components/ui/svgs/google";
-import { getFirstFieldErrors } from "#/lib/form-errors";
-import { handleLoginForm, type LoginResult } from "#/lib/login";
-import { getAppRedirectUrlFn, getCurrentUserFn } from "#/lib/session";
+import { getFirstFieldErrors } from "#/libs/form-errors";
+import { handleLoginForm, type LoginResult } from "#/libs/login";
+import { getAppRedirectUrlFn, getCurrentUserFn } from "#/libs/session";
 import { m } from "#/paraglide/messages";
 
 const loginSchema = z.object({

@@ -1,6 +1,6 @@
 import { Accordion as AccordionPrimitive } from "@base-ui/react/accordion";
 import { PlusIcon } from "lucide-react";
-import { cn } from "#/lib/utils";
+import { cn } from "#/libs/utils";
 
 function Accordion({ className, ...props }: AccordionPrimitive.Root.Props) {
   return (

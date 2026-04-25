@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
-import { resendLoginEmailFn } from "#/lib/login";
+import { resendLoginEmailFn } from "#/libs/login";
 import { m } from "#/paraglide/messages";
 
 const successSearchSchema = z.object({

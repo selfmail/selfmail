@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CircleAlertIcon, LifeBuoyIcon } from "lucide-react";
 import { z } from "zod";
-import { verifyMagicLinkToken } from "#/lib/magic-link";
+import { verifyMagicLinkToken } from "#/libs/magic-link";
 import { m } from "#/paraglide/messages";
 
 const magicLinkSearchSchema = z.object({

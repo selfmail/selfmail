@@ -1,7 +1,16 @@
 {
-  "name": "web-ratelimit",
+  "name": "@selfmail/web-ratelimit",
   "module": "src/index.ts",
   "type": "module",
+  "dependencies": {
+    "ioredis": "^5.10.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

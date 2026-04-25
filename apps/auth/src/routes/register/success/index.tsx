@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
-import { resendRegisterVerificationFn } from "#/lib/register";
+import { resendRegisterVerificationFn } from "#/libs/register";
 import { m } from "#/paraglide/messages";
 
 const successSearchSchema = z.object({

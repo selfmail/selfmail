@@ -9,7 +9,7 @@
     "db:push": "infisical run --env=dev -- prisma db push",
     "db:push-reset": "infisical run --env=dev -- prisma db push --force-reset",
     "generate": "prisma generate",
-    "studio": "prisma studio"
+    "db:studio": "prisma studio"
   },
   "exports": {
     ".": {

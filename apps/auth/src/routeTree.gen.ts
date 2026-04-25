@@ -21,8 +21,6 @@ import { Route as ContactIndexRouteImport } from './routes/contact/index'
 import { Route as RegisterSuccessIndexRouteImport } from './routes/register/success/index'
 import { Route as OtpBackupCodesIndexRouteImport } from './routes/otp/backup-codes/index'
 import { Route as LoginSuccessIndexRouteImport } from './routes/login/success/index'
-import { Route as ApiLoginGoogleRouteImport } from './routes/api/login/google'
-import { Route as ApiCallbackGoogleRouteImport } from './routes/api/callback/google'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -84,16 +82,6 @@ const LoginSuccessIndexRoute = LoginSuccessIndexRouteImport.update({
   path: '/login/success/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiLoginGoogleRoute = ApiLoginGoogleRouteImport.update({
-  id: '/api/login/google',
-  path: '/api/login/google',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiCallbackGoogleRoute = ApiCallbackGoogleRouteImport.update({
-  id: '/api/callback/google',
-  path: '/api/callback/google',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -105,8 +93,6 @@ export interface FileRoutesByFullPath {
   '/otp/': typeof OtpIndexRoute
   '/register/': typeof RegisterIndexRoute
   '/verify/': typeof VerifyIndexRoute
-  '/api/callback/google': typeof ApiCallbackGoogleRoute
-  '/api/login/google': typeof ApiLoginGoogleRoute
   '/login/success/': typeof LoginSuccessIndexRoute
   '/otp/backup-codes/': typeof OtpBackupCodesIndexRoute
   '/register/success/': typeof RegisterSuccessIndexRoute
@@ -121,8 +107,6 @@ export interface FileRoutesByTo {
   '/otp': typeof OtpIndexRoute
   '/register': typeof RegisterIndexRoute
   '/verify': typeof VerifyIndexRoute
-  '/api/callback/google': typeof ApiCallbackGoogleRoute
-  '/api/login/google': typeof ApiLoginGoogleRoute
   '/login/success': typeof LoginSuccessIndexRoute
   '/otp/backup-codes': typeof OtpBackupCodesIndexRoute
   '/register/success': typeof RegisterSuccessIndexRoute
@@ -138,8 +122,6 @@ export interface FileRoutesById {
   '/otp/': typeof OtpIndexRoute
   '/register/': typeof RegisterIndexRoute
   '/verify/': typeof VerifyIndexRoute
-  '/api/callback/google': typeof ApiCallbackGoogleRoute
-  '/api/login/google': typeof ApiLoginGoogleRoute
   '/login/success/': typeof LoginSuccessIndexRoute
   '/otp/backup-codes/': typeof OtpBackupCodesIndexRoute
   '/register/success/': typeof RegisterSuccessIndexRoute
@@ -156,8 +138,6 @@ export interface FileRouteTypes {
     | '/otp/'
     | '/register/'
     | '/verify/'
-    | '/api/callback/google'
-    | '/api/login/google'
     | '/login/success/'
     | '/otp/backup-codes/'
     | '/register/success/'
@@ -172,8 +152,6 @@ export interface FileRouteTypes {
     | '/otp'
     | '/register'
     | '/verify'
-    | '/api/callback/google'
-    | '/api/login/google'
     | '/login/success'
     | '/otp/backup-codes'
     | '/register/success'
@@ -188,8 +166,6 @@ export interface FileRouteTypes {
     | '/otp/'
     | '/register/'
     | '/verify/'
-    | '/api/callback/google'
-    | '/api/login/google'
     | '/login/success/'
     | '/otp/backup-codes/'
     | '/register/success/'
@@ -205,8 +181,6 @@ export interface RootRouteChildren {
   OtpIndexRoute: typeof OtpIndexRoute
   RegisterIndexRoute: typeof RegisterIndexRoute
   VerifyIndexRoute: typeof VerifyIndexRoute
-  ApiCallbackGoogleRoute: typeof ApiCallbackGoogleRoute
-  ApiLoginGoogleRoute: typeof ApiLoginGoogleRoute
   LoginSuccessIndexRoute: typeof LoginSuccessIndexRoute
   OtpBackupCodesIndexRoute: typeof OtpBackupCodesIndexRoute
   RegisterSuccessIndexRoute: typeof RegisterSuccessIndexRoute
@@ -298,20 +272,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginSuccessIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/login/google': {
-      id: '/api/login/google'
-      path: '/api/login/google'
-      fullPath: '/api/login/google'
-      preLoaderRoute: typeof ApiLoginGoogleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/callback/google': {
-      id: '/api/callback/google'
-      path: '/api/callback/google'
-      fullPath: '/api/callback/google'
-      preLoaderRoute: typeof ApiCallbackGoogleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -325,8 +285,6 @@ const rootRouteChildren: RootRouteChildren = {
   OtpIndexRoute: OtpIndexRoute,
   RegisterIndexRoute: RegisterIndexRoute,
   VerifyIndexRoute: VerifyIndexRoute,
-  ApiCallbackGoogleRoute: ApiCallbackGoogleRoute,
-  ApiLoginGoogleRoute: ApiLoginGoogleRoute,
   LoginSuccessIndexRoute: LoginSuccessIndexRoute,
   OtpBackupCodesIndexRoute: OtpBackupCodesIndexRoute,
   RegisterSuccessIndexRoute: RegisterSuccessIndexRoute,

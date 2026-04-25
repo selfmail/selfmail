@@ -1,7 +1,7 @@
 import { OTPInput, type SlotProps } from "input-otp";
 import { MinusIcon } from "lucide-react";
 import type { ComponentProps } from "react";
-import { cn } from "#/lib/utils";
+import { cn } from "#/libs/utils";
 
 function InputOTP({
 	className,

@@ -5,7 +5,7 @@ import {
 	LifeBuoyIcon,
 } from "lucide-react";
 import { z } from "zod";
-import { verifyEmailTokenFn } from "#/lib/verify-email";
+import { verifyEmailTokenFn } from "#/libs/verify-email";
 import { m } from "#/paraglide/messages";
 
 const verifySearchSchema = z.object({

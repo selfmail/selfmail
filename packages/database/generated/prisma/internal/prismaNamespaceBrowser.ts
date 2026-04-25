@@ -294,7 +294,8 @@ export const EmailVerificationScalarFieldEnum = {
   email: 'email',
   token: 'token',
   browserTokenHash: 'browserTokenHash',
-  expiresAt: 'expiresAt'
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
 } as const
 
 export type EmailVerificationScalarFieldEnum = (typeof EmailVerificationScalarFieldEnum)[keyof typeof EmailVerificationScalarFieldEnum]

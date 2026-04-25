@@ -1,5 +1,10 @@
 {
   "name": "@selfmail/authentication",
+  "dependencies": {
+    "@selfmail/db": "workspace:*",
+    "@selfmail/logging": "workspace:*",
+    "@selfmail/web-ratelimit": "workspace:*"
+  },
   "exports": {
     ".": {
       "import": "./src/index.ts",

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -6,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "#/components/ui/select";
-import { getLocale, locales, setLocale } from "#/paraglide/runtime";
+import { getLocale, locales, setLocale } from "#/paraglide/runtime.js";
 
 const LANGUAGE_LABELS: Record<(typeof locales)[number], string> = {
   de: "Deutsch",
@@ -15,32 +14,20 @@ const LANGUAGE_LABELS: Record<(typeof locales)[number], string> = {
   fr: "Français",
 };
 
-type LocaleSwitcherProps = {
-  initialLocale: (typeof locales)[number];
-};
-
-export default function LocaleSwitcher({ initialLocale }: LocaleSwitcherProps) {
-  const [currentLocale, setCurrentLocale] =
-    useState<(typeof locales)[number]>(initialLocale);
-
-  useEffect(() => {
-    setCurrentLocale(getLocale());
-  }, []);
+export default function LanguageSelect() {
+  const currentLocale = getLocale();
 
   return (
     <div className="opacity-45 transition-opacity duration-200 focus-within:opacity-100 hover:opacity-100">
       <Select
+        defaultValue={currentLocale}
         onValueChange={async (locale) => {
-          const nextLocale = locale as (typeof locales)[number];
-
-          if (nextLocale === getLocale()) {
+          if (locale === currentLocale) {
             return;
           }
 
-          setCurrentLocale(nextLocale);
-          await setLocale(nextLocale);
+          await setLocale(locale as (typeof locales)[number]);
         }}
-        value={currentLocale}
       >
         <SelectTrigger
           aria-label="Select language"
@@ -69,7 +56,7 @@ export default function LocaleSwitcher({ initialLocale }: LocaleSwitcherProps) {
               key={locale}
               value={locale}
             >
-              {LANGUAGE_LABELS[locale] ?? locale}
+              {LANGUAGE_LABELS[locale]}
             </SelectItem>
           ))}
         </SelectContent>

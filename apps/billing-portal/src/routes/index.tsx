@@ -1,3 +1,4 @@
+import type { Workspace } from "@selfmail/db";
 import { createFileRoute } from "@tanstack/react-router";
 import { getWorkspaces } from "#/lib/workspaces";
 
@@ -17,7 +18,7 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
-  loader: async () => ({
+  loader: async (): Promise<{ workspaces: Workspace[] }> => ({
     workspaces: await getWorkspaces(),
   }),
   component: App,
@@ -46,15 +47,21 @@ function App() {
             {error}
           </p>
         ) : null}
-        {workspaces.map((workspace) => (
-          <a
-            className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-neutral-200 px-6 py-3 text-center transition-colors duration-200 hover:bg-neutral-100"
-            href={`/workspaces/${workspace.id}`}
-            key={workspace.id}
-          >
-            {workspace.name}
-          </a>
-        ))}
+        {workspaces.length === 0 ? (
+          <p className="text-muted">You are not a member of any workspaces.</p>
+        ) : (
+          <div className="flex flex-col space-y-2">
+            {workspaces.map((workspace: Workspace) => (
+              <a
+                className="w-full rounded-full border border-gray-200 p-4 hover:bg-gray-50"
+                href={`/${workspace.id}`}
+                key={workspace.id}
+              >
+                {workspace.name}
+              </a>
+            ))}
+          </div>
+        )}
       </section>
     </>
   );

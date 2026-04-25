@@ -1,10 +1,37 @@
 import { db } from "@selfmail/db";
 import { createLogger } from "@selfmail/logging";
-import type { RegisterResult } from "#/lib/register";
-import { AuthRatelimitUtils } from "#/utils/ratelimit.server";
-import { SessionUtils } from "#/utils/session.server";
+import { RateLimiter } from "@selfmail/web-ratelimit";
+import {
+	getCookie,
+	getRequestHeader,
+	getRequestHost,
+	getRequestIP,
+	getRequestProtocol,
+	setCookie,
+} from "@tanstack/react-start/server";
 
 const logger = createLogger("auth-register");
+const emailLimiter = new RateLimiter("auth-register-email");
+const ipLimiter = new RateLimiter("auth-register-ip");
+const TEMP_SESSION_COOKIE_NAME = "selfmail-temp-session-token";
+const PROD_SHARED_DOMAIN = "selfmail.app";
+const DEV_SHARED_DOMAIN = "selfmail.local";
+const DEV_LOCALHOST_DOMAIN = "selfmail.localhost";
+const RATE_LIMIT_WINDOW_SECONDS = 15 * 60;
+
+export type RegisterResult =
+	| {
+			status: "error";
+			error: {
+				code: "EMAIL_TAKEN" | "RATE_LIMITED" | "UNKNOWN_ERROR";
+				message: string;
+				requestId: string;
+			};
+	  }
+	| {
+			status: "success";
+			email: string;
+	  };
 
 export type ResendRegisterVerificationResult =
 	| {
@@ -28,8 +55,135 @@ export abstract class RegisterUtils {
 		return crypto.randomUUID();
 	}
 
+	private static createBrowserToken() {
+		return crypto.randomUUID();
+	}
+
 	private static createVerificationToken() {
 		return crypto.randomUUID().replaceAll("-", "");
+	}
+
+	private static normalizeHost(host: string) {
+		return host.split(":")[0]?.trim().toLowerCase() || "";
+	}
+
+	private static getCookieDomain(host: string) {
+		const hostname = RegisterUtils.normalizeHost(host);
+
+		if (
+			hostname === PROD_SHARED_DOMAIN ||
+			hostname.endsWith(`.${PROD_SHARED_DOMAIN}`)
+		) {
+			return `.${PROD_SHARED_DOMAIN}`;
+		}
+
+		if (
+			hostname === DEV_SHARED_DOMAIN ||
+			hostname.endsWith(`.${DEV_SHARED_DOMAIN}`)
+		) {
+			return `.${DEV_SHARED_DOMAIN}`;
+		}
+
+		if (
+			hostname === DEV_LOCALHOST_DOMAIN ||
+			hostname.endsWith(`.${DEV_LOCALHOST_DOMAIN}`)
+		) {
+			return `.${DEV_LOCALHOST_DOMAIN}`;
+		}
+
+		return undefined;
+	}
+
+	private static getCookieOptions(maxAge?: number) {
+		const host = getRequestHost({ xForwardedHost: true });
+		const protocol = getRequestProtocol({ xForwardedProto: true });
+		const hostname = RegisterUtils.normalizeHost(host);
+
+		return {
+			domain: RegisterUtils.getCookieDomain(host),
+			httpOnly: true,
+			maxAge,
+			path: "/",
+			sameSite: "lax" as const,
+			secure:
+				protocol === "https" ||
+				hostname === PROD_SHARED_DOMAIN ||
+				hostname.endsWith(`.${PROD_SHARED_DOMAIN}`),
+		};
+	}
+
+	private static async hashToken(value: string) {
+		const digest = await crypto.subtle.digest(
+			"SHA-256",
+			new TextEncoder().encode(value),
+		);
+
+		return Array.from(new Uint8Array(digest), (part) =>
+			part.toString(16).padStart(2, "0"),
+		).join("");
+	}
+
+	private static getTempSessionCookie() {
+		return getCookie(TEMP_SESSION_COOKIE_NAME);
+	}
+
+	private static setTempSessionCookie(token: string) {
+		setCookie(
+			TEMP_SESSION_COOKIE_NAME,
+			token,
+			RegisterUtils.getCookieOptions(24 * 60 * 60),
+		);
+	}
+
+	private static async enforceRateLimit(email: string) {
+		try {
+			const forwardedIp = getRequestIP({ xForwardedFor: true });
+			const realIp = getRequestHeader("x-real-ip");
+			const ip = forwardedIp ?? realIp ?? "unknown";
+			const normalizedEmail = email.trim().toLowerCase();
+			const emailKey = await RegisterUtils.hashToken(
+				`register:email:${normalizedEmail}`,
+			);
+			const ipKey = await RegisterUtils.hashToken(`register:ip:${ip}`);
+			const [emailResult, ipResult] = await Promise.all([
+				emailLimiter.limit(emailKey, {
+					limit: 5,
+					windowSeconds: RATE_LIMIT_WINDOW_SECONDS,
+				}),
+				ipLimiter.limit(ipKey, {
+					limit: 20,
+					windowSeconds: RATE_LIMIT_WINDOW_SECONDS,
+				}),
+			]);
+
+			if (emailResult.allowed && ipResult.allowed) {
+				return {
+					allowed: true,
+					resetAt:
+						emailResult.resetAt > ipResult.resetAt
+							? emailResult.resetAt
+							: ipResult.resetAt,
+				};
+			}
+
+			return {
+				allowed: false,
+				resetAt:
+					emailResult.resetAt < ipResult.resetAt
+						? emailResult.resetAt
+						: ipResult.resetAt,
+			};
+		} catch (error) {
+			logger.error(
+				"Register rate limit denied because Redis check failed",
+				error instanceof Error ? error : undefined,
+			);
+
+			return {
+				allowed: false,
+				resetAt: new Date(Date.now() + RATE_LIMIT_WINDOW_SECONDS * 1000),
+			};
+		}
 	}
 
 	static async handleRegister({
@@ -40,7 +194,7 @@ export abstract class RegisterUtils {
 		name: string;
 	}): Promise<RegisterResult> {
 		const requestId = RegisterUtils.createRequestId();
-		const rateLimit = await AuthRatelimitUtils.enforce("register", email);
+		const rateLimit = await RegisterUtils.enforceRateLimit(email);
 
 		if (!rateLimit.allowed) {
 			return {
@@ -59,10 +213,10 @@ export abstract class RegisterUtils {
 		});
 
 		try {
-			const browserToken = SessionUtils.createBrowserToken();
-			const browserTokenHash = await SessionUtils.hashToken(browserToken);
+			const browserToken = RegisterUtils.createBrowserToken();
+			const browserTokenHash = await RegisterUtils.hashToken(browserToken);
 			const rawToken = RegisterUtils.createVerificationToken();
-			const tokenHash = await SessionUtils.hashToken(rawToken);
+			const tokenHash = await RegisterUtils.hashToken(rawToken);
 
 			await db.$transaction(async (tx) => {
 				const user = await tx.user.create({
@@ -89,7 +243,7 @@ export abstract class RegisterUtils {
 				});
 			});
 
-			SessionUtils.setTempSessionCookie(browserToken);
+			RegisterUtils.setTempSessionCookie(browserToken);
 
 			logger.info("Register attempt succeeded", {
 				email,
@@ -146,7 +300,7 @@ export abstract class RegisterUtils {
 		email: string;
 	}): Promise<ResendRegisterVerificationResult> {
 		const requestId = RegisterUtils.createRequestId();
-		const rateLimit = await AuthRatelimitUtils.enforce("register", email);
+		const rateLimit = await RegisterUtils.enforceRateLimit(email);
 
 		if (!rateLimit.allowed) {
 			return {
@@ -160,7 +314,7 @@ export abstract class RegisterUtils {
 		}
 
 		try {
-			const user = await db.user.findUnique({
+			const user = await db.user.findFirst({
 				where: {
 					email,
 				},
@@ -188,37 +342,35 @@ export abstract class RegisterUtils {
 				};
 			}
 
-			const existingBrowserToken = SessionUtils.getTempSessionCookie();
+			const existingBrowserToken = RegisterUtils.getTempSessionCookie();
 			const browserToken =
-				existingBrowserToken ?? SessionUtils.createBrowserToken();
+				existingBrowserToken ?? RegisterUtils.createBrowserToken();
 
 			if (!existingBrowserToken) {
-				SessionUtils.setTempSessionCookie(browserToken);
+				RegisterUtils.setTempSessionCookie(browserToken);
 			}
 
-			const browserTokenHash = await SessionUtils.hashToken(browserToken);
+			const browserTokenHash = await RegisterUtils.hashToken(browserToken);
 			const rawToken = RegisterUtils.createVerificationToken();
-			const tokenHash = await SessionUtils.hashToken(rawToken);
+			const tokenHash = await RegisterUtils.hashToken(rawToken);
 
-			await db.emailVerification.upsert({
-				where: {
-					email_userId: {
+			await db.$transaction(async (tx) => {
+				await tx.emailVerification.deleteMany({
+					where: {
 						email,
 						userId: user.id,
 					},
-				},
-				create: {
-					email,
-					userId: user.id,
-					browserTokenHash,
-					token: tokenHash,
-					expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
-				},
-				update: {
-					browserTokenHash,
-					token: tokenHash,
-					expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
-				},
+				});
+
+				await tx.emailVerification.create({
+					data: {
+						email,
+						userId: user.id,
+						browserTokenHash,
+						token: tokenHash,
+						expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+					},
+				});
 			});
 
 			logger.info("Verification email resent", {

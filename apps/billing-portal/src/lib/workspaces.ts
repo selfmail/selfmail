@@ -1,12 +1,12 @@
 import { db } from "@selfmail/db";
-import { createServerFn } from "@tanstack/react-start";
 import {
-  hasAnyPermission,
   permissions as getPermissions,
+  hasAnyPermission,
   type PermissionName,
 } from "@selfmail/permissions";
-import { authenticatedMiddleware } from "./auth";
 import { redirect } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import { authenticatedMiddleware } from "./auth";
 
 const BILLING_ACCESS_ERROR = "You do not have access to this workspace";
 
@@ -34,10 +34,10 @@ export const workspaceViewPermissions = [
   "settings:delete",
 ] as const satisfies readonly PermissionName[];
 
-type WorkspaceAccessInput = {
+interface WorkspaceAccessInput {
   requiredPermissions?: readonly PermissionName[];
   workspaceId: string;
-};
+}
 
 export const getWorkspaceAccess = createServerFn({ method: "GET" })
   .middleware([authenticatedMiddleware])
@@ -76,10 +76,9 @@ export const getWorkspaceAccess = createServerFn({ method: "GET" })
       });
     }
 
-    const requiredPermissions =
-      data.requiredPermissions?.length
-        ? data.requiredPermissions
-        : workspaceViewPermissions;
+    const requiredPermissions = data.requiredPermissions?.length
+      ? data.requiredPermissions
+      : workspaceViewPermissions;
 
     const allowed =
       requiredPermissions.length === 0
