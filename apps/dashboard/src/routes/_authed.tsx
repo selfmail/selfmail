@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { getCurrentUserFn } from "#/utils/auth";
 
 export const Route = createFileRoute("/_authed")({
@@ -15,4 +15,9 @@ export const Route = createFileRoute("/_authed")({
       user: user.user,
     };
   },
+  component: RouteComponent,
 });
+
+function RouteComponent() {
+  return <Outlet />;
+}
