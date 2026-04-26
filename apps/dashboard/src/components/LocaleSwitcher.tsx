@@ -10,7 +10,6 @@ export default function ParaglideLocaleSwitcher() {
 
   return (
     <div
-      aria-label={m.language_label()}
       style={{
         display: "flex",
         gap: "0.5rem",
@@ -37,6 +36,7 @@ export default function ParaglideLocaleSwitcher() {
               fontWeight: locale === currentLocale ? 700 : 500,
               letterSpacing: "0.01em",
             }}
+            type="button"
           >
             {locale.toUpperCase()}
           </button>

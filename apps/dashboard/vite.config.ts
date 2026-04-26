@@ -1,37 +1,31 @@
-import { paraglideVitePlugin } from "@inlang/paraglide-js";
-import tailwindcss from "@tailwindcss/vite";
-import { devtools } from "@tanstack/devtools-vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import viteReact from "@vitejs/plugin-react";
-import { defineConfig, type PluginOption } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { defineConfig } from 'vite'
+import { devtools } from '@tanstack/devtools-vite'
+import { paraglideVitePlugin } from '@inlang/paraglide-js'
 
-const plugins = [
-	devtools(),
-	paraglideVitePlugin({
-		project: "./project.inlang",
-		outdir: "./src/paraglide",
-		cookieName: "LOCALE",
-		strategy: ["cookie", "preferredLanguage", "baseLocale"],
-	}),
-	tsconfigPaths({ projects: ["./tsconfig.json"] }),
-	tailwindcss(),
-	tanstackStart(),
-	viteReact({
-		babel: {
-			plugins: ["babel-plugin-react-compiler"],
-		},
-	}),
-] as unknown as PluginOption[];
+import { tanstackStart } from '@tanstack/react-start/plugin/vite'
+
+import viteReact from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+import { nitro } from 'nitro/vite'
 
 const config = defineConfig({
-	resolve: {
-		dedupe: ["react", "react-dom"],
-	},
-	ssr: {
-		noExternal: ["@base-ui/react", "@posthog/react", "agentation"],
-	},
-	plugins,
-});
+  resolve: { tsconfigPaths: true },
+  plugins: [
+    devtools(),
+    paraglideVitePlugin({
+      project: './project.inlang',
+      outdir: './src/paraglide',
+      strategy: ['url', 'baseLocale'],
+    }),
+    nitro({ rollupConfig: { external: [/^@sentry\//] } }),
+    tailwindcss(),
+    tanstackStart(),
+    viteReact({
+      babel: {
+        plugins: ['babel-plugin-react-compiler'],
+      },
+    }),
+  ],
+})
 
-export default config;
+export default config

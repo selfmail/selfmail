@@ -5,6 +5,6 @@ export const Route = createFileRoute("/_authed/")({
 });
 
 function RouteComponent() {
-  const { name } = Route.useRouteContext();
-  return <div>Hello {name}!</div>;
+  const { user } = Route.useRouteContext();
+  return <div>Hello {user.name}!</div>;
 }

@@ -1,5 +1,5 @@
 {
-  "projectName": "dashboard",
+  "projectName": "dashboard-start",
   "mode": "file-router",
   "typescript": true,
   "packageManager": "bun",
@@ -8,12 +8,13 @@
   "addOnOptions": {},
   "envVarValues": {},
   "git": false,
+  "install": true,
   "routerOnly": false,
   "version": 1,
   "framework": "react",
   "chosenAddOns": [
     "biome",
-    "sentry",
+    "nitro",
     "compiler",
     "paraglide",
     "t3env",
