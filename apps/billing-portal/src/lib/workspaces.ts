@@ -6,15 +6,15 @@ import {
 } from "@selfmail/permissions";
 import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { authenticatedMiddleware } from "./auth";
+import { authMiddleware } from "./auth";
 
 const BILLING_ACCESS_ERROR = "You do not have access to this workspace";
 
 const getBillingHomeHref = (error?: string) =>
-  error ? `/?error=${encodeURIComponent(error)}` : "/";
+	error ? `/?error=${encodeURIComponent(error)}` : "/";
 
 export const getWorkspaces = createServerFn({ method: "GET" })
-  .middleware([authenticatedMiddleware])
+  .middleware([authMiddleware])
   .handler(async ({ context: { user } }) => {
     const workspaces = await db.workspace.findMany({
       where: {
@@ -40,7 +40,7 @@ interface WorkspaceAccessInput {
 }
 
 export const getWorkspaceAccess = createServerFn({ method: "GET" })
-  .middleware([authenticatedMiddleware])
+  .middleware([authMiddleware])
   .inputValidator((input: WorkspaceAccessInput) => input)
   .handler(async ({ context: { user }, data }) => {
     const workspace = await db.workspace.findFirst({

@@ -1,12 +1,7 @@
 import { Authentication } from "@selfmail/authentication";
 import type { User } from "@selfmail/db";
 import { createLogger } from "@selfmail/logging";
-import { redirect } from "@tanstack/react-router";
-import {
-  createMiddleware,
-  createServerFn,
-  createServerOnlyFn,
-} from "@tanstack/react-start";
+import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
 import { getCookie } from "@tanstack/react-start/server";
 
 const logger = createLogger("dashboard-auth-middleware");
@@ -84,21 +79,3 @@ export const getLoginHref = createServerOnlyFn(() => {
     ? PROD_AUTH_HREF
     : DEV_AUTH_HREF;
 });
-
-export const authMiddleware = createMiddleware({ type: "function" }).server(
-  async ({ next }) => {
-    const currentUserResult = await getCurrentUserFn();
-
-    if (currentUserResult.status === "unauthenticated") {
-      throw redirect({
-        href: currentUserResult.loginHref,
-      });
-    }
-
-    return next({
-      context: {
-        user: currentUserResult.user,
-      },
-    });
-  }
-);

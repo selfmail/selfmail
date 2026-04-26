@@ -4,6 +4,35 @@
   "about_page": "About page",
   "example_message": "Welcome to your i18n app.",
   "language_label": "Language",
+  "language": {
+    "select_label": "Select language"
+  },
   "current_locale": "Current locale: {locale}",
-  "learn_router": "Learn Paraglide JS"
+  "learn_router": "Learn Paraglide JS",
+  "meta": {
+    "title": "Selfmail",
+    "billing_title": "Billing Portal | Selfmail",
+    "billing_description": "Manage your Selfmail subscription, billing details, and invoices in one place."
+  },
+  "not_found": {
+    "title": "Page Not Found"
+  },
+  "error": {
+    "title": "An error occurred",
+    "workspace_access": "You do not have access to this workspace"
+  },
+  "footer": {
+    "privacy_policy": "Privacy Policy",
+    "terms_of_service": "Terms of Service"
+  },
+  "workspace_selector": {
+    "title": "Select your Workspace",
+    "empty": "You are not a member of any workspaces."
+  },
+  "workspace_billing": {
+    "eyebrow": "Selfmail billing",
+    "title": "Workspace billing",
+    "details_prefix": "Billing details for workspace",
+    "details_suffix": "will appear here."
+  }
 }
