@@ -1,26 +1,47 @@
-import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import type { ComponentPropsWithoutRef } from "react";
+import {
+  Content as TooltipPrimitiveContent,
+  Portal as TooltipPrimitivePortal,
+  Provider as TooltipPrimitiveProvider,
+  Root as TooltipPrimitiveRoot,
+  Trigger as TooltipPrimitiveTrigger,
+} from "@radix-ui/react-tooltip";
+import type { ComponentProps } from "react";
 import { cn } from "../lib/cn";
 
-export const TooltipProvider = TooltipPrimitive.Provider;
-export const Tooltip = TooltipPrimitive.Root;
-export const TooltipTrigger = TooltipPrimitive.Trigger;
+const Tooltip = TooltipPrimitiveRoot;
+const TooltipTrigger = TooltipPrimitiveTrigger;
 
-export function TooltipContent({
-  className,
-  sideOffset = 6,
+function TooltipProvider({
+  delayDuration = 0,
   ...props
-}: ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>) {
+}: ComponentProps<typeof TooltipPrimitiveProvider>) {
   return (
-    <TooltipPrimitive.Portal>
-      <TooltipPrimitive.Content
+    <TooltipPrimitiveProvider
+      data-slot="tooltip-provider"
+      delayDuration={delayDuration}
+      {...props}
+    />
+  );
+}
+
+function TooltipContent({
+  className,
+  sideOffset = 4,
+  ...props
+}: ComponentProps<typeof TooltipPrimitiveContent>) {
+  return (
+    <TooltipPrimitivePortal>
+      <TooltipPrimitiveContent
         className={cn(
-          "z-50 rounded-lg bg-[rgb(var(--foreground))] px-3 py-1.5 text-xs text-[rgb(var(--background))] shadow-md",
+          "z-50 overflow-hidden rounded-md bg-foreground px-3 py-1.5 text-background text-xs",
           className
         )}
+        data-slot="tooltip-content"
         sideOffset={sideOffset}
         {...props}
       />
-    </TooltipPrimitive.Portal>
+    </TooltipPrimitivePortal>
   );
 }
+
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };

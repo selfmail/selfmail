@@ -1,13 +1,14 @@
-import type { HTMLAttributes } from "react";
+import type { ComponentProps } from "react";
 import { cn } from "../lib/cn";
 
-export type SkeletonProps = HTMLAttributes<HTMLDivElement>;
-
-export function Skeleton({ className, ...props }: SkeletonProps) {
+function Skeleton({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
-      className={cn("animate-pulse rounded-xl bg-[rgb(var(--muted))]", className)}
+      className={cn("rounded-md bg-muted", className)}
+      data-slot="skeleton"
       {...props}
     />
   );
 }
+
+export { Skeleton };
