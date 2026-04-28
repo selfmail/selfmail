@@ -1,32 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { OnboardingFlow } from "#/components/onboarding/flow";
+import { m } from "#/paraglide/messages";
 
 export const Route = createFileRoute("/_authed/onboarding/")({
-  component: RouteComponent,
+	head: () => ({
+		meta: [
+			{
+				title: m.onboarding_meta_title(),
+			},
+		],
+	}),
+	component: () => (
+		<main className="relative flex min-h-dvh items-center justify-center bg-background px-5 py-20 text-foreground sm:px-10">
+			<a
+				className="absolute top-5 left-1/2 -translate-x-1/2 font-medium text-xl"
+				href="https://selfmail.app"
+			>
+				Selfmail
+			</a>
+			<OnboardingFlow />
+		</main>
+	),
 });
-
-function RouteComponent() {
-  // Component with stepper from transitions.dev
-  const [page, setPage] = useState(0);
-  const pages = [];
-  return (
-    <div>
-      <p>Hello "/_authed/onboarding/"!</p>
-      <p>Current page: {page}</p>
-      <button
-        disabled={page === 0}
-        onClick={() => setPage((p) => p - 1)}
-        type="button"
-      >
-        Previous
-      </button>
-      <button
-        disabled={page === 2}
-        onClick={() => setPage((p) => p + 1)}
-        type="button"
-      >
-        Next
-      </button>
-    </div>
-  );
-}

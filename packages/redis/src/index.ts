@@ -1,18 +1,18 @@
 import IORedis, { type Redis } from "ioredis";
 
-export type RateLimitResult = {
+export interface RateLimitResult {
   allowed: boolean;
   limit: number;
   remaining: number;
   resetAt: Date;
-};
+}
 
-export type RateLimiterOptions = {
+export interface RateLimiterOptions {
   url?: string;
   limit?: number;
   windowSeconds?: number;
   keyPrefix?: string;
-};
+}
 
 export class RateLimitRedisError extends Error {
   constructor(message: string) {
@@ -45,7 +45,8 @@ export class Ratelimit {
   private readonly keyPrefix: string;
 
   constructor(options: RateLimiterOptions = {}) {
-    const url = options.url ?? process.env.REDIS_URL ?? "redis://localhost:6379";
+    const url =
+      options.url ?? process.env.REDIS_URL ?? "redis://localhost:6379";
 
     this.client = getClient(url);
     this.limit = options.limit ?? 100;
