@@ -1,5 +1,11 @@
 // biome-ignore lint/performance/noBarrelFile: This package entrypoint is the public component API.
 export {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  alertVariants,
+} from "./components/alert";
+export {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -12,6 +18,12 @@ export {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./components/alert-dialog";
+export {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  avatarVariants,
+} from "./components/avatar";
 export { Badge, badgeVariants } from "./components/badge";
 export { Button, buttonVariants } from "./components/button";
 export {
@@ -22,6 +34,7 @@ export {
   CardHeader,
   CardTitle,
 } from "./components/card";
+export { Checkbox } from "./components/checkbox";
 export {
   Dialog,
   DialogClose,
@@ -34,6 +47,19 @@ export {
   DialogTitle,
   DialogTrigger,
 } from "./components/dialog";
+export {
+  Dropdown,
+  DropdownContent,
+  DropdownGroup,
+  DropdownItem,
+  DropdownLabel,
+  DropdownPortal,
+  DropdownSeparator,
+  DropdownSub,
+  DropdownSubContent,
+  DropdownSubTrigger,
+  DropdownTrigger,
+} from "./components/dropdown";
 export {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -55,6 +81,7 @@ export {
   PopoverContent,
   PopoverTrigger,
 } from "./components/popover";
+export { Progress } from "./components/progress";
 export {
   Select,
   SelectContent,
@@ -67,6 +94,7 @@ export {
 } from "./components/select";
 export { Separator } from "./components/separator";
 export { Skeleton } from "./components/skeleton";
+export { Switch } from "./components/switch";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/tabs";
 export { Textarea } from "./components/textarea";
 export {

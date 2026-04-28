@@ -24,6 +24,15 @@ type LoginFieldName = keyof LoginFormValues;
 type LoginFieldErrors = Partial<Record<LoginFieldName, string>>;
 
 export const Route = createFileRoute("/login/")({
+	head: () => ({
+		meta: [
+			{ title: m["meta.login.title"]() },
+			{
+				name: "description",
+				content: m["meta.login.description"](),
+			},
+		],
+	}),
 	component: RouteComponent,
 	loader: async () => ({
 		currentUser: await getCurrentUserFn(),
