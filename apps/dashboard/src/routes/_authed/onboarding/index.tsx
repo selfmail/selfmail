@@ -6,7 +6,7 @@ export const Route = createFileRoute("/_authed/onboarding/")({
 	head: () => ({
 		meta: [
 			{
-				title: m.onboarding_meta_title(),
+				title: m["onboarding.meta.title"](),
 			},
 		],
 	}),

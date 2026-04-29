@@ -37,13 +37,13 @@ export function OnboardingName({ errors }: OnboardingNameProps) {
 	return (
 		<div className="flex flex-col gap-6">
 			<h1 className="text-balance text-center font-medium text-3xl">
-				{m.onboarding_name_title()}
+				{m["onboarding.name.title"]()}
 			</h1>
 
 			<div className="grid gap-5">
 				<div className="space-y-2">
 					<Label htmlFor="workspace-name">
-						{m.onboarding_workspace_name_label()}
+						{m["onboarding.name.workspace.label"]()}
 					</Label>
 					<Input
 						aria-describedby={
@@ -53,7 +53,7 @@ export function OnboardingName({ errors }: OnboardingNameProps) {
 						autoComplete="organization"
 						id="workspace-name"
 						onChange={(event) => handleNameChange(event.target.value)}
-						placeholder={m.onboarding_workspace_name_placeholder()}
+						placeholder={m["onboarding.name.workspace.placeholder"]()}
 						value={data.workspaceName}
 					/>
 					{errors?.workspaceName ? (
@@ -65,7 +65,7 @@ export function OnboardingName({ errors }: OnboardingNameProps) {
 
 				<div className="space-y-2">
 					<Label htmlFor="workspace-handle">
-						{m.onboarding_workspace_handle_label()}
+						{m["onboarding.name.handle.label"]()}
 					</Label>
 					<Input
 						aria-describedby={
@@ -78,7 +78,7 @@ export function OnboardingName({ errors }: OnboardingNameProps) {
 						onChange={(event) =>
 							setField("workspaceHandle", toWorkspaceHandle(event.target.value))
 						}
-						placeholder={m.onboarding_workspace_handle_placeholder()}
+						placeholder={m["onboarding.name.handle.placeholder"]()}
 						value={data.workspaceHandle}
 					/>
 					{errors?.workspaceHandle ? (
@@ -90,7 +90,7 @@ export function OnboardingName({ errors }: OnboardingNameProps) {
 							className="text-muted-foreground text-sm"
 							id="workspace-handle-help"
 						>
-							{m.onboarding_workspace_handle_help()}
+							{m["onboarding.name.handle.help"]()}
 						</p>
 					)}
 				</div>

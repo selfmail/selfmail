@@ -6,44 +6,74 @@
   "language_label": "Sprache",
   "current_locale": "Aktuelle Sprache: {locale}",
   "learn_router": "Paraglide JS lernen",
-  "onboarding_meta_title": "Onboarding | Selfmail",
-  "onboarding_back": "Zurück",
-  "onboarding_continue": "Weiter",
-  "onboarding_create": "Erstellen",
-  "onboarding_steps_label": "Onboarding-Schritt {current} von {total}",
-  "onboarding_name_title": "Benennen Sie Ihren Workspace",
-  "onboarding_workspace_name_label": "Workspace-Name",
-  "onboarding_workspace_name_placeholder": "Acme Operations",
-  "onboarding_workspace_handle_label": "Workspace-Handle",
-  "onboarding_workspace_handle_placeholder": "acme-operations",
-  "onboarding_workspace_handle_help": "Wird für interne URLs und Standard-E-Mail-Routing verwendet.",
-  "onboarding_domain_title": "Fügen Sie Ihre E-Mail-Domain hinzu",
-  "onboarding_custom_domain_label": "Benutzerdefinierte E-Mail-Domain verwenden",
-  "onboarding_custom_domain_help": "Selfmail bleibt von Selfmail gehostet. Hiermit wird nur Ihre Domain für E-Mail-Adressen verbunden.",
-  "onboarding_domain_label": "E-Mail-Domain",
-  "onboarding_domain_placeholder": "mail.acme.com",
-  "onboarding_current_domain": "Aktuelle Domain:",
-  "onboarding_address_title": "Erstellen Sie das erste Postfach",
-  "onboarding_address_label": "Adressname",
-  "onboarding_address_placeholder": "hallo",
-  "onboarding_preview": "Vorschau:",
-  "onboarding_members_title": "Laden Sie Ihr Team ein",
-  "onboarding_invite_label": "Per E-Mail einladen",
-  "onboarding_invite_input_label": "E-Mail-Adresse des Teammitglieds {number}",
-  "onboarding_invite_placeholder": "name@unternehmen.com",
-  "onboarding_remove_invite": "Einladung entfernen",
-  "onboarding_add_invite": "Weitere hinzufügen",
-  "onboarding_review_title": "Überprüfung",
-  "onboarding_review_workspace": "Workspace",
-  "onboarding_review_handle": "Handle",
-  "onboarding_review_address": "Erste Adresse",
-  "onboarding_review_members": "Mitglieder",
-  "onboarding_members_invited": "{count} eingeladen",
-  "onboarding_only_you": "Nur Sie",
-  "onboarding_not_set": "Nicht festgelegt",
-  "onboarding_error_workspace_name": "Geben Sie einen Workspace-Namen ein.",
-  "onboarding_error_workspace_handle": "Verwenden Sie Kleinbuchstaben, Zahlen und einzelne Bindestriche.",
-  "onboarding_error_domain": "Geben Sie eine gültige Domain ohne https:// ein.",
-  "onboarding_error_address": "Verwenden Sie Buchstaben, Zahlen, Punkte, Unterstriche oder Bindestriche.",
-  "onboarding_error_member_email": "Geben Sie eine gültige E-Mail-Adresse ein."
+  "onboarding": {
+    "meta": {
+      "title": "Onboarding | Selfmail"
+    },
+    "actions": {
+      "back": "Zurück",
+      "continue": "Weiter",
+      "create": "Erstellen"
+    },
+    "steps": {
+      "label": "Onboarding-Schritt {current} von {total}"
+    },
+    "name": {
+      "title": "Benennen Sie Ihren Workspace",
+      "workspace": {
+        "label": "Workspace-Name",
+        "placeholder": "Acme Operations"
+      },
+      "handle": {
+        "label": "Workspace-Handle",
+        "placeholder": "acme-operations",
+        "help": "Wird für interne URLs und Standard-E-Mail-Routing verwendet."
+      }
+    },
+    "domain": {
+      "title": "Fügen Sie Ihre E-Mail-Domain hinzu",
+      "custom": {
+        "label": "Benutzerdefinierte E-Mail-Domain verwenden",
+        "help": "Selfmail bleibt von Selfmail gehostet. Hiermit wird nur Ihre Domain für E-Mail-Adressen verbunden."
+      },
+      "field": {
+        "label": "E-Mail-Domain",
+        "placeholder": "mail.acme.com"
+      },
+      "current": "Aktuelle Domain:"
+    },
+    "address": {
+      "title": "Erstellen Sie das erste Postfach",
+      "field": {
+        "label": "Adressname",
+        "placeholder": "hallo"
+      },
+      "preview": "Vorschau:"
+    },
+    "members": {
+      "title": "Laden Sie Ihr Team ein",
+      "label": "Per E-Mail einladen",
+      "input_label": "E-Mail-Adresse des Teammitglieds {number}",
+      "placeholder": "name@unternehmen.com",
+      "remove_invite": "Einladung entfernen",
+      "add_invite": "Weitere hinzufügen",
+      "invited": "{count} eingeladen",
+      "only_you": "Nur Sie"
+    },
+    "review": {
+      "title": "Überprüfung",
+      "workspace": "Workspace",
+      "handle": "Handle",
+      "address": "Erste Adresse",
+      "members": "Mitglieder",
+      "not_set": "Nicht festgelegt"
+    },
+    "errors": {
+      "workspace_name": "Geben Sie einen Workspace-Namen ein.",
+      "workspace_handle": "Verwenden Sie Kleinbuchstaben, Zahlen und einzelne Bindestriche.",
+      "domain": "Geben Sie eine gültige Domain ohne https:// ein.",
+      "address": "Verwenden Sie Buchstaben, Zahlen, Punkte, Unterstriche oder Bindestriche.",
+      "member_email": "Geben Sie eine gültige E-Mail-Adresse ein."
+    }
+  }
 }

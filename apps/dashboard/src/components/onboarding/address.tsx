@@ -23,13 +23,13 @@ export function OnboardingAddress({ error }: OnboardingAddressProps) {
 	return (
 		<div className="flex flex-col gap-6">
 			<h1 className="text-balance text-center font-medium text-3xl">
-				{m.onboarding_address_title()}
+				{m["onboarding.address.title"]()}
 			</h1>
 
 			<div className="grid gap-5">
 				<div className="space-y-2">
 					<Label htmlFor="default-address">
-						{m.onboarding_address_label()}
+						{m["onboarding.address.field.label"]()}
 					</Label>
 					<div className="flex flex-col gap-2 sm:flex-row">
 						<Input
@@ -45,7 +45,7 @@ export function OnboardingAddress({ error }: OnboardingAddressProps) {
 									toAddressLocalPart(event.target.value),
 								)
 							}
-							placeholder={m.onboarding_address_placeholder()}
+							placeholder={m["onboarding.address.field.placeholder"]()}
 							value={data.defaultAddress}
 						/>
 						<div className="flex min-h-12 items-center truncate rounded-full border-2 border-neutral-200 bg-muted px-6 text-muted-foreground text-sm sm:max-w-52">
@@ -61,7 +61,7 @@ export function OnboardingAddress({ error }: OnboardingAddressProps) {
 							className="text-muted-foreground text-sm"
 							id="default-address-help"
 						>
-							{m.onboarding_preview()}{" "}
+							{m["onboarding.address.preview"]()}{" "}
 							<span className="font-medium text-foreground">{address}</span>
 						</p>
 					)}

@@ -25,24 +25,24 @@ export const validateOnboardingPage = (
 			return {
 				workspaceName: data.workspaceName.trim()
 					? undefined
-					: m.onboarding_error_workspace_name(),
+					: m["onboarding.errors.workspace_name"](),
 				workspaceHandle: handlePattern.test(data.workspaceHandle)
 					? undefined
-					: m.onboarding_error_workspace_handle(),
+					: m["onboarding.errors.workspace_handle"](),
 			};
 		case 2:
 			return data.useCustomDomain
 				? {
 						customDomain: domainPattern.test(data.customDomain.trim())
 							? undefined
-							: m.onboarding_error_domain(),
+							: m["onboarding.errors.domain"](),
 					}
 				: {};
 		case 3:
 			return {
 				defaultAddress: localPartPattern.test(data.defaultAddress)
 					? undefined
-					: m.onboarding_error_address(),
+					: m["onboarding.errors.address"](),
 			};
 		case 4:
 			return { memberEmails: validateMemberEmails(data) };
@@ -56,7 +56,7 @@ const validateMemberEmails = (data: OnboardingData) => {
 
 	for (const memberInvite of data.memberInvites) {
 		if (memberInvite.email.trim() && !emailPattern.test(memberInvite.email)) {
-			errors[memberInvite.id] = m.onboarding_error_member_email();
+			errors[memberInvite.id] = m["onboarding.errors.member_email"]();
 		}
 	}
 

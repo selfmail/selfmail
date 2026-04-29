@@ -6,44 +6,74 @@
   "language_label": "Language",
   "current_locale": "Current locale: {locale}",
   "learn_router": "Learn Paraglide JS",
-  "onboarding_meta_title": "Onboarding | Selfmail",
-  "onboarding_back": "Back",
-  "onboarding_continue": "Proceed",
-  "onboarding_create": "Create",
-  "onboarding_steps_label": "Onboarding step {current} of {total}",
-  "onboarding_name_title": "Name your workspace",
-  "onboarding_workspace_name_label": "Workspace name",
-  "onboarding_workspace_name_placeholder": "Acme Operations",
-  "onboarding_workspace_handle_label": "Workspace handle",
-  "onboarding_workspace_handle_placeholder": "acme-operations",
-  "onboarding_workspace_handle_help": "Used for internal URLs and default email routing.",
-  "onboarding_domain_title": "Add your email domain",
-  "onboarding_custom_domain_label": "Use a custom email domain",
-  "onboarding_custom_domain_help": "Selfmail stays hosted by Selfmail. This only connects your domain for email addresses.",
-  "onboarding_domain_label": "Email domain",
-  "onboarding_domain_placeholder": "mail.acme.com",
-  "onboarding_current_domain": "Current domain:",
-  "onboarding_address_title": "Create the first inbox",
-  "onboarding_address_label": "Address name",
-  "onboarding_address_placeholder": "hello",
-  "onboarding_preview": "Preview:",
-  "onboarding_members_title": "Invite your team",
-  "onboarding_invite_label": "Invite by email",
-  "onboarding_invite_input_label": "Team member email {number}",
-  "onboarding_invite_placeholder": "name@company.com",
-  "onboarding_remove_invite": "Remove invite",
-  "onboarding_add_invite": "Add another",
-  "onboarding_review_title": "Review",
-  "onboarding_review_workspace": "Workspace",
-  "onboarding_review_handle": "Handle",
-  "onboarding_review_address": "First address",
-  "onboarding_review_members": "Members",
-  "onboarding_members_invited": "{count} invited",
-  "onboarding_only_you": "Only you",
-  "onboarding_not_set": "Not set",
-  "onboarding_error_workspace_name": "Enter a workspace name.",
-  "onboarding_error_workspace_handle": "Use lowercase letters, numbers, and single dashes.",
-  "onboarding_error_domain": "Enter a valid domain, without https://.",
-  "onboarding_error_address": "Use letters, numbers, dots, underscores, or dashes.",
-  "onboarding_error_member_email": "Enter a valid email address."
+  "onboarding": {
+    "meta": {
+      "title": "Onboarding | Selfmail"
+    },
+    "actions": {
+      "back": "Back",
+      "continue": "Proceed",
+      "create": "Create"
+    },
+    "steps": {
+      "label": "Onboarding step {current} of {total}"
+    },
+    "name": {
+      "title": "Name your workspace",
+      "workspace": {
+        "label": "Workspace name",
+        "placeholder": "Acme Operations"
+      },
+      "handle": {
+        "label": "Workspace handle",
+        "placeholder": "acme-operations",
+        "help": "Used for internal URLs and default email routing."
+      }
+    },
+    "domain": {
+      "title": "Add your email domain",
+      "custom": {
+        "label": "Use a custom email domain",
+        "help": "Selfmail stays hosted by Selfmail. This only connects your domain for email addresses."
+      },
+      "field": {
+        "label": "Email domain",
+        "placeholder": "yourdomain.com"
+      },
+      "current": "Current domain:"
+    },
+    "address": {
+      "title": "Create the first inbox",
+      "field": {
+        "label": "Address name",
+        "placeholder": "hello"
+      },
+      "preview": "Preview:"
+    },
+    "members": {
+      "title": "Invite your team",
+      "label": "Invite by email",
+      "input_label": "Team member email {number}",
+      "placeholder": "name@company.com",
+      "remove_invite": "Remove invite",
+      "add_invite": "Add another",
+      "invited": "{count} invited",
+      "only_you": "Only you"
+    },
+    "review": {
+      "title": "Review",
+      "workspace": "Workspace",
+      "handle": "Handle",
+      "address": "First address",
+      "members": "Members",
+      "not_set": "Not set"
+    },
+    "errors": {
+      "workspace_name": "Enter a workspace name.",
+      "workspace_handle": "Use lowercase letters, numbers, and single dashes.",
+      "domain": "Enter a valid domain, without https://.",
+      "address": "Use letters, numbers, dots, underscores, or dashes.",
+      "member_email": "Enter a valid email address."
+    }
+  }
 }

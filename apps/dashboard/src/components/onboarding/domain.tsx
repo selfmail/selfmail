@@ -10,23 +10,23 @@ export function OnboardingDomain({ error }: OnboardingDomainProps) {
 	const { data, setCustomDomainEnabled, setField } = useOnboardingStore();
 	const fallbackDomain = `${data.workspaceHandle || "workspace"}.selfmail.app`;
 	const activeDomain = data.useCustomDomain
-		? data.customDomain || "mail.yourdomain.com"
+		? data.customDomain || "yourdomain.com"
 		: fallbackDomain;
 
 	return (
 		<div className="flex flex-col gap-6">
 			<h1 className="text-balance text-center font-medium text-3xl">
-				{m.onboarding_domain_title()}
+				{m["onboarding.domain.title"]()}
 			</h1>
 
 			<div className="rounded-3xl border border-border bg-card p-4">
 				<div className="flex items-center justify-between gap-5">
 					<div className="space-y-1">
 						<Label htmlFor="custom-domain">
-							{m.onboarding_custom_domain_label()}
+							{m["onboarding.domain.custom.label"]()}
 						</Label>
 						<p className="text-muted-foreground text-sm">
-							{m.onboarding_custom_domain_help()}
+							{m["onboarding.domain.custom.help"]()}
 						</p>
 					</div>
 					<Switch
@@ -39,7 +39,9 @@ export function OnboardingDomain({ error }: OnboardingDomainProps) {
 
 			<div className="grid gap-5">
 				<div className="space-y-2">
-					<Label htmlFor="domain-name">{m.onboarding_domain_label()}</Label>
+					<Label htmlFor="domain-name">
+						{m["onboarding.domain.field.label"]()}
+					</Label>
 					<Input
 						aria-describedby={error ? "domain-name-error" : "domain-name-help"}
 						aria-invalid={Boolean(error)}
@@ -47,7 +49,7 @@ export function OnboardingDomain({ error }: OnboardingDomainProps) {
 						id="domain-name"
 						inputMode="url"
 						onChange={(event) => setField("customDomain", event.target.value)}
-						placeholder={m.onboarding_domain_placeholder()}
+						placeholder={m["onboarding.domain.field.placeholder"]()}
 						value={data.customDomain}
 					/>
 					{error ? (
@@ -56,7 +58,7 @@ export function OnboardingDomain({ error }: OnboardingDomainProps) {
 						</p>
 					) : (
 						<p className="text-muted-foreground text-sm" id="domain-name-help">
-							{m.onboarding_current_domain()}{" "}
+							{m["onboarding.domain.current"]()}{" "}
 							<span className="font-medium text-foreground">
 								{activeDomain}
 							</span>
