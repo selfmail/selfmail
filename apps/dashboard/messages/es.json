@@ -6,44 +6,74 @@
   "language_label": "Idioma",
   "current_locale": "Configuración regional actual: {locale}",
   "learn_router": "Aprender Paraglide JS",
-  "onboarding_meta_title": "Incorporación | Selfmail",
-  "onboarding_back": "Atrás",
-  "onboarding_continue": "Continuar",
-  "onboarding_create": "Crear",
-  "onboarding_steps_label": "Paso {current} de {total} de incorporación",
-  "onboarding_name_title": "Nombra tu espacio de trabajo",
-  "onboarding_workspace_name_label": "Nombre del espacio de trabajo",
-  "onboarding_workspace_name_placeholder": "Acme Operations",
-  "onboarding_workspace_handle_label": "Identificador del espacio de trabajo",
-  "onboarding_workspace_handle_placeholder": "acme-operations",
-  "onboarding_workspace_handle_help": "Se utiliza para URLs internas y enrutamiento de correo predeterminado.",
-  "onboarding_domain_title": "Añade tu dominio de correo",
-  "onboarding_custom_domain_label": "Usar un dominio de correo personalizado",
-  "onboarding_custom_domain_help": "Selfmail permanece alojado por Selfmail. Esto solo conecta tu dominio para las direcciones de correo.",
-  "onboarding_domain_label": "Dominio de correo",
-  "onboarding_domain_placeholder": "mail.acme.com",
-  "onboarding_current_domain": "Dominio actual:",
-  "onboarding_address_title": "Crea la primera bandeja de entrada",
-  "onboarding_address_label": "Nombre de la dirección",
-  "onboarding_address_placeholder": "hola",
-  "onboarding_preview": "Vista previa:",
-  "onboarding_members_title": "Invita a tu equipo",
-  "onboarding_invite_label": "Invitar por correo electrónico",
-  "onboarding_invite_input_label": "Correo electrónico del miembro del equipo {number}",
-  "onboarding_invite_placeholder": "nombre@empresa.com",
-  "onboarding_remove_invite": "Eliminar invitación",
-  "onboarding_add_invite": "Añadir otro",
-  "onboarding_review_title": "Revisar",
-  "onboarding_review_workspace": "Espacio de trabajo",
-  "onboarding_review_handle": "Identificador",
-  "onboarding_review_address": "Primera dirección",
-  "onboarding_review_members": "Miembros",
-  "onboarding_members_invited": "{count} invitados",
-  "onboarding_only_you": "Solo tú",
-  "onboarding_not_set": "No configurado",
-  "onboarding_error_workspace_name": "Ingresa un nombre de espacio de trabajo.",
-  "onboarding_error_workspace_handle": "Usa letras minúsculas, números y guiones simples.",
-  "onboarding_error_domain": "Ingresa un dominio válido, sin https://.",
-  "onboarding_error_address": "Usa letras, números, puntos, guiones bajos o guiones.",
-  "onboarding_error_member_email": "Ingresa una dirección de correo electrónico válida."
+  "onboarding": {
+    "meta": {
+      "title": "Configuración inicial | Selfmail"
+    },
+    "actions": {
+      "back": "Atrás",
+      "continue": "Continuar",
+      "create": "Crear"
+    },
+    "steps": {
+      "label": "Paso {current} de {total} de la configuración inicial"
+    },
+    "name": {
+      "title": "Nombra tu espacio de trabajo",
+      "workspace": {
+        "label": "Nombre del espacio de trabajo",
+        "placeholder": "Operaciones Acme"
+      },
+      "handle": {
+        "label": "Identificador del espacio de trabajo",
+        "placeholder": "operaciones-acme",
+        "help": "Se utiliza para URLs internas y enrutamiento de correo predeterminado."
+      }
+    },
+    "domain": {
+      "title": "Añade tu dominio de correo",
+      "custom": {
+        "label": "Usar un dominio de correo personalizado",
+        "help": "Selfmail permanece alojado por Selfmail. Esto solo conecta tu dominio para las direcciones de correo."
+      },
+      "field": {
+        "label": "Dominio de correo",
+        "placeholder": "tudominio.com"
+      },
+      "current": "Dominio actual:"
+    },
+    "address": {
+      "title": "Crea la primera bandeja de entrada",
+      "field": {
+        "label": "Nombre de la dirección",
+        "placeholder": "hola"
+      },
+      "preview": "Vista previa:"
+    },
+    "members": {
+      "title": "Invita a tu equipo",
+      "label": "Invitar por correo electrónico",
+      "input_label": "Correo electrónico del miembro {number} del equipo",
+      "placeholder": "nombre@empresa.com",
+      "remove_invite": "Eliminar invitación",
+      "add_invite": "Añadir otro",
+      "invited": "{count} invitados",
+      "only_you": "Solo tú"
+    },
+    "review": {
+      "title": "Revisar",
+      "workspace": "Espacio de trabajo",
+      "handle": "Identificador",
+      "address": "Primera dirección",
+      "members": "Miembros",
+      "not_set": "Sin configurar"
+    },
+    "errors": {
+      "workspace_name": "Introduce un nombre para el espacio de trabajo.",
+      "workspace_handle": "Usa letras minúsculas, números y guiones simples.",
+      "domain": "Introduce un dominio válido, sin https://.",
+      "address": "Usa letras, números, puntos, guiones bajos o guiones.",
+      "member_email": "Introduce una dirección de correo electrónico válida."
+    }
+  }
 }

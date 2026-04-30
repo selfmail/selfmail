@@ -6,44 +6,74 @@
   "language_label": "Langue",
   "current_locale": "Langue actuelle : {locale}",
   "learn_router": "Découvrir Paraglide JS",
-  "onboarding_meta_title": "Intégration | Selfmail",
-  "onboarding_back": "Retour",
-  "onboarding_continue": "Continuer",
-  "onboarding_create": "Créer",
-  "onboarding_steps_label": "Étape {current} sur {total}",
-  "onboarding_name_title": "Nommez votre espace de travail",
-  "onboarding_workspace_name_label": "Nom de l'espace de travail",
-  "onboarding_workspace_name_placeholder": "Acme Operations",
-  "onboarding_workspace_handle_label": "Identifiant de l'espace de travail",
-  "onboarding_workspace_handle_placeholder": "acme-operations",
-  "onboarding_workspace_handle_help": "Utilisé pour les URL internes et le routage email par défaut.",
-  "onboarding_domain_title": "Ajoutez votre domaine email",
-  "onboarding_custom_domain_label": "Utiliser un domaine email personnalisé",
-  "onboarding_custom_domain_help": "Selfmail reste hébergé par Selfmail. Cela connecte uniquement votre domaine pour les adresses email.",
-  "onboarding_domain_label": "Domaine email",
-  "onboarding_domain_placeholder": "mail.acme.com",
-  "onboarding_current_domain": "Domaine actuel :",
-  "onboarding_address_title": "Créez la première boîte de réception",
-  "onboarding_address_label": "Nom de l'adresse",
-  "onboarding_address_placeholder": "bonjour",
-  "onboarding_preview": "Aperçu :",
-  "onboarding_members_title": "Invitez votre équipe",
-  "onboarding_invite_label": "Inviter par e-mail",
-  "onboarding_invite_input_label": "E-mail du membre d'équipe {number}",
-  "onboarding_invite_placeholder": "nom@entreprise.com",
-  "onboarding_remove_invite": "Supprimer l'invitation",
-  "onboarding_add_invite": "Ajouter un autre",
-  "onboarding_review_title": "Vérification",
-  "onboarding_review_workspace": "Espace de travail",
-  "onboarding_review_handle": "Identifiant",
-  "onboarding_review_address": "Première adresse",
-  "onboarding_review_members": "Membres",
-  "onboarding_members_invited": "{count} invité(s)",
-  "onboarding_only_you": "Seulement vous",
-  "onboarding_not_set": "Non défini",
-  "onboarding_error_workspace_name": "Saisissez un nom d'espace de travail.",
-  "onboarding_error_workspace_handle": "Utilisez des lettres minuscules, des chiffres et des tirets simples.",
-  "onboarding_error_domain": "Saisissez un domaine valide, sans https://.",
-  "onboarding_error_address": "Utilisez des lettres, des chiffres, des points, des tirets bas ou des tirets.",
-  "onboarding_error_member_email": "Saisissez une adresse e-mail valide."
+  "onboarding": {
+    "meta": {
+      "title": "Intégration | Selfmail"
+    },
+    "actions": {
+      "back": "Retour",
+      "continue": "Continuer",
+      "create": "Créer"
+    },
+    "steps": {
+      "label": "Étape {current} sur {total}"
+    },
+    "name": {
+      "title": "Nommez votre espace de travail",
+      "workspace": {
+        "label": "Nom de l'espace de travail",
+        "placeholder": "Acme Operations"
+      },
+      "handle": {
+        "label": "Identifiant de l'espace de travail",
+        "placeholder": "acme-operations",
+        "help": "Utilisé pour les URL internes et le routage email par défaut."
+      }
+    },
+    "domain": {
+      "title": "Ajoutez votre domaine email",
+      "custom": {
+        "label": "Utiliser un domaine email personnalisé",
+        "help": "Selfmail reste hébergé par Selfmail. Cela connecte uniquement votre domaine pour les adresses email."
+      },
+      "field": {
+        "label": "Domaine email",
+        "placeholder": "votredomaine.com"
+      },
+      "current": "Domaine actuel :"
+    },
+    "address": {
+      "title": "Créez la première boîte de réception",
+      "field": {
+        "label": "Nom de l'adresse",
+        "placeholder": "bonjour"
+      },
+      "preview": "Aperçu :"
+    },
+    "members": {
+      "title": "Invitez votre équipe",
+      "label": "Inviter par email",
+      "input_label": "Email du membre {number}",
+      "placeholder": "nom@entreprise.com",
+      "remove_invite": "Supprimer l'invitation",
+      "add_invite": "Ajouter un autre",
+      "invited": "{count} invité(s)",
+      "only_you": "Seulement vous"
+    },
+    "review": {
+      "title": "Vérification",
+      "workspace": "Espace de travail",
+      "handle": "Identifiant",
+      "address": "Première adresse",
+      "members": "Membres",
+      "not_set": "Non défini"
+    },
+    "errors": {
+      "workspace_name": "Saisissez un nom d'espace de travail.",
+      "workspace_handle": "Utilisez des lettres minuscules, des chiffres et des tirets simples.",
+      "domain": "Saisissez un domaine valide, sans https://.",
+      "address": "Utilisez des lettres, des chiffres, des points, des traits de soulignement ou des tirets.",
+      "member_email": "Saisissez une adresse e-mail valide."
+    }
+  }
 }

@@ -1,5 +1,7 @@
+import { useNavigate } from "@tanstack/react-router";
 import { type FormEvent, useState } from "react";
 import { Button } from "#/components/ui";
+import { createOnboardingWorkspaceFn } from "#/lib/onboarding";
 import { m } from "#/paraglide/messages";
 import { useOnboardingStore } from "#/stores/onboarding";
 import { OnboardingAddress } from "./address";
@@ -15,8 +17,12 @@ const lastPage = 4;
 export function OnboardingFlow() {
 	const data = useOnboardingStore((state) => state.data);
 	const addMemberEmail = useOnboardingStore((state) => state.addMemberEmail);
+	const reset = useOnboardingStore((state) => state.reset);
 	const [page, setPage] = useState<OnboardingPage>(1);
 	const [errors, setErrors] = useState<OnboardingErrors>({});
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [submitError, setSubmitError] = useState<string | null>(null);
+	const navigate = useNavigate();
 
 	const validateCurrentPage = () => {
 		const pageErrors = validateOnboardingPage(page, data);
@@ -44,13 +50,56 @@ export function OnboardingFlow() {
 		}
 	};
 
-	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		goToNextPage();
+
+		if (!validateCurrentPage()) {
+			return;
+		}
+
+		if (page !== lastPage) {
+			goToNextPage();
+			return;
+		}
+
+		setIsSubmitting(true);
+		setSubmitError(null);
+
+		try {
+			const result = await createOnboardingWorkspaceFn({
+				data: {
+					defaultAddress: data.defaultAddress,
+					workspaceHandle: data.workspaceHandle,
+					workspaceName: data.workspaceName,
+				},
+			});
+
+			if (result.status === "success") {
+				reset();
+				await navigate({ to: "/" });
+				return;
+			}
+
+			if (result.error.code === "WORKSPACE_TAKEN") {
+				setPage(1);
+				setErrors({ workspaceHandle: result.error.message });
+				return;
+			}
+
+			if (result.error.code === "ADDRESS_TAKEN") {
+				setErrors({ defaultAddress: result.error.message });
+				return;
+			}
+
+			setSubmitError(result.error.message);
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	const goBack = (nextPage: OnboardingPage) => {
 		setErrors({});
+		setSubmitError(null);
 		setPage(nextPage);
 	};
 
@@ -89,16 +138,26 @@ export function OnboardingFlow() {
 				</OnboardingPageSlide>
 			</fieldset>
 
+			{submitError ? (
+				<p
+					aria-live="polite"
+					className="text-pretty rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-red-700 text-sm"
+					role="alert"
+				>
+					{submitError}
+				</p>
+			) : null}
+
 			<div className="grid grid-cols-2 gap-3">
 				<Button
-					disabled={page === 1}
+					disabled={page === 1 || isSubmitting}
 					onClick={() => goBack((page - 1) as OnboardingPage)}
 					type="button"
 					variant="outline"
 				>
 					{m["onboarding.actions.back"]()}
 				</Button>
-				<Button type="submit">
+				<Button disabled={isSubmitting} type="submit">
 					{page === lastPage
 						? m["onboarding.actions.create"]()
 						: m["onboarding.actions.continue"]()}

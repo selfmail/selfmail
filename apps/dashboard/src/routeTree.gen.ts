@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
+import { Route as AuthedWorkspaceIdRouteImport } from './routes/_authed/$workspaceId'
 import { Route as AuthedOnboardingIndexRouteImport } from './routes/_authed/onboarding/index'
 
 const AuthedRoute = AuthedRouteImport.update({
@@ -22,6 +23,11 @@ const AuthedIndexRoute = AuthedIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedWorkspaceIdRoute = AuthedWorkspaceIdRouteImport.update({
+  id: '/$workspaceId',
+  path: '/$workspaceId',
+  getParentRoute: () => AuthedRoute,
+} as any)
 const AuthedOnboardingIndexRoute = AuthedOnboardingIndexRouteImport.update({
   id: '/onboarding/',
   path: '/onboarding/',
@@ -30,24 +36,32 @@ const AuthedOnboardingIndexRoute = AuthedOnboardingIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthedIndexRoute
+  '/$workspaceId': typeof AuthedWorkspaceIdRoute
   '/onboarding/': typeof AuthedOnboardingIndexRoute
 }
 export interface FileRoutesByTo {
+  '/$workspaceId': typeof AuthedWorkspaceIdRoute
   '/': typeof AuthedIndexRoute
   '/onboarding': typeof AuthedOnboardingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authed': typeof AuthedRouteWithChildren
+  '/_authed/$workspaceId': typeof AuthedWorkspaceIdRoute
   '/_authed/': typeof AuthedIndexRoute
   '/_authed/onboarding/': typeof AuthedOnboardingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/onboarding/'
+  fullPaths: '/' | '/$workspaceId' | '/onboarding/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/onboarding'
-  id: '__root__' | '/_authed' | '/_authed/' | '/_authed/onboarding/'
+  to: '/$workspaceId' | '/' | '/onboarding'
+  id:
+    | '__root__'
+    | '/_authed'
+    | '/_authed/$workspaceId'
+    | '/_authed/'
+    | '/_authed/onboarding/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -70,6 +84,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedIndexRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/$workspaceId': {
+      id: '/_authed/$workspaceId'
+      path: '/$workspaceId'
+      fullPath: '/$workspaceId'
+      preLoaderRoute: typeof AuthedWorkspaceIdRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/onboarding/': {
       id: '/_authed/onboarding/'
       path: '/onboarding'
@@ -81,11 +102,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthedRouteChildren {
+  AuthedWorkspaceIdRoute: typeof AuthedWorkspaceIdRoute
   AuthedIndexRoute: typeof AuthedIndexRoute
   AuthedOnboardingIndexRoute: typeof AuthedOnboardingIndexRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedWorkspaceIdRoute: AuthedWorkspaceIdRoute,
   AuthedIndexRoute: AuthedIndexRoute,
   AuthedOnboardingIndexRoute: AuthedOnboardingIndexRoute,
 }
