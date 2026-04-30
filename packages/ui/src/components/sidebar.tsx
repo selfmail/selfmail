@@ -9,6 +9,7 @@ import {
   type CSSProperties,
   createContext,
   type Dispatch,
+  type ReactNode,
   type SetStateAction,
   useCallback,
   useContext,
@@ -493,6 +494,34 @@ function SidebarGroupContent({ className, ...props }: ComponentProps<"div">) {
   );
 }
 
+interface SidebarNavGroupProps extends ComponentProps<"div"> {
+  label?: ReactNode;
+  contentClassName?: string;
+  labelClassName?: string;
+}
+
+function SidebarNavGroup({
+  children,
+  className,
+  contentClassName,
+  label,
+  labelClassName,
+  ...props
+}: SidebarNavGroupProps) {
+  return (
+    <SidebarGroup className={className} {...props}>
+      {label && (
+        <SidebarGroupLabel className={labelClassName}>
+          {label}
+        </SidebarGroupLabel>
+      )}
+      <SidebarGroupContent className={contentClassName}>
+        {children}
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+}
+
 function SidebarMenu({ className, ...props }: ComponentProps<"ul">) {
   return (
     <ul
@@ -749,6 +778,7 @@ export {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  SidebarNavGroup,
   SidebarProvider,
   SidebarRail,
   SidebarSeparator,

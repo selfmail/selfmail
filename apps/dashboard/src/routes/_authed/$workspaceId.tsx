@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DashboardSidebar } from "#/components/sidebar";
-import { SidebarProvider } from "#/components/ui";
+import { DashboardWorkspace } from "#/components/dashboard-workspace";
 
 export const Route = createFileRoute("/_authed/$workspaceId")({
 	component: RouteComponent,
@@ -8,11 +7,20 @@ export const Route = createFileRoute("/_authed/$workspaceId")({
 
 function RouteComponent() {
 	const { user, workspace } = Route.useRouteContext();
-	const workspaceName = workspace?.name ?? "Demo workspace";
+	const currentWorkspace = workspace ?? {
+		id: "demo",
+		image: null,
+		memberId: "demo",
+		name: "Demo workspace",
+		ownerId: user.id,
+		slug: "demo",
+	};
 
 	return (
-		<SidebarProvider>
-			<DashboardSidebar userEmail={user.email} workspaceName={workspaceName} />
-		</SidebarProvider>
+		<DashboardWorkspace
+			currentWorkspace={currentWorkspace}
+			userEmail={user.email}
+			workspaces={[currentWorkspace]}
+		/>
 	);
 }

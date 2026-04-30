@@ -13,7 +13,7 @@
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.types": "tsc --incremental --noEmit",
     "deploy": "echo 'Run \"npm run qwik add\" to install a server adapter'",
-    "dev": "portless dashboard.selfmail vite --mode ssr",
+    "dev": "portless dashboard.qwik.selfmail vite --mode ssr",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
     "preview": "qwik build preview && vite preview --open",
     "start": "vite --open --mode ssr",

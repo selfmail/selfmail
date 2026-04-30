@@ -125,6 +125,7 @@ export {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  SidebarNavGroup,
   SidebarProvider,
   SidebarRail,
   SidebarSeparator,
