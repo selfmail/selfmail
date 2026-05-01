@@ -127,7 +127,7 @@ export class Authentication {
 
     const sessionTokenHash = await this.hashToken(token);
     const result = await this.limiter.limit(sessionTokenHash, {
-      limit: 10,
+      limit: 50,
       windowSeconds: 60,
     });
 

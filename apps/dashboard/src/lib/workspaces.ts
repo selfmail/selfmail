@@ -1,5 +1,6 @@
 import { db, type User } from "@selfmail/db";
 import { createServerFn } from "@tanstack/react-start";
+import z from "zod";
 import { authMiddleware } from "#/utils/auth";
 
 export interface DashboardWorkspace {
@@ -63,6 +64,52 @@ export const getDashboardShellDataFn = createServerFn({ method: "GET" })
               slug: workspace.slug,
             }
           : null,
+    };
+  });
+
+export const getWorkspace = createServerFn({
+  method: "GET",
+})
+  .middleware([authMiddleware])
+  .inputValidator(
+    z.object({
+      workspaceSlug: z.string().min(1),
+    })
+  )
+  .handler(async ({ context: { user }, data: { workspaceSlug } }) => {
+    const member = await db.member.findFirst({
+      select: {
+        id: true,
+        workspace: {
+          select: {
+            id: true,
+            image: true,
+            name: true,
+            ownerId: true,
+            slug: true,
+          },
+        },
+      },
+      where: {
+        userId: user.id,
+        workspace: {
+          slug: workspaceSlug,
+        },
+      },
+    });
+
+    return {
+      member: member ? { id: member.id } : null,
+      workspace: member
+        ? {
+            id: member.workspace.id,
+            image: member.workspace.image,
+            memberId: member.id,
+            name: member.workspace.name,
+            ownerId: member.workspace.ownerId,
+            slug: member.workspace.slug,
+          }
+        : null,
     };
   });
 

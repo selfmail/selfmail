@@ -11,8 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
-import { Route as AuthedWorkspaceIdRouteImport } from './routes/_authed/$workspaceId'
 import { Route as AuthedOnboardingIndexRouteImport } from './routes/_authed/onboarding/index'
+import { Route as AuthedWorkspaceSlugWorkspaceRouteImport } from './routes/_authed/$workspaceSlug/_workspace'
+import { Route as AuthedWorkspaceSlugWorkspaceIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/index'
 
 const AuthedRoute = AuthedRouteImport.update({
   id: '/_authed',
@@ -23,45 +24,55 @@ const AuthedIndexRoute = AuthedIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthedRoute,
 } as any)
-const AuthedWorkspaceIdRoute = AuthedWorkspaceIdRouteImport.update({
-  id: '/$workspaceId',
-  path: '/$workspaceId',
-  getParentRoute: () => AuthedRoute,
-} as any)
 const AuthedOnboardingIndexRoute = AuthedOnboardingIndexRouteImport.update({
   id: '/onboarding/',
   path: '/onboarding/',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedWorkspaceSlugWorkspaceRoute =
+  AuthedWorkspaceSlugWorkspaceRouteImport.update({
+    id: '/$workspaceSlug/_workspace',
+    path: '/$workspaceSlug',
+    getParentRoute: () => AuthedRoute,
+  } as any)
+const AuthedWorkspaceSlugWorkspaceIndexRoute =
+  AuthedWorkspaceSlugWorkspaceIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthedWorkspaceSlugWorkspaceRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthedIndexRoute
-  '/$workspaceId': typeof AuthedWorkspaceIdRoute
+  '/$workspaceSlug': typeof AuthedWorkspaceSlugWorkspaceRouteWithChildren
   '/onboarding/': typeof AuthedOnboardingIndexRoute
+  '/$workspaceSlug/': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
 }
 export interface FileRoutesByTo {
-  '/$workspaceId': typeof AuthedWorkspaceIdRoute
   '/': typeof AuthedIndexRoute
   '/onboarding': typeof AuthedOnboardingIndexRoute
+  '/$workspaceSlug': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authed': typeof AuthedRouteWithChildren
-  '/_authed/$workspaceId': typeof AuthedWorkspaceIdRoute
   '/_authed/': typeof AuthedIndexRoute
+  '/_authed/$workspaceSlug/_workspace': typeof AuthedWorkspaceSlugWorkspaceRouteWithChildren
   '/_authed/onboarding/': typeof AuthedOnboardingIndexRoute
+  '/_authed/$workspaceSlug/_workspace/': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$workspaceId' | '/onboarding/'
+  fullPaths: '/' | '/$workspaceSlug' | '/onboarding/' | '/$workspaceSlug/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/$workspaceId' | '/' | '/onboarding'
+  to: '/' | '/onboarding' | '/$workspaceSlug'
   id:
     | '__root__'
     | '/_authed'
-    | '/_authed/$workspaceId'
     | '/_authed/'
+    | '/_authed/$workspaceSlug/_workspace'
     | '/_authed/onboarding/'
+    | '/_authed/$workspaceSlug/_workspace/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -84,13 +95,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedIndexRouteImport
       parentRoute: typeof AuthedRoute
     }
-    '/_authed/$workspaceId': {
-      id: '/_authed/$workspaceId'
-      path: '/$workspaceId'
-      fullPath: '/$workspaceId'
-      preLoaderRoute: typeof AuthedWorkspaceIdRouteImport
-      parentRoute: typeof AuthedRoute
-    }
     '/_authed/onboarding/': {
       id: '/_authed/onboarding/'
       path: '/onboarding'
@@ -98,18 +102,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedOnboardingIndexRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/$workspaceSlug/_workspace': {
+      id: '/_authed/$workspaceSlug/_workspace'
+      path: '/$workspaceSlug'
+      fullPath: '/$workspaceSlug'
+      preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/$workspaceSlug/_workspace/': {
+      id: '/_authed/$workspaceSlug/_workspace/'
+      path: '/'
+      fullPath: '/$workspaceSlug/'
+      preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceIndexRouteImport
+      parentRoute: typeof AuthedWorkspaceSlugWorkspaceRoute
+    }
   }
 }
 
+interface AuthedWorkspaceSlugWorkspaceRouteChildren {
+  AuthedWorkspaceSlugWorkspaceIndexRoute: typeof AuthedWorkspaceSlugWorkspaceIndexRoute
+}
+
+const AuthedWorkspaceSlugWorkspaceRouteChildren: AuthedWorkspaceSlugWorkspaceRouteChildren =
+  {
+    AuthedWorkspaceSlugWorkspaceIndexRoute:
+      AuthedWorkspaceSlugWorkspaceIndexRoute,
+  }
+
+const AuthedWorkspaceSlugWorkspaceRouteWithChildren =
+  AuthedWorkspaceSlugWorkspaceRoute._addFileChildren(
+    AuthedWorkspaceSlugWorkspaceRouteChildren,
+  )
+
 interface AuthedRouteChildren {
-  AuthedWorkspaceIdRoute: typeof AuthedWorkspaceIdRoute
   AuthedIndexRoute: typeof AuthedIndexRoute
+  AuthedWorkspaceSlugWorkspaceRoute: typeof AuthedWorkspaceSlugWorkspaceRouteWithChildren
   AuthedOnboardingIndexRoute: typeof AuthedOnboardingIndexRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
-  AuthedWorkspaceIdRoute: AuthedWorkspaceIdRoute,
   AuthedIndexRoute: AuthedIndexRoute,
+  AuthedWorkspaceSlugWorkspaceRoute:
+    AuthedWorkspaceSlugWorkspaceRouteWithChildren,
   AuthedOnboardingIndexRoute: AuthedOnboardingIndexRoute,
 }
 

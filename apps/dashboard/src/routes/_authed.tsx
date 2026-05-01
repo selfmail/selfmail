@@ -1,31 +1,16 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import { getDashboardShellDataFn } from "#/lib/workspaces";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { getUser } from "#/lib/auth";
 
 export const Route = createFileRoute("/_authed")({
-	beforeLoad: async ({ location }) => {
-		const { user, workspace } = await getDashboardShellDataFn();
-		const isOnboardingRoute = location.pathname.startsWith("/onboarding");
-
-		if (!workspace && !isOnboardingRoute) {
-			throw redirect({
-				to: "/onboarding",
-			});
-		}
-
-		if (workspace && isOnboardingRoute) {
-			throw redirect({
-				to: "/",
-			});
-		}
-
-		return {
-			user,
-			workspace,
-		};
-	},
-	component: RouteComponent,
+  beforeLoad: async () => {
+    const { user } = await getUser();
+    return {
+      user,
+    };
+  },
+  component: RouteComponent,
 });
 
 function RouteComponent() {
-	return <Outlet />;
+  return <Outlet />;
 }
