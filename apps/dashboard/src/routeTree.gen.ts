@@ -15,6 +15,7 @@ import { Route as AuthedOnboardingIndexRouteImport } from './routes/_authed/onbo
 import { Route as AuthedWorkspaceSlugWorkspaceRouteImport } from './routes/_authed/$workspaceSlug/_workspace'
 import { Route as AuthedWorkspaceSlugWorkspaceIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/index'
 import { Route as AuthedWorkspaceSlugWorkspaceSettingsRouteImport } from './routes/_authed/$workspaceSlug/_workspace/settings'
+import { Route as AuthedWorkspaceSlugWorkspaceAddressSlugRouteImport } from './routes/_authed/$workspaceSlug/_workspace/$addressSlug'
 
 const AuthedRoute = AuthedRouteImport.update({
   id: '/_authed',
@@ -48,17 +49,25 @@ const AuthedWorkspaceSlugWorkspaceSettingsRoute =
     path: '/settings',
     getParentRoute: () => AuthedWorkspaceSlugWorkspaceRoute,
   } as any)
+const AuthedWorkspaceSlugWorkspaceAddressSlugRoute =
+  AuthedWorkspaceSlugWorkspaceAddressSlugRouteImport.update({
+    id: '/$addressSlug',
+    path: '/$addressSlug',
+    getParentRoute: () => AuthedWorkspaceSlugWorkspaceRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthedIndexRoute
   '/$workspaceSlug': typeof AuthedWorkspaceSlugWorkspaceRouteWithChildren
   '/onboarding/': typeof AuthedOnboardingIndexRoute
+  '/$workspaceSlug/$addressSlug': typeof AuthedWorkspaceSlugWorkspaceAddressSlugRoute
   '/$workspaceSlug/settings': typeof AuthedWorkspaceSlugWorkspaceSettingsRoute
   '/$workspaceSlug/': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AuthedIndexRoute
   '/onboarding': typeof AuthedOnboardingIndexRoute
+  '/$workspaceSlug/$addressSlug': typeof AuthedWorkspaceSlugWorkspaceAddressSlugRoute
   '/$workspaceSlug/settings': typeof AuthedWorkspaceSlugWorkspaceSettingsRoute
   '/$workspaceSlug': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
 }
@@ -68,6 +77,7 @@ export interface FileRoutesById {
   '/_authed/': typeof AuthedIndexRoute
   '/_authed/$workspaceSlug/_workspace': typeof AuthedWorkspaceSlugWorkspaceRouteWithChildren
   '/_authed/onboarding/': typeof AuthedOnboardingIndexRoute
+  '/_authed/$workspaceSlug/_workspace/$addressSlug': typeof AuthedWorkspaceSlugWorkspaceAddressSlugRoute
   '/_authed/$workspaceSlug/_workspace/settings': typeof AuthedWorkspaceSlugWorkspaceSettingsRoute
   '/_authed/$workspaceSlug/_workspace/': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
 }
@@ -77,16 +87,23 @@ export interface FileRouteTypes {
     | '/'
     | '/$workspaceSlug'
     | '/onboarding/'
+    | '/$workspaceSlug/$addressSlug'
     | '/$workspaceSlug/settings'
     | '/$workspaceSlug/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/onboarding' | '/$workspaceSlug/settings' | '/$workspaceSlug'
+  to:
+    | '/'
+    | '/onboarding'
+    | '/$workspaceSlug/$addressSlug'
+    | '/$workspaceSlug/settings'
+    | '/$workspaceSlug'
   id:
     | '__root__'
     | '/_authed'
     | '/_authed/'
     | '/_authed/$workspaceSlug/_workspace'
     | '/_authed/onboarding/'
+    | '/_authed/$workspaceSlug/_workspace/$addressSlug'
     | '/_authed/$workspaceSlug/_workspace/settings'
     | '/_authed/$workspaceSlug/_workspace/'
   fileRoutesById: FileRoutesById
@@ -139,16 +156,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceSettingsRouteImport
       parentRoute: typeof AuthedWorkspaceSlugWorkspaceRoute
     }
+    '/_authed/$workspaceSlug/_workspace/$addressSlug': {
+      id: '/_authed/$workspaceSlug/_workspace/$addressSlug'
+      path: '/$addressSlug'
+      fullPath: '/$workspaceSlug/$addressSlug'
+      preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceAddressSlugRouteImport
+      parentRoute: typeof AuthedWorkspaceSlugWorkspaceRoute
+    }
   }
 }
 
 interface AuthedWorkspaceSlugWorkspaceRouteChildren {
+  AuthedWorkspaceSlugWorkspaceAddressSlugRoute: typeof AuthedWorkspaceSlugWorkspaceAddressSlugRoute
   AuthedWorkspaceSlugWorkspaceSettingsRoute: typeof AuthedWorkspaceSlugWorkspaceSettingsRoute
   AuthedWorkspaceSlugWorkspaceIndexRoute: typeof AuthedWorkspaceSlugWorkspaceIndexRoute
 }
 
 const AuthedWorkspaceSlugWorkspaceRouteChildren: AuthedWorkspaceSlugWorkspaceRouteChildren =
   {
+    AuthedWorkspaceSlugWorkspaceAddressSlugRoute:
+      AuthedWorkspaceSlugWorkspaceAddressSlugRoute,
     AuthedWorkspaceSlugWorkspaceSettingsRoute:
       AuthedWorkspaceSlugWorkspaceSettingsRoute,
     AuthedWorkspaceSlugWorkspaceIndexRoute:

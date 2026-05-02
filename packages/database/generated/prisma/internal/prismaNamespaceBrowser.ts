@@ -115,6 +115,7 @@ export const AddressScalarFieldEnum = {
   id: 'id',
   handle: 'handle',
   email: 'email',
+  addressSlug: 'addressSlug',
   usedStorageBytes: 'usedStorageBytes',
   domainId: 'domainId'
 } as const
@@ -530,6 +531,7 @@ export const AddressOrderByRelevanceFieldEnum = {
   id: 'id',
   handle: 'handle',
   email: 'email',
+  addressSlug: 'addressSlug',
   domainId: 'domainId'
 } as const
 

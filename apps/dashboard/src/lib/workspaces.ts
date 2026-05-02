@@ -18,6 +18,34 @@ export type DashboardShellData = {
 	workspace: DashboardWorkspace | null;
 };
 
+export type DashboardAddress = {
+	addressSlug: string;
+	email: string;
+	handle: string;
+	id: string;
+};
+
+export type DashboardEmail = {
+	attachments?: number;
+	date: string;
+	from: string;
+	id: string;
+	initial: string;
+	read?: boolean;
+	snippet: string;
+	subject: string;
+	to?: string;
+};
+
+export type DashboardInboxData = {
+	addresses: DashboardAddress[];
+	emails: DashboardEmail[];
+};
+
+export type DashboardAddressInboxData = DashboardInboxData & {
+	address: DashboardAddress;
+};
+
 const workspaceSettingsSchema = z.object({
 	description: z.string().max(240).optional(),
 	image: z
@@ -40,6 +68,14 @@ const workspaceDeleteSchema = z.object({
 	workspaceId: z.string().min(1),
 });
 
+const workspaceSlugSchema = z.object({
+	workspaceSlug: z.string().min(1),
+});
+
+const addressInboxSchema = workspaceSlugSchema.extend({
+	addressSlug: z.string().min(1),
+});
+
 async function getOwnedWorkspace(userId: string, workspaceId: string) {
 	return db.workspace.findFirst({
 		select: {
@@ -51,6 +87,166 @@ async function getOwnedWorkspace(userId: string, workspaceId: string) {
 			ownerId: userId,
 		},
 	});
+}
+
+function getJsonText(value: unknown, key: string) {
+	if (!(value && typeof value === "object" && key in value)) {
+		return null;
+	}
+
+	const text = (value as Record<string, unknown>)[key];
+	return typeof text === "string" && text.trim() ? text.trim() : null;
+}
+
+function getFirstAddressValue(value: unknown): unknown {
+	if (Array.isArray(value)) {
+		return value[0];
+	}
+
+	if (value && typeof value === "object" && "value" in value) {
+		const nestedValue = (value as { value?: unknown }).value;
+		if (Array.isArray(nestedValue)) {
+			return nestedValue[0];
+		}
+	}
+
+	return value;
+}
+
+function getSenderLabel(value: unknown) {
+	const directText = getJsonText(value, "text");
+	if (directText) {
+		return directText;
+	}
+
+	const addressValue = getFirstAddressValue(value);
+	const name = getJsonText(addressValue, "name");
+	const address = getJsonText(addressValue, "address");
+
+	return name || address || "Unknown sender";
+}
+
+function getInitial(label: string) {
+	return label.match(/[a-z0-9]/i)?.[0].toUpperCase() ?? "?";
+}
+
+function getAttachmentCount(value: unknown) {
+	if (!Array.isArray(value) || value.length === 0) {
+		return undefined;
+	}
+
+	return value.length;
+}
+
+function formatInboxDate(date: Date) {
+	const diff = Date.now() - date.getTime();
+	const minute = 60 * 1000;
+	const hour = 60 * minute;
+	const day = 24 * hour;
+
+	if (diff < hour) {
+		return `${Math.max(1, Math.floor(diff / minute))}m ago`;
+	}
+
+	if (diff < day) {
+		return `${Math.floor(diff / hour)}h ago`;
+	}
+
+	if (diff < 7 * day) {
+		return `${Math.floor(diff / day)}d ago`;
+	}
+
+	return date.toLocaleDateString("en", {
+		day: "numeric",
+		month: "short",
+	});
+}
+
+function toDashboardEmail(email: {
+	address: { email: string };
+	attachments: unknown;
+	date: Date;
+	from: unknown;
+	id: string;
+	read: boolean;
+	subject: string;
+	text: string | null;
+}) {
+	const from = getSenderLabel(email.from);
+	const snippet = email.text?.trim() || "No preview available.";
+
+	return {
+		attachments: getAttachmentCount(email.attachments),
+		date: formatInboxDate(email.date),
+		from,
+		id: email.id,
+		initial: getInitial(from),
+		read: email.read,
+		snippet,
+		subject: email.subject,
+		to: email.address.email,
+	};
+}
+
+async function getMemberAddresses(userId: string, workspaceSlug: string) {
+	const memberAddresses = await db.memberAddress.findMany({
+		select: {
+			address: {
+				select: {
+					addressSlug: true,
+					email: true,
+					handle: true,
+					id: true,
+				},
+			},
+		},
+		where: {
+			member: {
+				userId,
+				workspace: {
+					slug: workspaceSlug,
+				},
+			},
+		},
+	});
+
+	return memberAddresses
+		.map(({ address }) => address)
+		.sort((first, second) => first.email.localeCompare(second.email));
+}
+
+async function getAddressEmails(addressIds: string[]) {
+	if (addressIds.length === 0) {
+		return [];
+	}
+
+	const emails = await db.email.findMany({
+		orderBy: {
+			date: "desc",
+		},
+		select: {
+			address: {
+				select: {
+					email: true,
+				},
+			},
+			attachments: true,
+			date: true,
+			from: true,
+			id: true,
+			read: true,
+			subject: true,
+			text: true,
+		},
+		take: 50,
+		where: {
+			addressId: {
+				in: addressIds,
+			},
+		},
+	});
+
+	return emails.map(toDashboardEmail);
 }
 
 export const getDashboardShellDataFn = createServerFn({ method: "GET" })
@@ -204,6 +400,51 @@ export const getDashboardWorkspacesFn = createServerFn({ method: "GET" })
 				: [];
 		});
 	});
+
+export const getWorkspaceInboxFn = createServerFn({ method: "GET" })
+	.middleware([authMiddleware])
+	.inputValidator(workspaceSlugSchema)
+	.handler(
+		async ({
+			context: { user },
+			data: { workspaceSlug },
+		}): Promise<DashboardInboxData> => {
+			const addresses = await getMemberAddresses(user.id, workspaceSlug);
+			const emails = await getAddressEmails(addresses.map(({ id }) => id));
+
+			return {
+				addresses,
+				emails,
+			};
+		},
+	);
+
+export const getAddressInboxFn = createServerFn({ method: "GET" })
+	.middleware([authMiddleware])
+	.inputValidator(addressInboxSchema)
+	.handler(
+		async ({
+			context: { user },
+			data: { addressSlug, workspaceSlug },
+		}): Promise<DashboardAddressInboxData> => {
+			const addresses = await getMemberAddresses(user.id, workspaceSlug);
+			const address = addresses.find(
+				(currentAddress) => currentAddress.addressSlug === addressSlug,
+			);
+
+			if (!address) {
+				throw new Response("Address not found", { status: 404 });
+			}
+
+			const emails = await getAddressEmails([address.id]);
+
+			return {
+				address,
+				addresses,
+				emails,
+			};
+		},
+	);
 
 export const updateWorkspaceSettingsFn = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])

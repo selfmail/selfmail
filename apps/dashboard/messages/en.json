@@ -6,6 +6,79 @@
   "language_label": "Language",
   "current_locale": "Current locale: {locale}",
   "learn_router": "Learn Paraglide JS",
+  "dashboard": {
+    "inbox": {
+      "unified": "Unified Inbox",
+      "email_count": "{count} emails",
+      "email_count_one": "{count} email"
+    },
+    "address": {
+      "subtitle": "{address} - {count}",
+      "navigation_label": "Addresses",
+      "add": "Add new address"
+    },
+    "navigation": {
+      "platform": "Platform",
+      "workspace": "Workspace",
+      "ai": "Ai",
+      "workflows": "Workflows",
+      "developers": "Developers",
+      "changelog": "Changelog",
+      "members": "Members",
+      "activity": "Activity",
+      "storage": "Storage",
+      "settings": "Settings",
+      "domains": "Domains"
+    },
+    "header": {
+      "switch_workspace": "Switch workspace",
+      "workspaces": "Workspaces",
+      "manage": "Manage",
+      "settings": "Settings",
+      "members": "Members",
+      "billing": "Billing",
+      "domains": "Domains",
+      "webhooks": "Webhooks",
+      "security": "Security",
+      "support": "Support",
+      "create_workspace": "Create workspace",
+      "compose": "Compose"
+    },
+    "email": {
+      "attachment_count": "{count} attachments",
+      "attachment_count_one": "{count} attachment",
+      "empty_title": "No emails yet",
+      "empty_description": "Send a message to this address and it will appear here.",
+      "preview_title": "Email Preview",
+      "fullscreen": "Fullscreen",
+      "close_preview": "Close preview",
+      "attachment_label": "Attachment {number}",
+      "attachment_size": "24 KB",
+      "to": "To: {address}"
+    },
+    "settings": {
+      "title": "Workspace settings",
+      "description": "Update the workspace profile, public handle, and destructive settings for {workspaceName}.",
+      "general": "General",
+      "general_description": "Rename the workspace and update the details shown to members.",
+      "workspace_name": "Workspace name",
+      "workspace_handle": "Workspace handle",
+      "workspace_handle_help": "Used in workspace URLs and default selfmail addresses.",
+      "workspace_description": "Description",
+      "workspace_description_placeholder": "What this workspace is for",
+      "workspace_image": "Workspace image URL",
+      "saved": "Workspace settings updated.",
+      "saving": "Saving...",
+      "update": "Update workspace",
+      "delete_title": "Delete workspace",
+      "delete_description": "Delete this workspace when you no longer need it. This action cannot be undone.",
+      "delete_trigger": "Delete workspace",
+      "delete_confirm_title": "Delete {workspaceName}?",
+      "delete_confirm_description": "This permanently deletes the workspace. You will lose access to its settings and related workspace data.",
+      "cancel": "Cancel",
+      "deleting": "Deleting..."
+    }
+  },
   "onboarding": {
     "meta": {
       "title": "Onboarding | Selfmail"

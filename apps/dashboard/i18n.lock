@@ -7,6 +7,65 @@ checksums:
     language_label: 277fd1a41cc237a437cd1d5e4a80463b
     current_locale: db08433b966bdc69bae29aced15a1687
     learn_router: c9f8f55cae3ad60c1b06b23a4f76247a
+    dashboard/inbox/unified: 772b991d3b7469ffbed574b30d765e1e
+    dashboard/inbox/email_count: 6525eb0292d44204d0879a94a001380a
+    dashboard/inbox/email_count_one: 1cfd2de5f9c6e6cb7f6b2f27a0b4192f
+    dashboard/address/subtitle: d0f7f1a9ffa30592a2adb09e4bb882f9
+    dashboard/address/navigation_label: 87b49e2ffcdbe3cc4bfd2d25cc75c096
+    dashboard/address/add: 4d321c12b08718bd55b108c3a4cd51ac
+    dashboard/navigation/platform: c68862170146325333c7f25af11a3fa2
+    dashboard/navigation/workspace: b63ef0e99ee6f7fef6cbe4971ca6cf0f
+    dashboard/navigation/ai: 0632f6689aa11caeb4b21c4df39c389d
+    dashboard/navigation/workflows: b0c9c8615a9ba7d9cb73e767290a7f72
+    dashboard/navigation/developers: ff5d5b628f04a42cf4548929937918cd
+    dashboard/navigation/changelog: 2a0cc1faf653e9ca97786acee96ffbde
+    dashboard/navigation/members: 0932e80cba1e3e0a7f52bb67ff31da32
+    dashboard/navigation/activity: 1948763de8e531483a798b68195e297e
+    dashboard/navigation/storage: 99d4c24fb975d64b57a6ca3acd428558
+    dashboard/navigation/settings: 8df6777277469c1fd88cc18dde2f1cc3
+    dashboard/navigation/domains: 87955beb56bd7e2da09e44bacb294b6a
+    dashboard/header/switch_workspace: 4248dd13e96f40d15ddb4f7f62752c67
+    dashboard/header/workspaces: 8ba082a84aa35cf851af1cf874b853e2
+    dashboard/header/manage: a3d40c0267b81ae53c9598eaeb05087d
+    dashboard/header/settings: 8df6777277469c1fd88cc18dde2f1cc3
+    dashboard/header/members: 0932e80cba1e3e0a7f52bb67ff31da32
+    dashboard/header/billing: b01dbdd049ebbd4a349fa64d6ce65a3b
+    dashboard/header/domains: 87955beb56bd7e2da09e44bacb294b6a
+    dashboard/header/webhooks: 0329bc102d3ab3c73410d126e119de12
+    dashboard/header/security: 4b34923fef858a2b9a4a914c3e822889
+    dashboard/header/support: 55aab5fd0f31a9cb055a2edeeedfaf63
+    dashboard/header/create_workspace: 2e6718e79964ea5ce22d76c2189c77ca
+    dashboard/header/compose: 4f942784f0e6ca76600120e1a1193694
+    dashboard/email/attachment_count: 3f816f3d1cd0ef90a7e9eb1bc950c2b0
+    dashboard/email/attachment_count_one: e9b482af5ff95dbc8fb0f43ab310d4ca
+    dashboard/email/empty_title: c8d2576c066fffad181a4a4f835cf7dd
+    dashboard/email/empty_description: 05fb4956fd1991fbaea2708a46387851
+    dashboard/email/preview_title: 84458b39d3fd3bebb92de0e81d41b7da
+    dashboard/email/fullscreen: b91a5ead5b61021207f462adbaf82528
+    dashboard/email/close_preview: 764d2ad35636be6d10914cb7b88c4a6f
+    dashboard/email/attachment_label: 06344b3df33be376073e6720f0be21df
+    dashboard/email/attachment_size: 294754bb65c4605de180122c4af79f30
+    dashboard/email/to: 009ee3383c4002af6e850cfd46742af2
+    dashboard/settings/title: f34fba7d342342e7e079cd991559bff3
+    dashboard/settings/description: 3572547702d98d7ccff61f14c71f4ffe
+    dashboard/settings/general: b891e8f15579fc5d97bcaf3637f5ae59
+    dashboard/settings/general_description: fd15c8457f7f9ca4225f01a57fde41ff
+    dashboard/settings/workspace_name: 855614bbf862fd6a9f6a3e76943f92d4
+    dashboard/settings/workspace_handle: de792c4cb197e6159e9e28733aeacb0c
+    dashboard/settings/workspace_handle_help: 20cb6a6cf493274964bcf82d1df92866
+    dashboard/settings/workspace_description: e17686a22ffad04cc7bb70524ed4478b
+    dashboard/settings/workspace_description_placeholder: 9a60e63a24ad39b752df047b85a58ea3
+    dashboard/settings/workspace_image: 0d1498a019de42a71ca488b238a1ea59
+    dashboard/settings/saved: 392494c22212cb9459d092de988771ae
+    dashboard/settings/saving: 7cb2d8f012d57db8a62187b65ef164dc
+    dashboard/settings/update: c2dcd98ab6bbb4459149648334434da3
+    dashboard/settings/delete_title: 9017c821209528d9b20d40a488854cdf
+    dashboard/settings/delete_description: d95fe7752a10d7cbd4ece8a4d0da7270
+    dashboard/settings/delete_trigger: 9017c821209528d9b20d40a488854cdf
+    dashboard/settings/delete_confirm_title: 5158bd3cc3bb75cbc0f6356f774b85b5
+    dashboard/settings/delete_confirm_description: 4df6cb7777aa7c95f5f50db32687a604
+    dashboard/settings/cancel: 2e2a849c2223911717de8caa2c71bade
+    dashboard/settings/deleting: 683cd814a3fc94e50b3e4e4a9c90c19c
     onboarding/meta/title: 08fefbaa64d75c1e2d89a183eb9a62ab
     onboarding/actions/back: f541015a827e37cb3b1234e56bc2aa3c
     onboarding/actions/continue: b8d1cccacabd4d66f74364570f2df025

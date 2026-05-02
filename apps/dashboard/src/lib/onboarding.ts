@@ -6,6 +6,7 @@ import { authMiddleware } from "#/utils/auth";
 const defaultDomainSuffix = "selfmail.app";
 const handlePattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const localPartPattern = /^[a-z0-9]+(?:[._-]?[a-z0-9]+)*$/;
+const addressSlugAlphabet = "abcdefghijklmnopqrstuvwxyz";
 
 const onboardingSchema = z.object({
 	defaultAddress: z
@@ -46,6 +47,14 @@ export type CreateOnboardingResult =
 			workspaceId: string;
 	  };
 
+function createAddressSlug() {
+	return Array.from({ length: 5 }, () =>
+		addressSlugAlphabet.charAt(
+			Math.floor(Math.random() * addressSlugAlphabet.length),
+		),
+	).join("");
+}
+
 export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
 	.inputValidator(onboardingSchema)
@@ -55,90 +64,110 @@ export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
 			const addressHandle = data.defaultAddress.toLowerCase();
 			const email = `${addressHandle}@${workspaceHandle}.${defaultDomainSuffix}`;
 
-			try {
-				const workspace = await db.$transaction(async (tx) => {
-					const workspace = await tx.workspace.create({
-						data: {
-							name: data.workspaceName,
-							ownerId: user.id,
-							slug: workspaceHandle,
-						},
-						select: {
-							id: true,
-						},
+			for (let attempt = 0; attempt < 8; attempt += 1) {
+				try {
+					const addressSlug = createAddressSlug();
+					const workspace = await db.$transaction(async (tx) => {
+						const workspace = await tx.workspace.create({
+							data: {
+								name: data.workspaceName,
+								ownerId: user.id,
+								slug: workspaceHandle,
+							},
+							select: {
+								id: true,
+							},
+						});
+
+						const member = await tx.member.create({
+							data: {
+								profileName: user.name || user.email,
+								userId: user.id,
+								workspaceId: workspace.id,
+							},
+							select: {
+								id: true,
+							},
+						});
+
+						const address = await tx.address.create({
+							data: {
+								addressSlug,
+								email,
+								handle: addressHandle,
+							},
+							select: {
+								id: true,
+							},
+						});
+
+						await tx.memberAddress.create({
+							data: {
+								addressId: address.id,
+								memberId: member.id,
+								role: "owner",
+							},
+						});
+
+						return workspace;
 					});
 
-					const member = await tx.member.create({
-						data: {
-							profileName: user.name || user.email,
-							userId: user.id,
-							workspaceId: workspace.id,
-						},
-						select: {
-							id: true,
-						},
-					});
+					return {
+						status: "success",
+						workspaceId: workspace.id,
+					};
+				} catch (error) {
+					const targetValue =
+						error instanceof Error && "meta" in error
+							? (error.meta as { target?: string | string[] } | undefined)
+									?.target
+							: undefined;
+					const target = Array.isArray(targetValue)
+						? targetValue
+						: [targetValue];
 
-					const address = await tx.address.create({
-						data: {
-							email,
-							handle: addressHandle,
-						},
-						select: {
-							id: true,
-						},
-					});
+					if (target?.includes("addressSlug")) {
+						continue;
+					}
 
-					await tx.memberAddress.create({
-						data: {
-							addressId: address.id,
-							memberId: member.id,
-							role: "owner",
-						},
-					});
+					if (target?.includes("slug")) {
+						return {
+							status: "error",
+							error: {
+								code: "WORKSPACE_TAKEN",
+								message: "This workspace handle is already taken.",
+							},
+						};
+					}
 
-					return workspace;
-				});
+					if (target?.includes("email")) {
+						return {
+							status: "error",
+							error: {
+								code: "ADDRESS_TAKEN",
+								message: "This email address is already taken.",
+							},
+						};
+					}
 
-				return {
-					status: "success",
-					workspaceId: workspace.id,
-				};
-			} catch (error) {
-				const targetValue =
-					error instanceof Error && "meta" in error
-						? (error.meta as { target?: string | string[] } | undefined)?.target
-						: undefined;
-				const target = Array.isArray(targetValue) ? targetValue : [targetValue];
-
-				if (target?.includes("slug")) {
 					return {
 						status: "error",
 						error: {
-							code: "WORKSPACE_TAKEN",
-							message: "This workspace handle is already taken.",
+							code: "UNKNOWN_ERROR",
+							message:
+								"We could not create your workspace right now. Please try again.",
 						},
 					};
 				}
-
-				if (target?.includes("email")) {
-					return {
-						status: "error",
-						error: {
-							code: "ADDRESS_TAKEN",
-							message: "This email address is already taken.",
-						},
-					};
-				}
-
-				return {
-					status: "error",
-					error: {
-						code: "UNKNOWN_ERROR",
-						message:
-							"We could not create your workspace right now. Please try again.",
-					},
-				};
 			}
+
+			return {
+				status: "error",
+				error: {
+					code: "UNKNOWN_ERROR",
+					message:
+						"We could not create a short address URL right now. Please try again.",
+				},
+			};
 		},
 	);

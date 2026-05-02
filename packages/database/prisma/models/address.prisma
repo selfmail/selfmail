@@ -5,6 +5,7 @@ model Address {
 
     handle String
     email  String @unique
+    addressSlug String @unique @default(dbgenerated("translate(substring(md5((random())::text), 1, 5), '0123456789abcdef', 'abcdefghijklmnop')"))
 
     usedStorageBytes BigInt @default(0)
 
