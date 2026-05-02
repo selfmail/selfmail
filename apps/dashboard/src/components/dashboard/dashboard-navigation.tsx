@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { cn } from "#/lib/utils";
 
@@ -12,6 +13,7 @@ const workspaceLinks = [
 
 interface DashboardNavigationProps {
   addresses: string[];
+  workspaceSlug: string;
 }
 
 interface NavColumnProps {
@@ -49,7 +51,10 @@ function DashboardNavLink({ active, children, href }: DashboardNavLinkProps) {
   );
 }
 
-export function DashboardNavigation({ addresses }: DashboardNavigationProps) {
+export function DashboardNavigation({
+  addresses,
+  workspaceSlug,
+}: DashboardNavigationProps) {
   return (
     <nav className="flex w-full flex-col justify-between gap-8 md:flex-row">
       <NavColumn title="Addresses">
@@ -71,9 +76,22 @@ export function DashboardNavigation({ addresses }: DashboardNavigationProps) {
       </NavColumn>
       <NavColumn title="Workspace">
         {workspaceLinks.map((link) => (
-          <DashboardNavLink href="#workspace" key={link}>
-            {link}
-          </DashboardNavLink>
+          link === "Settings" ? (
+            <Link
+              className="group w-full"
+              key={link}
+              params={{ workspaceSlug }}
+              to="/$workspaceSlug/settings"
+            >
+              <span className="w-fit rounded-md font-medium text-black text-xl ring-neutral-200 transition-all group-hover:bg-neutral-200 group-hover:ring-4">
+                {link}
+              </span>
+            </Link>
+          ) : (
+            <DashboardNavLink href="#workspace" key={link}>
+              {link}
+            </DashboardNavLink>
+          )
         ))}
       </NavColumn>
     </nav>

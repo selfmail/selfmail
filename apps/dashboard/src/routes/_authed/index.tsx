@@ -16,7 +16,7 @@ function RouteComponent() {
   const { workspaces } = Route.useLoaderData();
 
   return (
-    <main className="flex min-h-dvh w-full flex-col items-center justify-center space-y-3 bg-neutral-50 px-5 py-10 text-neutral-950">
+    <main className="flex min-h-dvh w-full flex-col items-center justify-center space-y-3 bg-white px-5 py-10 text-neutral-950">
       <h1 className="text-balance font-medium text-lg">Pick your Workspace</h1>
       <div className="flex w-full flex-col gap-6 rounded-lg border border-neutral-200 bg-white px-5 py-5 lg:max-w-md">
         {workspaces.length === 0 ? (

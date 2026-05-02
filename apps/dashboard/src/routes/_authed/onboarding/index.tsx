@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_authed/onboarding/")({
 		],
 	}),
 	component: () => (
-		<main className="relative flex min-h-dvh items-center justify-center bg-background px-5 py-20 text-foreground sm:px-10">
+		<main className="relative flex min-h-dvh items-center justify-center bg-white px-5 py-20 text-foreground sm:px-10">
 			<a
 				className="absolute top-5 left-1/2 -translate-x-1/2 font-medium text-xl"
 				href="https://selfmail.app"

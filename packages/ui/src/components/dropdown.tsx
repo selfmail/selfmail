@@ -76,6 +76,7 @@ function DropdownContent({
 
 type DropdownItemProps = ComponentProps<typeof Menu.Item> & {
   icon?: ReactNode;
+  iconClassName?: string;
   shortcut?: ReactNode;
   variant?: "default" | "destructive";
 };
@@ -84,6 +85,7 @@ function DropdownItem({
   children,
   className,
   icon,
+  iconClassName,
   shortcut,
   variant,
   ...props
@@ -100,7 +102,12 @@ function DropdownItem({
       data-variant={variant}
       {...props}
     >
-      <span className="flex size-4 items-center justify-center text-current">
+      <span
+        className={cn(
+          "flex size-4 items-center justify-center text-current",
+          iconClassName
+        )}
+      >
         {icon}
       </span>
       <span className="truncate">{children}</span>

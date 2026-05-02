@@ -17,7 +17,7 @@ export function WorkspaceAvatar({
     return (
       <img
         alt={workspace.name}
-        className={cn(sizeClass, "rounded-lg object-cover")}
+        className={cn(sizeClass, "aspect-square rounded-lg object-cover")}
         height={imageSize}
         src={workspace.image}
         width={imageSize}

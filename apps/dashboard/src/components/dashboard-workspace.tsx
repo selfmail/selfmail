@@ -16,13 +16,16 @@ export function DashboardWorkspace({
   ];
 
   return (
-    <div className="flex min-h-dvh w-full flex-col items-center bg-neutral-50">
+    <div className="flex min-h-dvh w-full flex-col items-center bg-white">
       <div className="flex w-full flex-col gap-12 px-5 py-6 lg:px-24 xl:px-32">
         <DashboardHeader
           currentWorkspace={currentWorkspace}
           workspaces={workspaces}
         />
-        <DashboardNavigation addresses={addresses} />
+        <DashboardNavigation
+          addresses={addresses}
+          workspaceSlug={currentWorkspace.slug}
+        />
         <main className="flex w-full flex-col gap-4">
           <div className="flex w-full flex-row items-center justify-between">
             <div className="flex flex-col gap-1">
