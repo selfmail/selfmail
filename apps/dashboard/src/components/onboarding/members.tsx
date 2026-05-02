@@ -1,5 +1,5 @@
+import { Button, Card, CardContent, cn, Input, Separator } from "@selfmail/ui";
 import { PlusIcon, Trash2Icon } from "lucide-react";
-import { Button, cn, Input, Separator } from "#/components/ui";
 import { m } from "#/paraglide/messages";
 import { useOnboardingStore } from "#/stores/onboarding";
 
@@ -96,27 +96,29 @@ export function OnboardingMembers({
 					</Button>
 				</fieldset>
 
-				<div className="rounded-lg border border-border bg-card p-5">
-					<p className="font-medium text-sm">
-						{m["onboarding.review.title"]()}
-					</p>
-					<Separator className="my-4" />
-					<dl className="space-y-4">
-						{summaryItems.map(([label, value]) => (
-							<div className="space-y-1" key={label}>
-								<dt className="text-muted-foreground text-xs">{label}</dt>
-								<dd
-									className={cn(
-										"truncate font-medium text-sm",
-										value === notSet && "text-muted-foreground",
-									)}
-								>
-									{value}
-								</dd>
-							</div>
-						))}
-					</dl>
-				</div>
+				<Card>
+					<CardContent className="p-5">
+						<p className="font-medium text-sm">
+							{m["onboarding.review.title"]()}
+						</p>
+						<Separator className="my-4" />
+						<dl className="space-y-4">
+							{summaryItems.map(([label, value]) => (
+								<div className="space-y-1" key={label}>
+									<dt className="text-muted-foreground text-xs">{label}</dt>
+									<dd
+										className={cn(
+											"truncate font-medium text-sm",
+											value === notSet && "text-muted-foreground",
+										)}
+									>
+										{value}
+									</dd>
+								</div>
+							))}
+						</dl>
+					</CardContent>
+				</Card>
 			</div>
 		</div>
 	);

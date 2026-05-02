@@ -1,4 +1,4 @@
-import { Input, Label, Switch } from "#/components/ui";
+import { Card, CardContent, Input, Label, Switch } from "@selfmail/ui";
 import { m } from "#/paraglide/messages";
 import { useOnboardingStore } from "#/stores/onboarding";
 
@@ -19,23 +19,25 @@ export function OnboardingDomain({ error }: OnboardingDomainProps) {
 				{m["onboarding.domain.title"]()}
 			</h1>
 
-			<div className="rounded-3xl border border-border bg-card p-4">
-				<div className="flex items-center justify-between gap-5">
-					<div className="space-y-1">
-						<Label htmlFor="custom-domain">
-							{m["onboarding.domain.custom.label"]()}
-						</Label>
-						<p className="text-muted-foreground text-sm">
-							{m["onboarding.domain.custom.help"]()}
-						</p>
+			<Card>
+				<CardContent className="p-4">
+					<div className="flex items-center justify-between gap-5">
+						<div className="space-y-1">
+							<Label htmlFor="custom-domain">
+								{m["onboarding.domain.custom.label"]()}
+							</Label>
+							<p className="text-muted-foreground text-sm">
+								{m["onboarding.domain.custom.help"]()}
+							</p>
+						</div>
+						<Switch
+							checked={data.useCustomDomain}
+							id="custom-domain"
+							onCheckedChange={setCustomDomainEnabled}
+						/>
 					</div>
-					<Switch
-						checked={data.useCustomDomain}
-						id="custom-domain"
-						onCheckedChange={setCustomDomainEnabled}
-					/>
-				</div>
-			</div>
+				</CardContent>
+			</Card>
 
 			<div className="grid gap-5">
 				<div className="space-y-2">

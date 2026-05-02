@@ -1,4 +1,4 @@
-import { Input, Label } from "#/components/ui";
+import { Input, Label } from "@selfmail/ui";
 import { m } from "#/paraglide/messages";
 import { useOnboardingStore } from "#/stores/onboarding";
 

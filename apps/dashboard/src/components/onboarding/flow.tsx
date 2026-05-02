@@ -1,6 +1,6 @@
+import { Alert, AlertDescription, Button } from "@selfmail/ui";
 import { useNavigate } from "@tanstack/react-router";
 import { type FormEvent, useState } from "react";
-import { Button } from "#/components/ui";
 import { createOnboardingWorkspaceFn } from "#/lib/onboarding";
 import { m } from "#/paraglide/messages";
 import { useOnboardingStore } from "#/stores/onboarding";
@@ -139,13 +139,9 @@ export function OnboardingFlow() {
 			</fieldset>
 
 			{submitError ? (
-				<p
-					aria-live="polite"
-					className="text-pretty rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-red-700 text-sm"
-					role="alert"
-				>
-					{submitError}
-				</p>
+				<Alert aria-live="polite" className="rounded-3xl" variant="destructive">
+					<AlertDescription>{submitError}</AlertDescription>
+				</Alert>
 			) : null}
 
 			<div className="grid grid-cols-2 gap-3">

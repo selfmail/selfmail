@@ -34,13 +34,14 @@ export function DashboardHeader({
 	const goToSection = (section: string) => {
 		window.location.hash = section;
 	};
+	const dropdownItemClassName = "cursor-pointer";
 
 	return (
 		<header className="flex w-full flex-row items-center justify-between gap-4">
 			<Dropdown>
 				<DropdownTrigger
 					aria-label={m["dashboard.header.switch_workspace"]()}
-					className="h-auto max-w-full justify-start rounded-lg border-0 bg-transparent px-0 py-0 pr-1 text-base hover:bg-neutral-200 hover:ring-4 hover:ring-neutral-200 focus-visible:ring-neutral-200 data-[popup-open]:bg-neutral-200 data-[popup-open]:ring-4 data-[popup-open]:ring-neutral-200"
+					className="h-auto max-w-full cursor-pointer justify-start rounded-lg border-0 bg-transparent px-0 py-0 pr-1 text-base hover:bg-neutral-200 hover:ring-4 hover:ring-neutral-200 focus-visible:ring-neutral-200 data-[popup-open]:bg-neutral-200 data-[popup-open]:ring-4 data-[popup-open]:ring-neutral-200"
 				>
 					<WorkspaceAvatar workspace={currentWorkspace} />
 					<h3 className="max-w-42 truncate font-medium text-lg sm:max-w-none">
@@ -55,6 +56,7 @@ export function DashboardHeader({
 							<DropdownItem
 								className={cn(
 									"grid-cols-[1.5rem_1fr_auto] gap-2",
+									dropdownItemClassName,
 									workspace.id === currentWorkspace.id && "bg-neutral-100",
 								)}
 								icon={<WorkspaceAvatar size="sm" workspace={workspace} />}
@@ -82,6 +84,7 @@ export function DashboardHeader({
 					<DropdownGroup>
 						<DropdownLabel>{m["dashboard.header.manage"]()}</DropdownLabel>
 						<DropdownItem
+							className={dropdownItemClassName}
 							icon={<SettingsIcon className="size-4" />}
 							onClick={() =>
 								navigate({
@@ -95,36 +98,42 @@ export function DashboardHeader({
 							{m["dashboard.header.settings"]()}
 						</DropdownItem>
 						<DropdownItem
+							className={dropdownItemClassName}
 							icon={<UsersIcon className="size-4" />}
 							onClick={() => goToSection("members")}
 						>
 							{m["dashboard.header.members"]()}
 						</DropdownItem>
 						<DropdownItem
+							className={dropdownItemClassName}
 							icon={<CreditCardIcon className="size-4" />}
 							onClick={() => goToSection("billing")}
 						>
 							{m["dashboard.header.billing"]()}
 						</DropdownItem>
 						<DropdownItem
+							className={dropdownItemClassName}
 							icon={<GlobeIcon className="size-4" />}
 							onClick={() => goToSection("domains")}
 						>
 							{m["dashboard.header.domains"]()}
 						</DropdownItem>
 						<DropdownItem
+							className={dropdownItemClassName}
 							icon={<WebhookIcon className="size-4" />}
 							onClick={() => goToSection("webhooks")}
 						>
 							{m["dashboard.header.webhooks"]()}
 						</DropdownItem>
 						<DropdownItem
+							className={dropdownItemClassName}
 							icon={<ShieldCheckIcon className="size-4" />}
 							onClick={() => goToSection("security")}
 						>
 							{m["dashboard.header.security"]()}
 						</DropdownItem>
 						<DropdownItem
+							className={dropdownItemClassName}
 							icon={<LifeBuoyIcon className="size-4" />}
 							onClick={() => goToSection("support")}
 						>
@@ -133,6 +142,7 @@ export function DashboardHeader({
 					</DropdownGroup>
 					<DropdownSeparator />
 					<DropdownItem
+						className={dropdownItemClassName}
 						icon={<PlusIcon className="size-4" />}
 						onClick={() =>
 							navigate({
