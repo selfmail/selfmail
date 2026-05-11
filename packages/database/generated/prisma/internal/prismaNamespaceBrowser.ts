@@ -67,6 +67,11 @@ export const ModelName = {
   EmailVerification: 'EmailVerification',
   TwoFactorToken: 'TwoFactorToken',
   MagicLink: 'MagicLink',
+  BillingCustomer: 'BillingCustomer',
+  BillingSubscription: 'BillingSubscription',
+  BillingCheckout: 'BillingCheckout',
+  BillingEntitlement: 'BillingEntitlement',
+  BillingWebhookEvent: 'BillingWebhookEvent',
   Draft: 'Draft',
   Role: 'Role',
   RolePermission: 'RolePermission',
@@ -324,6 +329,91 @@ export const MagicLinkScalarFieldEnum = {
 } as const
 
 export type MagicLinkScalarFieldEnum = (typeof MagicLinkScalarFieldEnum)[keyof typeof MagicLinkScalarFieldEnum]
+
+
+export const BillingCustomerScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  polarCustomerId: 'polarCustomerId',
+  polarExternalId: 'polarExternalId',
+  type: 'type',
+  email: 'email',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BillingCustomerScalarFieldEnum = (typeof BillingCustomerScalarFieldEnum)[keyof typeof BillingCustomerScalarFieldEnum]
+
+
+export const BillingSubscriptionScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  polarSubscriptionId: 'polarSubscriptionId',
+  polarCustomerId: 'polarCustomerId',
+  polarProductId: 'polarProductId',
+  plan: 'plan',
+  status: 'status',
+  seats: 'seats',
+  amount: 'amount',
+  currency: 'currency',
+  currentPeriodStart: 'currentPeriodStart',
+  currentPeriodEnd: 'currentPeriodEnd',
+  trialStart: 'trialStart',
+  trialEnd: 'trialEnd',
+  cancelAtPeriodEnd: 'cancelAtPeriodEnd',
+  canceledAt: 'canceledAt',
+  startedAt: 'startedAt',
+  endsAt: 'endsAt',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BillingSubscriptionScalarFieldEnum = (typeof BillingSubscriptionScalarFieldEnum)[keyof typeof BillingSubscriptionScalarFieldEnum]
+
+
+export const BillingCheckoutScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  polarCheckoutId: 'polarCheckoutId',
+  plan: 'plan',
+  status: 'status',
+  seats: 'seats',
+  url: 'url',
+  createdByMemberId: 'createdByMemberId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BillingCheckoutScalarFieldEnum = (typeof BillingCheckoutScalarFieldEnum)[keyof typeof BillingCheckoutScalarFieldEnum]
+
+
+export const BillingEntitlementScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  key: 'key',
+  polarBenefitId: 'polarBenefitId',
+  active: 'active',
+  limit: 'limit',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BillingEntitlementScalarFieldEnum = (typeof BillingEntitlementScalarFieldEnum)[keyof typeof BillingEntitlementScalarFieldEnum]
+
+
+export const BillingWebhookEventScalarFieldEnum = {
+  id: 'id',
+  polarEventId: 'polarEventId',
+  type: 'type',
+  workspaceId: 'workspaceId',
+  processedAt: 'processedAt',
+  payload: 'payload'
+} as const
+
+export type BillingWebhookEventScalarFieldEnum = (typeof BillingWebhookEventScalarFieldEnum)[keyof typeof BillingWebhookEventScalarFieldEnum]
 
 
 export const DraftScalarFieldEnum = {
@@ -700,6 +790,64 @@ export const MagicLinkOrderByRelevanceFieldEnum = {
 } as const
 
 export type MagicLinkOrderByRelevanceFieldEnum = (typeof MagicLinkOrderByRelevanceFieldEnum)[keyof typeof MagicLinkOrderByRelevanceFieldEnum]
+
+
+export const BillingCustomerOrderByRelevanceFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  polarCustomerId: 'polarCustomerId',
+  polarExternalId: 'polarExternalId',
+  type: 'type',
+  email: 'email',
+  name: 'name'
+} as const
+
+export type BillingCustomerOrderByRelevanceFieldEnum = (typeof BillingCustomerOrderByRelevanceFieldEnum)[keyof typeof BillingCustomerOrderByRelevanceFieldEnum]
+
+
+export const BillingSubscriptionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  polarSubscriptionId: 'polarSubscriptionId',
+  polarCustomerId: 'polarCustomerId',
+  polarProductId: 'polarProductId',
+  status: 'status',
+  currency: 'currency'
+} as const
+
+export type BillingSubscriptionOrderByRelevanceFieldEnum = (typeof BillingSubscriptionOrderByRelevanceFieldEnum)[keyof typeof BillingSubscriptionOrderByRelevanceFieldEnum]
+
+
+export const BillingCheckoutOrderByRelevanceFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  polarCheckoutId: 'polarCheckoutId',
+  status: 'status',
+  url: 'url',
+  createdByMemberId: 'createdByMemberId'
+} as const
+
+export type BillingCheckoutOrderByRelevanceFieldEnum = (typeof BillingCheckoutOrderByRelevanceFieldEnum)[keyof typeof BillingCheckoutOrderByRelevanceFieldEnum]
+
+
+export const BillingEntitlementOrderByRelevanceFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  key: 'key',
+  polarBenefitId: 'polarBenefitId'
+} as const
+
+export type BillingEntitlementOrderByRelevanceFieldEnum = (typeof BillingEntitlementOrderByRelevanceFieldEnum)[keyof typeof BillingEntitlementOrderByRelevanceFieldEnum]
+
+
+export const BillingWebhookEventOrderByRelevanceFieldEnum = {
+  id: 'id',
+  polarEventId: 'polarEventId',
+  type: 'type',
+  workspaceId: 'workspaceId'
+} as const
+
+export type BillingWebhookEventOrderByRelevanceFieldEnum = (typeof BillingWebhookEventOrderByRelevanceFieldEnum)[keyof typeof BillingWebhookEventOrderByRelevanceFieldEnum]
 
 
 export const DraftOrderByRelevanceFieldEnum = {

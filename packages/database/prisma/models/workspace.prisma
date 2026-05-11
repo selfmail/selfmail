@@ -9,16 +9,20 @@ model Workspace {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    slug            String            @unique @default(uuid())
-    ownerId         String
-    owner           User              @relation(fields: [ownerId], references: [id])
-    Member          Member[]
-    Role            Role[]
-    Domain          Domain[]
-    SmtpCredentials SmtpCredentials[]
-    Activity        Activity[]
-    Invitation      Invitation[]
-    Draft           Draft[]
+    slug                String                @unique @default(uuid())
+    ownerId             String
+    owner               User                  @relation(fields: [ownerId], references: [id])
+    Member              Member[]
+    Role                Role[]
+    Domain              Domain[]
+    SmtpCredentials     SmtpCredentials[]
+    Activity            Activity[]
+    Invitation          Invitation[]
+    Draft               Draft[]
+    BillingCustomer     BillingCustomer?
+    BillingSubscription BillingSubscription[]
+    BillingCheckout     BillingCheckout[]
+    BillingEntitlement  BillingEntitlement[]
 
     @@index([ownerId])
 }

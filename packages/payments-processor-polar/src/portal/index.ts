@@ -14,6 +14,25 @@ export class PolarPortal {
     return subscription;
   }
 
-  // TODO: check whether Polar allows changing the subscription payment method via api, if not, implement polar
-  // authorization system, so that users can change the payment method on the Polar-hosted portal
+  async createCustomerPortalSession({
+    externalCustomerId,
+    returnUrl,
+    externalMemberId,
+  }: {
+    externalCustomerId: string;
+    returnUrl?: string;
+    externalMemberId?: string;
+  }) {
+    const session = await this.polar.customerSessions.create({
+      externalCustomerId,
+      externalMemberId,
+      returnUrl,
+    });
+
+    return {
+      customerPortalUrl: session.customerPortalUrl,
+      expiresAt: session.expiresAt,
+      token: session.token,
+    };
+  }
 }

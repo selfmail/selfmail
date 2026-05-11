@@ -56,6 +56,14 @@ export const AuthProvider = {
 export type AuthProvider = (typeof AuthProvider)[keyof typeof AuthProvider]
 
 
+export const BillingPlan = {
+  FREE: 'FREE',
+  BASIC: 'BASIC'
+} as const
+
+export type BillingPlan = (typeof BillingPlan)[keyof typeof BillingPlan]
+
+
 export const NotificationType = {
   info: 'info',
   warning: 'warning',

@@ -1,7 +1,6 @@
 import Bun from "bun";
 
 Bun.serve({
-  port: 6666,
   routes: {
     "/": (_) => {
       return new Response("Welcome to the Spamlist service!");

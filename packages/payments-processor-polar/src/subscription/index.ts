@@ -7,31 +7,30 @@ export class PolarSubscription {
   }
 
   async createFreePlanSubscription({
+    customerId,
+    externalCustomerId,
     productId,
-    userId,
-    email,
   }: {
+    customerId: string;
+    externalCustomerId: string;
     productId: string;
-    userId: string;
-    email: string;
   }) {
-    // Create the customer
-    const customer = await this.polar.customers.create({
-      type: "individual",
-      email,
-      externalId: userId,
-    });
-
-    // Create free subscription
     const subscription = await this.polar.subscriptions.create({
       productId,
-      customerId: customer.id,
-      externalCustomerId: userId,
+      customerId,
+      externalCustomerId,
+      metadata: {
+        workspaceId: externalCustomerId,
+      },
     });
 
     return {
+      polarCustomerId: customerId,
       subscriptionId: subscription.id,
       subscriptionStatus: subscription.status,
+      productId: subscription.productId,
+      currentPeriodStart: subscription.currentPeriodStart,
+      currentPeriodEnd: subscription.currentPeriodEnd,
     };
   }
 
@@ -39,6 +38,8 @@ export class PolarSubscription {
     seats,
     includeTrial = true,
     customerEmail,
+    externalCustomerId,
+    metadata,
     subscriptionId,
     productId,
     successUrl,
@@ -49,22 +50,30 @@ export class PolarSubscription {
     subscriptionId: string;
     successUrl: string;
     customerEmail: string;
+    externalCustomerId: string;
     returnBackUrl: string;
     includeTrial: boolean;
+    metadata?: Record<string, string | number | boolean>;
   }) {
     const checkout = await this.polar.checkouts.create({
       products: [productId],
       seats,
       allowTrial: includeTrial,
       customerEmail,
+      externalCustomerId,
       subscriptionId,
       successUrl,
       returnUrl: returnBackUrl,
+      metadata: {
+        ...metadata,
+        plan: "BASIC",
+      },
     });
 
     return {
       url: checkout.url,
       checkoutId: checkout.id,
+      status: checkout.status,
     };
   }
 

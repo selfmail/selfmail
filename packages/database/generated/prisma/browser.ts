@@ -98,6 +98,31 @@ export type TwoFactorToken = Prisma.TwoFactorTokenModel
  */
 export type MagicLink = Prisma.MagicLinkModel
 /**
+ * Model BillingCustomer
+ * 
+ */
+export type BillingCustomer = Prisma.BillingCustomerModel
+/**
+ * Model BillingSubscription
+ * 
+ */
+export type BillingSubscription = Prisma.BillingSubscriptionModel
+/**
+ * Model BillingCheckout
+ * 
+ */
+export type BillingCheckout = Prisma.BillingCheckoutModel
+/**
+ * Model BillingEntitlement
+ * 
+ */
+export type BillingEntitlement = Prisma.BillingEntitlementModel
+/**
+ * Model BillingWebhookEvent
+ * 
+ */
+export type BillingWebhookEvent = Prisma.BillingWebhookEventModel
+/**
  * Model Draft
  * 
  */

@@ -1,0 +1,110 @@
+enum BillingPlan {
+  FREE
+  BASIC
+}
+
+model BillingCustomer {
+  id String @id @default(uuid())
+
+  workspaceId String    @unique
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  polarCustomerId String @unique
+  polarExternalId String @unique
+
+  type  String
+  email String?
+  name  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BillingSubscription {
+  id String @id @default(uuid())
+
+  workspaceId String    @unique
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  polarSubscriptionId String @unique
+  polarCustomerId     String
+  polarProductId      String
+
+  plan   BillingPlan @default(FREE)
+  status String
+  seats  Int?
+
+  amount   Int?
+  currency String?
+
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  trialStart         DateTime?
+  trialEnd           DateTime?
+  cancelAtPeriodEnd  Boolean   @default(false)
+  canceledAt         DateTime?
+  startedAt          DateTime?
+  endsAt             DateTime?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([workspaceId])
+  @@index([polarCustomerId])
+}
+
+model BillingCheckout {
+  id String @id @default(uuid())
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  polarCheckoutId String @unique
+
+  plan   BillingPlan
+  status String
+  seats  Int
+  url    String?
+
+  createdByMemberId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([workspaceId])
+  @@index([createdByMemberId])
+}
+
+model BillingEntitlement {
+  id String @id @default(uuid())
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  key            String
+  polarBenefitId String?
+  active         Boolean @default(true)
+  limit          Int?
+  metadata       Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([workspaceId, key])
+  @@index([polarBenefitId])
+}
+
+model BillingWebhookEvent {
+  id String @id @default(uuid())
+
+  polarEventId String   @unique
+  type         String
+  workspaceId  String?
+  processedAt  DateTime @default(now())
+  payload      Json?
+
+  @@index([workspaceId])
+  @@index([type])
+}

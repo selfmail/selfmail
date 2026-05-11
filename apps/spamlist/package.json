@@ -14,7 +14,7 @@
     "@prisma/client": "^7.3.0"
   },
   "scripts": {
-    "dev": "bun --watch run src/index.ts"
+    "dev": "portless spamlist.selfmail bun --watch run src/index.ts"
   },
   "exports": {
     ".": {
