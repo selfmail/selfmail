@@ -1,5 +1,5 @@
 {
-  "name": "dashboard",
+  "name": "@selfmail/dashboard",
   "private": true,
   "type": "module",
   "imports": {

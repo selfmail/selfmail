@@ -7,7 +7,9 @@
     "scripts",
     "queues/*",
     "smtp/*",
-    "stores/* "
+    "stores/*",
+    "stores/inbound/*",
+    "stores/outbound/*"
   ],
   "scripts": {
     "check": "biome check --write .",
