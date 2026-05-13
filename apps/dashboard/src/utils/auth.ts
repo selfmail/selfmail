@@ -10,20 +10,22 @@ import {
 import { getCookie } from "@tanstack/react-start/server";
 
 const logger = createLogger("dashboard-auth-middleware");
-const PROD_AUTH_HREF = "https://auth.selfmail.app/login";
-const DEV_AUTH_HREF = "https://auth.selfmail.localhost/login";
+const productionLoginHref = "https://auth.selfmail.app/login";
+const developmentLoginHref = "https://auth.selfmail.localhost/login";
 
 const authentication = new Authentication({ identifier: "dashboard" });
 
-type CurrentUserResult =
-	| {
-			status: "authenticated";
-			user: User;
-	  }
-	| {
-			status: "unauthenticated";
-			loginHref: string;
-	  };
+interface AuthenticatedUserResult {
+	status: "authenticated";
+	user: User;
+}
+
+interface UnauthenticatedUserResult {
+	loginHref: string;
+	status: "unauthenticated";
+}
+
+type CurrentUserResult = AuthenticatedUserResult | UnauthenticatedUserResult;
 
 const unauthenticated = (message: string): CurrentUserResult => {
 	logger.warn(message);
@@ -34,7 +36,7 @@ const unauthenticated = (message: string): CurrentUserResult => {
 	};
 };
 
-export const getCurrentUserFn = createServerFn({
+const getCurrentUserFn = createServerFn({
 	method: "GET",
 }).handler(async (): Promise<CurrentUserResult> => {
 	const token = getCookie("selfmail-session-token");
@@ -72,17 +74,17 @@ export const getCurrentUserFn = createServerFn({
 	}
 });
 
-export const getLoginHref = createServerOnlyFn(() => {
+const getLoginHref = createServerOnlyFn(() => {
 	if (typeof window === "undefined") {
 		return process.env.SELFMAIL_AUTH_URL
 			? new URL("/login", process.env.SELFMAIL_AUTH_URL).toString()
-			: DEV_AUTH_HREF;
+			: developmentLoginHref;
 	}
 
 	return window.location.hostname.endsWith(".selfmail.app") ||
 		window.location.hostname === "selfmail.app"
-		? PROD_AUTH_HREF
-		: DEV_AUTH_HREF;
+		? productionLoginHref
+		: developmentLoginHref;
 });
 
 export const authMiddleware = createMiddleware({ type: "function" }).server(

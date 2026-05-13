@@ -41,7 +41,7 @@ export function DashboardHeader({
 			<Dropdown>
 				<DropdownTrigger
 					aria-label={m["dashboard.header.switch_workspace"]()}
-					className="h-auto max-w-full cursor-pointer justify-start rounded-lg border-0 bg-transparent px-0 py-0 pr-1 text-base hover:bg-neutral-200 hover:ring-4 hover:ring-neutral-200 focus-visible:ring-neutral-200 data-[popup-open]:bg-neutral-200 data-[popup-open]:ring-4 data-[popup-open]:ring-neutral-200"
+					className="h-auto max-w-full cursor-pointer justify-start rounded-lg border-0 bg-transparent p-0 pr-1 text-base hover:bg-neutral-200 hover:ring-4 hover:ring-neutral-200 focus-visible:ring-neutral-200 data-[popup-open]:bg-neutral-200 data-[popup-open]:ring-4 data-[popup-open]:ring-neutral-200"
 				>
 					<WorkspaceAvatar workspace={currentWorkspace} />
 					<h3 className="max-w-42 truncate font-medium text-lg sm:max-w-none">
@@ -156,7 +156,7 @@ export function DashboardHeader({
 			</Dropdown>
 
 			<a
-				className="flex items-center space-x-3 rounded-xl border border-neutral-300 border-dashed p-2 text-center text-neutral-600 text-sm hover:bg-neutral-100 hover:ring-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
+				className="flex items-center gap-x-3 rounded-xl border border-neutral-300 border-dashed p-2 text-center text-neutral-600 text-sm hover:bg-neutral-100 hover:ring-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
 				href="#compose"
 			>
 				<PlaneTakeoffIcon className="inline-block size-5" />

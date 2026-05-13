@@ -79,27 +79,28 @@ export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
 							},
 						});
 
-						const member = await tx.member.create({
-							data: {
-								profileName: user.name || user.email,
-								userId: user.id,
-								workspaceId: workspace.id,
-							},
-							select: {
-								id: true,
-							},
-						});
-
-						const address = await tx.address.create({
-							data: {
-								addressSlug,
-								email,
-								handle: addressHandle,
-							},
-							select: {
-								id: true,
-							},
-						});
+						const [member, address] = await Promise.all([
+							tx.member.create({
+								data: {
+									profileName: user.name || user.email,
+									userId: user.id,
+									workspaceId: workspace.id,
+								},
+								select: {
+									id: true,
+								},
+							}),
+							tx.address.create({
+								data: {
+									addressSlug,
+									email,
+									handle: addressHandle,
+								},
+								select: {
+									id: true,
+								},
+							}),
+						]);
 
 						await tx.memberAddress.create({
 							data: {
@@ -122,15 +123,15 @@ export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
 							? (error.meta as { target?: string | string[] } | undefined)
 									?.target
 							: undefined;
-					const target = Array.isArray(targetValue)
-						? targetValue
-						: [targetValue];
+					const target = new Set(
+						Array.isArray(targetValue) ? targetValue : [targetValue],
+					);
 
-					if (target?.includes("addressSlug")) {
+					if (target.has("addressSlug")) {
 						continue;
 					}
 
-					if (target?.includes("slug")) {
+					if (target.has("slug")) {
 						return {
 							status: "error",
 							error: {
@@ -140,7 +141,7 @@ export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
 						};
 					}
 
-					if (target?.includes("email")) {
+					if (target.has("email")) {
 						return {
 							status: "error",
 							error: {

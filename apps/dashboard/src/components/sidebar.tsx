@@ -91,7 +91,7 @@ export function DashboardSidebar({
 						<SettingsIcon className="size-4" />
 					</button>
 					<button
-						className="flex min-w-0 flex-1 items-center justify-end gap-2 rounded-md px-1 py-1 text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline-2 focus-visible:outline-sidebar-ring focus-visible:outline-offset-2"
+						className="flex min-w-0 flex-1 items-center justify-end gap-2 rounded-md p-1 text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline-2 focus-visible:outline-sidebar-ring focus-visible:outline-offset-2"
 						type="button"
 					>
 						<span className="truncate text-sm">{userEmail}</span>

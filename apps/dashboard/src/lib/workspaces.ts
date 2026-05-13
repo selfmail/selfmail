@@ -1,9 +1,9 @@
-import { db, type User } from "@selfmail/db";
+import { db } from "@selfmail/db";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
 import { authMiddleware } from "#/utils/auth";
 
-export type DashboardWorkspace = {
+export interface DashboardWorkspace {
 	description: string | null;
 	id: string;
 	image: string | null;
@@ -11,21 +11,16 @@ export type DashboardWorkspace = {
 	name: string;
 	ownerId: string;
 	slug: string;
-};
+}
 
-export type DashboardShellData = {
-	user: User;
-	workspace: DashboardWorkspace | null;
-};
-
-export type DashboardAddress = {
+interface DashboardAddress {
 	addressSlug: string;
 	email: string;
 	handle: string;
 	id: string;
-};
+}
 
-export type DashboardEmail = {
+interface DashboardEmail {
 	attachments?: number;
 	date: string;
 	from: string;
@@ -35,16 +30,16 @@ export type DashboardEmail = {
 	snippet: string;
 	subject: string;
 	to?: string;
-};
+}
 
-export type DashboardInboxData = {
+interface DashboardInboxData {
 	addresses: DashboardAddress[];
 	emails: DashboardEmail[];
-};
+}
 
-export type DashboardAddressInboxData = DashboardInboxData & {
+interface DashboardAddressInboxData extends DashboardInboxData {
 	address: DashboardAddress;
-};
+}
 
 const workspaceSettingsSchema = z.object({
 	description: z.string().max(240).optional(),
@@ -248,58 +243,6 @@ async function getAddressEmails(addressIds: string[]) {
 
 	return emails.map(toDashboardEmail);
 }
-
-export const getDashboardShellDataFn = createServerFn({ method: "GET" })
-	.middleware([authMiddleware])
-	.handler(async ({ context: { user } }): Promise<DashboardShellData> => {
-		const workspace = await db.workspace.findFirst({
-			orderBy: {
-				createdAt: "asc",
-			},
-			select: {
-				id: true,
-				image: true,
-				Member: {
-					select: {
-						id: true,
-					},
-					take: 1,
-					where: {
-						userId: user.id,
-					},
-				},
-				name: true,
-				description: true,
-				ownerId: true,
-				slug: true,
-			},
-			where: {
-				Member: {
-					some: {
-						userId: user.id,
-					},
-				},
-			},
-		});
-
-		const member = workspace?.Member[0];
-
-		return {
-			user,
-			workspace:
-				workspace && member
-					? {
-							id: workspace.id,
-							description: workspace.description,
-							image: workspace.image,
-							memberId: member.id,
-							name: workspace.name,
-							ownerId: workspace.ownerId,
-							slug: workspace.slug,
-						}
-					: null,
-		};
-	});
 
 export const getWorkspace = createServerFn({
 	method: "GET",
@@ -562,41 +505,74 @@ export const deleteWorkspaceFn = createServerFn({ method: "POST" })
 					]),
 				];
 
-				await tx.email.deleteMany({
-					where: {
-						addressId: {
-							in: addressIds,
-						},
-					},
-				});
-				await tx.contact.deleteMany({
-					where: {
-						addressId: {
-							in: addressIds,
-						},
-					},
-				});
-				await tx.smtpCredentials.deleteMany({
-					where: {
-						workspaceId: data.workspaceId,
-					},
-				});
-				await tx.memberAddress.deleteMany({
-					where: {
-						OR: [
-							{
-								addressId: {
-									in: addressIds,
-								},
+				await Promise.all([
+					tx.email.deleteMany({
+						where: {
+							addressId: {
+								in: addressIds,
 							},
-							{
-								memberId: {
-									in: memberIds,
-								},
+						},
+					}),
+					tx.contact.deleteMany({
+						where: {
+							addressId: {
+								in: addressIds,
 							},
-						],
-					},
-				});
+						},
+					}),
+					tx.smtpCredentials.deleteMany({
+						where: {
+							workspaceId: data.workspaceId,
+						},
+					}),
+					tx.memberAddress.deleteMany({
+						where: {
+							OR: [
+								{
+									addressId: {
+										in: addressIds,
+									},
+								},
+								{
+									memberId: {
+										in: memberIds,
+									},
+								},
+							],
+						},
+					}),
+					tx.draft.deleteMany({
+						where: {
+							workspaceId: data.workspaceId,
+						},
+					}),
+					tx.invitation.deleteMany({
+						where: {
+							workspaceId: data.workspaceId,
+						},
+					}),
+					tx.notification.deleteMany({
+						where: {
+							memberId: {
+								in: memberIds,
+							},
+						},
+					}),
+					tx.memberPermission.deleteMany({
+						where: {
+							memberId: {
+								in: memberIds,
+							},
+						},
+					}),
+					tx.rolePermission.deleteMany({
+						where: {
+							roleId: {
+								in: roleIds,
+							},
+						},
+					}),
+				]);
 				await tx.address.deleteMany({
 					where: {
 						id: {
@@ -604,57 +580,28 @@ export const deleteWorkspaceFn = createServerFn({ method: "POST" })
 						},
 					},
 				});
-				await tx.draft.deleteMany({
-					where: {
-						workspaceId: data.workspaceId,
-					},
-				});
-				await tx.invitation.deleteMany({
-					where: {
-						workspaceId: data.workspaceId,
-					},
-				});
-				await tx.notification.deleteMany({
-					where: {
-						memberId: {
-							in: memberIds,
+				await Promise.all([
+					tx.member.deleteMany({
+						where: {
+							workspaceId: data.workspaceId,
 						},
-					},
-				});
-				await tx.memberPermission.deleteMany({
-					where: {
-						memberId: {
-							in: memberIds,
+					}),
+					tx.role.deleteMany({
+						where: {
+							workspaceId: data.workspaceId,
 						},
-					},
-				});
-				await tx.rolePermission.deleteMany({
-					where: {
-						roleId: {
-							in: roleIds,
+					}),
+					tx.domain.deleteMany({
+						where: {
+							workspaceId: data.workspaceId,
 						},
-					},
-				});
-				await tx.member.deleteMany({
-					where: {
-						workspaceId: data.workspaceId,
-					},
-				});
-				await tx.role.deleteMany({
-					where: {
-						workspaceId: data.workspaceId,
-					},
-				});
-				await tx.domain.deleteMany({
-					where: {
-						workspaceId: data.workspaceId,
-					},
-				});
-				await tx.activity.deleteMany({
-					where: {
-						workspaceId: data.workspaceId,
-					},
-				});
+					}),
+					tx.activity.deleteMany({
+						where: {
+							workspaceId: data.workspaceId,
+						},
+					}),
+				]);
 				await tx.workspace.delete({
 					where: {
 						id: data.workspaceId,

@@ -1,7 +1,4 @@
-// Locale switcher refs:
-// - Paraglide docs: https://inlang.com/m/gerre34r/library-inlang-paraglideJs
-// - Router example: https://github.com/TanStack/router/tree/main/examples/react/i18n-paraglide#switching-locale
-
+import { cn } from "#/components/ui";
 import { m } from "#/paraglide/messages";
 import { getLocale, locales, setLocale } from "#/paraglide/runtime";
 
@@ -9,33 +6,21 @@ export default function ParaglideLocaleSwitcher() {
 	const currentLocale = getLocale();
 
 	return (
-		<div
-			style={{
-				display: "flex",
-				gap: "0.5rem",
-				alignItems: "center",
-				color: "inherit",
-			}}
-		>
-			<span style={{ opacity: 0.85 }}>
+		<div className="flex items-center gap-2 text-inherit">
+			<span className="opacity-80">
 				{m.current_locale({ locale: currentLocale })}
 			</span>
-			<div style={{ display: "flex", gap: "0.25rem" }}>
+			<div className="flex gap-1">
 				{locales.map((locale) => (
 					<button
 						aria-pressed={locale === currentLocale}
+						className={cn(
+							"cursor-pointer rounded-full border border-neutral-300 px-3 py-1.5 font-medium",
+							locale === currentLocale &&
+								"bg-slate-900 font-bold text-slate-50",
+						)}
 						key={locale}
 						onClick={() => setLocale(locale)}
-						style={{
-							cursor: "pointer",
-							padding: "0.35rem 0.75rem",
-							borderRadius: "999px",
-							border: "1px solid #d1d5db",
-							background: locale === currentLocale ? "#0f172a" : "transparent",
-							color: locale === currentLocale ? "#f8fafc" : "inherit",
-							fontWeight: locale === currentLocale ? 700 : 500,
-							letterSpacing: "0.01em",
-						}}
 						type="button"
 					>
 						{locale.toUpperCase()}

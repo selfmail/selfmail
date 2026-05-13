@@ -52,8 +52,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang={getLocale()} suppressHydrationWarning>
 			<head>
-				{/* biome-ignore lint: we need this script in order to get the themes working correctly, injected by the tanstack boilerplate code */}
-				<script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+				<script>{THEME_INIT_SCRIPT}</script>
 				<HeadContent />
 			</head>
 			<body className="wrap-anywhere font-sans antialiased">
