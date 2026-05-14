@@ -104,9 +104,13 @@ export function DashboardNavigation({
 						</span>
 					</Link>
 				))}
-				<a className="text-blue-500 text-sm" href="#new-address">
+				<Link
+					className="text-blue-500 text-sm"
+					params={{ workspaceSlug }}
+					to="/$workspaceSlug/new-address"
+				>
 					+ {m["dashboard.address.add"]()}
-				</a>
+				</Link>
 			</NavColumn>
 			<NavColumn title={m["dashboard.navigation.platform"]()}>
 				{platformLinks.map((link) => (

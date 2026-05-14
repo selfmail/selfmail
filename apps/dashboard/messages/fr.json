@@ -6,6 +6,94 @@
   "language_label": "Langue",
   "current_locale": "Langue actuelle : {locale}",
   "learn_router": "Découvrir Paraglide JS",
+  "dashboard": {
+    "inbox": {
+      "unified": "Boîte de réception unifiée",
+      "email_count": "{count} e-mails",
+      "email_count_one": "{count} e-mail"
+    },
+    "address": {
+      "subtitle": "{address} - {count}",
+      "navigation_label": "Adresses",
+      "add": "Ajouter une nouvelle adresse",
+      "create": {
+        "title": "Créer une adresse",
+        "description": "Choisissez le nom de la boîte de réception et vérifiez l'adresse complète avant la création.",
+        "back": "Retour",
+        "field_label": "Nom de l'adresse",
+        "domain_label": "Domaine",
+        "placeholder": "bonjour",
+        "preview": "Aperçu :",
+        "domain_title": "Utiliser un autre domaine",
+        "domain_description": "Les nouvelles adresses utilisent actuellement {domain}. Connectez un domaine avant de créer des adresses pour un autre domaine de messagerie.",
+        "connect_domain": "Connecter un nouveau domaine",
+        "submit": "Créer",
+        "error": "Saisissez un nom d'adresse.",
+        "success": "{address} est prête en tant qu'aperçu frontend."
+      }
+    },
+    "navigation": {
+      "platform": "Plateforme",
+      "workspace": "Espace de travail",
+      "ai": "IA",
+      "workflows": "Flux de travail",
+      "developers": "Développeurs",
+      "changelog": "Journal des modifications",
+      "members": "Membres",
+      "activity": "Activité",
+      "storage": "Stockage",
+      "settings": "Paramètres",
+      "domains": "Domaines"
+    },
+    "header": {
+      "switch_workspace": "Changer d'espace de travail",
+      "workspaces": "Espaces de travail",
+      "manage": "Gérer",
+      "settings": "Paramètres",
+      "members": "Membres",
+      "billing": "Facturation",
+      "domains": "Domaines",
+      "webhooks": "Webhooks",
+      "security": "Sécurité",
+      "support": "Support",
+      "create_workspace": "Créer un espace de travail",
+      "compose": "Rédiger"
+    },
+    "email": {
+      "attachment_count": "{count} pièces jointes",
+      "attachment_count_one": "{count} pièce jointe",
+      "empty_title": "Aucun e-mail pour le moment",
+      "empty_description": "Envoyez un message à cette adresse et il apparaîtra ici.",
+      "preview_title": "Aperçu de l'e-mail",
+      "fullscreen": "Plein écran",
+      "close_preview": "Fermer l'aperçu",
+      "attachment_label": "Pièce jointe {number}",
+      "attachment_size": "24 Ko",
+      "to": "À : {address}"
+    },
+    "settings": {
+      "title": "Paramètres de l'espace de travail",
+      "description": "Mettez à jour le profil de l'espace de travail, l'identifiant public et les paramètres critiques pour {workspaceName}.",
+      "general": "Général",
+      "general_description": "Renommez l'espace de travail et mettez à jour les détails affichés aux membres.",
+      "workspace_name": "Nom de l'espace de travail",
+      "workspace_handle": "Identifiant de l'espace de travail",
+      "workspace_handle_help": "Utilisé dans les URL de l'espace de travail et les adresses de self-mail par défaut.",
+      "workspace_description": "Description",
+      "workspace_description_placeholder": "À quoi sert cet espace de travail",
+      "workspace_image": "URL de l'image de l'espace de travail",
+      "saved": "Paramètres de l'espace de travail mis à jour.",
+      "saving": "Enregistrement en cours...",
+      "update": "Mettre à jour l'espace de travail",
+      "delete_title": "Supprimer l'espace de travail",
+      "delete_description": "Supprimez cet espace de travail lorsque vous n'en avez plus besoin. Cette action est irréversible.",
+      "delete_trigger": "Supprimer l'espace de travail",
+      "delete_confirm_title": "Supprimer {workspaceName} ?",
+      "delete_confirm_description": "Cela supprime définitivement l'espace de travail. Vous perdrez l'accès à ses paramètres et aux données associées.",
+      "cancel": "Annuler",
+      "deleting": "Suppression en cours..."
+    }
+  },
   "onboarding": {
     "meta": {
       "title": "Intégration | Selfmail"

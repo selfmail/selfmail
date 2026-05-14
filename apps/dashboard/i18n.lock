@@ -13,6 +13,19 @@ checksums:
     dashboard/address/subtitle: d0f7f1a9ffa30592a2adb09e4bb882f9
     dashboard/address/navigation_label: 87b49e2ffcdbe3cc4bfd2d25cc75c096
     dashboard/address/add: 4d321c12b08718bd55b108c3a4cd51ac
+    dashboard/address/create/title: 529aed0ff3670f96f8cec064342ed37f
+    dashboard/address/create/description: d411eac7ae63fd3db311f9bbd355a5e0
+    dashboard/address/create/back: f541015a827e37cb3b1234e56bc2aa3c
+    dashboard/address/create/field_label: 0bebccbb7eafa3a5944173b6f0fc0271
+    dashboard/address/create/domain_label: 402d46965eacc3af4c5df92e53e95712
+    dashboard/address/create/placeholder: 4a43ab95debc984fed2b95c7fc66fdb3
+    dashboard/address/create/preview: 5315010ff36d8f386c2fabf930f62083
+    dashboard/address/create/domain_title: fc31f0749343a1bfdb9759983ef6a2e6
+    dashboard/address/create/domain_description: 5565875f303a709e424f8417ac0ce700
+    dashboard/address/create/connect_domain: b7cdfd0a6c879d6c23d8fae4d5e34bfa
+    dashboard/address/create/submit: 757ccd28dd533ff3a933355273c1e32a
+    dashboard/address/create/error: c0e46e6ec37f4c70b0abc06456517c32
+    dashboard/address/create/success: 6a45101bfc4145ad3adf39380a7e5345
     dashboard/navigation/platform: c68862170146325333c7f25af11a3fa2
     dashboard/navigation/workspace: b63ef0e99ee6f7fef6cbe4971ca6cf0f
     dashboard/navigation/ai: 0632f6689aa11caeb4b21c4df39c389d

@@ -15,7 +15,22 @@
     "address": {
       "subtitle": "{address} - {count}",
       "navigation_label": "Addresses",
-      "add": "Add new address"
+      "add": "Add new address",
+      "create": {
+        "title": "Create Address",
+        "description": "Choose the inbox name and check the full address before creation.",
+        "back": "Back",
+        "field_label": "Address name",
+        "domain_label": "Domain",
+        "placeholder": "hello",
+        "preview": "Preview:",
+        "domain_title": "Use another domain",
+        "domain_description": "New addresses currently use {domain}. Connect a domain before creating addresses for another email domain.",
+        "connect_domain": "Connect new domain",
+        "submit": "Create",
+        "error": "Enter an address name.",
+        "success": "{address} is ready as a frontend preview."
+      }
     },
     "navigation": {
       "platform": "Platform",

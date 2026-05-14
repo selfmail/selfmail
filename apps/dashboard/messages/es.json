@@ -6,6 +6,94 @@
   "language_label": "Idioma",
   "current_locale": "Configuración regional actual: {locale}",
   "learn_router": "Aprender Paraglide JS",
+  "dashboard": {
+    "inbox": {
+      "unified": "Bandeja de entrada unificada",
+      "email_count": "{count} correos electrónicos",
+      "email_count_one": "{count} correo electrónico"
+    },
+    "address": {
+      "subtitle": "{address} - {count}",
+      "navigation_label": "Direcciones",
+      "add": "Agregar nueva dirección",
+      "create": {
+        "title": "Crear dirección",
+        "description": "Elige el nombre de la bandeja de entrada y verifica la dirección completa antes de crearla.",
+        "back": "Atrás",
+        "field_label": "Nombre de la dirección",
+        "domain_label": "Dominio",
+        "placeholder": "hola",
+        "preview": "Vista previa:",
+        "domain_title": "Usar otro dominio",
+        "domain_description": "Las nuevas direcciones actualmente usan {domain}. Conecta un dominio antes de crear direcciones para otro dominio de correo electrónico.",
+        "connect_domain": "Conectar nuevo dominio",
+        "submit": "Crear",
+        "error": "Introduce un nombre de dirección.",
+        "success": "{address} está lista como vista previa del frontend."
+      }
+    },
+    "navigation": {
+      "platform": "Plataforma",
+      "workspace": "Espacio de trabajo",
+      "ai": "IA",
+      "workflows": "Flujos de trabajo",
+      "developers": "Desarrolladores",
+      "changelog": "Registro de cambios",
+      "members": "Miembros",
+      "activity": "Actividad",
+      "storage": "Almacenamiento",
+      "settings": "Configuración",
+      "domains": "Dominios"
+    },
+    "header": {
+      "switch_workspace": "Cambiar espacio de trabajo",
+      "workspaces": "Espacios de trabajo",
+      "manage": "Administrar",
+      "settings": "Configuración",
+      "members": "Miembros",
+      "billing": "Facturación",
+      "domains": "Dominios",
+      "webhooks": "Webhooks",
+      "security": "Seguridad",
+      "support": "Soporte",
+      "create_workspace": "Crear espacio de trabajo",
+      "compose": "Redactar"
+    },
+    "email": {
+      "attachment_count": "{count} archivos adjuntos",
+      "attachment_count_one": "{count} archivo adjunto",
+      "empty_title": "Aún no hay correos",
+      "empty_description": "Envía un mensaje a esta dirección y aparecerá aquí.",
+      "preview_title": "Vista previa del correo",
+      "fullscreen": "Pantalla completa",
+      "close_preview": "Cerrar vista previa",
+      "attachment_label": "Archivo adjunto {number}",
+      "attachment_size": "24 KB",
+      "to": "Para: {address}"
+    },
+    "settings": {
+      "title": "Configuración del espacio de trabajo",
+      "description": "Actualiza el perfil del espacio de trabajo, el identificador público y la configuración destructiva de {workspaceName}.",
+      "general": "General",
+      "general_description": "Cambia el nombre del espacio de trabajo y actualiza los detalles mostrados a los miembros.",
+      "workspace_name": "Nombre del espacio de trabajo",
+      "workspace_handle": "Identificador del espacio de trabajo",
+      "workspace_handle_help": "Se utiliza en las URL del espacio de trabajo y en las direcciones de correo internas predeterminadas.",
+      "workspace_description": "Descripción",
+      "workspace_description_placeholder": "Para qué sirve este espacio de trabajo",
+      "workspace_image": "URL de la imagen del espacio de trabajo",
+      "saved": "Configuración del espacio de trabajo actualizada.",
+      "saving": "Guardando...",
+      "update": "Actualizar espacio de trabajo",
+      "delete_title": "Eliminar espacio de trabajo",
+      "delete_description": "Elimina este espacio de trabajo cuando ya no lo necesites. Esta acción no se puede deshacer.",
+      "delete_trigger": "Eliminar espacio de trabajo",
+      "delete_confirm_title": "¿Eliminar {workspaceName}?",
+      "delete_confirm_description": "Esto elimina permanentemente el espacio de trabajo. Perderás el acceso a su configuración y a los datos relacionados con el espacio de trabajo.",
+      "cancel": "Cancelar",
+      "deleting": "Eliminando..."
+    }
+  },
   "onboarding": {
     "meta": {
       "title": "Configuración inicial | Selfmail"

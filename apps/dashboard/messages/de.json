@@ -6,6 +6,94 @@
   "language_label": "Sprache",
   "current_locale": "Aktuelle Sprache: {locale}",
   "learn_router": "Paraglide JS lernen",
+  "dashboard": {
+    "inbox": {
+      "unified": "Einheitlicher Posteingang",
+      "email_count": "{count} E-Mails",
+      "email_count_one": "{count} E-Mail"
+    },
+    "address": {
+      "subtitle": "{address} - {count}",
+      "navigation_label": "Adressen",
+      "add": "Neue Adresse hinzufügen",
+      "create": {
+        "title": "Adresse erstellen",
+        "description": "Wählen Sie den Namen des Postfachs und prüfen Sie die vollständige Adresse vor dem Erstellen.",
+        "back": "Zurück",
+        "field_label": "Adressname",
+        "domain_label": "Domain",
+        "placeholder": "hallo",
+        "preview": "Vorschau:",
+        "domain_title": "Andere Domain verwenden",
+        "domain_description": "Neue Adressen verwenden aktuell {domain}. Verbinden Sie zuerst eine Domain, um Adressen für eine andere E-Mail-Domain zu erstellen.",
+        "connect_domain": "Neue Domain verbinden",
+        "submit": "Erstellen",
+        "error": "Geben Sie einen Adressnamen ein.",
+        "success": "{address} ist als Frontend-Vorschau bereit."
+      }
+    },
+    "navigation": {
+      "platform": "Plattform",
+      "workspace": "Arbeitsbereich",
+      "ai": "KI",
+      "workflows": "Workflows",
+      "developers": "Entwickler",
+      "changelog": "Änderungsprotokoll",
+      "members": "Mitglieder",
+      "activity": "Aktivität",
+      "storage": "Speicher",
+      "settings": "Einstellungen",
+      "domains": "Domains"
+    },
+    "header": {
+      "switch_workspace": "Arbeitsbereich wechseln",
+      "workspaces": "Arbeitsbereiche",
+      "manage": "Verwalten",
+      "settings": "Einstellungen",
+      "members": "Mitglieder",
+      "billing": "Abrechnung",
+      "domains": "Domains",
+      "webhooks": "Webhooks",
+      "security": "Sicherheit",
+      "support": "Support",
+      "create_workspace": "Workspace erstellen",
+      "compose": "Verfassen"
+    },
+    "email": {
+      "attachment_count": "{count} Anhänge",
+      "attachment_count_one": "{count} Anhang",
+      "empty_title": "Noch keine E-Mails",
+      "empty_description": "Senden Sie eine Nachricht an diese Adresse und sie wird hier angezeigt.",
+      "preview_title": "E-Mail-Vorschau",
+      "fullscreen": "Vollbild",
+      "close_preview": "Vorschau schließen",
+      "attachment_label": "Anhang {number}",
+      "attachment_size": "24 KB",
+      "to": "An: {address}"
+    },
+    "settings": {
+      "title": "Workspace-Einstellungen",
+      "description": "Aktualisieren Sie das Workspace-Profil, den öffentlichen Handle und die kritischen Einstellungen für {workspaceName}.",
+      "general": "Allgemein",
+      "general_description": "Benennen Sie den Workspace um und aktualisieren Sie die Details, die den Mitgliedern angezeigt werden.",
+      "workspace_name": "Workspace-Name",
+      "workspace_handle": "Workspace-Handle",
+      "workspace_handle_help": "Wird in Workspace-URLs und Standard-Selfmail-Adressen verwendet.",
+      "workspace_description": "Beschreibung",
+      "workspace_description_placeholder": "Wofür dieser Workspace verwendet wird",
+      "workspace_image": "Workspace-Bild-URL",
+      "saved": "Workspace-Einstellungen aktualisiert.",
+      "saving": "Wird gespeichert...",
+      "update": "Workspace aktualisieren",
+      "delete_title": "Workspace löschen",
+      "delete_description": "Löschen Sie diesen Workspace, wenn Sie ihn nicht mehr benötigen. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "delete_trigger": "Workspace löschen",
+      "delete_confirm_title": "{workspaceName} löschen?",
+      "delete_confirm_description": "Dadurch wird der Workspace dauerhaft gelöscht. Sie verlieren den Zugriff auf seine Einstellungen und die zugehörigen Workspace-Daten.",
+      "cancel": "Abbrechen",
+      "deleting": "Wird gelöscht..."
+    }
+  },
   "onboarding": {
     "meta": {
       "title": "Onboarding | Selfmail"
