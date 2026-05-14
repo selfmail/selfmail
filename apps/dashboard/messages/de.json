@@ -28,6 +28,7 @@
         "domain_description": "Neue Adressen verwenden aktuell {domain}. Verbinden Sie zuerst eine Domain, um Adressen für eine andere E-Mail-Domain zu erstellen.",
         "connect_domain": "Neue Domain verbinden",
         "submit": "Erstellen",
+        "saving": "Erstellen...",
         "error": "Geben Sie einen Adressnamen ein.",
         "success": "{address} ist als Frontend-Vorschau bereit."
       }
@@ -38,7 +39,7 @@
       "ai": "KI",
       "workflows": "Workflows",
       "developers": "Entwickler",
-      "changelog": "Änderungsprotokoll",
+      "audit-logs": "Audit-Protokolle",
       "members": "Mitglieder",
       "activity": "Aktivität",
       "storage": "Speicher",

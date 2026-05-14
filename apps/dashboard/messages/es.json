@@ -28,6 +28,7 @@
         "domain_description": "Las nuevas direcciones actualmente usan {domain}. Conecta un dominio antes de crear direcciones para otro dominio de correo electrónico.",
         "connect_domain": "Conectar nuevo dominio",
         "submit": "Crear",
+        "saving": "Creando...",
         "error": "Introduce un nombre de dirección.",
         "success": "{address} está lista como vista previa del frontend."
       }
@@ -38,7 +39,7 @@
       "ai": "IA",
       "workflows": "Flujos de trabajo",
       "developers": "Desarrolladores",
-      "changelog": "Registro de cambios",
+      "audit-logs": "Registros de Auditoría",
       "members": "Miembros",
       "activity": "Actividad",
       "storage": "Almacenamiento",

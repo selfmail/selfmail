@@ -28,6 +28,7 @@
         "domain_description": "Les nouvelles adresses utilisent actuellement {domain}. Connectez un domaine avant de créer des adresses pour un autre domaine de messagerie.",
         "connect_domain": "Connecter un nouveau domaine",
         "submit": "Créer",
+        "saving": "Création en cours...",
         "error": "Saisissez un nom d'adresse.",
         "success": "{address} est prête en tant qu'aperçu frontend."
       }
@@ -38,7 +39,7 @@
       "ai": "IA",
       "workflows": "Flux de travail",
       "developers": "Développeurs",
-      "changelog": "Journal des modifications",
+      "audit-logs": "Journaux d'audit",
       "members": "Membres",
       "activity": "Activité",
       "storage": "Stockage",

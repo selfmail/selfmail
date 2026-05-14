@@ -28,6 +28,7 @@
         "domain_description": "New addresses currently use {domain}. Connect a domain before creating addresses for another email domain.",
         "connect_domain": "Connect new domain",
         "submit": "Create",
+        "saving": "Creating...",
         "error": "Enter an address name.",
         "success": "{address} is ready as a frontend preview."
       }
@@ -38,7 +39,6 @@
       "ai": "Ai",
       "workflows": "Workflows",
       "developers": "Developers",
-      "changelog": "Changelog",
       "members": "Members",
       "activity": "Activity",
       "storage": "Storage",
