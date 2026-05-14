@@ -34,9 +34,10 @@
       }
     },
     "navigation": {
+      "build": "Build",
       "platform": "Platform",
       "workspace": "Workspace",
-      "ai": "Ai",
+      "ai": "AI",
       "workflows": "Workflows",
       "developers": "Developers",
       "members": "Members",
