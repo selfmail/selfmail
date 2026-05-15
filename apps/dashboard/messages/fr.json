@@ -34,12 +34,12 @@
       }
     },
     "navigation": {
+      "build": "Créer",
       "platform": "Plateforme",
       "workspace": "Espace de travail",
       "ai": "IA",
       "workflows": "Flux de travail",
       "developers": "Développeurs",
-      "audit-logs": "Journaux d'audit",
       "members": "Membres",
       "activity": "Activité",
       "storage": "Stockage",
@@ -58,7 +58,7 @@
       "security": "Sécurité",
       "support": "Support",
       "create_workspace": "Créer un espace de travail",
-      "compose": "Rédiger"
+      "compose": "Rédiger un e-mail"
     },
     "email": {
       "attachment_count": "{count} pièces jointes",

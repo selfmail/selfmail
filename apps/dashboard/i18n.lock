@@ -27,12 +27,12 @@ checksums:
     dashboard/address/create/saving: c949fe6aa47b326f345b405fe9c4d6e7
     dashboard/address/create/error: c0e46e6ec37f4c70b0abc06456517c32
     dashboard/address/create/success: 6a45101bfc4145ad3adf39380a7e5345
+    dashboard/navigation/build: b9133d1d6f232e6d15178f12bbae79aa
     dashboard/navigation/platform: c68862170146325333c7f25af11a3fa2
     dashboard/navigation/workspace: b63ef0e99ee6f7fef6cbe4971ca6cf0f
-    dashboard/navigation/ai: 0632f6689aa11caeb4b21c4df39c389d
+    dashboard/navigation/ai: b764382ca31f0c1570802ead170ad235
     dashboard/navigation/workflows: b0c9c8615a9ba7d9cb73e767290a7f72
     dashboard/navigation/developers: ff5d5b628f04a42cf4548929937918cd
-    dashboard/navigation/audit-logs: c7efb33d09676938d07651774b067bf6
     dashboard/navigation/members: 0932e80cba1e3e0a7f52bb67ff31da32
     dashboard/navigation/activity: 1948763de8e531483a798b68195e297e
     dashboard/navigation/storage: 99d4c24fb975d64b57a6ca3acd428558
@@ -49,7 +49,7 @@ checksums:
     dashboard/header/security: 4b34923fef858a2b9a4a914c3e822889
     dashboard/header/support: 55aab5fd0f31a9cb055a2edeeedfaf63
     dashboard/header/create_workspace: 2e6718e79964ea5ce22d76c2189c77ca
-    dashboard/header/compose: 4f942784f0e6ca76600120e1a1193694
+    dashboard/header/compose: 10883cdd59f05364cda62d711af745ad
     dashboard/email/attachment_count: 3f816f3d1cd0ef90a7e9eb1bc950c2b0
     dashboard/email/attachment_count_one: e9b482af5ff95dbc8fb0f43ab310d4ca
     dashboard/email/empty_title: c8d2576c066fffad181a4a4f835cf7dd

@@ -1,0 +1,52 @@
+import { GripVerticalIcon } from "lucide-react";
+import {
+	type GroupProps,
+	type PanelProps,
+	Panel as ResizablePanel,
+	Group as ResizablePanelGroup,
+	Separator as ResizablePrimitiveHandle,
+	type SeparatorProps,
+} from "react-resizable-panels";
+import { cn } from "#/lib/utils";
+
+type ResizableHandleProps = SeparatorProps & {
+	withHandle?: boolean;
+};
+
+function ResizableGroup({ className, ...props }: GroupProps) {
+	return (
+		<ResizablePanelGroup
+			className={cn("h-full w-full", className)}
+			{...props}
+		/>
+	);
+}
+
+function ResizableHandle({
+	className,
+	withHandle,
+	...props
+}: ResizableHandleProps) {
+	return (
+		<ResizablePrimitiveHandle
+			className={cn(
+				"relative flex w-px items-center justify-center bg-neutral-200 transition-colors hover:bg-neutral-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300",
+				className,
+			)}
+			{...props}
+		>
+			{withHandle ? (
+				<div className="flex h-8 w-4 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-500 shadow-sm">
+					<GripVerticalIcon className="size-3.5" />
+				</div>
+			) : null}
+		</ResizablePrimitiveHandle>
+	);
+}
+
+export {
+	type PanelProps as ResizablePanelProps,
+	ResizableGroup as ResizablePanelGroup,
+	ResizableHandle,
+	ResizablePanel,
+};

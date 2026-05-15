@@ -34,12 +34,12 @@
       }
     },
     "navigation": {
+      "build": "Crear",
       "platform": "Plataforma",
       "workspace": "Espacio de trabajo",
       "ai": "IA",
       "workflows": "Flujos de trabajo",
       "developers": "Desarrolladores",
-      "audit-logs": "Registros de Auditoría",
       "members": "Miembros",
       "activity": "Actividad",
       "storage": "Almacenamiento",
@@ -58,7 +58,7 @@
       "security": "Seguridad",
       "support": "Soporte",
       "create_workspace": "Crear espacio de trabajo",
-      "compose": "Redactar"
+      "compose": "Redactar correo"
     },
     "email": {
       "attachment_count": "{count} archivos adjuntos",

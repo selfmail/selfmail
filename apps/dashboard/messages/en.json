@@ -58,7 +58,7 @@
       "security": "Security",
       "support": "Support",
       "create_workspace": "Create workspace",
-      "compose": "Compose"
+      "compose": "Compose Email"
     },
     "email": {
       "attachment_count": "{count} attachments",

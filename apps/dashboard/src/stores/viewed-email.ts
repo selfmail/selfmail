@@ -1,13 +1,18 @@
-import { create } from "zustand";
+import { parseAsString, useQueryState } from "nuqs";
 
-interface ViewedEmailStore {
-	emailId: string | undefined;
-	closePreview: () => void;
-	setEmailId: (emailId: string | undefined) => void;
+export function useViewedEmail() {
+	const [emailId, setEmailId] = useQueryState(
+		"email",
+		parseAsString.withOptions({
+			history: "replace",
+			scroll: false,
+			shallow: true,
+		}),
+	);
+
+	return {
+		closePreview: () => setEmailId(null),
+		emailId: emailId ?? undefined,
+		setEmailId,
+	};
 }
-
-export const useViewedEmailStore = create<ViewedEmailStore>((set) => ({
-	emailId: undefined,
-	closePreview: () => set({ emailId: undefined }),
-	setEmailId: (emailId) => set({ emailId }),
-}));

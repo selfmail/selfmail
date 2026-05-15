@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { type ReactNode, useState } from "react";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
 import type { DashboardAddress } from "./types";
@@ -22,11 +23,13 @@ const addressLabelMaxLength = 24;
 interface DashboardNavigationProps {
 	addresses: DashboardAddress[];
 	currentAddressSlug?: string;
+	previewOpen?: boolean;
 	workspaceSlug: string;
 }
 
 interface NavColumnProps {
 	children: ReactNode;
+	className?: string;
 	title: string;
 }
 
@@ -37,9 +40,9 @@ interface DashboardNavLinkProps {
 	title?: string;
 }
 
-function NavColumn({ children, title }: NavColumnProps) {
+function NavColumn({ children, className, title }: NavColumnProps) {
 	return (
-		<div className="flex min-w-0 flex-col gap-3">
+		<div className={cn("flex min-w-0 flex-col gap-3", className)}>
 			<p className="text-neutral-700 text-sm">{title}</p>
 			{children}
 		</div>
@@ -77,10 +80,19 @@ function formatAddressLabel(address: string) {
 export function DashboardNavigation({
 	addresses,
 	currentAddressSlug,
+	previewOpen,
 	workspaceSlug,
 }: DashboardNavigationProps) {
+	const [showWorkspaceNavigation, setShowWorkspaceNavigation] = useState(false);
+	const workspaceNavigationVisible = !previewOpen || showWorkspaceNavigation;
+
 	return (
-		<nav className="flex w-full flex-col justify-between gap-8 md:flex-row">
+		<nav
+			className={cn(
+				"flex w-full flex-col gap-8 md:flex-row md:justify-between",
+				previewOpen && "xl:grid xl:max-w-3xl xl:grid-cols-2 xl:justify-start",
+			)}
+		>
 			<NavColumn title={m["dashboard.address.navigation_label"]()}>
 				<Link
 					className="group w-full"
@@ -133,7 +145,31 @@ export function DashboardNavigation({
 					</DashboardNavLink>
 				))}
 			</NavColumn>
-			<NavColumn title={m["dashboard.navigation.workspace"]()}>
+			<button
+				aria-expanded={showWorkspaceNavigation}
+				className={cn(
+					"hidden w-fit items-center gap-1 rounded-md px-2 py-1 text-neutral-700 text-sm transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300",
+					previewOpen && "xl:flex",
+				)}
+				onClick={() =>
+					setShowWorkspaceNavigation((currentValue) => !currentValue)
+				}
+				type="button"
+			>
+				<span>{m["dashboard.navigation.workspace"]()}</span>
+				{showWorkspaceNavigation ? (
+					<ChevronUpIcon className="size-4" />
+				) : (
+					<ChevronDownIcon className="size-4" />
+				)}
+			</button>
+			<NavColumn
+				className={cn(
+					previewOpen && "xl:col-span-2",
+					!workspaceNavigationVisible && "xl:hidden",
+				)}
+				title={m["dashboard.navigation.workspace"]()}
+			>
 				{workspaceLinks.map((link) =>
 					link === "dashboard.navigation.settings" ? (
 						<Link

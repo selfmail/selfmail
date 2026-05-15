@@ -2,6 +2,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Agentation } from "agentation";
+import { NuqsAdapter } from "nuqs/adapters/tanstack-router";
 import { getLocale } from "#/paraglide/runtime";
 import PostHogProvider from "../integrations/posthog/provider";
 
@@ -57,7 +58,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			</head>
 			<body className="wrap-anywhere font-sans antialiased">
 				<PostHogProvider>
-					{children}
+					<NuqsAdapter>{children}</NuqsAdapter>
 					{process.env.NODE_ENV === "development" && <Agentation />}
 					<TanStackDevtools
 						config={{

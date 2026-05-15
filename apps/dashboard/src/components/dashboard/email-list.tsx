@@ -1,7 +1,7 @@
 import { PaperclipIcon } from "lucide-react";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
-import { useViewedEmailStore } from "#/stores/viewed-email";
+import { useViewedEmail } from "#/stores/viewed-email";
 import type { Email } from "./types";
 
 function formatAttachmentCount(count: number) {
@@ -17,15 +17,17 @@ interface EmailListProps {
 interface EmailItemProps {
 	email: Email;
 	isLast: boolean;
+	selected: boolean;
 	onSelect: (emailId: string) => void;
 }
 
-function EmailItem({ email, isLast, onSelect }: EmailItemProps) {
+function EmailItem({ email, isLast, onSelect, selected }: EmailItemProps) {
 	return (
 		<button
 			className={cn(
 				"group cursor-pointer px-4 py-3 text-left transition-colors hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300",
 				!isLast && "border-neutral-200 border-b",
+				selected && "bg-neutral-50",
 			)}
 			onClick={() => onSelect(email.id)}
 			type="button"
@@ -81,7 +83,7 @@ function EmailItem({ email, isLast, onSelect }: EmailItemProps) {
 }
 
 export function EmailList({ emails }: EmailListProps) {
-	const setEmailId = useViewedEmailStore((state) => state.setEmailId);
+	const { emailId, setEmailId } = useViewedEmail();
 
 	return (
 		<div className="flex w-full flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white">
@@ -92,6 +94,7 @@ export function EmailList({ emails }: EmailListProps) {
 						isLast={index === emails.length - 1}
 						key={email.id}
 						onSelect={setEmailId}
+						selected={email.id === emailId}
 					/>
 				))
 			) : (

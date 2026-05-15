@@ -1,6 +1,7 @@
 import { Maximize2Icon, PaperclipIcon, XIcon } from "lucide-react";
+import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
-import { useViewedEmailStore } from "#/stores/viewed-email";
+import { useViewedEmail } from "#/stores/viewed-email";
 import type { Email } from "./types";
 
 interface EmailAttachmentsProps {
@@ -48,8 +49,7 @@ function EmailAttachments({ email }: EmailAttachmentsProps) {
 }
 
 export function EmailPreview({ emails }: EmailPreviewProps) {
-	const closePreview = useViewedEmailStore((state) => state.closePreview);
-	const emailId = useViewedEmailStore((state) => state.emailId);
+	const { closePreview, emailId } = useViewedEmail();
 	const email = emails.find((sampleEmail) => sampleEmail.id === emailId);
 
 	if (!email) {
@@ -57,7 +57,11 @@ export function EmailPreview({ emails }: EmailPreviewProps) {
 	}
 
 	return (
-		<aside className="fixed inset-y-0 right-0 z-50 hidden w-full max-w-2xl flex-col overflow-hidden bg-white shadow-2xl xl:flex">
+		<aside
+			className={cn(
+				"sticky top-0 z-10 hidden h-dvh w-full shrink-0 flex-col overflow-hidden border-neutral-200 border-l bg-white xl:flex",
+			)}
+		>
 			<div className="flex items-center justify-between border-neutral-200 border-b px-6 py-4">
 				<h2 className="truncate font-medium text-lg">
 					{m["dashboard.email.preview_title"]()}
@@ -80,7 +84,7 @@ export function EmailPreview({ emails }: EmailPreviewProps) {
 					</button>
 				</div>
 			</div>
-			<div className="flex-1 overflow-y-auto p-6">
+			<div className="flex-1 overflow-y-auto p-6 [scrollbar-color:gray_transparent] [scrollbar-width:thin]">
 				<div className="mb-6">
 					<h1 className="mb-4 text-balance font-medium text-2xl">
 						{email.subject}
