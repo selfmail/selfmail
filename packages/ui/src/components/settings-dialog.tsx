@@ -130,7 +130,7 @@ function SettingsMenuItem({
   ...props
 }: SettingsMenuItemProps) {
   const itemClassName = cn(
-    "flex h-9 w-full items-center gap-2 rounded-lg px-3 text-left font-medium text-sm outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:bg-muted data-[active=true]:text-foreground",
+    "flex h-9 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-left font-medium text-sm outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:bg-muted data-[active=true]:text-foreground",
     className
   );
   const content = (

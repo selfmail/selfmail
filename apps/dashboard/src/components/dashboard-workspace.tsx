@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from "react";
+import { DashboardSettingsMenu } from "#/components/settings/dashboard-settings-menu";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
 import { useViewedEmail } from "#/stores/viewed-email";
@@ -7,6 +8,7 @@ import { DashboardNavigation } from "./dashboard/dashboard-navigation";
 import { EmailList } from "./dashboard/email-list";
 import { EmailPreview } from "./dashboard/email-preview";
 import type { DashboardWorkspaceProps } from "./dashboard/types";
+import { useSettingsPage } from "./settings/use-settings-page";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./ui";
 
 function formatEmailCount(count: number) {
@@ -46,6 +48,7 @@ export function DashboardWorkspace({
 	workspaces,
 }: DashboardWorkspaceProps) {
 	const { emailId } = useViewedEmail();
+	const [, setSettingsPage] = useSettingsPage();
 	const previewOpen = emails.some((email) => email.id === emailId);
 	const canResizePreview = useSyncExternalStore(
 		subscribeToPreviewPanelBreakpoint,
@@ -54,6 +57,7 @@ export function DashboardWorkspace({
 	);
 	const resolvedSubtitle = subtitle ?? formatEmailCount(emails.length);
 	const resolvedTitle = title ?? m["dashboard.inbox.unified"]();
+	const openSettings = () => setSettingsPage("general");
 	const dashboardContent = (
 		<div
 			className={cn(
@@ -68,13 +72,14 @@ export function DashboardWorkspace({
 			>
 				<DashboardHeader
 					currentWorkspace={currentWorkspace}
+					onOpenSettings={openSettings}
 					workspaces={workspaces}
 				/>
 				<DashboardNavigation
 					addresses={addresses}
 					currentAddressSlug={currentAddressSlug}
+					onOpenSettings={openSettings}
 					previewOpen={previewOpen}
-					workspaceName={currentWorkspace.name}
 					workspaceSlug={currentWorkspace.slug}
 				/>
 				<main className="flex w-full flex-col gap-4">
@@ -91,6 +96,7 @@ export function DashboardWorkspace({
 					<EmailList emails={emails} />
 				</main>
 			</div>
+			<DashboardSettingsMenu workspaceName={currentWorkspace.name} />
 		</div>
 	);
 

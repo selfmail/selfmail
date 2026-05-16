@@ -14,6 +14,7 @@ export type DashboardAddress = {
 
 export type DashboardHeaderProps = {
 	currentWorkspace: WorkspaceSummary;
+	onOpenSettings: () => void;
 	workspaces: WorkspaceSummary[];
 };
 

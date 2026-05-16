@@ -3,7 +3,6 @@ import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
-import { ExampleSettingsMenu } from "../settings/example-settings-menu";
 import type { DashboardAddress } from "./types";
 
 const buildLinks = [
@@ -21,26 +20,26 @@ const workspaceLinks = [
 
 const addressLabelMaxLength = 24;
 
-interface DashboardNavigationProps {
+type DashboardNavigationProps = {
 	addresses: DashboardAddress[];
 	currentAddressSlug?: string;
+	onOpenSettings: () => void;
 	previewOpen?: boolean;
-	workspaceName: string;
 	workspaceSlug: string;
-}
+};
 
-interface NavColumnProps {
+type NavColumnProps = {
 	children: ReactNode;
 	className?: string;
 	title: string;
-}
+};
 
-interface DashboardNavLinkProps {
+type DashboardNavLinkProps = {
 	active?: boolean;
 	children: ReactNode;
 	href: string;
 	title?: string;
-}
+};
 
 function NavColumn({ children, className, title }: NavColumnProps) {
 	return (
@@ -82,8 +81,8 @@ function formatAddressLabel(address: string) {
 export function DashboardNavigation({
 	addresses,
 	currentAddressSlug,
+	onOpenSettings,
 	previewOpen,
-	workspaceName,
 	workspaceSlug,
 }: DashboardNavigationProps) {
 	const [showWorkspaceNavigation, setShowWorkspaceNavigation] = useState(false);
@@ -175,17 +174,16 @@ export function DashboardNavigation({
 			>
 				{workspaceLinks.map((link) =>
 					link === "dashboard.navigation.settings" ? (
-						<ExampleSettingsMenu
+						<button
+							className="group w-full cursor-pointer text-left"
 							key={link}
-							trigger={
-								<button className="group w-full text-left" type="button">
-									<span className="w-fit rounded-md font-medium text-black text-xl ring-neutral-200 transition-all group-hover:bg-neutral-200 group-hover:ring-4 group-focus-visible:bg-neutral-200 group-focus-visible:ring-4">
-										{m[link]()}
-									</span>
-								</button>
-							}
-							workspaceName={workspaceName}
-						/>
+							onClick={onOpenSettings}
+							type="button"
+						>
+							<span className="w-fit rounded-md font-medium text-black text-xl ring-neutral-200 transition-all group-hover:bg-neutral-200 group-hover:ring-4 group-focus-visible:bg-neutral-200 group-focus-visible:ring-4">
+								{m[link]()}
+							</span>
+						</button>
 					) : (
 						<DashboardNavLink href="#workspace" key={link}>
 							{m[link]()}

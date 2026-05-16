@@ -1,8 +1,4 @@
-export {
-	createWorkspaceAddressFn,
-	deleteWorkspaceFn,
-	updateWorkspaceSettingsFn,
-} from "./workspaces/mutations";
+export { createWorkspaceAddressFn } from "./workspaces/mutations";
 export {
 	getAddressInboxFn,
 	getDashboardWorkspacesFn,

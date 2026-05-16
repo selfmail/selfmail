@@ -14,7 +14,6 @@ import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
 import { Route as AuthedOnboardingIndexRouteImport } from './routes/_authed/onboarding/index'
 import { Route as AuthedWorkspaceSlugWorkspaceRouteImport } from './routes/_authed/$workspaceSlug/_workspace'
 import { Route as AuthedWorkspaceSlugWorkspaceIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/index'
-import { Route as AuthedWorkspaceSlugWorkspaceSettingsRouteImport } from './routes/_authed/$workspaceSlug/_workspace/settings'
 import { Route as AuthedWorkspaceSlugWorkspaceNewAddressRouteImport } from './routes/_authed/$workspaceSlug/_workspace/new-address'
 import { Route as AuthedWorkspaceSlugWorkspaceAddressSlugRouteImport } from './routes/_authed/$workspaceSlug/_workspace/$addressSlug'
 import { Route as AuthedWorkspaceSlugWorkspaceDomainsIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/domains/index'
@@ -44,12 +43,6 @@ const AuthedWorkspaceSlugWorkspaceIndexRoute =
   AuthedWorkspaceSlugWorkspaceIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => AuthedWorkspaceSlugWorkspaceRoute,
-  } as any)
-const AuthedWorkspaceSlugWorkspaceSettingsRoute =
-  AuthedWorkspaceSlugWorkspaceSettingsRouteImport.update({
-    id: '/settings',
-    path: '/settings',
     getParentRoute: () => AuthedWorkspaceSlugWorkspaceRoute,
   } as any)
 const AuthedWorkspaceSlugWorkspaceNewAddressRoute =
@@ -83,7 +76,6 @@ export interface FileRoutesByFullPath {
   '/onboarding/': typeof AuthedOnboardingIndexRoute
   '/$workspaceSlug/$addressSlug': typeof AuthedWorkspaceSlugWorkspaceAddressSlugRoute
   '/$workspaceSlug/new-address': typeof AuthedWorkspaceSlugWorkspaceNewAddressRoute
-  '/$workspaceSlug/settings': typeof AuthedWorkspaceSlugWorkspaceSettingsRoute
   '/$workspaceSlug/': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
   '/$workspaceSlug/domains/add': typeof AuthedWorkspaceSlugWorkspaceDomainsAddRoute
   '/$workspaceSlug/domains/': typeof AuthedWorkspaceSlugWorkspaceDomainsIndexRoute
@@ -93,7 +85,6 @@ export interface FileRoutesByTo {
   '/onboarding': typeof AuthedOnboardingIndexRoute
   '/$workspaceSlug/$addressSlug': typeof AuthedWorkspaceSlugWorkspaceAddressSlugRoute
   '/$workspaceSlug/new-address': typeof AuthedWorkspaceSlugWorkspaceNewAddressRoute
-  '/$workspaceSlug/settings': typeof AuthedWorkspaceSlugWorkspaceSettingsRoute
   '/$workspaceSlug': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
   '/$workspaceSlug/domains/add': typeof AuthedWorkspaceSlugWorkspaceDomainsAddRoute
   '/$workspaceSlug/domains': typeof AuthedWorkspaceSlugWorkspaceDomainsIndexRoute
@@ -106,7 +97,6 @@ export interface FileRoutesById {
   '/_authed/onboarding/': typeof AuthedOnboardingIndexRoute
   '/_authed/$workspaceSlug/_workspace/$addressSlug': typeof AuthedWorkspaceSlugWorkspaceAddressSlugRoute
   '/_authed/$workspaceSlug/_workspace/new-address': typeof AuthedWorkspaceSlugWorkspaceNewAddressRoute
-  '/_authed/$workspaceSlug/_workspace/settings': typeof AuthedWorkspaceSlugWorkspaceSettingsRoute
   '/_authed/$workspaceSlug/_workspace/': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
   '/_authed/$workspaceSlug/_workspace/domains/add': typeof AuthedWorkspaceSlugWorkspaceDomainsAddRoute
   '/_authed/$workspaceSlug/_workspace/domains/': typeof AuthedWorkspaceSlugWorkspaceDomainsIndexRoute
@@ -119,7 +109,6 @@ export interface FileRouteTypes {
     | '/onboarding/'
     | '/$workspaceSlug/$addressSlug'
     | '/$workspaceSlug/new-address'
-    | '/$workspaceSlug/settings'
     | '/$workspaceSlug/'
     | '/$workspaceSlug/domains/add'
     | '/$workspaceSlug/domains/'
@@ -129,7 +118,6 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/$workspaceSlug/$addressSlug'
     | '/$workspaceSlug/new-address'
-    | '/$workspaceSlug/settings'
     | '/$workspaceSlug'
     | '/$workspaceSlug/domains/add'
     | '/$workspaceSlug/domains'
@@ -141,7 +129,6 @@ export interface FileRouteTypes {
     | '/_authed/onboarding/'
     | '/_authed/$workspaceSlug/_workspace/$addressSlug'
     | '/_authed/$workspaceSlug/_workspace/new-address'
-    | '/_authed/$workspaceSlug/_workspace/settings'
     | '/_authed/$workspaceSlug/_workspace/'
     | '/_authed/$workspaceSlug/_workspace/domains/add'
     | '/_authed/$workspaceSlug/_workspace/domains/'
@@ -188,13 +175,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceIndexRouteImport
       parentRoute: typeof AuthedWorkspaceSlugWorkspaceRoute
     }
-    '/_authed/$workspaceSlug/_workspace/settings': {
-      id: '/_authed/$workspaceSlug/_workspace/settings'
-      path: '/settings'
-      fullPath: '/$workspaceSlug/settings'
-      preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceSettingsRouteImport
-      parentRoute: typeof AuthedWorkspaceSlugWorkspaceRoute
-    }
     '/_authed/$workspaceSlug/_workspace/new-address': {
       id: '/_authed/$workspaceSlug/_workspace/new-address'
       path: '/new-address'
@@ -229,7 +209,6 @@ declare module '@tanstack/react-router' {
 interface AuthedWorkspaceSlugWorkspaceRouteChildren {
   AuthedWorkspaceSlugWorkspaceAddressSlugRoute: typeof AuthedWorkspaceSlugWorkspaceAddressSlugRoute
   AuthedWorkspaceSlugWorkspaceNewAddressRoute: typeof AuthedWorkspaceSlugWorkspaceNewAddressRoute
-  AuthedWorkspaceSlugWorkspaceSettingsRoute: typeof AuthedWorkspaceSlugWorkspaceSettingsRoute
   AuthedWorkspaceSlugWorkspaceIndexRoute: typeof AuthedWorkspaceSlugWorkspaceIndexRoute
   AuthedWorkspaceSlugWorkspaceDomainsAddRoute: typeof AuthedWorkspaceSlugWorkspaceDomainsAddRoute
   AuthedWorkspaceSlugWorkspaceDomainsIndexRoute: typeof AuthedWorkspaceSlugWorkspaceDomainsIndexRoute
@@ -241,8 +220,6 @@ const AuthedWorkspaceSlugWorkspaceRouteChildren: AuthedWorkspaceSlugWorkspaceRou
       AuthedWorkspaceSlugWorkspaceAddressSlugRoute,
     AuthedWorkspaceSlugWorkspaceNewAddressRoute:
       AuthedWorkspaceSlugWorkspaceNewAddressRoute,
-    AuthedWorkspaceSlugWorkspaceSettingsRoute:
-      AuthedWorkspaceSlugWorkspaceSettingsRoute,
     AuthedWorkspaceSlugWorkspaceIndexRoute:
       AuthedWorkspaceSlugWorkspaceIndexRoute,
     AuthedWorkspaceSlugWorkspaceDomainsAddRoute:
