@@ -8,7 +8,7 @@ interface PostHogProviderProps {
 export default function PostHogProvider({ children }: PostHogProviderProps) {
 	const apiKey = import.meta.env.VITE_POSTHOG_KEY;
 
-	if (!apiKey) {
+	if (!apiKey || import.meta.env.DEV) {
 		return children;
 	}
 
@@ -20,6 +20,7 @@ export default function PostHogProvider({ children }: PostHogProviderProps) {
 					import.meta.env.VITE_POSTHOG_HOST || "https://us.i.posthog.com",
 				capture_pageview: false,
 				defaults: "2025-11-30",
+				disable_external_dependency_loading: true,
 				person_profiles: "identified_only",
 			}}
 		>
