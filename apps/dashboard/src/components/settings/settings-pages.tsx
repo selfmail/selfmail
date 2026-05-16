@@ -10,6 +10,7 @@ import {
   SlidersHorizontalIcon,
   UsersIcon,
 } from "lucide-react";
+import { m } from "#/paraglide/messages";
 
 export type SettingsPageId =
   | "general"
@@ -23,66 +24,66 @@ export type SettingsPageId =
   | "security";
 
 export interface SettingsPage {
-  description: string;
+  description: () => string;
   icon: LucideIcon;
   id: SettingsPageId;
-  title: string;
+  title: () => string;
 }
 
 export const settingsPages = [
   {
-    description: "Workspace profile, defaults, and high-level preferences.",
+    description: m["dashboard.settings.menu.general.description"],
     icon: SlidersHorizontalIcon,
     id: "general",
-    title: "General",
+    title: m["dashboard.settings.menu.general.title"],
   },
   {
-    description: "Message, delivery, and activity notification defaults.",
+    description: m["dashboard.settings.menu.notifications.description"],
     icon: BellIcon,
     id: "notifications",
-    title: "Notifications",
+    title: m["dashboard.settings.menu.notifications.title"],
   },
   {
-    description: "Theme, contrast, language, and visual preferences.",
+    description: m["dashboard.settings.menu.appearance.description"],
     icon: PaintbrushIcon,
     id: "appearance",
-    title: "Appearance",
+    title: m["dashboard.settings.menu.appearance.title"],
   },
   {
-    description: "Connected domains and routing configuration.",
+    description: m["dashboard.settings.menu.domains.description"],
     icon: GlobeIcon,
     id: "domains",
-    title: "Domains",
+    title: m["dashboard.settings.menu.domains.title"],
   },
   {
-    description: "Workspace access, roles, and invitations.",
+    description: m["dashboard.settings.menu.members.description"],
     icon: UsersIcon,
     id: "members",
-    title: "Members",
+    title: m["dashboard.settings.menu.members.title"],
   },
   {
-    description: "Audit trail and recent workspace changes.",
+    description: m["dashboard.settings.menu.activity.description"],
     icon: ActivityIcon,
     id: "activity",
-    title: "Activity",
+    title: m["dashboard.settings.menu.activity.title"],
   },
   {
-    description: "Export, retention, and privacy controls.",
+    description: m["dashboard.settings.menu.data.description"],
     icon: DatabaseIcon,
     id: "data",
-    title: "Data controls",
+    title: m["dashboard.settings.menu.data.title"],
   },
   {
-    description: "Mailbox storage and attachment limits.",
+    description: m["dashboard.settings.menu.storage.description"],
     icon: HardDriveIcon,
     id: "storage",
-    title: "Storage",
+    title: m["dashboard.settings.menu.storage.title"],
   },
   {
-    description: "Authentication, sessions, and protective checks.",
+    description: m["dashboard.settings.menu.security.description"],
     icon: ShieldCheckIcon,
     id: "security",
-    title: "Security",
+    title: m["dashboard.settings.menu.security.title"],
   },
 ] as const satisfies SettingsPage[];
 

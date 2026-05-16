@@ -92,7 +92,47 @@
       "delete_confirm_title": "¿Eliminar {workspaceName}?",
       "delete_confirm_description": "Esto eliminará el workspace de forma permanente. Perderás el acceso a sus ajustes y a los datos relacionados.",
       "cancel": "Cancelar",
-      "deleting": "Eliminando..."
+      "deleting": "Eliminando...",
+      "menu": {
+        "general": {
+          "title": "General",
+          "description": "Perfil del workspace, valores por defecto y preferencias generales."
+        },
+        "notifications": {
+          "title": "Notificaciones",
+          "description": "Valores por defecto para mensajes, entrega y notificaciones de actividad."
+        },
+        "appearance": {
+          "title": "Apariencia",
+          "description": "Tema, contraste, idioma y preferencias visuales."
+        },
+        "domains": {
+          "title": "Domains",
+          "description": "Domains conectados y configuración de routing."
+        },
+        "members": {
+          "title": "Members",
+          "description": "Acceso al workspace, roles e invitaciones."
+        },
+        "activity": {
+          "title": "Actividad",
+          "description": "Registro de auditoría y cambios recientes en el workspace."
+        },
+        "data": {
+          "title": "Controles de datos",
+          "description": "Exportación, retención y controles de privacidad."
+        },
+        "storage": {
+          "title": "Almacenamiento",
+          "description": "Almacenamiento del mailbox y límites de adjuntos."
+        },
+        "security": {
+          "title": "Seguridad",
+          "description": "Autenticación, sesiones y comprobaciones de seguridad."
+        },
+        "placeholder": "Añade aquí los controles de {pageTitle}.",
+        "placeholder_description": "Configura los ajustes de {pageTitle} para {workspaceName}."
+      }
     }
   },
   "onboarding": {

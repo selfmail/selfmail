@@ -38,16 +38,16 @@ export function DashboardSettingsMenu({
                 key={page.id}
                 onClick={() => setPageId(page.id)}
               >
-                {page.title}
+                {page.title()}
               </SettingsMenuItem>
             ))}
           </SettingsMenu>
         </SettingsDialogSidebar>
         <SettingsDialogMain>
           <SettingsDialogHeader>
-            <SettingsDialogTitle>{activePage.title}</SettingsDialogTitle>
+            <SettingsDialogTitle>{activePage.title()}</SettingsDialogTitle>
             <SettingsDialogDescription>
-              {activePage.description}
+              {activePage.description()}
             </SettingsDialogDescription>
           </SettingsDialogHeader>
           <SettingsPageContent

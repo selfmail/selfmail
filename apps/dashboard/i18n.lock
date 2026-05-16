@@ -80,6 +80,26 @@ checksums:
     dashboard/settings/delete_confirm_description: 4df6cb7777aa7c95f5f50db32687a604
     dashboard/settings/cancel: 2e2a849c2223911717de8caa2c71bade
     dashboard/settings/deleting: 683cd814a3fc94e50b3e4e4a9c90c19c
+    dashboard/settings/menu/general/title: b891e8f15579fc5d97bcaf3637f5ae59
+    dashboard/settings/menu/general/description: dfded3c21e97d029982cc61480cbeea4
+    dashboard/settings/menu/notifications/title: c52df856139b50dbb1cae7bfb1cf73bb
+    dashboard/settings/menu/notifications/description: 75d320bc4f1362cfffcb7dc98b1599c4
+    dashboard/settings/menu/appearance/title: cdd8c41c5fb859234e8a603544fce631
+    dashboard/settings/menu/appearance/description: d17fcd9cb63b056ca19c7b6be84a77ba
+    dashboard/settings/menu/domains/title: 87955beb56bd7e2da09e44bacb294b6a
+    dashboard/settings/menu/domains/description: fa16ebd3361340b1b6b2386e67c601f1
+    dashboard/settings/menu/members/title: 0932e80cba1e3e0a7f52bb67ff31da32
+    dashboard/settings/menu/members/description: 881313c2cd941ee1517d81aad48fdafe
+    dashboard/settings/menu/activity/title: 1948763de8e531483a798b68195e297e
+    dashboard/settings/menu/activity/description: a3c0d19ad3e1fcd2c5032ee032de3148
+    dashboard/settings/menu/data/title: 4620422149321ba92e5e3052282ab211
+    dashboard/settings/menu/data/description: 847e3fed198139544e364aed7a48e6a3
+    dashboard/settings/menu/storage/title: 99d4c24fb975d64b57a6ca3acd428558
+    dashboard/settings/menu/storage/description: 27b355bb4c6e15f7b45efffd2b6f40d0
+    dashboard/settings/menu/security/title: 4b34923fef858a2b9a4a914c3e822889
+    dashboard/settings/menu/security/description: b4e93713121145fac633a15c395d25bf
+    dashboard/settings/menu/placeholder: 55627145af56840812f45893d700e52e
+    dashboard/settings/menu/placeholder_description: 397f516ffd81b4bc0aa278aac24a74c9
     onboarding/meta/title: 08fefbaa64d75c1e2d89a183eb9a62ab
     onboarding/actions/back: f541015a827e37cb3b1234e56bc2aa3c
     onboarding/actions/continue: b8d1cccacabd4d66f74364570f2df025

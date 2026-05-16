@@ -92,7 +92,47 @@
       "delete_confirm_title": "{workspaceName} löschen?",
       "delete_confirm_description": "Dadurch wird der Workspace dauerhaft gelöscht. Du verlierst den Zugriff auf seine Einstellungen und alle zugehörigen Workspace-Daten.",
       "cancel": "Abbrechen",
-      "deleting": "Wird gelöscht …"
+      "deleting": "Wird gelöscht …",
+      "menu": {
+        "general": {
+          "title": "Allgemein",
+          "description": "Workspace-Profil, Standardwerte und grundlegende Einstellungen."
+        },
+        "notifications": {
+          "title": "Benachrichtigungen",
+          "description": "Standard für Nachrichten-, Zustell- und Aktivitätsbenachrichtigungen."
+        },
+        "appearance": {
+          "title": "Darstellung",
+          "description": "Theme, Kontrast, Sprache und visuelle Einstellungen."
+        },
+        "domains": {
+          "title": "Domains",
+          "description": "Verbundene Domains und Routing-Konfiguration."
+        },
+        "members": {
+          "title": "Members",
+          "description": "Workspace-Zugriff, Rollen und Einladungen."
+        },
+        "activity": {
+          "title": "Aktivität",
+          "description": "Audit-Trail und letzte Änderungen im Workspace."
+        },
+        "data": {
+          "title": "Datenkontrolle",
+          "description": "Export, Aufbewahrung und Datenschutz-Einstellungen."
+        },
+        "storage": {
+          "title": "Speicher",
+          "description": "Mailbox-Speicher und Größenlimits für Anhänge."
+        },
+        "security": {
+          "title": "Sicherheit",
+          "description": "Authentifizierung, Sitzungen und Schutzmechanismen."
+        },
+        "placeholder": "Füge hier {pageTitle}-Einstellungen hinzu.",
+        "placeholder_description": "Konfiguriere die {pageTitle}-Einstellungen für {workspaceName}."
+      }
     }
   },
   "onboarding": {

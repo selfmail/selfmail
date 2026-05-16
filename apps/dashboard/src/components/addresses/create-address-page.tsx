@@ -19,10 +19,10 @@ import {
 } from "#/lib/workspaces";
 import { m } from "#/paraglide/messages";
 
-type CreateAddressPageProps = {
+interface CreateAddressPageProps {
 	domains: DashboardAddressDomain[];
 	workspace: DashboardWorkspace;
-};
+}
 
 const toAddressLocalPart = (value: string) =>
 	value

@@ -1,4 +1,3 @@
-// biome-ignore-all lint/style/useConsistentTypeDefinitions: Project TypeScript guidelines prefer type aliases.
 import {
   Close as DialogPrimitiveClose,
   Content as DialogPrimitiveContent,
@@ -102,23 +101,25 @@ function SettingsMenu({ className, ...props }: ComponentProps<"nav">) {
   );
 }
 
-type SettingsMenuItemBaseProps = {
+interface SettingsMenuItemBaseProps {
   active?: boolean;
   children: ReactNode;
   className?: string;
   icon?: ReactNode;
-};
+}
 
-type SettingsMenuButtonProps = SettingsMenuItemBaseProps &
-  Omit<ComponentProps<"button">, keyof SettingsMenuItemBaseProps | "type"> & {
-    href?: never;
-    type?: "button" | "submit" | "reset";
-  };
+interface SettingsMenuButtonProps
+  extends SettingsMenuItemBaseProps,
+    Omit<ComponentProps<"button">, keyof SettingsMenuItemBaseProps | "type"> {
+  href?: never;
+  type?: "button" | "submit" | "reset";
+}
 
-type SettingsMenuAnchorProps = SettingsMenuItemBaseProps &
-  Omit<ComponentProps<"a">, keyof SettingsMenuItemBaseProps> & {
-    href: string;
-  };
+interface SettingsMenuAnchorProps
+  extends SettingsMenuItemBaseProps,
+    Omit<ComponentProps<"a">, keyof SettingsMenuItemBaseProps> {
+  href: string;
+}
 
 type SettingsMenuItemProps = SettingsMenuAnchorProps | SettingsMenuButtonProps;
 
@@ -235,11 +236,11 @@ function SettingsGroup({ className, ...props }: ComponentProps<"div">) {
   );
 }
 
-type SettingsBlockProps = Omit<ComponentProps<"div">, "title"> & {
+interface SettingsBlockProps extends Omit<ComponentProps<"div">, "title"> {
   control?: ReactNode;
   description?: ReactNode;
   title: ReactNode;
-};
+}
 
 function SettingsBlock({
   children,
@@ -275,13 +276,11 @@ function SettingsBlock({
   );
 }
 
-type SettingsSwitchProps = Omit<
-  ComponentProps<typeof Switch>,
-  "children" | "title"
-> & {
+interface SettingsSwitchProps
+  extends Omit<ComponentProps<typeof Switch>, "children" | "title"> {
   description?: ReactNode;
   title: ReactNode;
-};
+}
 
 function SettingsSwitch({
   className,
@@ -298,16 +297,14 @@ function SettingsSwitch({
   );
 }
 
-type SettingsSelectOption = {
+interface SettingsSelectOption {
   disabled?: boolean;
   label: ReactNode;
   value: string;
-};
+}
 
-type SettingsSelectProps = Omit<
-  ComponentProps<typeof Select>,
-  "children" | "title"
-> & {
+interface SettingsSelectProps
+  extends Omit<ComponentProps<typeof Select>, "children" | "title"> {
   contentClassName?: string;
   description?: ReactNode;
   indicator?: ReactNode;
@@ -315,7 +312,7 @@ type SettingsSelectProps = Omit<
   placeholder?: string;
   title: ReactNode;
   triggerClassName?: string;
-};
+}
 
 function SettingsSelect({
   contentClassName,
@@ -399,15 +396,16 @@ const settingsBannerIconVariants = cva(
   }
 );
 
-type SettingsBannerProps = Omit<ComponentProps<"div">, "title"> &
-  VariantProps<typeof settingsBannerVariants> & {
-    action?: ReactNode;
-    description?: ReactNode;
-    dismissLabel?: string;
-    icon?: ReactNode;
-    onDismiss?: () => void;
-    title?: ReactNode;
-  };
+interface SettingsBannerProps
+  extends Omit<ComponentProps<"div">, "title">,
+    VariantProps<typeof settingsBannerVariants> {
+  action?: ReactNode;
+  description?: ReactNode;
+  dismissLabel?: string;
+  icon?: ReactNode;
+  onDismiss?: () => void;
+  title?: ReactNode;
+}
 
 function SettingsBanner({
   action,
@@ -454,21 +452,22 @@ function SettingsBanner({
   );
 }
 
-type SettingsTableColumn<TRow> = {
+interface SettingsTableColumn<TRow> {
   cell: (row: TRow) => ReactNode;
   className?: string;
   header: ReactNode;
   id: string;
-};
+}
 
-type SettingsTableProps<TRow> = Omit<ComponentProps<"div">, "children"> & {
+interface SettingsTableProps<TRow>
+  extends Omit<ComponentProps<"div">, "children"> {
   columns: readonly SettingsTableColumn<TRow>[];
   emptyAction?: ReactNode;
   emptyDescription?: ReactNode;
   emptyTitle?: ReactNode;
   getRowKey: (row: TRow, index: number) => Key;
   rows: readonly TRow[];
-};
+}
 
 function SettingsTable<TRow>({
   className,

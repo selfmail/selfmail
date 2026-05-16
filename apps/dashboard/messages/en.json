@@ -92,7 +92,47 @@
       "delete_confirm_title": "Delete {workspaceName}?",
       "delete_confirm_description": "This permanently deletes the workspace. You will lose access to its settings and related workspace data.",
       "cancel": "Cancel",
-      "deleting": "Deleting..."
+      "deleting": "Deleting...",
+      "menu": {
+        "general": {
+          "title": "General",
+          "description": "Workspace profile, defaults, and high-level preferences."
+        },
+        "notifications": {
+          "title": "Notifications",
+          "description": "Message, delivery, and activity notification defaults."
+        },
+        "appearance": {
+          "title": "Appearance",
+          "description": "Theme, contrast, language, and visual preferences."
+        },
+        "domains": {
+          "title": "Domains",
+          "description": "Connected domains and routing configuration."
+        },
+        "members": {
+          "title": "Members",
+          "description": "Workspace access, roles, and invitations."
+        },
+        "activity": {
+          "title": "Activity",
+          "description": "Audit trail and recent workspace changes."
+        },
+        "data": {
+          "title": "Data controls",
+          "description": "Export, retention, and privacy controls."
+        },
+        "storage": {
+          "title": "Storage",
+          "description": "Mailbox storage and attachment limits."
+        },
+        "security": {
+          "title": "Security",
+          "description": "Authentication, sessions, and protective checks."
+        },
+        "placeholder": "Add {pageTitle} controls here.",
+        "placeholder_description": "Configure {pageTitle} settings for {workspaceName}."
+      }
     }
   },
   "onboarding": {
