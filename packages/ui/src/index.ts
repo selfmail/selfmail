@@ -94,6 +94,29 @@ export {
 } from "./components/select";
 export { Separator } from "./components/separator";
 export {
+  SettingsBanner,
+  SettingsBlock,
+  SettingsDialog,
+  SettingsDialogClose,
+  SettingsDialogContent,
+  SettingsDialogDescription,
+  SettingsDialogHeader,
+  SettingsDialogMain,
+  SettingsDialogOverlay,
+  SettingsDialogSidebar,
+  SettingsDialogTitle,
+  SettingsDialogTrigger,
+  SettingsGroup,
+  SettingsMenu,
+  SettingsMenuItem,
+  SettingsSelect,
+  type SettingsSelectOption,
+  SettingsSwitch,
+  SettingsTable,
+  type SettingsTableColumn,
+  settingsBannerVariants,
+} from "./components/settings-dialog";
+export {
   Sheet,
   SheetClose,
   SheetContent,

@@ -1,64 +1,64 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
   "home_page": "Página de inicio",
-  "about_page": "Página Acerca de",
-  "example_message": "Bienvenido a tu aplicación i18n.",
+  "about_page": "Página de información",
+  "example_message": "Bienvenido a tu app de i18n.",
   "language_label": "Idioma",
-  "current_locale": "Configuración regional actual: {locale}",
-  "learn_router": "Aprender Paraglide JS",
+  "current_locale": "Configuración de idioma actual: {locale}",
+  "learn_router": "Aprende Paraglide JS",
   "dashboard": {
     "inbox": {
-      "unified": "Bandeja de entrada unificada",
-      "email_count": "{count} correos electrónicos",
-      "email_count_one": "{count} correo electrónico"
+      "unified": "Inbox unificado",
+      "email_count": "{count} emails",
+      "email_count_one": "{count} email"
     },
     "address": {
       "subtitle": "{address} - {count}",
-      "navigation_label": "Direcciones",
-      "add": "Agregar nueva dirección",
+      "navigation_label": "Addresses",
+      "add": "Añadir nueva address",
       "create": {
-        "title": "Crear dirección",
-        "description": "Elige el nombre de la bandeja de entrada y verifica la dirección completa antes de crearla.",
-        "back": "Atrás",
-        "field_label": "Nombre de la dirección",
-        "domain_label": "Dominio",
-        "placeholder": "hola",
+        "title": "Crear address",
+        "description": "Elige el nombre del inbox y revisa la dirección completa antes de crearla.",
+        "back": "Volver",
+        "field_label": "Nombre de la address",
+        "domain_label": "Domain",
+        "placeholder": "hello",
         "preview": "Vista previa:",
-        "domain_title": "Usar otro dominio",
-        "domain_description": "Las nuevas direcciones actualmente usan {domain}. Conecta un dominio antes de crear direcciones para otro dominio de correo electrónico.",
-        "connect_domain": "Conectar nuevo dominio",
+        "domain_title": "Usar otro domain",
+        "domain_description": "Por ahora, las nuevas addresses usan {domain}. Conecta un domain antes de crear addresses para otro email domain.",
+        "connect_domain": "Conectar nuevo domain",
         "submit": "Crear",
         "saving": "Creando...",
-        "error": "Introduce un nombre de dirección.",
+        "error": "Escribe un nombre para la address.",
         "success": "{address} está lista como vista previa del frontend."
       }
     },
     "navigation": {
-      "build": "Crear",
+      "build": "Build",
       "platform": "Plataforma",
-      "workspace": "Espacio de trabajo",
+      "workspace": "Workspace",
       "ai": "IA",
       "workflows": "Flujos de trabajo",
-      "developers": "Desarrolladores",
+      "developers": "Developers",
       "members": "Miembros",
       "activity": "Actividad",
       "storage": "Almacenamiento",
-      "settings": "Configuración",
+      "settings": "Ajustes",
       "domains": "Dominios"
     },
     "header": {
-      "switch_workspace": "Cambiar espacio de trabajo",
-      "workspaces": "Espacios de trabajo",
-      "manage": "Administrar",
-      "settings": "Configuración",
+      "switch_workspace": "Cambiar de workspace",
+      "workspaces": "Workspaces",
+      "manage": "Gestionar",
+      "settings": "Ajustes",
       "members": "Miembros",
       "billing": "Facturación",
       "domains": "Dominios",
       "webhooks": "Webhooks",
       "security": "Seguridad",
       "support": "Soporte",
-      "create_workspace": "Crear espacio de trabajo",
-      "compose": "Redactar correo"
+      "create_workspace": "Crear workspace",
+      "compose": "Redactar email"
     },
     "email": {
       "attachment_count": "{count} archivos adjuntos",
@@ -73,31 +73,31 @@
       "to": "Para: {address}"
     },
     "settings": {
-      "title": "Configuración del espacio de trabajo",
-      "description": "Actualiza el perfil del espacio de trabajo, el identificador público y la configuración destructiva de {workspaceName}.",
+      "title": "Ajustes del workspace",
+      "description": "Actualiza el perfil del workspace, el identificador público y los ajustes destructivos de {workspaceName}.",
       "general": "General",
-      "general_description": "Cambia el nombre del espacio de trabajo y actualiza los detalles mostrados a los miembros.",
-      "workspace_name": "Nombre del espacio de trabajo",
-      "workspace_handle": "Identificador del espacio de trabajo",
-      "workspace_handle_help": "Se utiliza en las URL del espacio de trabajo y en las direcciones de correo internas predeterminadas.",
+      "general_description": "Cambia el nombre del workspace y actualiza los datos que ven los miembros.",
+      "workspace_name": "Nombre del workspace",
+      "workspace_handle": "Identificador del workspace",
+      "workspace_handle_help": "Se usa en las URLs del workspace y en las direcciones Selfmail predeterminadas.",
       "workspace_description": "Descripción",
-      "workspace_description_placeholder": "Para qué sirve este espacio de trabajo",
-      "workspace_image": "URL de la imagen del espacio de trabajo",
-      "saved": "Configuración del espacio de trabajo actualizada.",
+      "workspace_description_placeholder": "Para qué sirve este workspace",
+      "workspace_image": "URL de la imagen del workspace",
+      "saved": "Ajustes del workspace actualizados.",
       "saving": "Guardando...",
-      "update": "Actualizar espacio de trabajo",
-      "delete_title": "Eliminar espacio de trabajo",
-      "delete_description": "Elimina este espacio de trabajo cuando ya no lo necesites. Esta acción no se puede deshacer.",
-      "delete_trigger": "Eliminar espacio de trabajo",
+      "update": "Actualizar workspace",
+      "delete_title": "Eliminar workspace",
+      "delete_description": "Elimina este workspace cuando ya no lo necesites. Esta acción no se puede deshacer.",
+      "delete_trigger": "Eliminar workspace",
       "delete_confirm_title": "¿Eliminar {workspaceName}?",
-      "delete_confirm_description": "Esto elimina permanentemente el espacio de trabajo. Perderás el acceso a su configuración y a los datos relacionados con el espacio de trabajo.",
+      "delete_confirm_description": "Esto eliminará el workspace de forma permanente. Perderás el acceso a sus ajustes y a los datos relacionados.",
       "cancel": "Cancelar",
       "deleting": "Eliminando..."
     }
   },
   "onboarding": {
     "meta": {
-      "title": "Configuración inicial | Selfmail"
+      "title": "Onboarding | Selfmail"
     },
     "actions": {
       "back": "Atrás",
@@ -105,64 +105,64 @@
       "create": "Crear"
     },
     "steps": {
-      "label": "Paso {current} de {total} de la configuración inicial"
+      "label": "Paso {current} de {total} del onboarding"
     },
     "name": {
-      "title": "Nombra tu espacio de trabajo",
+      "title": "Ponle nombre a tu workspace",
       "workspace": {
-        "label": "Nombre del espacio de trabajo",
-        "placeholder": "Operaciones Acme"
+        "label": "Nombre del workspace",
+        "placeholder": "Acme Operations"
       },
       "handle": {
-        "label": "Identificador del espacio de trabajo",
-        "placeholder": "operaciones-acme",
-        "help": "Se utiliza para URLs internas y enrutamiento de correo predeterminado."
+        "label": "Handle del workspace",
+        "placeholder": "acme-operations",
+        "help": "Se usa para URLs internas y para el routing de correo por defecto."
       }
     },
     "domain": {
-      "title": "Añade tu dominio de correo",
+      "title": "Añade tu email domain",
       "custom": {
-        "label": "Usar un dominio de correo personalizado",
-        "help": "Selfmail permanece alojado por Selfmail. Esto solo conecta tu dominio para las direcciones de correo."
+        "label": "Usar un email domain propio",
+        "help": "Selfmail sigue alojado por Selfmail. Solo conecta tu domain para direcciones de correo."
       },
       "field": {
-        "label": "Dominio de correo",
-        "placeholder": "tudominio.com"
+        "label": "Email domain",
+        "placeholder": "yourdomain.com"
       },
-      "current": "Dominio actual:"
+      "current": "Domain actual:"
     },
     "address": {
-      "title": "Crea la primera bandeja de entrada",
+      "title": "Crea la primera inbox",
       "field": {
         "label": "Nombre de la dirección",
-        "placeholder": "hola"
+        "placeholder": "hello"
       },
       "preview": "Vista previa:"
     },
     "members": {
       "title": "Invita a tu equipo",
-      "label": "Invitar por correo electrónico",
-      "input_label": "Correo electrónico del miembro {number} del equipo",
-      "placeholder": "nombre@empresa.com",
-      "remove_invite": "Eliminar invitación",
-      "add_invite": "Añadir otro",
+      "label": "Invitar por email",
+      "input_label": "Email del miembro {number}",
+      "placeholder": "name@company.com",
+      "remove_invite": "Quitar invitación",
+      "add_invite": "Añadir otra",
       "invited": "{count} invitados",
       "only_you": "Solo tú"
     },
     "review": {
       "title": "Revisar",
-      "workspace": "Espacio de trabajo",
-      "handle": "Identificador",
-      "address": "Primera dirección",
-      "members": "Miembros",
+      "workspace": "Workspace",
+      "handle": "Handle",
+      "address": "Primera address",
+      "members": "Members",
       "not_set": "Sin configurar"
     },
     "errors": {
-      "workspace_name": "Introduce un nombre para el espacio de trabajo.",
+      "workspace_name": "Escribe un nombre para el workspace.",
       "workspace_handle": "Usa letras minúsculas, números y guiones simples.",
-      "domain": "Introduce un dominio válido, sin https://.",
+      "domain": "Escribe un dominio válido, sin https://.",
       "address": "Usa letras, números, puntos, guiones bajos o guiones.",
-      "member_email": "Introduce una dirección de correo electrónico válida."
+      "member_email": "Escribe una dirección de email válida."
     }
   }
 }

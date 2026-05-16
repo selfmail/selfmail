@@ -1,43 +1,43 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
   "home_page": "Startseite",
-  "about_page": "Über uns",
+  "about_page": "Info-Seite",
   "example_message": "Willkommen in deiner i18n-App.",
   "language_label": "Sprache",
   "current_locale": "Aktuelle Sprache: {locale}",
-  "learn_router": "Paraglide JS lernen",
+  "learn_router": "Paraglide JS kennenlernen",
   "dashboard": {
     "inbox": {
-      "unified": "Einheitlicher Posteingang",
+      "unified": "Gemeinsame Inbox",
       "email_count": "{count} E-Mails",
       "email_count_one": "{count} E-Mail"
     },
     "address": {
-      "subtitle": "{address} - {count}",
+      "subtitle": "{address} – {count}",
       "navigation_label": "Adressen",
       "add": "Neue Adresse hinzufügen",
       "create": {
         "title": "Adresse erstellen",
-        "description": "Wählen Sie den Namen des Postfachs und prüfen Sie die vollständige Adresse vor dem Erstellen.",
+        "description": "Wähle den Inbox-Namen und prüfe die vollständige Adresse, bevor du sie erstellst.",
         "back": "Zurück",
         "field_label": "Adressname",
         "domain_label": "Domain",
-        "placeholder": "hallo",
+        "placeholder": "hello",
         "preview": "Vorschau:",
         "domain_title": "Andere Domain verwenden",
-        "domain_description": "Neue Adressen verwenden aktuell {domain}. Verbinden Sie zuerst eine Domain, um Adressen für eine andere E-Mail-Domain zu erstellen.",
+        "domain_description": "Neue Adressen verwenden aktuell {domain}. Verbinde zuerst eine Domain, bevor du Adressen für eine andere E-Mail-Domain erstellst.",
         "connect_domain": "Neue Domain verbinden",
         "submit": "Erstellen",
-        "saving": "Erstellen...",
-        "error": "Geben Sie einen Adressnamen ein.",
+        "saving": "Wird erstellt ...",
+        "error": "Gib einen Adressnamen ein.",
         "success": "{address} ist als Frontend-Vorschau bereit."
       }
     },
     "navigation": {
-      "build": "Erstellen",
+      "build": "Build",
       "platform": "Plattform",
-      "workspace": "Arbeitsbereich",
-      "ai": "KI",
+      "workspace": "Workspace",
+      "ai": "AI",
       "workflows": "Workflows",
       "developers": "Entwickler",
       "members": "Mitglieder",
@@ -47,24 +47,24 @@
       "domains": "Domains"
     },
     "header": {
-      "switch_workspace": "Arbeitsbereich wechseln",
-      "workspaces": "Arbeitsbereiche",
+      "switch_workspace": "Workspace wechseln",
+      "workspaces": "Workspaces",
       "manage": "Verwalten",
       "settings": "Einstellungen",
-      "members": "Mitglieder",
+      "members": "Members",
       "billing": "Abrechnung",
       "domains": "Domains",
       "webhooks": "Webhooks",
       "security": "Sicherheit",
       "support": "Support",
       "create_workspace": "Workspace erstellen",
-      "compose": "E-Mail verfassen"
+      "compose": "E-Mail schreiben"
     },
     "email": {
       "attachment_count": "{count} Anhänge",
       "attachment_count_one": "{count} Anhang",
       "empty_title": "Noch keine E-Mails",
-      "empty_description": "Senden Sie eine Nachricht an diese Adresse und sie wird hier angezeigt.",
+      "empty_description": "Sende eine Nachricht an diese Adresse, sie erscheint dann hier.",
       "preview_title": "E-Mail-Vorschau",
       "fullscreen": "Vollbild",
       "close_preview": "Vorschau schließen",
@@ -74,25 +74,25 @@
     },
     "settings": {
       "title": "Workspace-Einstellungen",
-      "description": "Aktualisieren Sie das Workspace-Profil, den öffentlichen Handle und die kritischen Einstellungen für {workspaceName}.",
+      "description": "Aktualisiere das Workspace-Profil, das öffentliche Handle und kritische Einstellungen für {workspaceName}.",
       "general": "Allgemein",
-      "general_description": "Benennen Sie den Workspace um und aktualisieren Sie die Details, die den Mitgliedern angezeigt werden.",
+      "general_description": "Benenne den Workspace um und aktualisiere die Details, die Members sehen.",
       "workspace_name": "Workspace-Name",
       "workspace_handle": "Workspace-Handle",
       "workspace_handle_help": "Wird in Workspace-URLs und Standard-Selfmail-Adressen verwendet.",
       "workspace_description": "Beschreibung",
-      "workspace_description_placeholder": "Wofür dieser Workspace verwendet wird",
+      "workspace_description_placeholder": "Wofür dieser Workspace gedacht ist",
       "workspace_image": "Workspace-Bild-URL",
       "saved": "Workspace-Einstellungen aktualisiert.",
-      "saving": "Wird gespeichert...",
+      "saving": "Speichern...",
       "update": "Workspace aktualisieren",
       "delete_title": "Workspace löschen",
-      "delete_description": "Löschen Sie diesen Workspace, wenn Sie ihn nicht mehr benötigen. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "delete_description": "Lösche diesen Workspace, wenn du ihn nicht mehr brauchst. Diese Aktion kann nicht rückgängig gemacht werden.",
       "delete_trigger": "Workspace löschen",
       "delete_confirm_title": "{workspaceName} löschen?",
-      "delete_confirm_description": "Dadurch wird der Workspace dauerhaft gelöscht. Sie verlieren den Zugriff auf seine Einstellungen und die zugehörigen Workspace-Daten.",
+      "delete_confirm_description": "Dadurch wird der Workspace dauerhaft gelöscht. Du verlierst den Zugriff auf seine Einstellungen und alle zugehörigen Workspace-Daten.",
       "cancel": "Abbrechen",
-      "deleting": "Wird gelöscht..."
+      "deleting": "Wird gelöscht …"
     }
   },
   "onboarding": {
@@ -108,7 +108,7 @@
       "label": "Onboarding-Schritt {current} von {total}"
     },
     "name": {
-      "title": "Benennen Sie Ihren Workspace",
+      "title": "Gib deinem Workspace einen Namen",
       "workspace": {
         "label": "Workspace-Name",
         "placeholder": "Acme Operations"
@@ -116,53 +116,53 @@
       "handle": {
         "label": "Workspace-Handle",
         "placeholder": "acme-operations",
-        "help": "Wird für interne URLs und Standard-E-Mail-Routing verwendet."
+        "help": "Wird für interne URLs und das Standard-E-Mail-Routing verwendet."
       }
     },
     "domain": {
-      "title": "Fügen Sie Ihre E-Mail-Domain hinzu",
+      "title": "Füge deine E-Mail-Domain hinzu",
       "custom": {
-        "label": "Benutzerdefinierte E-Mail-Domain verwenden",
-        "help": "Selfmail bleibt von Selfmail gehostet. Hiermit wird nur Ihre Domain für E-Mail-Adressen verbunden."
+        "label": "Eigene E-Mail-Domain verwenden",
+        "help": "Selfmail bleibt bei Selfmail gehostet. Du verbindest hier nur deine Domain für E-Mail-Adressen."
       },
       "field": {
         "label": "E-Mail-Domain",
-        "placeholder": "mail.acme.com"
+        "placeholder": "yourdomain.com"
       },
       "current": "Aktuelle Domain:"
     },
     "address": {
-      "title": "Erstellen Sie das erste Postfach",
+      "title": "Erstelle die erste Adresse",
       "field": {
         "label": "Adressname",
-        "placeholder": "hallo"
+        "placeholder": "hello"
       },
       "preview": "Vorschau:"
     },
     "members": {
-      "title": "Laden Sie Ihr Team ein",
+      "title": "Lade dein Workspace ein",
       "label": "Per E-Mail einladen",
-      "input_label": "E-Mail-Adresse des Teammitglieds {number}",
-      "placeholder": "name@unternehmen.com",
+      "input_label": "E-Mail-Adresse von Mitglied {number}",
+      "placeholder": "name@company.com",
       "remove_invite": "Einladung entfernen",
       "add_invite": "Weitere hinzufügen",
       "invited": "{count} eingeladen",
-      "only_you": "Nur Sie"
+      "only_you": "Nur du"
     },
     "review": {
-      "title": "Überprüfung",
+      "title": "Überblick",
       "workspace": "Workspace",
       "handle": "Handle",
       "address": "Erste Adresse",
       "members": "Mitglieder",
-      "not_set": "Nicht festgelegt"
+      "not_set": "Nicht gesetzt"
     },
     "errors": {
-      "workspace_name": "Geben Sie einen Workspace-Namen ein.",
-      "workspace_handle": "Verwenden Sie Kleinbuchstaben, Zahlen und einzelne Bindestriche.",
-      "domain": "Geben Sie eine gültige Domain ohne https:// ein.",
-      "address": "Verwenden Sie Buchstaben, Zahlen, Punkte, Unterstriche oder Bindestriche.",
-      "member_email": "Geben Sie eine gültige E-Mail-Adresse ein."
+      "workspace_name": "Gib einen Workspacenamen ein.",
+      "workspace_handle": "Verwende Kleinbuchstaben, Zahlen und einzelne Bindestriche.",
+      "domain": "Gib eine gültige Domain ohne https:// ein.",
+      "address": "Verwende Buchstaben, Zahlen, Punkte, Unterstriche oder Bindestriche.",
+      "member_email": "Gib eine gültige E-Mail-Adresse ein."
     }
   }
 }

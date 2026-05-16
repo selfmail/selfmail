@@ -1,16 +1,16 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "home_page": "Page d'accueil",
-  "about_page": "Page à propos",
+  "home_page": "Page d’accueil",
+  "about_page": "Page À propos",
   "example_message": "Bienvenue dans votre application i18n.",
   "language_label": "Langue",
-  "current_locale": "Langue actuelle : {locale}",
-  "learn_router": "Découvrir Paraglide JS",
+  "current_locale": "Langue actuelle : {locale}",
+  "learn_router": "Découvrir Paraglide JS",
   "dashboard": {
     "inbox": {
-      "unified": "Boîte de réception unifiée",
-      "email_count": "{count} e-mails",
-      "email_count_one": "{count} e-mail"
+      "unified": "Inbox unifiée",
+      "email_count": "{count} e‑mails",
+      "email_count_one": "{count} e‑mail"
     },
     "address": {
       "subtitle": "{address} - {count}",
@@ -18,27 +18,27 @@
       "add": "Ajouter une nouvelle adresse",
       "create": {
         "title": "Créer une adresse",
-        "description": "Choisissez le nom de la boîte de réception et vérifiez l'adresse complète avant la création.",
+        "description": "Choisissez le nom de l’inbox et vérifiez l’adresse complète avant de la créer.",
         "back": "Retour",
-        "field_label": "Nom de l'adresse",
+        "field_label": "Nom de l’adresse",
         "domain_label": "Domaine",
-        "placeholder": "bonjour",
-        "preview": "Aperçu :",
+        "placeholder": "hello",
+        "preview": "Aperçu :",
         "domain_title": "Utiliser un autre domaine",
-        "domain_description": "Les nouvelles adresses utilisent actuellement {domain}. Connectez un domaine avant de créer des adresses pour un autre domaine de messagerie.",
+        "domain_description": "Les nouvelles adresses utilisent actuellement {domain}. Connectez un domaine avant de créer des adresses pour un autre domaine e‑mail.",
         "connect_domain": "Connecter un nouveau domaine",
         "submit": "Créer",
-        "saving": "Création en cours...",
-        "error": "Saisissez un nom d'adresse.",
-        "success": "{address} est prête en tant qu'aperçu frontend."
+        "saving": "Création...",
+        "error": "Saisissez un nom d’adresse.",
+        "success": "{address} est prêt en tant qu’aperçu frontend."
       }
     },
     "navigation": {
-      "build": "Créer",
+      "build": "Build",
       "platform": "Plateforme",
       "workspace": "Espace de travail",
       "ai": "IA",
-      "workflows": "Flux de travail",
+      "workflows": "Workflows",
       "developers": "Développeurs",
       "members": "Membres",
       "activity": "Activité",
@@ -47,7 +47,7 @@
       "domains": "Domaines"
     },
     "header": {
-      "switch_workspace": "Changer d'espace de travail",
+      "switch_workspace": "Changer d’espace de travail",
       "workspaces": "Espaces de travail",
       "manage": "Gérer",
       "settings": "Paramètres",
@@ -58,46 +58,46 @@
       "security": "Sécurité",
       "support": "Support",
       "create_workspace": "Créer un espace de travail",
-      "compose": "Rédiger un e-mail"
+      "compose": "Écrire un email"
     },
     "email": {
       "attachment_count": "{count} pièces jointes",
       "attachment_count_one": "{count} pièce jointe",
-      "empty_title": "Aucun e-mail pour le moment",
-      "empty_description": "Envoyez un message à cette adresse et il apparaîtra ici.",
-      "preview_title": "Aperçu de l'e-mail",
+      "empty_title": "Pas encore d’e-mails",
+      "empty_description": "Envoyez un message à cette adresse et il s’affichera ici.",
+      "preview_title": "Aperçu de l’e-mail",
       "fullscreen": "Plein écran",
-      "close_preview": "Fermer l'aperçu",
+      "close_preview": "Fermer l’aperçu",
       "attachment_label": "Pièce jointe {number}",
-      "attachment_size": "24 Ko",
-      "to": "À : {address}"
+      "attachment_size": "24 Ko",
+      "to": "À : {address}"
     },
     "settings": {
-      "title": "Paramètres de l'espace de travail",
-      "description": "Mettez à jour le profil de l'espace de travail, l'identifiant public et les paramètres critiques pour {workspaceName}.",
+      "title": "Paramètres de l’espace de travail",
+      "description": "Modifiez le profil, le handle public et les paramètres sensibles de {workspaceName}.",
       "general": "Général",
-      "general_description": "Renommez l'espace de travail et mettez à jour les détails affichés aux membres.",
-      "workspace_name": "Nom de l'espace de travail",
-      "workspace_handle": "Identifiant de l'espace de travail",
-      "workspace_handle_help": "Utilisé dans les URL de l'espace de travail et les adresses de self-mail par défaut.",
+      "general_description": "Renommez l’espace de travail et mettez à jour les détails visibles par les membres.",
+      "workspace_name": "Nom de l’espace de travail",
+      "workspace_handle": "Handle de l’espace de travail",
+      "workspace_handle_help": "Utilisé dans les URL de l’espace de travail et les adresses Selfmail par défaut.",
       "workspace_description": "Description",
       "workspace_description_placeholder": "À quoi sert cet espace de travail",
-      "workspace_image": "URL de l'image de l'espace de travail",
-      "saved": "Paramètres de l'espace de travail mis à jour.",
-      "saving": "Enregistrement en cours...",
-      "update": "Mettre à jour l'espace de travail",
-      "delete_title": "Supprimer l'espace de travail",
-      "delete_description": "Supprimez cet espace de travail lorsque vous n'en avez plus besoin. Cette action est irréversible.",
-      "delete_trigger": "Supprimer l'espace de travail",
-      "delete_confirm_title": "Supprimer {workspaceName} ?",
-      "delete_confirm_description": "Cela supprime définitivement l'espace de travail. Vous perdrez l'accès à ses paramètres et aux données associées.",
+      "workspace_image": "URL de l’image de l’espace de travail",
+      "saved": "Paramètres de l’espace de travail mis à jour.",
+      "saving": "Enregistrement…",
+      "update": "Mettre à jour l’espace de travail",
+      "delete_title": "Supprimer l’espace de travail",
+      "delete_description": "Supprimez cet espace de travail quand vous n’en avez plus besoin. Cette action est irréversible.",
+      "delete_trigger": "Supprimer l’espace de travail",
+      "delete_confirm_title": "Supprimer {workspaceName} ?",
+      "delete_confirm_description": "Cette opération supprime définitivement l’espace de travail. Vous perdrez l’accès à ses paramètres et à toutes les données liées.",
       "cancel": "Annuler",
-      "deleting": "Suppression en cours..."
+      "deleting": "Suppression..."
     }
   },
   "onboarding": {
     "meta": {
-      "title": "Intégration | Selfmail"
+      "title": "Onboarding | Selfmail"
     },
     "actions": {
       "back": "Retour",
@@ -105,18 +105,18 @@
       "create": "Créer"
     },
     "steps": {
-      "label": "Étape {current} sur {total}"
+      "label": "Étape d’onboarding {current} sur {total}"
     },
     "name": {
-      "title": "Nommez votre espace de travail",
+      "title": "Nommez votre workspace",
       "workspace": {
-        "label": "Nom de l'espace de travail",
+        "label": "Nom du workspace",
         "placeholder": "Acme Operations"
       },
       "handle": {
-        "label": "Identifiant de l'espace de travail",
+        "label": "Identifiant du workspace",
         "placeholder": "acme-operations",
-        "help": "Utilisé pour les URL internes et le routage email par défaut."
+        "help": "Utilisé pour les URLs internes et le routage d’email par défaut."
       }
     },
     "domain": {
@@ -127,42 +127,42 @@
       },
       "field": {
         "label": "Domaine email",
-        "placeholder": "votredomaine.com"
+        "placeholder": "yourdomain.com"
       },
-      "current": "Domaine actuel :"
+      "current": "Domaine actuel :"
     },
     "address": {
-      "title": "Créez la première boîte de réception",
+      "title": "Créez la première inbox",
       "field": {
-        "label": "Nom de l'adresse",
-        "placeholder": "bonjour"
+        "label": "Nom de l’adresse",
+        "placeholder": "hello"
       },
-      "preview": "Aperçu :"
+      "preview": "Aperçu :"
     },
     "members": {
       "title": "Invitez votre équipe",
       "label": "Inviter par email",
       "input_label": "Email du membre {number}",
-      "placeholder": "nom@entreprise.com",
-      "remove_invite": "Supprimer l'invitation",
-      "add_invite": "Ajouter un autre",
+      "placeholder": "name@company.com",
+      "remove_invite": "Retirer l’invitation",
+      "add_invite": "Ajouter une autre invitation",
       "invited": "{count} invité(s)",
       "only_you": "Seulement vous"
     },
     "review": {
-      "title": "Vérification",
-      "workspace": "Espace de travail",
-      "handle": "Identifiant",
+      "title": "Récapitulatif",
+      "workspace": "Workspace",
+      "handle": "Handle",
       "address": "Première adresse",
       "members": "Membres",
       "not_set": "Non défini"
     },
     "errors": {
-      "workspace_name": "Saisissez un nom d'espace de travail.",
+      "workspace_name": "Saisissez un nom de workspace.",
       "workspace_handle": "Utilisez des lettres minuscules, des chiffres et des tirets simples.",
       "domain": "Saisissez un domaine valide, sans https://.",
-      "address": "Utilisez des lettres, des chiffres, des points, des traits de soulignement ou des tirets.",
-      "member_email": "Saisissez une adresse e-mail valide."
+      "address": "Utilisez des lettres, des chiffres, des points, des tirets bas ou des tirets.",
+      "member_email": "Saisissez une adresse email valide."
     }
   }
 }
