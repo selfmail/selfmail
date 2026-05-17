@@ -47,7 +47,7 @@ export const Route = createRootRoute({
     <main className="flex min-h-dvh items-center justify-center">
       <div>
         <h2 className="text-2xl">An error occurred</h2>
-        <pre className="mt-4 max-w-sm rounded bg-red-50 p-4 text-red-700 text-sm">
+        <pre className="mt-4 rounded bg-red-50 p-4 text-red-700 text-sm">
           {error.message}
         </pre>
       </div>

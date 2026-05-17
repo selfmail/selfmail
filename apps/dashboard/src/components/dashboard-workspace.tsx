@@ -21,6 +21,18 @@ function formatEmailCount(count: number) {
 const inlinePreviewBreakpoint = "(min-width: 64rem)";
 const resizablePreviewBreakpoint = inlinePreviewBreakpoint;
 
+function logDashboardWorkspace(
+	level: "debug" | "error",
+	message: string,
+	details: Record<string, unknown>,
+) {
+	if (level === "debug" && process.env.NODE_ENV === "production") {
+		return;
+	}
+
+	console[level](`[dashboard-workspace] ${message}`, details);
+}
+
 function getMediaQuerySnapshot(mediaQueryText: string) {
 	return (
 		typeof window !== "undefined" && window.matchMedia(mediaQueryText).matches
@@ -70,6 +82,16 @@ export function DashboardWorkspace({
 	const resolvedSubtitle = subtitle ?? formatEmailCount(emails.length);
 	const resolvedTitle = title ?? m["dashboard.inbox.unified"]();
 	const openSettings = () => setSettingsPage("app");
+
+	logDashboardWorkspace("debug", "render", {
+		addressCount: addresses.length,
+		currentAddressSlug,
+		currentWorkspaceId: currentWorkspace?.id,
+		currentWorkspaceSlug: currentWorkspace?.slug,
+		emailCount: emails.length,
+		workspaceCount: workspaces.length,
+	});
+
 	useEffect(() => {
 		if (!(emailId && previewOpen) || canShowInlinePreview) {
 			return;
@@ -83,6 +105,16 @@ export function DashboardWorkspace({
 			to: "/mail/$emailId",
 		});
 	}, [canShowInlinePreview, emailId, navigate, previewOpen]);
+
+	if (!currentWorkspace) {
+		logDashboardWorkspace("error", "missing current workspace", {
+			addressCount: addresses.length,
+			currentAddressSlug,
+			emailCount: emails.length,
+			workspaces: workspaces.map(({ id, slug }) => ({ id, slug })),
+		});
+		return null;
+	}
 
 	const selectEmail = (selectedEmailId: string) => {
 		if (canShowInlinePreview) {
