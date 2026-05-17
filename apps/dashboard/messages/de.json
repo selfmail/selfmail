@@ -130,8 +130,7 @@
       },
       "menu": {
         "app": {
-          "title": "App-Einstellungen",
-          "description": "Persönliche App-Standardwerte und alltägliche Einstellungen."
+          "title": "App-Einstellungen"
         },
         "member_settings": {
           "title": "Member-Einstellungen",
@@ -151,11 +150,11 @@
         },
         "storage": {
           "title": "Speicher und verbleibender Platz",
-          "description": "Mailbox-Speicher, Anhänge und verbleibende Workspace-Kapazität."
+          "description": "Postfachspeicher, Anhänge und verbleibende Arbeitsbereichskapazität."
         },
         "support": {
           "title": "Support",
-          "description": "Hilfe, Kontaktoptionen und Support-Ressourcen für den Workspace."
+          "description": "Kontaktmöglichkeiten für Funktionswünsche, Probleme und alle sonstigen Anfragen."
         },
         "domains": {
           "title": "Domains",

@@ -9,7 +9,6 @@ import {
 	SettingsIcon,
 	ShieldCheckIcon,
 	SlidersHorizontalIcon,
-	UserIcon,
 	UsersIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
@@ -20,7 +19,6 @@ import { PlaceholderSettingsPage } from "./placeholder-settings-page";
 
 export type SettingsPageId =
 	| "app"
-	| "memberSettings"
 	| "workspace"
 	| "billing"
 	| "auditLogs"
@@ -52,17 +50,9 @@ export interface SettingsPage {
 export const settingsPages = [
 	{
 		component: AppSettingsPage,
-		description: m["dashboard.settings.menu.app.description"],
 		icon: SlidersHorizontalIcon,
 		id: "app",
 		title: m["dashboard.settings.menu.app.title"],
-	},
-	{
-		component: PlaceholderSettingsPage,
-		description: m["dashboard.settings.menu.member_settings.description"],
-		icon: UserIcon,
-		id: "memberSettings",
-		title: m["dashboard.settings.menu.member_settings.title"],
 	},
 	{
 		component: PlaceholderSettingsPage,

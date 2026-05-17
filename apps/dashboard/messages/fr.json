@@ -130,8 +130,7 @@
       },
       "menu": {
         "app": {
-          "title": "Paramètres de l’app",
-          "description": "Préférences personnelles de l’app et paramètres du quotidien."
+          "title": "Paramètres de l’app"
         },
         "member_settings": {
           "title": "Paramètres membre",
@@ -151,7 +150,7 @@
         },
         "storage": {
           "title": "Mémoire et espace restant",
-          "description": "Stockage des boîtes mail, pièces jointes et capacité restante du workspace."
+          "description": "Stockage de la boîte aux lettres, pièces jointes et capacité d’espace de travail restante."
         },
         "support": {
           "title": "Support",

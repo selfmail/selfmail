@@ -220,6 +220,50 @@ export const getAddressInboxFn = createServerFn({ method: "GET" })
 		},
 	);
 
+export const getDashboardEmailFn = createServerFn({ method: "GET" })
+	.middleware([authMiddleware])
+	.inputValidator(
+		z.object({
+			emailId: z.string().min(1),
+		}),
+	)
+	.handler(async ({ context: { user }, data: { emailId } }) => {
+		const email = await db.email.findFirst({
+			select: {
+				address: {
+					select: {
+						email: true,
+					},
+				},
+				attachments: true,
+				date: true,
+				from: true,
+				id: true,
+				read: true,
+				subject: true,
+				text: true,
+			},
+			where: {
+				id: emailId,
+				address: {
+					MemberAddress: {
+						some: {
+							member: {
+								userId: user.id,
+							},
+						},
+					},
+				},
+			},
+		});
+
+		if (!email) {
+			throw new Response("Email not found", { status: 404 });
+		}
+
+		return toDashboardEmail(email);
+	});
+
 export const getWorkspaceAddressDomainsFn = createServerFn({ method: "GET" })
 	.middleware([authMiddleware])
 	.inputValidator(workspaceSlugSchema)

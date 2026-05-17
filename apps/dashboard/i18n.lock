@@ -80,24 +80,56 @@ checksums:
     dashboard/settings/delete_confirm_description: 4df6cb7777aa7c95f5f50db32687a604
     dashboard/settings/cancel: 2e2a849c2223911717de8caa2c71bade
     dashboard/settings/deleting: 683cd814a3fc94e50b3e4e4a9c90c19c
-    dashboard/settings/menu/general/title: b891e8f15579fc5d97bcaf3637f5ae59
-    dashboard/settings/menu/general/description: dfded3c21e97d029982cc61480cbeea4
-    dashboard/settings/menu/notifications/title: c52df856139b50dbb1cae7bfb1cf73bb
-    dashboard/settings/menu/notifications/description: 75d320bc4f1362cfffcb7dc98b1599c4
-    dashboard/settings/menu/appearance/title: cdd8c41c5fb859234e8a603544fce631
-    dashboard/settings/menu/appearance/description: d17fcd9cb63b056ca19c7b6be84a77ba
+    dashboard/settings/member_settings/member: 1606dc30b369856b9dba1fe9aec425d2
+    dashboard/settings/member_settings/access: 550606d4a12bdf108c1b12b925ca1b3a
+    dashboard/settings/member_settings/addresses: 87b49e2ffcdbe3cc4bfd2d25cc75c096
+    dashboard/settings/member_settings/storage: 99d4c24fb975d64b57a6ca3acd428558
+    dashboard/settings/member_settings/joined: 23f25c607ede93b0610497ccc3b001ae
+    dashboard/settings/member_settings/actions: c46571856723b03262fd33f511116298
+    dashboard/settings/member_settings/owner: 9c0b3aeca046c3ebd3bdc352edc83e88
+    dashboard/settings/member_settings/member_role: 1606dc30b369856b9dba1fe9aec425d2
+    dashboard/settings/member_settings/you: db2a4a796b70cc1430d1b21f6ffb6dcb
+    dashboard/settings/member_settings/address_count: 22d48f3a52ac67ab2dfbfe20c6c16bce
+    dashboard/settings/member_settings/remove: dba2fe5fe9f83f8078c687f28cba4b52
+    dashboard/settings/member_settings/removing: 6689d93ec92668ccf7fb95f21ad780f6
+    dashboard/settings/member_settings/remove_confirm: 1d77c2ca3768e486fd1fb5df30cb60d9
+    dashboard/settings/member_settings/remove_title: b6b424f41714b5c3d9d2e7389ed52c2b
+    dashboard/settings/member_settings/remove_description: 97ba9a13f178df298bca0b666b8701a2
+    dashboard/settings/member_settings/owner_locked: 9c0b3aeca046c3ebd3bdc352edc83e88
+    dashboard/settings/member_settings/self_locked: 646e67df070b1bb218cb5db30d3491db
+    dashboard/settings/member_settings/no_permission: 713c538e0933e29802ce0f766d1333a1
+    dashboard/settings/member_settings/empty_title: aa6378d4455825a3535e8c7ba187bfc0
+    dashboard/settings/member_settings/empty_description: dfaab63c5d4f9d49c5a9576d53cc6453
+    dashboard/settings/member_settings/load_error: c32327763ce143d5f140b4c2241e1d72
+    dashboard/settings/member_settings/retry: 6e44d18639560596569a1278f9c83676
+    dashboard/settings/app/language/title: 277fd1a41cc237a437cd1d5e4a80463b
+    dashboard/settings/app/language/description: f290f7629d246fd94e81952374912efc
+    dashboard/settings/app/language/auto: db98c0cc5ed89eb4562e3e7f08b68a6c
+    dashboard/settings/app/language/fr: 965fbe07b0c6293182f71b3d09b84fda
+    dashboard/settings/app/language/en: e1eeeb379f86a015d6e581fcbc4af7f3
+    dashboard/settings/app/language/es: e1cd9645ddb854071941a3a23af9eaaf
+    dashboard/settings/app/language/de: f13cde514c5daa2cb08f5f22be97a066
+    dashboard/settings/menu/app/title: 75d5fde26bf2d28584228aa77b15b854
+    dashboard/settings/menu/member_settings/title: 4554838b41dd0d013f777f1b025939c5
+    dashboard/settings/menu/member_settings/description: 18e2679c369a9fe224dbd150f6de7a7b
+    dashboard/settings/menu/workspace/title: 202db67b74837309ba7baa46a2382aa0
+    dashboard/settings/menu/workspace/description: dfded3c21e97d029982cc61480cbeea4
+    dashboard/settings/menu/billing/title: 7bd9e0e2854d342eae5c519a891bf3e5
+    dashboard/settings/menu/billing/description: 831d3788ee2c1ada8a1c4aa2679334e8
+    dashboard/settings/menu/audit_logs/title: c7efb33d09676938d07651774b067bf6
+    dashboard/settings/menu/audit_logs/description: 2a62fb580ec990c27e8528973ebcfd94
+    dashboard/settings/menu/storage/title: 3fb27857303af05dac5e82239ddcfda9
+    dashboard/settings/menu/storage/description: a329a1f490a5e2c2590e5b9a0fd45830
+    dashboard/settings/menu/support/title: 55aab5fd0f31a9cb055a2edeeedfaf63
+    dashboard/settings/menu/support/description: 59e97284de1da48a96921fac0d9c1bbf
     dashboard/settings/menu/domains/title: 87955beb56bd7e2da09e44bacb294b6a
     dashboard/settings/menu/domains/description: fa16ebd3361340b1b6b2386e67c601f1
+    dashboard/settings/menu/analytics/title: ec67586974cc78f25959d47bb36683a7
+    dashboard/settings/menu/analytics/description: 6ea3e6752e76fd9d5f375c1be7c07c75
     dashboard/settings/menu/members/title: 0932e80cba1e3e0a7f52bb67ff31da32
     dashboard/settings/menu/members/description: 881313c2cd941ee1517d81aad48fdafe
-    dashboard/settings/menu/activity/title: 1948763de8e531483a798b68195e297e
-    dashboard/settings/menu/activity/description: a3c0d19ad3e1fcd2c5032ee032de3148
-    dashboard/settings/menu/data/title: 4620422149321ba92e5e3052282ab211
-    dashboard/settings/menu/data/description: 847e3fed198139544e364aed7a48e6a3
-    dashboard/settings/menu/storage/title: 99d4c24fb975d64b57a6ca3acd428558
-    dashboard/settings/menu/storage/description: 27b355bb4c6e15f7b45efffd2b6f40d0
-    dashboard/settings/menu/security/title: 4b34923fef858a2b9a4a914c3e822889
-    dashboard/settings/menu/security/description: b4e93713121145fac633a15c395d25bf
+    dashboard/settings/menu/workspace_ai/title: 526748bfb73d1c59d7de19285e5ddeb9
+    dashboard/settings/menu/workspace_ai/description: cf4c6248c346268ab56a168e58ba4b93
     dashboard/settings/menu/placeholder: 55627145af56840812f45893d700e52e
     dashboard/settings/menu/placeholder_description: 397f516ffd81b4bc0aa278aac24a74c9
     onboarding/meta/title: 08fefbaa64d75c1e2d89a183eb9a62ab

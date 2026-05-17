@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import type { ReactNode } from "react";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
 import type { DashboardAddress } from "./types";
@@ -82,17 +81,12 @@ export function DashboardNavigation({
   addresses,
   currentAddressSlug,
   onOpenSettings,
-  previewOpen,
   workspaceSlug,
 }: DashboardNavigationProps) {
-  const [showWorkspaceNavigation, setShowWorkspaceNavigation] = useState(false);
-  const workspaceNavigationVisible = !previewOpen || showWorkspaceNavigation;
-
   return (
     <nav
       className={cn(
-        "flex w-full flex-col gap-8 md:flex-row md:justify-between",
-        previewOpen && "xl:grid xl:max-w-3xl xl:grid-cols-2 xl:justify-start"
+        "@container flex w-full min-w-0 flex-col gap-8 md:flex-row md:justify-between"
       )}
     >
       <NavColumn title={m["dashboard.address.navigation_label"]()}>
@@ -147,31 +141,7 @@ export function DashboardNavigation({
           </DashboardNavLink>
         ))}
       </NavColumn>
-      <button
-        aria-expanded={showWorkspaceNavigation}
-        className={cn(
-          "hidden w-fit items-center gap-1 rounded-md px-2 py-1 text-neutral-700 text-sm transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300",
-          previewOpen && "xl:flex"
-        )}
-        onClick={() =>
-          setShowWorkspaceNavigation((currentValue) => !currentValue)
-        }
-        type="button"
-      >
-        <span>{m["dashboard.navigation.workspace"]()}</span>
-        {showWorkspaceNavigation ? (
-          <ChevronUpIcon className="size-4" />
-        ) : (
-          <ChevronDownIcon className="size-4" />
-        )}
-      </button>
-      <NavColumn
-        className={cn(
-          previewOpen && "xl:col-span-2",
-          !workspaceNavigationVisible && "xl:hidden"
-        )}
-        title={m["dashboard.navigation.workspace"]()}
-      >
+      <NavColumn title={m["dashboard.navigation.workspace"]()}>
         {workspaceLinks.map((link) =>
           link === "dashboard.navigation.settings" ? (
             <button

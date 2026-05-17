@@ -1,4 +1,5 @@
-import { useSyncExternalStore } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { useEffect, useSyncExternalStore } from "react";
 import { DashboardSettingsMenu } from "#/components/settings/dashboard-settings-menu";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
@@ -17,21 +18,24 @@ function formatEmailCount(count: number) {
 		: m["dashboard.inbox.email_count"]({ count });
 }
 
-const previewPanelBreakpoint = "(min-width: 80rem)";
+const inlinePreviewBreakpoint = "(min-width: 64rem)";
+const resizablePreviewBreakpoint = inlinePreviewBreakpoint;
 
-function getPreviewPanelSnapshot() {
+function getMediaQuerySnapshot(mediaQueryText: string) {
 	return (
-		typeof window !== "undefined" &&
-		window.matchMedia(previewPanelBreakpoint).matches
+		typeof window !== "undefined" && window.matchMedia(mediaQueryText).matches
 	);
 }
 
-function subscribeToPreviewPanelBreakpoint(onStoreChange: () => void) {
+function subscribeToMediaQuery(
+	mediaQueryText: string,
+	onStoreChange: () => void,
+) {
 	if (typeof window === "undefined") {
 		return () => undefined;
 	}
 
-	const mediaQuery = window.matchMedia(previewPanelBreakpoint);
+	const mediaQuery = window.matchMedia(mediaQueryText);
 
 	mediaQuery.addEventListener("change", onStoreChange);
 
@@ -47,17 +51,52 @@ export function DashboardWorkspace({
 	title,
 	workspaces,
 }: DashboardWorkspaceProps) {
-	const { emailId } = useViewedEmail();
+	const { emailId, setEmailId } = useViewedEmail();
+	const navigate = useNavigate();
 	const [, setSettingsPage] = useSettingsPage();
 	const previewOpen = emails.some((email) => email.id === emailId);
 	const canResizePreview = useSyncExternalStore(
-		subscribeToPreviewPanelBreakpoint,
-		getPreviewPanelSnapshot,
+		(onStoreChange) =>
+			subscribeToMediaQuery(resizablePreviewBreakpoint, onStoreChange),
+		() => getMediaQuerySnapshot(resizablePreviewBreakpoint),
+		() => false,
+	);
+	const canShowInlinePreview = useSyncExternalStore(
+		(onStoreChange) =>
+			subscribeToMediaQuery(inlinePreviewBreakpoint, onStoreChange),
+		() => getMediaQuerySnapshot(inlinePreviewBreakpoint),
 		() => false,
 	);
 	const resolvedSubtitle = subtitle ?? formatEmailCount(emails.length);
 	const resolvedTitle = title ?? m["dashboard.inbox.unified"]();
 	const openSettings = () => setSettingsPage("app");
+	useEffect(() => {
+		if (!(emailId && previewOpen) || canShowInlinePreview) {
+			return;
+		}
+
+		void navigate({
+			params: {
+				emailId,
+			},
+			replace: true,
+			to: "/mail/$emailId",
+		});
+	}, [canShowInlinePreview, emailId, navigate, previewOpen]);
+
+	const selectEmail = (selectedEmailId: string) => {
+		if (canShowInlinePreview) {
+			void setEmailId(selectedEmailId);
+			return;
+		}
+
+		void navigate({
+			params: {
+				emailId: selectedEmailId,
+			},
+			to: "/mail/$emailId",
+		});
+	};
 	const dashboardContent = (
 		<div
 			className={cn(
@@ -93,7 +132,7 @@ export function DashboardWorkspace({
 							</p>
 						</div>
 					</div>
-					<EmailList emails={emails} />
+					<EmailList emails={emails} onSelectEmail={selectEmail} />
 				</main>
 			</div>
 			<DashboardSettingsMenu
@@ -125,10 +164,10 @@ export function DashboardWorkspace({
 							<ResizablePanel
 								defaultSize="40%"
 								id="email-preview"
-								maxSize="760px"
+								maxSize="50%"
 								minSize="360px"
 							>
-								<EmailPreview emails={emails} />
+								<EmailPreview className="flex" emails={emails} />
 							</ResizablePanel>
 						</>
 					) : null}
@@ -139,10 +178,7 @@ export function DashboardWorkspace({
 
 	return (
 		<div className="h-dvh w-full overflow-hidden bg-white">
-			<div className="flex h-dvh w-full">
-				{dashboardContent}
-				<EmailPreview emails={emails} />
-			</div>
+			<div className="flex h-dvh w-full">{dashboardContent}</div>
 		</div>
 	);
 }

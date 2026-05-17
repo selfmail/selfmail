@@ -1,3 +1,4 @@
+import { Accordion as AccordionPrimitive } from "@base-ui/react/accordion";
 import {
   Close as DialogPrimitiveClose,
   Content as DialogPrimitiveContent,
@@ -9,7 +10,7 @@ import {
   Trigger as DialogPrimitiveTrigger,
 } from "@radix-ui/react-dialog";
 import { cva, type VariantProps } from "class-variance-authority";
-import { XIcon } from "lucide-react";
+import { ChevronRightIcon, XIcon } from "lucide-react";
 import type { ComponentProps, Key, ReactNode } from "react";
 import { cn } from "../lib/cn";
 import {
@@ -96,6 +97,80 @@ function SettingsMenu({ className, ...props }: ComponentProps<"nav">) {
     <nav
       className={cn("flex flex-col gap-1", className)}
       data-slot="settings-menu"
+      {...props}
+    />
+  );
+}
+
+function SettingsMenuAccordion({
+  className,
+  ...props
+}: AccordionPrimitive.Root.Props) {
+  return (
+    <AccordionPrimitive.Root
+      className={cn("flex flex-col gap-1", className)}
+      data-slot="settings-menu-accordion"
+      {...props}
+    />
+  );
+}
+
+function SettingsMenuAccordionItem({
+  className,
+  ...props
+}: AccordionPrimitive.Item.Props) {
+  return (
+    <AccordionPrimitive.Item
+      className={cn("grid gap-1", className)}
+      data-slot="settings-menu-accordion-item"
+      {...props}
+    />
+  );
+}
+
+type SettingsMenuAccordionTriggerProps = AccordionPrimitive.Trigger.Props & {
+  active?: boolean;
+  icon?: ReactNode;
+};
+
+function SettingsMenuAccordionTrigger({
+  active,
+  children,
+  className,
+  icon,
+  ...props
+}: SettingsMenuAccordionTriggerProps) {
+  return (
+    <AccordionPrimitive.Header className="flex">
+      <AccordionPrimitive.Trigger
+        className={cn(
+          "group/settings-menu-accordion-trigger flex h-9 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-left font-medium text-sm outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-muted data-[active=true]:text-foreground",
+          className
+        )}
+        data-active={active}
+        data-slot="settings-menu-accordion-trigger"
+        {...props}
+      >
+        {icon ? (
+          <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground [&_svg]:size-4">
+            {icon}
+          </span>
+        ) : null}
+        <span className="truncate">{children}</span>
+        <ChevronRightIcon className="ml-auto size-4 shrink-0 text-muted-foreground group-data-[panel-open]/settings-menu-accordion-trigger:rotate-90" />
+      </AccordionPrimitive.Trigger>
+    </AccordionPrimitive.Header>
+  );
+}
+
+function SettingsMenuAccordionContent({
+  className,
+  ...props
+}: AccordionPrimitive.Panel.Props) {
+  return (
+    <AccordionPrimitive.Panel
+      className={cn("grid gap-1 overflow-hidden pl-6", className)}
+      data-slot="settings-menu-accordion-content"
       {...props}
     />
   );
@@ -557,6 +632,10 @@ export {
   SettingsDialogTrigger,
   SettingsGroup,
   SettingsMenu,
+  SettingsMenuAccordion,
+  SettingsMenuAccordionContent,
+  SettingsMenuAccordionItem,
+  SettingsMenuAccordionTrigger,
   SettingsMenuItem,
   SettingsSelect,
   SettingsSwitch,

@@ -130,8 +130,7 @@
       },
       "menu": {
         "app": {
-          "title": "App Settings",
-          "description": "Personal app defaults and everyday preferences."
+          "title": "App Settings"
         },
         "member_settings": {
           "title": "Member Settings",
@@ -155,7 +154,7 @@
         },
         "support": {
           "title": "Support",
-          "description": "Help, contact options, and workspace support resources."
+          "description": "Contact options for feature requests, issues and all kind of inquiries."
         },
         "domains": {
           "title": "Domains",

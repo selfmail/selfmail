@@ -4,6 +4,7 @@ export {
 } from "./workspaces/mutations";
 export {
 	getAddressInboxFn,
+	getDashboardEmailFn,
 	getDashboardWorkspacesFn,
 	getWorkspace,
 	getWorkspaceAddressDomainsFn,

@@ -130,8 +130,7 @@
       },
       "menu": {
         "app": {
-          "title": "Ajustes de la app",
-          "description": "Valores personales de la app y preferencias diarias."
+          "title": "Ajustes de la app"
         },
         "member_settings": {
           "title": "Ajustes de miembro",
@@ -150,8 +149,8 @@
           "description": "Eventos de seguridad y cambios recientes en el workspace."
         },
         "storage": {
-          "title": "Memoria y espacio restante",
-          "description": "Almacenamiento del mailbox, adjuntos y capacidad restante del workspace."
+          "title": "Memoria y espacio disponible",
+          "description": "Almacenamiento del buzón, archivos adjuntos y capacidad restante del espacio de trabajo."
         },
         "support": {
           "title": "Soporte",
