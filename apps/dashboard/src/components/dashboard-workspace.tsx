@@ -159,7 +159,7 @@ export function DashboardWorkspace({
 							<h1 className="text-balance font-medium text-2xl">
 								{resolvedTitle}
 							</h1>
-							<p className="text-neutral-600 tabular-nums">
+							<p className="text-muted-foreground tabular-nums">
 								{resolvedSubtitle}
 							</p>
 						</div>
@@ -178,12 +178,12 @@ export function DashboardWorkspace({
 		return (
 			<div className="h-dvh w-full overflow-hidden">
 				<ResizablePanelGroup
-					className="h-dvh bg-neutral-200"
+					className="h-dvh bg-muted"
 					orientation="horizontal"
 					resizeTargetMinimumSize={{ coarse: 40, fine: 16 }}
 				>
 					<ResizablePanel
-						className={cn("bg-white", previewOpen && "rounded-r-2xl")}
+						className={cn("bg-background", previewOpen && "rounded-r-2xl")}
 						defaultSize="60%"
 						id="dashboard-main"
 						minSize="480px"
@@ -209,7 +209,7 @@ export function DashboardWorkspace({
 	}
 
 	return (
-		<div className="h-dvh w-full overflow-hidden bg-white">
+		<div className="h-dvh w-full overflow-hidden bg-background">
 			<div className="flex h-dvh w-full">{dashboardContent}</div>
 		</div>
 	);

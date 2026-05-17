@@ -118,6 +118,13 @@
         "retry": "Erneut versuchen"
       },
       "app": {
+        "theme": {
+          "title": "Design",
+          "description": "Nutze die Systemeinstellung oder wähle ein festes App-Design.",
+          "auto": "Automatisch",
+          "light": "Hell",
+          "dark": "Dunkel"
+        },
         "language": {
           "title": "Sprache",
           "description": "Wähle die Sprache, die in der App verwendet wird.",

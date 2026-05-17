@@ -9,7 +9,7 @@ const DropdownPortal = Menu.Portal;
 const DropdownSub = Menu.SubmenuRoot;
 
 const dropdownItemClass =
-  "grid h-11 cursor-default grid-cols-[1rem_1fr_auto] items-center gap-3 rounded-xl px-3 text-neutral-600 text-sm outline-none select-none data-[disabled]:opacity-50 data-[highlighted]:bg-neutral-100 data-[highlighted]:text-neutral-900 dark:text-neutral-300 dark:data-[highlighted]:bg-neutral-800 dark:data-[highlighted]:text-neutral-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0";
+  "grid h-11 cursor-default grid-cols-[1rem_1fr_auto] items-center gap-3 rounded-xl px-3 text-muted-foreground text-sm outline-none select-none data-[disabled]:opacity-50 data-[highlighted]:bg-muted data-[highlighted]:text-foreground [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0";
 
 type DropdownTriggerProps = ComponentProps<typeof Menu.Trigger>;
 
@@ -17,7 +17,7 @@ function DropdownTrigger({ className, ...props }: DropdownTriggerProps) {
   return (
     <Menu.Trigger
       className={cn(
-        "inline-flex h-10 items-center justify-center gap-2 rounded-full border-2 border-neutral-200 bg-background px-5 font-medium text-foreground text-sm outline-none hover:bg-muted focus-visible:border-neutral-400 focus-visible:ring-2 focus-visible:ring-neutral-200 disabled:pointer-events-none disabled:opacity-50 data-[popup-open]:bg-muted dark:border-neutral-700 dark:focus-visible:border-neutral-500 dark:focus-visible:ring-neutral-700 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "inline-flex h-10 items-center justify-center gap-2 rounded-full border-2 border-border bg-background px-5 font-medium text-foreground text-sm outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/25 disabled:pointer-events-none disabled:opacity-50 data-[popup-open]:bg-muted [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       data-slot="dropdown-trigger"
@@ -63,7 +63,7 @@ function DropdownContent({
       >
         <Menu.Popup
           className={cn(
-            "min-w-64 overflow-hidden rounded-2xl border border-neutral-200 bg-popover p-1.5 text-popover-foreground shadow-lg dark:border-neutral-700",
+            "min-w-64 overflow-hidden rounded-2xl border border-border bg-popover p-1.5 text-popover-foreground shadow-lg",
             className
           )}
           data-slot="dropdown-content"

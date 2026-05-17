@@ -85,9 +85,9 @@ export function CreateAddressPage({
 	};
 
 	return (
-		<main className="relative flex min-h-dvh w-full items-center justify-center bg-white px-5 py-20 text-foreground">
+		<main className="relative flex min-h-dvh w-full items-center justify-center bg-background px-5 py-20 text-foreground">
 			<Link
-				className="absolute top-5 left-5 inline-flex items-center gap-1 rounded-md py-2 pr-3 font-medium text-neutral-700 text-sm hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
+				className="absolute top-5 left-5 inline-flex items-center gap-1 rounded-md py-2 pr-3 font-medium text-muted-foreground text-sm hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
 				params={{ workspaceSlug: workspace.slug }}
 				to="/$workspaceSlug"
 			>
@@ -113,7 +113,7 @@ export function CreateAddressPage({
 							<Input
 								aria-describedby={error ? "new-address-error" : undefined}
 								aria-invalid={Boolean(error)}
-								className="rounded-r-none border-r border-r-neutral-300 text-lg"
+								className="rounded-r-none border-r border-r-border text-lg"
 								id="new-address"
 								onChange={(event) => {
 									setAddress(toAddressLocalPart(event.target.value));
@@ -128,7 +128,7 @@ export function CreateAddressPage({
 									title={domain}
 								>
 									<span className="min-w-0 truncate">@ {domain}</span>
-									<ChevronDownIcon className="size-4 text-neutral-500" />
+									<ChevronDownIcon className="size-4 text-muted-foreground" />
 								</DropdownTrigger>
 								<DropdownContent
 									align="end"
@@ -183,7 +183,7 @@ export function CreateAddressPage({
 				</div>
 
 				<Link
-					className="w-fit font-medium text-lg underline underline-offset-4 hover:text-neutral-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
+					className="w-fit font-medium text-lg underline underline-offset-4 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
 					params={domainRouteParams}
 					to="/$workspaceSlug/domains"
 				>

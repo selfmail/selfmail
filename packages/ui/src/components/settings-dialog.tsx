@@ -440,11 +440,9 @@ const settingsBannerVariants = cva(
       variant: {
         default: "bg-muted text-foreground",
         destructive: "bg-destructive/10 text-destructive",
-        info: "bg-blue-50 text-blue-950 dark:bg-blue-950/30 dark:text-blue-100",
-        success:
-          "bg-emerald-50 text-emerald-950 dark:bg-emerald-950/30 dark:text-emerald-100",
-        warning:
-          "bg-amber-50 text-amber-950 dark:bg-amber-950/30 dark:text-amber-100",
+        info: "bg-accent text-accent-foreground",
+        success: "bg-accent text-accent-foreground",
+        warning: "bg-muted text-foreground",
       },
     },
     defaultVariants: {
@@ -460,9 +458,9 @@ const settingsBannerIconVariants = cva(
       variant: {
         default: "text-foreground",
         destructive: "text-destructive",
-        info: "text-blue-700 dark:text-blue-200",
-        success: "text-emerald-700 dark:text-emerald-200",
-        warning: "text-amber-700 dark:text-amber-200",
+        info: "text-primary",
+        success: "text-primary",
+        warning: "text-muted-foreground",
       },
     },
     defaultVariants: {

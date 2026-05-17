@@ -18,11 +18,13 @@ const buttonVariants = ({
 		size === "default" && "px-4 py-1 text-lg",
 		size === "icon" && "size-9 p-0",
 		variant === "default" &&
-			"bg-neutral-800 text-white hover:bg-neutral-700 disabled:bg-neutral-600",
+			"bg-primary text-primary-foreground hover:bg-primary/90 disabled:bg-primary/60",
 		variant === "outline" &&
-			"border border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-50",
-		variant === "ghost" && "text-neutral-700 hover:bg-neutral-100",
-		variant === "destructive" && "bg-red-600 text-white hover:bg-red-700",
+			"border border-border bg-background text-foreground hover:bg-muted",
+		variant === "ghost" &&
+			"text-muted-foreground hover:bg-muted hover:text-foreground",
+		variant === "destructive" &&
+			"bg-destructive text-white hover:bg-destructive/90",
 		className,
 	);
 

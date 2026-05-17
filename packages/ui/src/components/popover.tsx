@@ -23,7 +23,7 @@ function PopoverContent({
       <PopoverPrimitiveContent
         align={align}
         className={cn(
-          "z-50 w-72 rounded-3xl border-2 border-neutral-200 bg-popover p-4 text-popover-foreground shadow-md outline-none dark:border-neutral-700",
+          "z-50 w-72 rounded-3xl border-2 border-border bg-popover p-4 text-popover-foreground shadow-md outline-none",
           className
         )}
         data-slot="popover-content"

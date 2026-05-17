@@ -32,7 +32,7 @@ function TabsTrigger({
   return (
     <TabsPrimitiveTrigger
       className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-1.5 font-medium text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-neutral-200 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
+        "inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-1.5 font-medium text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring/25 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
         className
       )}
       data-slot="tabs-trigger"
@@ -48,7 +48,7 @@ function TabsContent({
   return (
     <TabsPrimitiveContent
       className={cn(
-        "mt-2 outline-none focus-visible:ring-2 focus-visible:ring-neutral-200",
+        "mt-2 outline-none focus-visible:ring-2 focus-visible:ring-ring/25",
         className
       )}
       data-slot="tabs-content"

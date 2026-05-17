@@ -43,7 +43,7 @@ function SelectTrigger({
   return (
     <SelectPrimitiveTrigger
       className={cn(
-        "flex h-12 w-full items-center justify-between gap-2 rounded-full border-2 border-neutral-200 bg-background px-6 py-3 text-base text-foreground outline-none transition-colors focus-visible:border-neutral-400 focus-visible:ring-2 focus-visible:ring-neutral-200 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground dark:border-neutral-700 dark:bg-neutral-900 dark:focus-visible:border-neutral-500 dark:focus-visible:ring-neutral-700 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "flex h-12 w-full items-center justify-between gap-2 rounded-full border-2 border-border bg-background px-6 py-3 text-base text-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/25 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       data-slot="select-trigger"
@@ -67,7 +67,7 @@ function SelectContent({
     <SelectPrimitivePortal>
       <SelectPrimitiveContent
         className={cn(
-          "relative z-50 max-h-96 min-w-36 overflow-hidden rounded-3xl border-2 border-neutral-200 bg-popover text-popover-foreground shadow-md [--select-content-padding:calc(var(--spacing)*1)] [--select-content-radius:var(--radius-3xl)] dark:border-neutral-700",
+          "relative z-50 max-h-96 min-w-36 overflow-hidden rounded-3xl border-2 border-border bg-popover text-popover-foreground shadow-md [--select-content-padding:calc(var(--spacing)*1)] [--select-content-radius:var(--radius-3xl)]",
           position === "popper" &&
             "data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1",
           className
@@ -113,7 +113,7 @@ function SelectItem({
   return (
     <SelectPrimitiveItem
       className={cn(
-        "relative flex w-full cursor-default select-none items-center gap-2 rounded-lg py-2 pr-9 pl-4 text-sm outline-none focus:bg-neutral-100 focus:text-neutral-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-neutral-800 dark:focus:text-neutral-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "relative flex w-full cursor-default select-none items-center gap-2 rounded-lg py-2 pr-9 pl-4 text-sm outline-none focus:bg-muted focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       data-slot="select-item"

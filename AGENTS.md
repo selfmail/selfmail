@@ -86,5 +86,6 @@ Opinionated constraints for building better interfaces with agents.
 - NEVER use glow effects as primary affordances
 - SHOULD use Tailwind CSS default shadow scale unless explicitly requested
 - MUST give empty states one clear next action
+- MUST use the predefined theme colors and CSS variables as the base for future features and UI changes
 - SHOULD limit accent color usage to one per view
 - SHOULD use existing theme or Tailwind CSS color tokens before introducing new ones

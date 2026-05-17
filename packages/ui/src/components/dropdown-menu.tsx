@@ -29,7 +29,7 @@ function DropdownMenuContent({
     <DropdownMenuPrimitivePortal>
       <DropdownMenuPrimitiveContent
         className={cn(
-          "z-50 min-w-40 overflow-hidden rounded-3xl border-2 border-neutral-200 bg-popover p-1 text-popover-foreground shadow-md dark:border-neutral-700",
+          "z-50 min-w-40 overflow-hidden rounded-3xl border-2 border-border bg-popover p-1 text-popover-foreground shadow-md",
           className
         )}
         data-slot="dropdown-menu-content"
@@ -52,7 +52,7 @@ function DropdownMenuItem({
   return (
     <DropdownMenuPrimitiveItem
       className={cn(
-        "relative flex cursor-default select-none items-center gap-2 rounded-full px-4 py-2 text-sm outline-none focus:bg-neutral-100 focus:text-neutral-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-neutral-800 dark:focus:text-neutral-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "relative flex cursor-default select-none items-center gap-2 rounded-full px-4 py-2 text-sm outline-none focus:bg-muted focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         inset && "pl-8",
         variant === "destructive" &&
           "text-destructive focus:bg-destructive/10 focus:text-destructive",
@@ -75,7 +75,7 @@ function DropdownMenuCheckboxItem({
     <DropdownMenuPrimitiveCheckboxItem
       checked={checked}
       className={cn(
-        "relative flex cursor-default select-none items-center gap-2 rounded-full py-2 pr-4 pl-9 text-sm outline-none focus:bg-neutral-100 focus:text-neutral-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-neutral-800 dark:focus:text-neutral-50",
+        "relative flex cursor-default select-none items-center gap-2 rounded-full py-2 pr-4 pl-9 text-sm outline-none focus:bg-muted focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className
       )}
       data-slot="dropdown-menu-checkbox-item"
@@ -139,7 +139,7 @@ function DropdownMenuSubTrigger({
   return (
     <DropdownMenuPrimitiveSubTrigger
       className={cn(
-        "flex cursor-default select-none items-center gap-2 rounded-full px-4 py-2 text-sm outline-none focus:bg-neutral-100 focus:text-neutral-900 data-[state=open]:bg-neutral-100 dark:data-[state=open]:bg-neutral-800 dark:focus:bg-neutral-800 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "flex cursor-default select-none items-center gap-2 rounded-full px-4 py-2 text-sm outline-none focus:bg-muted focus:text-foreground data-[state=open]:bg-muted [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         inset && "pl-8",
         className
       )}
@@ -159,7 +159,7 @@ function DropdownMenuSubContent({
   return (
     <DropdownMenuPrimitiveSubContent
       className={cn(
-        "z-50 min-w-40 overflow-hidden rounded-3xl border-2 border-neutral-200 bg-popover p-1 text-popover-foreground shadow-md dark:border-neutral-700",
+        "z-50 min-w-40 overflow-hidden rounded-3xl border-2 border-border bg-popover p-1 text-popover-foreground shadow-md",
         className
       )}
       data-slot="dropdown-menu-sub-content"

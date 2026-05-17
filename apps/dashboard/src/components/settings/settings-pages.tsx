@@ -1,5 +1,4 @@
 import {
-	ActivityIcon,
 	CreditCardIcon,
 	DatabaseIcon,
 	GlobeIcon,
@@ -25,7 +24,6 @@ export type SettingsPageId =
 	| "storage"
 	| "support"
 	| "domains"
-	| "analytics"
 	| "members"
 	| "workspaceAi";
 
@@ -95,13 +93,6 @@ export const settingsPages = [
 		icon: GlobeIcon,
 		id: "domains",
 		title: m["dashboard.settings.menu.domains.title"],
-	},
-	{
-		component: PlaceholderSettingsPage,
-		description: m["dashboard.settings.menu.analytics.description"],
-		icon: ActivityIcon,
-		id: "analytics",
-		title: m["dashboard.settings.menu.analytics.title"],
 	},
 	{
 		component: MemberSettingsPage,

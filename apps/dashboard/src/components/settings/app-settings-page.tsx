@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	SettingsGroup,
 	SettingsSelect,
 	type SettingsSelectOption,
 } from "#/components/ui";
+import {
+	applyThemeMode,
+	getStoredThemeMode,
+	setStoredThemeMode,
+	type ThemeMode,
+	themeModes,
+} from "#/lib/theme";
 import { m } from "#/paraglide/messages";
 import {
 	cookieDomain,
@@ -25,6 +32,12 @@ const languageLabels = {
 	es: m["dashboard.settings.app.language.es"],
 	fr: m["dashboard.settings.app.language.fr"],
 } satisfies Record<AppLanguageValue, () => string>;
+
+const themeLabels = {
+	auto: m["dashboard.settings.app.theme.auto"],
+	dark: m["dashboard.settings.app.theme.dark"],
+	light: m["dashboard.settings.app.theme.light"],
+} satisfies Record<ThemeMode, () => string>;
 
 function isLocale(value: string): value is Locale {
 	return locales.some((locale) => locale === value);
@@ -56,12 +69,31 @@ function clearLocaleCookie() {
 export const AppSettingsPage: SettingsPageComponent = () => {
 	const [languageValue, setLanguageValue] =
 		useState<AppLanguageValue>(getCookieLocale);
+	const [themeValue, setThemeValue] = useState<ThemeMode>(getStoredThemeMode);
 	const languageOptions: SettingsSelectOption[] = languageValues.map(
 		(value) => ({
 			label: languageLabels[value](),
 			value,
 		}),
 	);
+	const themeOptions: SettingsSelectOption[] = themeModes.map((value) => ({
+		label: themeLabels[value](),
+		value,
+	}));
+
+	useEffect(() => {
+		if (themeValue !== "auto") {
+			return;
+		}
+
+		const media = window.matchMedia("(prefers-color-scheme: dark)");
+		const onChange = () => applyThemeMode("auto");
+
+		media.addEventListener("change", onChange);
+		return () => {
+			media.removeEventListener("change", onChange);
+		};
+	}, [themeValue]);
 
 	const handleLanguageChange = (value: string) => {
 		if (value === "auto") {
@@ -77,8 +109,24 @@ export const AppSettingsPage: SettingsPageComponent = () => {
 		}
 	};
 
+	const handleThemeChange = (value: string) => {
+		if (!(value === "auto" || value === "light" || value === "dark")) {
+			return;
+		}
+
+		setThemeValue(value);
+		setStoredThemeMode(value);
+	};
+
 	return (
 		<SettingsGroup>
+			<SettingsSelect
+				description={m["dashboard.settings.app.theme.description"]()}
+				onValueChange={handleThemeChange}
+				options={themeOptions}
+				title={m["dashboard.settings.app.theme.title"]()}
+				value={themeValue}
+			/>
 			<SettingsSelect
 				description={m["dashboard.settings.app.language.description"]()}
 				onValueChange={handleLanguageChange}
