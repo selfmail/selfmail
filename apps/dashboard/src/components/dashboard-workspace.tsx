@@ -57,7 +57,7 @@ export function DashboardWorkspace({
 	);
 	const resolvedSubtitle = subtitle ?? formatEmailCount(emails.length);
 	const resolvedTitle = title ?? m["dashboard.inbox.unified"]();
-	const openSettings = () => setSettingsPage("general");
+	const openSettings = () => setSettingsPage("app");
 	const dashboardContent = (
 		<div
 			className={cn(
@@ -96,7 +96,10 @@ export function DashboardWorkspace({
 					<EmailList emails={emails} />
 				</main>
 			</div>
-			<DashboardSettingsMenu workspaceName={currentWorkspace.name} />
+			<DashboardSettingsMenu
+				workspaceName={currentWorkspace.name}
+				workspaceSlug={currentWorkspace.slug}
+			/>
 		</div>
 	);
 

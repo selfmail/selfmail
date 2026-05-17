@@ -1,94 +1,135 @@
 import {
-  ActivityIcon,
-  BellIcon,
-  DatabaseIcon,
-  GlobeIcon,
-  HardDriveIcon,
-  type LucideIcon,
-  PaintbrushIcon,
-  ShieldCheckIcon,
-  SlidersHorizontalIcon,
-  UsersIcon,
+	ActivityIcon,
+	CreditCardIcon,
+	DatabaseIcon,
+	GlobeIcon,
+	HardDriveIcon,
+	LifeBuoyIcon,
+	type LucideIcon,
+	SettingsIcon,
+	ShieldCheckIcon,
+	SlidersHorizontalIcon,
+	UserIcon,
+	UsersIcon,
 } from "lucide-react";
+import type { ReactNode } from "react";
 import { m } from "#/paraglide/messages";
+import { MemberSettingsPage } from "./member-settings-page";
+import { PlaceholderSettingsPage } from "./placeholder-settings-page";
 
 export type SettingsPageId =
-  | "general"
-  | "notifications"
-  | "appearance"
-  | "domains"
-  | "members"
-  | "activity"
-  | "data"
-  | "storage"
-  | "security";
+	| "app"
+	| "memberSettings"
+	| "workspace"
+	| "billing"
+	| "auditLogs"
+	| "storage"
+	| "support"
+	| "domains"
+	| "analytics"
+	| "members"
+	| "workspaceAi";
 
-export interface SettingsPage {
-  description: () => string;
-  icon: LucideIcon;
-  id: SettingsPageId;
-  title: () => string;
+export interface SettingsPageContext {
+	page: SettingsPage;
+	workspaceName: string;
+	workspaceSlug: string;
 }
 
+export type SettingsPageComponent = (props: SettingsPageContext) => ReactNode;
+
+export interface SettingsPage {
+	component: SettingsPageComponent;
+	description?: () => string;
+	icon: LucideIcon;
+	id: SettingsPageId;
+	title: () => string;
+}
+
+// Route metadata and renderers stay together so expensive settings pages can
+// load their own data only after their query-state route is selected.
 export const settingsPages = [
-  {
-    description: m["dashboard.settings.menu.general.description"],
-    icon: SlidersHorizontalIcon,
-    id: "general",
-    title: m["dashboard.settings.menu.general.title"],
-  },
-  {
-    description: m["dashboard.settings.menu.notifications.description"],
-    icon: BellIcon,
-    id: "notifications",
-    title: m["dashboard.settings.menu.notifications.title"],
-  },
-  {
-    description: m["dashboard.settings.menu.appearance.description"],
-    icon: PaintbrushIcon,
-    id: "appearance",
-    title: m["dashboard.settings.menu.appearance.title"],
-  },
-  {
-    description: m["dashboard.settings.menu.domains.description"],
-    icon: GlobeIcon,
-    id: "domains",
-    title: m["dashboard.settings.menu.domains.title"],
-  },
-  {
-    description: m["dashboard.settings.menu.members.description"],
-    icon: UsersIcon,
-    id: "members",
-    title: m["dashboard.settings.menu.members.title"],
-  },
-  {
-    description: m["dashboard.settings.menu.activity.description"],
-    icon: ActivityIcon,
-    id: "activity",
-    title: m["dashboard.settings.menu.activity.title"],
-  },
-  {
-    description: m["dashboard.settings.menu.data.description"],
-    icon: DatabaseIcon,
-    id: "data",
-    title: m["dashboard.settings.menu.data.title"],
-  },
-  {
-    description: m["dashboard.settings.menu.storage.description"],
-    icon: HardDriveIcon,
-    id: "storage",
-    title: m["dashboard.settings.menu.storage.title"],
-  },
-  {
-    description: m["dashboard.settings.menu.security.description"],
-    icon: ShieldCheckIcon,
-    id: "security",
-    title: m["dashboard.settings.menu.security.title"],
-  },
+	{
+		component: PlaceholderSettingsPage,
+		description: m["dashboard.settings.menu.app.description"],
+		icon: SlidersHorizontalIcon,
+		id: "app",
+		title: m["dashboard.settings.menu.app.title"],
+	},
+	{
+		component: PlaceholderSettingsPage,
+		description: m["dashboard.settings.menu.member_settings.description"],
+		icon: UserIcon,
+		id: "memberSettings",
+		title: m["dashboard.settings.menu.member_settings.title"],
+	},
+	{
+		component: PlaceholderSettingsPage,
+		description: m["dashboard.settings.menu.workspace.description"],
+		icon: SettingsIcon,
+		id: "workspace",
+		title: m["dashboard.settings.menu.workspace.title"],
+	},
+	{
+		component: PlaceholderSettingsPage,
+		description: m["dashboard.settings.menu.billing.description"],
+		icon: CreditCardIcon,
+		id: "billing",
+		title: m["dashboard.settings.menu.billing.title"],
+	},
+	{
+		component: PlaceholderSettingsPage,
+		description: m["dashboard.settings.menu.audit_logs.description"],
+		icon: ShieldCheckIcon,
+		id: "auditLogs",
+		title: m["dashboard.settings.menu.audit_logs.title"],
+	},
+	{
+		component: PlaceholderSettingsPage,
+		description: m["dashboard.settings.menu.storage.description"],
+		icon: HardDriveIcon,
+		id: "storage",
+		title: m["dashboard.settings.menu.storage.title"],
+	},
+	{
+		component: PlaceholderSettingsPage,
+		description: m["dashboard.settings.menu.support.description"],
+		icon: LifeBuoyIcon,
+		id: "support",
+		title: m["dashboard.settings.menu.support.title"],
+	},
+	{
+		component: PlaceholderSettingsPage,
+		description: m["dashboard.settings.menu.domains.description"],
+		icon: GlobeIcon,
+		id: "domains",
+		title: m["dashboard.settings.menu.domains.title"],
+	},
+	{
+		component: PlaceholderSettingsPage,
+		description: m["dashboard.settings.menu.analytics.description"],
+		icon: ActivityIcon,
+		id: "analytics",
+		title: m["dashboard.settings.menu.analytics.title"],
+	},
+	{
+		component: MemberSettingsPage,
+		description: m["dashboard.settings.menu.members.description"],
+		icon: UsersIcon,
+		id: "members",
+		title: m["dashboard.settings.menu.members.title"],
+	},
+	{
+		component: PlaceholderSettingsPage,
+		description: m["dashboard.settings.menu.workspace_ai.description"],
+		icon: DatabaseIcon,
+		id: "workspaceAi",
+		title: m["dashboard.settings.menu.workspace_ai.title"],
+	},
 ] as const satisfies SettingsPage[];
 
 export const settingsPageIds = settingsPages.map((page) => page.id);
 
 export function getSettingsPage(pageId: SettingsPageId) {
-  return settingsPages.find((page) => page.id === pageId) ?? settingsPages[0];
+	return settingsPages.find((page) => page.id === pageId) ?? settingsPages[0];
 }

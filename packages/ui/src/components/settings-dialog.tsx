@@ -65,7 +65,7 @@ function SettingsDialogContent({
       >
         <DialogPrimitiveClose
           aria-label={closeLabel}
-          className="absolute top-4 left-4 z-10 inline-flex size-8 items-center justify-center rounded-full text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          className="absolute top-5 right-6 z-10 inline-flex size-8 items-center justify-center rounded-full text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
         >
           <XIcon className="size-4" />
         </DialogPrimitiveClose>
@@ -82,7 +82,7 @@ function SettingsDialogSidebar({
   return (
     <aside
       className={cn(
-        "flex shrink-0 flex-col border-border border-b bg-background p-3 pt-14 sm:w-56 sm:border-r sm:border-b-0",
+        "flex shrink-0 flex-col border-border border-b bg-background p-3 sm:w-56 sm:border-r sm:border-b-0",
         className
       )}
       data-slot="settings-dialog-sidebar"
@@ -193,7 +193,7 @@ function SettingsDialogMain({ className, ...props }: ComponentProps<"div">) {
 function SettingsDialogHeader({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
-      className={cn("mb-6 grid gap-1 border-border border-b pb-6", className)}
+      className={cn("mb-2 grid gap-1", className)}
       data-slot="settings-dialog-header"
       {...props}
     />

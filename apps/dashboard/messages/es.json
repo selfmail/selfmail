@@ -93,42 +93,74 @@
       "delete_confirm_description": "Esto eliminará el workspace de forma permanente. Perderás el acceso a sus ajustes y a los datos relacionados.",
       "cancel": "Cancelar",
       "deleting": "Eliminando...",
+      "member_settings": {
+        "member": "Miembro",
+        "access": "Acceso",
+        "addresses": "Direcciones",
+        "storage": "Almacenamiento",
+        "joined": "Se unió",
+        "actions": "Acciones",
+        "owner": "Owner",
+        "member_role": "Miembro",
+        "you": "Tú",
+        "address_count": "{count} direcciones",
+        "remove": "Eliminar",
+        "removing": "Eliminando...",
+        "remove_confirm": "Eliminar miembro",
+        "remove_title": "¿Eliminar a {memberName}?",
+        "remove_description": "{memberEmail} perderá acceso a este workspace y sus direcciones.",
+        "owner_locked": "Owner",
+        "self_locked": "Miembro actual",
+        "no_permission": "Sin permiso",
+        "empty_title": "Aún no hay miembros",
+        "empty_description": "Invita miembros para compartir el acceso al workspace.",
+        "load_error": "No se pudieron cargar los miembros.",
+        "retry": "Reintentar"
+      },
       "menu": {
-        "general": {
-          "title": "General",
+        "app": {
+          "title": "Ajustes de la app",
+          "description": "Valores personales de la app y preferencias diarias."
+        },
+        "member_settings": {
+          "title": "Ajustes de miembro",
+          "description": "Perfil personal, acceso y preferencias de notificación."
+        },
+        "workspace": {
+          "title": "Ajustes del workspace",
           "description": "Perfil del workspace, valores por defecto y preferencias generales."
         },
-        "notifications": {
-          "title": "Notificaciones",
-          "description": "Valores por defecto para mensajes, entrega y notificaciones de actividad."
+        "billing": {
+          "title": "Información de facturación",
+          "description": "Plan, facturas, seats y datos de pago."
         },
-        "appearance": {
-          "title": "Apariencia",
-          "description": "Tema, contraste, idioma y preferencias visuales."
+        "audit_logs": {
+          "title": "Registros de auditoría",
+          "description": "Eventos de seguridad y cambios recientes en el workspace."
+        },
+        "storage": {
+          "title": "Memoria y espacio restante",
+          "description": "Almacenamiento del mailbox, adjuntos y capacidad restante del workspace."
+        },
+        "support": {
+          "title": "Soporte",
+          "description": "Ayuda, opciones de contacto y recursos de soporte del workspace."
         },
         "domains": {
           "title": "Domains",
           "description": "Domains conectados y configuración de routing."
         },
+        "analytics": {
+          "title": "Analíticas",
+          "description": "Uso del workspace, entrega e insights de actividad."
+        },
         "members": {
           "title": "Members",
           "description": "Acceso al workspace, roles e invitaciones."
         },
-        "activity": {
-          "title": "Actividad",
-          "description": "Registro de auditoría y cambios recientes en el workspace."
-        },
-        "data": {
-          "title": "Controles de datos",
-          "description": "Exportación, retención y controles de privacidad."
-        },
-        "storage": {
-          "title": "Almacenamiento",
-          "description": "Almacenamiento del mailbox y límites de adjuntos."
-        },
-        "security": {
-          "title": "Seguridad",
-          "description": "Autenticación, sesiones y comprobaciones de seguridad."
+        "workspace_ai": {
+          "title": "Funciones de IA del workspace",
+          "description": "Capacidades y controles de IA asistida para el workspace."
         },
         "placeholder": "Añade aquí los controles de {pageTitle}.",
         "placeholder_description": "Configura los ajustes de {pageTitle} para {workspaceName}."

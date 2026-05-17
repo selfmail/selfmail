@@ -1,10 +1,14 @@
-export { createWorkspaceAddressFn } from "./workspaces/mutations";
+export {
+	createWorkspaceAddressFn,
+	removeWorkspaceMemberFn,
+} from "./workspaces/mutations";
 export {
 	getAddressInboxFn,
 	getDashboardWorkspacesFn,
 	getWorkspace,
 	getWorkspaceAddressDomainsFn,
 	getWorkspaceInboxFn,
+	getWorkspaceMembersFn,
 } from "./workspaces/queries";
 export type {
 	CreateWorkspaceAddressResult,
@@ -14,4 +18,6 @@ export type {
 	DashboardEmail,
 	DashboardInboxData,
 	DashboardWorkspace,
+	DashboardWorkspaceMember,
+	DashboardWorkspaceMembersData,
 } from "./workspaces/types";

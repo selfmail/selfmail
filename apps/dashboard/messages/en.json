@@ -93,42 +93,74 @@
       "delete_confirm_description": "This permanently deletes the workspace. You will lose access to its settings and related workspace data.",
       "cancel": "Cancel",
       "deleting": "Deleting...",
+      "member_settings": {
+        "member": "Member",
+        "access": "Access",
+        "addresses": "Addresses",
+        "storage": "Storage",
+        "joined": "Joined",
+        "actions": "Actions",
+        "owner": "Owner",
+        "member_role": "Member",
+        "you": "You",
+        "address_count": "{count} addresses",
+        "remove": "Remove",
+        "removing": "Removing...",
+        "remove_confirm": "Remove member",
+        "remove_title": "Remove {memberName}?",
+        "remove_description": "{memberEmail} will lose access to this workspace and its addresses.",
+        "owner_locked": "Owner",
+        "self_locked": "Current member",
+        "no_permission": "No permission",
+        "empty_title": "No members yet",
+        "empty_description": "Invite members to share workspace access.",
+        "load_error": "Members could not be loaded.",
+        "retry": "Retry"
+      },
       "menu": {
-        "general": {
-          "title": "General",
+        "app": {
+          "title": "App Settings",
+          "description": "Personal app defaults and everyday preferences."
+        },
+        "member_settings": {
+          "title": "Member Settings",
+          "description": "Personal member profile, access, and notification preferences."
+        },
+        "workspace": {
+          "title": "Workspace Settings",
           "description": "Workspace profile, defaults, and high-level preferences."
         },
-        "notifications": {
-          "title": "Notifications",
-          "description": "Message, delivery, and activity notification defaults."
+        "billing": {
+          "title": "Billing Information",
+          "description": "Plan, invoices, seats, and payment details."
         },
-        "appearance": {
-          "title": "Appearance",
-          "description": "Theme, contrast, language, and visual preferences."
+        "audit_logs": {
+          "title": "Audit Logs",
+          "description": "Security events and recent workspace changes."
+        },
+        "storage": {
+          "title": "Memory and Space Left",
+          "description": "Mailbox storage, attachments, and remaining workspace capacity."
+        },
+        "support": {
+          "title": "Support",
+          "description": "Help, contact options, and workspace support resources."
         },
         "domains": {
           "title": "Domains",
           "description": "Connected domains and routing configuration."
         },
+        "analytics": {
+          "title": "Analytics",
+          "description": "Workspace usage, delivery, and activity insights."
+        },
         "members": {
           "title": "Members",
           "description": "Workspace access, roles, and invitations."
         },
-        "activity": {
-          "title": "Activity",
-          "description": "Audit trail and recent workspace changes."
-        },
-        "data": {
-          "title": "Data controls",
-          "description": "Export, retention, and privacy controls."
-        },
-        "storage": {
-          "title": "Storage",
-          "description": "Mailbox storage and attachment limits."
-        },
-        "security": {
-          "title": "Security",
-          "description": "Authentication, sessions, and protective checks."
+        "workspace_ai": {
+          "title": "Workspace AI Features",
+          "description": "AI-assisted workspace capabilities and controls."
         },
         "placeholder": "Add {pageTitle} controls here.",
         "placeholder_description": "Configure {pageTitle} settings for {workspaceName}."

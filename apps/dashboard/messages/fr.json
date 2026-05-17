@@ -93,42 +93,74 @@
       "delete_confirm_description": "Cette opération supprime définitivement l’espace de travail. Vous perdrez l’accès à ses paramètres et à toutes les données liées.",
       "cancel": "Annuler",
       "deleting": "Suppression...",
+      "member_settings": {
+        "member": "Membre",
+        "access": "Accès",
+        "addresses": "Adresses",
+        "storage": "Stockage",
+        "joined": "Arrivée",
+        "actions": "Actions",
+        "owner": "Owner",
+        "member_role": "Membre",
+        "you": "Vous",
+        "address_count": "{count} adresses",
+        "remove": "Retirer",
+        "removing": "Retrait...",
+        "remove_confirm": "Retirer le membre",
+        "remove_title": "Retirer {memberName} ?",
+        "remove_description": "{memberEmail} perdra l’accès à ce workspace et à ses adresses.",
+        "owner_locked": "Owner",
+        "self_locked": "Membre actuel",
+        "no_permission": "Pas d’autorisation",
+        "empty_title": "Aucun membre pour l’instant",
+        "empty_description": "Invitez des membres pour partager l’accès au workspace.",
+        "load_error": "Impossible de charger les membres.",
+        "retry": "Réessayer"
+      },
       "menu": {
-        "general": {
-          "title": "Général",
-          "description": "Profil de l’espace de travail, valeurs par défaut et préférences globales."
+        "app": {
+          "title": "Paramètres de l’app",
+          "description": "Préférences personnelles de l’app et paramètres du quotidien."
         },
-        "notifications": {
-          "title": "Notifications",
-          "description": "Préférences par défaut pour les notifications de messages, de livraison et d’activité."
+        "member_settings": {
+          "title": "Paramètres membre",
+          "description": "Profil personnel, accès et préférences de notification."
         },
-        "appearance": {
-          "title": "Apparence",
-          "description": "Thème, contraste, langue et préférences visuelles."
+        "workspace": {
+          "title": "Paramètres du workspace",
+          "description": "Profil du workspace, valeurs par défaut et préférences globales."
+        },
+        "billing": {
+          "title": "Informations de facturation",
+          "description": "Plan, factures, seats et informations de paiement."
+        },
+        "audit_logs": {
+          "title": "Journaux d’audit",
+          "description": "Événements de sécurité et modifications récentes du workspace."
+        },
+        "storage": {
+          "title": "Mémoire et espace restant",
+          "description": "Stockage des boîtes mail, pièces jointes et capacité restante du workspace."
+        },
+        "support": {
+          "title": "Support",
+          "description": "Aide, options de contact et ressources de support du workspace."
         },
         "domains": {
           "title": "Domaines",
           "description": "Domaines connectés et configuration du routage."
         },
+        "analytics": {
+          "title": "Analytics",
+          "description": "Utilisation du workspace, livraison et insights d’activité."
+        },
         "members": {
           "title": "Membres",
           "description": "Accès à l’espace de travail, rôles et invitations."
         },
-        "activity": {
-          "title": "Activité",
-          "description": "Journal d’audit et modifications récentes de l’espace de travail."
-        },
-        "data": {
-          "title": "Contrôle des données",
-          "description": "Export, conservation et paramètres de confidentialité."
-        },
-        "storage": {
-          "title": "Stockage",
-          "description": "Stockage des boîtes mail et limites de pièces jointes."
-        },
-        "security": {
-          "title": "Sécurité",
-          "description": "Authentification, sessions et contrôles de protection."
+        "workspace_ai": {
+          "title": "Fonctionnalités IA du workspace",
+          "description": "Capacités d’IA assistée et contrôles du workspace."
         },
         "placeholder": "Ajoutez ici les contrôles {pageTitle}.",
         "placeholder_description": "Configurez les paramètres {pageTitle} pour {workspaceName}."

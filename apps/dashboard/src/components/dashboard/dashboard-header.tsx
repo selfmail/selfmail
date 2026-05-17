@@ -42,7 +42,7 @@ export function DashboardHeader({
       <Dropdown>
         <DropdownTrigger
           aria-label={m["dashboard.header.switch_workspace"]()}
-          className="h-auto max-w-full cursor-pointer justify-start rounded-lg border-0 bg-transparent p-0 pr-1 text-base hover:bg-neutral-200 hover:ring-4 hover:ring-neutral-200 focus-visible:ring-neutral-200 data-[popup-open]:bg-neutral-200 data-[popup-open]:ring-4 data-[popup-open]:ring-neutral-200"
+          className="h-auto max-w-full cursor-pointer justify-start rounded-lg border-0 bg-transparent p-0 pr-1 text-base hover:bg-neutral-200 hover:ring-4 hover:ring-neutral-200 focus-visible:ring-neutral-200 data-popup-open:bg-neutral-200 data-popup-open:ring-4 data-popup-open:ring-neutral-200"
         >
           <WorkspaceAvatar workspace={currentWorkspace} />
           <h3 className="max-w-42 truncate font-medium text-lg sm:max-w-none">

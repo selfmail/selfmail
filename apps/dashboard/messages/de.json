@@ -93,42 +93,74 @@
       "delete_confirm_description": "Dadurch wird der Workspace dauerhaft gelöscht. Du verlierst den Zugriff auf seine Einstellungen und alle zugehörigen Workspace-Daten.",
       "cancel": "Abbrechen",
       "deleting": "Wird gelöscht …",
+      "member_settings": {
+        "member": "Member",
+        "access": "Zugriff",
+        "addresses": "Adressen",
+        "storage": "Speicher",
+        "joined": "Beigetreten",
+        "actions": "Aktionen",
+        "owner": "Owner",
+        "member_role": "Member",
+        "you": "Du",
+        "address_count": "{count} Adressen",
+        "remove": "Entfernen",
+        "removing": "Wird entfernt...",
+        "remove_confirm": "Member entfernen",
+        "remove_title": "{memberName} entfernen?",
+        "remove_description": "{memberEmail} verliert Zugriff auf diesen Workspace und seine Adressen.",
+        "owner_locked": "Owner",
+        "self_locked": "Aktueller Member",
+        "no_permission": "Keine Berechtigung",
+        "empty_title": "Noch keine Members",
+        "empty_description": "Lade Members ein, um Workspace-Zugriff zu teilen.",
+        "load_error": "Members konnten nicht geladen werden.",
+        "retry": "Erneut versuchen"
+      },
       "menu": {
-        "general": {
-          "title": "Allgemein",
+        "app": {
+          "title": "App-Einstellungen",
+          "description": "Persönliche App-Standardwerte und alltägliche Einstellungen."
+        },
+        "member_settings": {
+          "title": "Member-Einstellungen",
+          "description": "Persönliches Member-Profil, Zugriff und Benachrichtigungen."
+        },
+        "workspace": {
+          "title": "Workspace-Einstellungen",
           "description": "Workspace-Profil, Standardwerte und grundlegende Einstellungen."
         },
-        "notifications": {
-          "title": "Benachrichtigungen",
-          "description": "Standard für Nachrichten-, Zustell- und Aktivitätsbenachrichtigungen."
+        "billing": {
+          "title": "Abrechnungsinformationen",
+          "description": "Plan, Rechnungen, Seats und Zahlungsdaten."
         },
-        "appearance": {
-          "title": "Darstellung",
-          "description": "Theme, Kontrast, Sprache und visuelle Einstellungen."
+        "audit_logs": {
+          "title": "Audit-Logs",
+          "description": "Sicherheitsereignisse und letzte Änderungen im Workspace."
+        },
+        "storage": {
+          "title": "Speicher und verbleibender Platz",
+          "description": "Mailbox-Speicher, Anhänge und verbleibende Workspace-Kapazität."
+        },
+        "support": {
+          "title": "Support",
+          "description": "Hilfe, Kontaktoptionen und Support-Ressourcen für den Workspace."
         },
         "domains": {
           "title": "Domains",
           "description": "Verbundene Domains und Routing-Konfiguration."
         },
+        "analytics": {
+          "title": "Analytics",
+          "description": "Workspace-Nutzung, Zustellung und Aktivitätsauswertungen."
+        },
         "members": {
           "title": "Members",
           "description": "Workspace-Zugriff, Rollen und Einladungen."
         },
-        "activity": {
-          "title": "Aktivität",
-          "description": "Audit-Trail und letzte Änderungen im Workspace."
-        },
-        "data": {
-          "title": "Datenkontrolle",
-          "description": "Export, Aufbewahrung und Datenschutz-Einstellungen."
-        },
-        "storage": {
-          "title": "Speicher",
-          "description": "Mailbox-Speicher und Größenlimits für Anhänge."
-        },
-        "security": {
-          "title": "Sicherheit",
-          "description": "Authentifizierung, Sitzungen und Schutzmechanismen."
+        "workspace_ai": {
+          "title": "AI-Features im Workspace",
+          "description": "KI-gestützte Workspace-Funktionen und Kontrollen."
         },
         "placeholder": "Füge hier {pageTitle}-Einstellungen hinzu.",
         "placeholder_description": "Konfiguriere die {pageTitle}-Einstellungen für {workspaceName}."

@@ -20,3 +20,7 @@ export const createAddressSchema = workspaceSlugSchema.extend({
 export const addressInboxSchema = workspaceSlugSchema.extend({
 	addressSlug: z.string().min(1),
 });
+
+export const removeWorkspaceMemberSchema = workspaceSlugSchema.extend({
+	memberId: z.string().min(1),
+});

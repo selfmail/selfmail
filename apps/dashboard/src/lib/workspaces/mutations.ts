@@ -1,11 +1,15 @@
 import { db } from "@selfmail/db";
+import { hasPermissions } from "@selfmail/permissions";
 import { createServerFn } from "@tanstack/react-start";
 import { authMiddleware } from "#/utils/auth";
 import { createAddressSlug } from "./address-slug";
 import { defaultDomainId, defaultDomainSuffix } from "./constants";
 import { getUniqueErrorTarget } from "./errors";
-import { createAddressSchema } from "./schemas";
-import type { CreateWorkspaceAddressResult } from "./types";
+import { createAddressSchema, removeWorkspaceMemberSchema } from "./schemas";
+import type {
+	CreateWorkspaceAddressResult,
+	RemoveWorkspaceMemberResult,
+} from "./types";
 
 export const createWorkspaceAddressFn = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
@@ -127,6 +131,141 @@ export const createWorkspaceAddressFn = createServerFn({ method: "POST" })
 				error:
 					"We could not create a short address URL right now. Please try again.",
 				status: "error",
+			};
+		},
+	);
+
+export const removeWorkspaceMemberFn = createServerFn({ method: "POST" })
+	.middleware([authMiddleware])
+	.inputValidator(removeWorkspaceMemberSchema)
+	.handler(
+		async ({
+			context: { user },
+			data: { memberId, workspaceSlug },
+		}): Promise<RemoveWorkspaceMemberResult> => {
+			const currentMember = await db.member.findFirst({
+				select: {
+					id: true,
+					workspace: {
+						select: {
+							id: true,
+							ownerId: true,
+						},
+					},
+				},
+				where: {
+					userId: user.id,
+					workspace: {
+						slug: workspaceSlug,
+					},
+				},
+			});
+
+			if (!currentMember) {
+				return {
+					error: "Workspace not found.",
+					status: "error",
+				};
+			}
+
+			if (currentMember.id === memberId) {
+				return {
+					error: "You cannot remove yourself from the workspace.",
+					status: "error",
+				};
+			}
+
+			const canRemoveMembers = await hasPermissions({
+				memberId: currentMember.id,
+				permissions: ["members:remove"],
+				workspaceId: currentMember.workspace.id,
+			});
+
+			if (!canRemoveMembers) {
+				return {
+					error: "You do not have permission to remove workspace members.",
+					status: "error",
+				};
+			}
+
+			const member = await db.member.findFirst({
+				select: {
+					id: true,
+					userId: true,
+					workspaceId: true,
+				},
+				where: {
+					id: memberId,
+					workspaceId: currentMember.workspace.id,
+				},
+			});
+
+			if (!member) {
+				return {
+					error: "Member not found.",
+					status: "error",
+				};
+			}
+
+			if (member.userId === currentMember.workspace.ownerId) {
+				return {
+					error: "The workspace owner cannot be removed.",
+					status: "error",
+				};
+			}
+
+			await db.$transaction(async (tx) => {
+				// Member-related tables do not cascade in the Prisma schema, so the
+				// dependent records are cleared before removing the member itself.
+				await tx.invitation.deleteMany({
+					where: {
+						invitedById: member.id,
+					},
+				});
+				await tx.notification.deleteMany({
+					where: {
+						memberId: member.id,
+					},
+				});
+				await tx.draft.deleteMany({
+					where: {
+						memberId: member.id,
+					},
+				});
+				await tx.smtpCredentials.deleteMany({
+					where: {
+						memberId: member.id,
+					},
+				});
+				await tx.memberAddress.deleteMany({
+					where: {
+						memberId: member.id,
+					},
+				});
+				await tx.memberPermission.deleteMany({
+					where: {
+						memberId: member.id,
+					},
+				});
+				await tx.member.update({
+					data: {
+						roles: {
+							set: [],
+						},
+					},
+					where: {
+						id: member.id,
+					},
+				});
+				await tx.member.delete({
+					where: {
+						id: member.id,
+					},
+				});
+			});
+
+			return {
+				status: "success",
 			};
 		},
 	);
