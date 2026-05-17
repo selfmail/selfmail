@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { m } from "#/paraglide/messages";
+import { AppSettingsPage } from "./app-settings-page";
 import { MemberSettingsPage } from "./member-settings-page";
 import { PlaceholderSettingsPage } from "./placeholder-settings-page";
 
@@ -50,7 +51,7 @@ export interface SettingsPage {
 // load their own data only after their query-state route is selected.
 export const settingsPages = [
 	{
-		component: PlaceholderSettingsPage,
+		component: AppSettingsPage,
 		description: m["dashboard.settings.menu.app.description"],
 		icon: SlidersHorizontalIcon,
 		id: "app",

@@ -482,7 +482,7 @@ function SettingsTable<TRow>({
   return (
     <div
       className={cn(
-        "overflow-x-auto rounded-2xl border border-border",
+        "overflow-x-auto rounded-2xl border border-border [scrollbar-color:gray_transparent] [scrollbar-width:thin]",
         className
       )}
       data-slot="settings-table"

@@ -117,6 +117,17 @@
         "load_error": "No se pudieron cargar los miembros.",
         "retry": "Reintentar"
       },
+      "app": {
+        "language": {
+          "title": "Idioma",
+          "description": "Elige el idioma usado en la app.",
+          "auto": "Seleccionar automáticamente",
+          "fr": "Français",
+          "en": "English",
+          "es": "Español",
+          "de": "Deutsch"
+        }
+      },
       "menu": {
         "app": {
           "title": "Ajustes de la app",

@@ -117,6 +117,17 @@
         "load_error": "Impossible de charger les membres.",
         "retry": "Réessayer"
       },
+      "app": {
+        "language": {
+          "title": "Langue",
+          "description": "Choisissez la langue utilisée dans l’app.",
+          "auto": "Sélection automatique",
+          "fr": "Français",
+          "en": "English",
+          "es": "Español",
+          "de": "Deutsch"
+        }
+      },
       "menu": {
         "app": {
           "title": "Paramètres de l’app",

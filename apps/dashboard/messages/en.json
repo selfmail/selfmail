@@ -117,6 +117,17 @@
         "load_error": "Members could not be loaded.",
         "retry": "Retry"
       },
+      "app": {
+        "language": {
+          "title": "Language",
+          "description": "Choose the language used across the app.",
+          "auto": "Auto select",
+          "fr": "Français",
+          "en": "English",
+          "es": "Español",
+          "de": "Deutsch"
+        }
+      },
       "menu": {
         "app": {
           "title": "App Settings",

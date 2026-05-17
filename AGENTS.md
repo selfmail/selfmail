@@ -10,6 +10,7 @@
 - Verify you changes, by using biome or tsc
 - Use bun!
 - Do not change other code, than requestet.
+- Prefer interfaces over types! 
 
 ## Typescript
 - Prefer types over interfaces
