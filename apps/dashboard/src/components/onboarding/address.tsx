@@ -21,23 +21,23 @@ export function OnboardingAddress({ error }: OnboardingAddressProps) {
 	const address = `${data.defaultAddress || "hello"}@${domain}`;
 
 	return (
-		<div className="flex flex-col gap-6">
-			<h1 className="text-balance text-center font-medium text-3xl">
+		<div className="flex flex-col gap-5">
+			<h1 className="text-balance font-medium text-3xl">
 				{m["onboarding.address.title"]()}
 			</h1>
 
-			<div className="grid gap-5">
+			<div className="grid gap-4">
 				<div className="space-y-2">
 					<Label htmlFor="default-address">
 						{m["onboarding.address.field.label"]()}
 					</Label>
-					<div className="flex flex-col gap-2 sm:flex-row">
+					<div className="grid grid-cols-[minmax(7rem,1fr)_minmax(8rem,45%)]">
 						<Input
 							aria-describedby={
 								error ? "default-address-error" : "default-address-help"
 							}
 							aria-invalid={Boolean(error)}
-							className="sm:flex-1"
+							className="rounded-r-none border-r border-r-border"
 							id="default-address"
 							onChange={(event) =>
 								setField(
@@ -48,17 +48,23 @@ export function OnboardingAddress({ error }: OnboardingAddressProps) {
 							placeholder={m["onboarding.address.field.placeholder"]()}
 							value={data.defaultAddress}
 						/>
-						<div className="flex min-h-12 items-center truncate rounded-full border-2 border-border bg-muted px-6 text-muted-foreground text-sm sm:max-w-52">
-							@{domain}
+						<div
+							className="flex h-12 min-w-0 items-center rounded-l-none rounded-r-full border-2 border-l-0 border-border bg-muted px-4 text-muted-foreground text-sm"
+							title={`@${domain}`}
+						>
+							<span className="truncate">@{domain}</span>
 						</div>
 					</div>
 					{error ? (
-						<p className="text-destructive text-sm" id="default-address-error">
+						<p
+							className="text-destructive text-pretty text-sm"
+							id="default-address-error"
+						>
 							{error}
 						</p>
 					) : (
 						<p
-							className="text-muted-foreground text-sm"
+							className="text-muted-foreground text-pretty text-sm"
 							id="default-address-help"
 						>
 							{m["onboarding.address.preview"]()}{" "}

@@ -20,9 +20,9 @@ const buttonVariants = ({
 		variant === "default" &&
 			"bg-primary text-primary-foreground hover:bg-primary/90 disabled:bg-primary/60",
 		variant === "outline" &&
-			"border border-border bg-background text-foreground hover:bg-muted",
+			"border border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground",
 		variant === "ghost" &&
-			"text-muted-foreground hover:bg-muted hover:text-foreground",
+			"text-muted-foreground hover:bg-accent hover:text-accent-foreground",
 		variant === "destructive" &&
 			"bg-destructive text-white hover:bg-destructive/90",
 		className,

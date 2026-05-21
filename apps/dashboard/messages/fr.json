@@ -176,7 +176,7 @@
           "description": "Accès à l’espace de travail, rôles et invitations."
         },
         "workspace_ai": {
-          "title": "Fonctionnalités IA du workspace",
+          "title": "Fonctionnalités d’IA",
           "description": "Capacités d’IA assistée et contrôles du workspace."
         },
         "placeholder": "Ajoutez ici les contrôles {pageTitle}.",

@@ -176,7 +176,7 @@
           "description": "Workspace-Zugriff, Rollen und Einladungen."
         },
         "workspace_ai": {
-          "title": "AI-Features im Workspace",
+          "title": "KI-Funktionen",
           "description": "KI-gestützte Workspace-Funktionen und Kontrollen."
         },
         "placeholder": "Füge hier {pageTitle}-Einstellungen hinzu.",

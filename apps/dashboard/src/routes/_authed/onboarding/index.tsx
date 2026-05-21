@@ -11,14 +11,16 @@ export const Route = createFileRoute("/_authed/onboarding/")({
 		],
 	}),
 	component: () => (
-		<main className="relative flex min-h-dvh items-center justify-center bg-background px-5 py-20 text-foreground sm:px-10">
+		<main className="flex min-h-dvh flex-col bg-background px-5 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))] text-foreground sm:px-10">
 			<a
-				className="absolute top-5 left-1/2 -translate-x-1/2 font-medium text-xl"
+				className="mx-auto w-full max-w-lg font-medium text-xl"
 				href="https://selfmail.app"
 			>
 				Selfmail
 			</a>
-			<OnboardingFlow />
+			<div className="flex flex-1 items-center justify-center py-10">
+				<OnboardingFlow />
+			</div>
 		</main>
 	),
 });

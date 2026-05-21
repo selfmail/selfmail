@@ -32,9 +32,6 @@ export function DashboardHeader({
 	workspaces,
 }: DashboardHeaderProps) {
 	const navigate = useNavigate();
-	const goToSection = (section: string) => {
-		window.location.hash = section;
-	};
 	const dropdownItemClassName = "cursor-pointer";
 
 	return (
@@ -87,49 +84,49 @@ export function DashboardHeader({
 						<DropdownItem
 							className={dropdownItemClassName}
 							icon={<SettingsIcon className="size-4" />}
-							onClick={onOpenSettings}
+							onClick={() => onOpenSettings()}
 						>
 							{m["dashboard.header.settings"]()}
 						</DropdownItem>
 						<DropdownItem
 							className={dropdownItemClassName}
 							icon={<UsersIcon className="size-4" />}
-							onClick={() => goToSection("members")}
+							onClick={() => onOpenSettings("members")}
 						>
 							{m["dashboard.header.members"]()}
 						</DropdownItem>
 						<DropdownItem
 							className={dropdownItemClassName}
 							icon={<CreditCardIcon className="size-4" />}
-							onClick={() => goToSection("billing")}
+							onClick={() => onOpenSettings("billing")}
 						>
 							{m["dashboard.header.billing"]()}
 						</DropdownItem>
 						<DropdownItem
 							className={dropdownItemClassName}
 							icon={<GlobeIcon className="size-4" />}
-							onClick={() => goToSection("domains")}
+							onClick={() => onOpenSettings("domains")}
 						>
 							{m["dashboard.header.domains"]()}
 						</DropdownItem>
 						<DropdownItem
 							className={dropdownItemClassName}
 							icon={<WebhookIcon className="size-4" />}
-							onClick={() => goToSection("webhooks")}
+							onClick={() => onOpenSettings("workspace")}
 						>
 							{m["dashboard.header.webhooks"]()}
 						</DropdownItem>
 						<DropdownItem
 							className={dropdownItemClassName}
 							icon={<ShieldCheckIcon className="size-4" />}
-							onClick={() => goToSection("security")}
+							onClick={() => onOpenSettings("auditLogs")}
 						>
 							{m["dashboard.header.security"]()}
 						</DropdownItem>
 						<DropdownItem
 							className={dropdownItemClassName}
 							icon={<LifeBuoyIcon className="size-4" />}
-							onClick={() => goToSection("support")}
+							onClick={() => onOpenSettings("support")}
 						>
 							{m["dashboard.header.support"]()}
 						</DropdownItem>

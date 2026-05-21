@@ -4,6 +4,10 @@ import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
 import { authMiddleware } from "#/utils/auth";
 import { defaultDomainId, defaultDomainSuffix } from "./constants";
+import {
+	detectDnsProvider,
+	toDashboardWorkspaceDomain,
+} from "./domain-presenter";
 import { toDashboardEmail } from "./email-format";
 import { addressInboxSchema, workspaceSlugSchema } from "./schemas";
 import type {
@@ -11,6 +15,7 @@ import type {
 	DashboardAddressInboxData,
 	DashboardInboxData,
 	DashboardWorkspace,
+	DashboardWorkspaceDomainsData,
 	DashboardWorkspaceMembersData,
 } from "./types";
 
@@ -315,6 +320,78 @@ export const getWorkspaceAddressDomainsFn = createServerFn({ method: "GET" })
 					type: "custom" as const,
 				})),
 			];
+		},
+	);
+
+export const getWorkspaceDomainsFn = createServerFn({ method: "GET" })
+	.middleware([authMiddleware])
+	.inputValidator(workspaceSlugSchema)
+	.handler(
+		async ({
+			context: { user },
+			data: { workspaceSlug },
+		}): Promise<DashboardWorkspaceDomainsData> => {
+			const currentMember = await db.member.findFirst({
+				select: {
+					id: true,
+					workspace: {
+						select: {
+							id: true,
+							Domain: {
+								orderBy: {
+									createdAt: "desc",
+								},
+								select: {
+									_count: {
+										select: {
+											addresses: true,
+										},
+									},
+									createdAt: true,
+									domain: true,
+									id: true,
+									verificationToken: true,
+									verified: true,
+									verifiedAt: true,
+								},
+							},
+						},
+					},
+				},
+				where: {
+					userId: user.id,
+					workspace: {
+						slug: workspaceSlug,
+					},
+				},
+			});
+
+			if (!currentMember) {
+				throw new Response("Workspace not found", { status: 404 });
+			}
+
+			const grantedPermissions = await getPermissions({
+				memberId: currentMember.id,
+				permissions: ["domains:add", "domains:delete", "domains:update"],
+				workspaceId: currentMember.workspace.id,
+			});
+			const domains = await Promise.all(
+				currentMember.workspace.Domain.map(async (domain) =>
+					toDashboardWorkspaceDomain(
+						domain,
+						await detectDnsProvider(domain.domain),
+					),
+				),
+			);
+
+			return {
+				canAddDomains: grantedPermissions.includes("domains:add"),
+				canDeleteDomains: grantedPermissions.includes("domains:delete"),
+				canVerifyDomains:
+					grantedPermissions.includes("domains:add") ||
+					grantedPermissions.includes("domains:update"),
+				domains,
+			};
 		},
 	);
 

@@ -21,6 +21,31 @@ export interface DashboardAddressDomain {
 	type: "custom" | "default";
 }
 
+export interface DashboardDomainDnsRecord {
+	host: string;
+	priority?: number;
+	type: "MX" | "TXT";
+	value: string;
+}
+
+export interface DashboardWorkspaceDomain {
+	addressCount: number;
+	createdAt: string;
+	dnsProvider: "cloudflare" | "other" | "unknown";
+	dnsRecords: DashboardDomainDnsRecord[];
+	domain: string;
+	id: string;
+	status: "pending" | "verified";
+	verifiedAt: string | null;
+}
+
+export interface DashboardWorkspaceDomainsData {
+	canAddDomains: boolean;
+	canDeleteDomains: boolean;
+	canVerifyDomains: boolean;
+	domains: DashboardWorkspaceDomain[];
+}
+
 export interface DashboardWorkspaceMember {
 	addressCount: number;
 	email: string;
@@ -74,6 +99,28 @@ export interface CreateWorkspaceAddressError {
 export type CreateWorkspaceAddressResult =
 	| CreateWorkspaceAddressSuccess
 	| CreateWorkspaceAddressError;
+
+export interface WorkspaceDomainSuccess {
+	domain: DashboardWorkspaceDomain;
+	status: "success";
+}
+
+export interface WorkspaceDomainError {
+	error: string;
+	status: "error";
+}
+
+export type WorkspaceDomainResult =
+	| WorkspaceDomainSuccess
+	| WorkspaceDomainError;
+
+export interface DeleteWorkspaceDomainSuccess {
+	status: "success";
+}
+
+export type DeleteWorkspaceDomainResult =
+	| DeleteWorkspaceDomainSuccess
+	| WorkspaceDomainError;
 
 export interface RemoveWorkspaceMemberSuccess {
 	status: "success";

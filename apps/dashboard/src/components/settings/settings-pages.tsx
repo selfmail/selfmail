@@ -13,6 +13,7 @@ import {
 import type { ReactNode } from "react";
 import { m } from "#/paraglide/messages";
 import { AppSettingsPage } from "./app-settings-page";
+import { DomainSettingsPage } from "./domain-settings-page";
 import { MemberSettingsPage } from "./member-settings-page";
 import { PlaceholderSettingsPage } from "./placeholder-settings-page";
 
@@ -88,7 +89,7 @@ export const settingsPages = [
 		title: m["dashboard.settings.menu.support.title"],
 	},
 	{
-		component: PlaceholderSettingsPage,
+		component: DomainSettingsPage,
 		description: m["dashboard.settings.menu.domains.description"],
 		icon: GlobeIcon,
 		id: "domains",

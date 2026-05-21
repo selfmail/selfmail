@@ -66,7 +66,7 @@ function SettingsDialogContent({
       >
         <DialogPrimitiveClose
           aria-label={closeLabel}
-          className="absolute top-5 right-6 z-10 inline-flex size-8 items-center justify-center rounded-full text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          className="absolute top-5 right-6 z-10 inline-flex size-8 items-center justify-center rounded-full text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring"
         >
           <XIcon className="size-4" />
         </DialogPrimitiveClose>
@@ -144,7 +144,7 @@ function SettingsMenuAccordionTrigger({
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         className={cn(
-          "group/settings-menu-accordion-trigger flex h-9 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-left font-medium text-sm outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-muted data-[active=true]:text-foreground",
+          "group/settings-menu-accordion-trigger flex h-9 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-left font-medium text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-accent data-[active=true]:text-accent-foreground",
           className
         )}
         data-active={active}
@@ -206,7 +206,7 @@ function SettingsMenuItem({
   ...props
 }: SettingsMenuItemProps) {
   const itemClassName = cn(
-    "flex h-9 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-left font-medium text-sm outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:bg-muted data-[active=true]:text-foreground",
+    "flex h-9 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-left font-medium text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:bg-accent data-[active=true]:text-accent-foreground",
     className
   );
   const content = (
@@ -405,7 +405,7 @@ function SettingsSelect({
         <Select {...props}>
           <SelectTrigger
             className={cn(
-              "h-auto w-auto min-w-0 gap-2 rounded-lg border-0 bg-transparent px-2 py-1 text-sm shadow-none hover:bg-muted focus-visible:ring-2",
+              "h-auto w-auto min-w-0 gap-2 rounded-lg border-0 bg-transparent px-2 py-1 text-sm shadow-none hover:bg-accent hover:text-accent-foreground focus-visible:ring-2",
               triggerClassName
             )}
           >

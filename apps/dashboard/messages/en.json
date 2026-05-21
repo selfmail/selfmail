@@ -176,7 +176,7 @@
           "description": "Workspace access, roles, and invitations."
         },
         "workspace_ai": {
-          "title": "Workspace AI Features",
+          "title": "AI Features",
           "description": "AI-assisted workspace capabilities and controls."
         },
         "placeholder": "Add {pageTitle} controls here.",

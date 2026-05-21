@@ -1,6 +1,9 @@
 export {
 	createWorkspaceAddressFn,
+	createWorkspaceDomainFn,
+	deleteWorkspaceDomainFn,
 	removeWorkspaceMemberFn,
+	verifyWorkspaceDomainFn,
 } from "./workspaces/mutations";
 export {
 	getAddressInboxFn,
@@ -8,6 +11,7 @@ export {
 	getDashboardWorkspacesFn,
 	getWorkspace,
 	getWorkspaceAddressDomainsFn,
+	getWorkspaceDomainsFn,
 	getWorkspaceInboxFn,
 	getWorkspaceMembersFn,
 } from "./workspaces/queries";
@@ -16,9 +20,16 @@ export type {
 	DashboardAddress,
 	DashboardAddressDomain,
 	DashboardAddressInboxData,
+	DashboardDomainDnsRecord,
 	DashboardEmail,
 	DashboardInboxData,
 	DashboardWorkspace,
+	DashboardWorkspaceDomain,
+	DashboardWorkspaceDomainsData,
 	DashboardWorkspaceMember,
 	DashboardWorkspaceMembersData,
+	DeleteWorkspaceDomainResult,
+	WorkspaceDomainError,
+	WorkspaceDomainResult,
+	WorkspaceDomainSuccess,
 } from "./workspaces/types";

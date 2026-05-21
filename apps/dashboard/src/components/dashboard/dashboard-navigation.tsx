@@ -10,11 +10,9 @@ const buildLinks = [
 	"dashboard.navigation.developers",
 ] as const;
 const workspaceLinks = [
-	"dashboard.navigation.domains",
-	"dashboard.navigation.members",
-	"dashboard.navigation.activity",
-	"dashboard.navigation.storage",
-	"dashboard.navigation.settings",
+	{ href: "#workspace", label: "Contacts" },
+	{ href: "#workspace", label: "Spam analyse" },
+	{ action: "settings", label: "Einstellungen" },
 ] as const;
 
 const addressLabelMaxLength = 24;
@@ -142,20 +140,20 @@ export function DashboardNavigation({
 			</NavColumn>
 			<NavColumn title={m["dashboard.navigation.workspace"]()}>
 				{workspaceLinks.map((link) =>
-					link === "dashboard.navigation.settings" ? (
+					"action" in link ? (
 						<button
 							className="group w-full cursor-pointer text-left"
-							key={link}
+							key={link.label}
 							onClick={onOpenSettings}
 							type="button"
 						>
 							<span className="w-fit rounded-md font-medium text-foreground text-xl ring-muted transition-all group-hover:bg-muted group-hover:ring-4 group-focus-visible:bg-muted group-focus-visible:ring-4">
-								{m[link]()}
+								{link.label}
 							</span>
 						</button>
 					) : (
-						<DashboardNavLink href="#workspace" key={link}>
-							{m[link]()}
+						<DashboardNavLink href={link.href} key={link.label}>
+							{link.label}
 						</DashboardNavLink>
 					),
 				)}

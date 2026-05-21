@@ -1,4 +1,5 @@
 import z from "zod";
+import { domainNameSchema } from "./domain-utils";
 
 export const workspaceSlugSchema = z.object({
 	workspaceSlug: z.string().min(1),
@@ -23,4 +24,12 @@ export const addressInboxSchema = workspaceSlugSchema.extend({
 
 export const removeWorkspaceMemberSchema = workspaceSlugSchema.extend({
 	memberId: z.string().min(1),
+});
+
+export const createWorkspaceDomainSchema = workspaceSlugSchema.extend({
+	domain: domainNameSchema,
+});
+
+export const workspaceDomainSchema = workspaceSlugSchema.extend({
+	domainId: z.string().min(1),
 });

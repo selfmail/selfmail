@@ -102,6 +102,11 @@ checksums:
     dashboard/settings/member_settings/empty_description: dfaab63c5d4f9d49c5a9576d53cc6453
     dashboard/settings/member_settings/load_error: c32327763ce143d5f140b4c2241e1d72
     dashboard/settings/member_settings/retry: 6e44d18639560596569a1278f9c83676
+    dashboard/settings/app/theme/title: 21fe00b7a518089576fb83c08631107a
+    dashboard/settings/app/theme/description: 3e66319da56fe6d6711b1c9644dc9ffc
+    dashboard/settings/app/theme/auto: d477ad57b6ffec9fb6b2676b9433ec0c
+    dashboard/settings/app/theme/light: bb78ea2c6edd8662676c81a8a13ecb93
+    dashboard/settings/app/theme/dark: 73e6e208ba628b26e90fcf6dce15e1b2
     dashboard/settings/app/language/title: 277fd1a41cc237a437cd1d5e4a80463b
     dashboard/settings/app/language/description: f290f7629d246fd94e81952374912efc
     dashboard/settings/app/language/auto: db98c0cc5ed89eb4562e3e7f08b68a6c
@@ -128,7 +133,7 @@ checksums:
     dashboard/settings/menu/analytics/description: 6ea3e6752e76fd9d5f375c1be7c07c75
     dashboard/settings/menu/members/title: 0932e80cba1e3e0a7f52bb67ff31da32
     dashboard/settings/menu/members/description: 881313c2cd941ee1517d81aad48fdafe
-    dashboard/settings/menu/workspace_ai/title: 526748bfb73d1c59d7de19285e5ddeb9
+    dashboard/settings/menu/workspace_ai/title: 16ada40297df1df3849d4fa44d0d09e9
     dashboard/settings/menu/workspace_ai/description: cf4c6248c346268ab56a168e58ba4b93
     dashboard/settings/menu/placeholder: 55627145af56840812f45893d700e52e
     dashboard/settings/menu/placeholder_description: 397f516ffd81b4bc0aa278aac24a74c9

@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useSyncExternalStore } from "react";
 import { DashboardSettingsMenu } from "#/components/settings/dashboard-settings-menu";
+import type { SettingsPageId } from "#/components/settings/settings-pages";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
 import { useViewedEmail } from "#/stores/viewed-email";
@@ -81,7 +82,8 @@ export function DashboardWorkspace({
 	);
 	const resolvedSubtitle = subtitle ?? formatEmailCount(emails.length);
 	const resolvedTitle = title ?? m["dashboard.inbox.unified"]();
-	const openSettings = () => setSettingsPage("app");
+	const openSettings = (pageId: SettingsPageId = "app") =>
+		setSettingsPage(pageId);
 
 	logDashboardWorkspace("debug", "render", {
 		addressCount: addresses.length,
