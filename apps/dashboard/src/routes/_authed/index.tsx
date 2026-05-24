@@ -3,6 +3,7 @@ import {
 	type DashboardWorkspace,
 	getDashboardWorkspacesFn,
 } from "#/lib/workspaces";
+import { m } from "#/paraglide/messages";
 
 export const Route = createFileRoute("/_authed/")({
 	component: RouteComponent,
@@ -17,11 +18,13 @@ function RouteComponent() {
 
 	return (
 		<main className="flex min-h-dvh w-full flex-col items-center justify-center gap-y-3 bg-background px-5 py-10 text-foreground">
-			<h1 className="text-balance font-medium text-lg">Pick your Workspace</h1>
+			<h1 className="text-balance font-medium text-lg">
+				{m["dashboard.workspace_picker.title"]()}
+			</h1>
 			<div className="flex w-full flex-col gap-6 rounded-lg border border-border bg-card p-5 lg:max-w-md">
 				{workspaces.length === 0 ? (
 					<p className="text-center text-muted-foreground text-sm">
-						You have no workspaces. Create one!
+						{m["dashboard.workspace_picker.empty"]()}
 					</p>
 				) : (
 					workspaces.map((workspace) => (
@@ -33,7 +36,7 @@ function RouteComponent() {
 				className="text-muted-foreground text-sm hover:text-foreground hover:underline"
 				to="/onboarding"
 			>
-				Create a new Workspace
+				{m["dashboard.workspace_picker.create"]()}
 			</Link>
 			<p className="max-w-md truncate text-muted-foreground text-xs">
 				{user.email}
@@ -45,7 +48,7 @@ function RouteComponent() {
 function WorkspaceTile({ workspace }: { workspace: DashboardWorkspace }) {
 	return (
 		<Link
-			className="flex items-center gap-x-3 rounded-lg border border-border p-3 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
+			className="flex items-center gap-x-3 rounded-lg border border-border p-3 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
 			params={{
 				workspaceSlug: workspace.slug,
 			}}

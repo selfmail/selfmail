@@ -10,9 +10,9 @@ const buildLinks = [
 	"dashboard.navigation.developers",
 ] as const;
 const workspaceLinks = [
-	{ href: "#workspace", label: "Contacts" },
-	{ href: "#workspace", label: "Spam analyse" },
-	{ action: "settings", label: "Einstellungen" },
+	{ href: "#workspace", label: m["dashboard.navigation.contacts"] },
+	{ href: "#workspace", label: m["dashboard.navigation.spam_analysis"] },
+	{ action: "settings", label: m["dashboard.navigation.settings"] },
 ] as const;
 
 const addressLabelMaxLength = 24;
@@ -57,8 +57,8 @@ function DashboardNavLink({
 		<a className="group w-full" href={href} title={title}>
 			<span
 				className={cn(
-					"block w-fit max-w-64 truncate rounded-md font-medium text-foreground text-xl ring-muted transition-all group-hover:bg-muted group-hover:ring-4",
-					active && "bg-muted ring-4",
+					"block w-fit max-w-64 truncate rounded-md font-medium text-foreground text-xl ring-accent transition-all group-hover:bg-accent group-hover:ring-4",
+					active && "bg-accent ring-4",
 				)}
 			>
 				{children}
@@ -95,8 +95,8 @@ export function DashboardNavigation({
 				>
 					<span
 						className={cn(
-							"block w-fit max-w-64 truncate rounded-md font-medium text-foreground text-xl ring-muted transition-all group-hover:bg-muted group-hover:ring-4",
-							!currentAddressSlug && "bg-muted ring-4",
+							"block w-fit max-w-64 truncate rounded-md font-medium text-foreground text-xl ring-accent transition-all group-hover:bg-accent group-hover:ring-4",
+							!currentAddressSlug && "bg-accent ring-4",
 						)}
 					>
 						{m["dashboard.inbox.unified"]()}
@@ -115,8 +115,9 @@ export function DashboardNavigation({
 					>
 						<span
 							className={cn(
-								"block w-fit max-w-64 truncate rounded-md font-medium text-foreground text-xl ring-muted transition-all group-hover:bg-muted group-hover:ring-4",
-								address.addressSlug === currentAddressSlug && "bg-muted ring-4",
+								"block w-fit max-w-64 truncate rounded-md font-medium text-foreground text-xl ring-accent transition-all group-hover:bg-accent group-hover:ring-4",
+								address.addressSlug === currentAddressSlug &&
+									"bg-accent ring-4",
 							)}
 						>
 							{formatAddressLabel(address.email)}
@@ -143,17 +144,17 @@ export function DashboardNavigation({
 					"action" in link ? (
 						<button
 							className="group w-full cursor-pointer text-left"
-							key={link.label}
+							key={link.action}
 							onClick={onOpenSettings}
 							type="button"
 						>
-							<span className="w-fit rounded-md font-medium text-foreground text-xl ring-muted transition-all group-hover:bg-muted group-hover:ring-4 group-focus-visible:bg-muted group-focus-visible:ring-4">
-								{link.label}
+							<span className="w-fit rounded-md font-medium text-foreground text-xl ring-accent transition-all group-hover:bg-accent group-hover:ring-4 group-focus-visible:bg-accent group-focus-visible:ring-4">
+								{link.label()}
 							</span>
 						</button>
 					) : (
-						<DashboardNavLink href={link.href} key={link.label}>
-							{link.label}
+						<DashboardNavLink href={link.href} key={link.label()}>
+							{link.label()}
 						</DashboardNavLink>
 					),
 				)}

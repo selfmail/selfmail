@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { getWorkspace } from "#/lib/workspaces";
+import { m } from "#/paraglide/messages";
 
 type WorkspaceRouteLogLevel = "debug" | "error" | "warn";
 
@@ -25,7 +26,9 @@ export const Route = createFileRoute("/_authed/$workspaceSlug/_workspace")({
 			logWorkspaceRoute("warn", "missing workspace slug", {
 				params,
 			});
-			throw new Response("Workspace slug is required", { status: 400 });
+			throw new Response(m["dashboard.errors.workspace_required"](), {
+				status: 400,
+			});
 		}
 
 		logWorkspaceRoute("debug", "loading workspace", {
@@ -50,7 +53,9 @@ export const Route = createFileRoute("/_authed/$workspaceSlug/_workspace")({
 				durationMs: Date.now() - startedAt,
 				workspaceSlug,
 			});
-			throw new Response("Workspace lookup failed", { status: 500 });
+			throw new Response(m["dashboard.errors.workspace_lookup_failed"](), {
+				status: 500,
+			});
 		}
 
 		const { member, workspace } = result;
@@ -62,7 +67,9 @@ export const Route = createFileRoute("/_authed/$workspaceSlug/_workspace")({
 				hasWorkspace: Boolean(workspace),
 				workspaceSlug,
 			});
-			throw new Response("Workspace not found", { status: 404 });
+			throw new Response(m["dashboard.errors.workspace_not_found"](), {
+				status: 404,
+			});
 		}
 
 		if (workspace.slug !== workspaceSlug) {
@@ -72,7 +79,9 @@ export const Route = createFileRoute("/_authed/$workspaceSlug/_workspace")({
 				receivedWorkspaceSlug: workspace.slug,
 				workspaceSlug,
 			});
-			throw new Response("Workspace lookup mismatch", { status: 409 });
+			throw new Response(m["dashboard.errors.workspace_lookup_mismatch"](), {
+				status: 409,
+			});
 		}
 
 		logWorkspaceRoute("debug", "workspace loaded", {
@@ -97,7 +106,7 @@ function WorkspaceRouteComponent() {
 			hasMember: Boolean(member),
 			hasWorkspace: Boolean(workspace),
 		});
-		throw new Error("Workspace context is missing");
+		throw new Error(m["dashboard.errors.workspace_context_missing"]());
 	}
 
 	return <Outlet />;

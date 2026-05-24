@@ -1,6 +1,7 @@
 import { db } from "@selfmail/db";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { m } from "#/paraglide/messages";
 import { authMiddleware } from "#/utils/auth";
 
 const defaultDomainSuffix = "selfmail.app";
@@ -12,26 +13,20 @@ const onboardingSchema = z.object({
 	defaultAddress: z
 		.string()
 		.trim()
-		.min(1, "Address is required")
-		.max(64, "Address is too long")
-		.regex(
-			localPartPattern,
-			"Use letters, numbers, dots, underscores, or hyphens.",
-		),
+		.min(1, m["onboarding.errors.address_required"]())
+		.max(64, m["onboarding.errors.address_too_long"]())
+		.regex(localPartPattern, m["dashboard.validation.address_format"]()),
 	workspaceHandle: z
 		.string()
 		.trim()
-		.min(1, "Workspace handle is required")
-		.max(63, "Workspace handle is too long")
-		.regex(
-			handlePattern,
-			"Use lowercase letters, numbers, and single hyphens.",
-		),
+		.min(1, m["onboarding.errors.workspace_handle_required"]())
+		.max(63, m["onboarding.errors.workspace_handle_too_long"]())
+		.regex(handlePattern, m["onboarding.errors.workspace_handle"]()),
 	workspaceName: z
 		.string()
 		.trim()
-		.min(1, "Workspace name is required")
-		.max(120, "Workspace name is too long"),
+		.min(1, m["onboarding.errors.workspace_name_required"]())
+		.max(120, m["onboarding.errors.workspace_name_too_long"]()),
 });
 
 export type CreateOnboardingResult =
@@ -136,7 +131,7 @@ export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
 							status: "error",
 							error: {
 								code: "WORKSPACE_TAKEN",
-								message: "This workspace handle is already taken.",
+								message: m["onboarding.errors.workspace_taken"](),
 							},
 						};
 					}
@@ -146,7 +141,7 @@ export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
 							status: "error",
 							error: {
 								code: "ADDRESS_TAKEN",
-								message: "This email address is already taken.",
+								message: m["onboarding.errors.address_taken"](),
 							},
 						};
 					}
@@ -155,8 +150,7 @@ export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
 						status: "error",
 						error: {
 							code: "UNKNOWN_ERROR",
-							message:
-								"We could not create your workspace right now. Please try again.",
+							message: m["onboarding.errors.create_workspace_failed"](),
 						},
 					};
 				}
@@ -166,8 +160,7 @@ export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
 				status: "error",
 				error: {
 					code: "UNKNOWN_ERROR",
-					message:
-						"We could not create a short address URL right now. Please try again.",
+					message: m["onboarding.errors.short_address_failed"](),
 				},
 			};
 		},

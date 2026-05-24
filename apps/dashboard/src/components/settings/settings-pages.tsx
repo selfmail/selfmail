@@ -16,6 +16,7 @@ import { AppSettingsPage } from "./app-settings-page";
 import { DomainSettingsPage } from "./domain-settings-page";
 import { MemberSettingsPage } from "./member-settings-page";
 import { PlaceholderSettingsPage } from "./placeholder-settings-page";
+import { WorkspaceSettingsPage } from "./workspace-settings-page";
 
 export type SettingsPageId =
 	| "app"
@@ -54,7 +55,7 @@ export const settingsPages = [
 		title: m["dashboard.settings.menu.app.title"],
 	},
 	{
-		component: PlaceholderSettingsPage,
+		component: WorkspaceSettingsPage,
 		description: m["dashboard.settings.menu.workspace.description"],
 		icon: SettingsIcon,
 		id: "workspace",

@@ -2,32 +2,18 @@ import { Button, Input } from "@selfmail/ui";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { ChevronLeftIcon } from "lucide-react";
 import { type ComponentProps, useState } from "react";
-import { z } from "zod";
+import {
+	domainError,
+	domainNameSchema,
+	toDomainName,
+} from "#/lib/workspaces/domain-utils";
+import { m } from "#/paraglide/messages";
 
 export const Route = createFileRoute(
 	"/_authed/$workspaceSlug/_workspace/domains/add",
 )({
 	component: RouteComponent,
 });
-
-const domainPattern = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/;
-const protocolPattern = /^https?:\/\//;
-const wwwPattern = /^www\./;
-const pathPattern = /\/.*$/;
-const domainError = "Enter a valid domain, without https://.";
-
-const toDomainName = (value: string) =>
-	value
-		.toLowerCase()
-		.trim()
-		.replace(protocolPattern, "")
-		.replace(wwwPattern, "")
-		.replace(pathPattern, "");
-
-const domainSchema = z
-	.string()
-	.transform(toDomainName)
-	.pipe(z.string().regex(domainPattern, domainError));
 
 function RouteComponent() {
 	const { workspace } = Route.useRouteContext();
@@ -49,7 +35,7 @@ function RouteComponent() {
 
 	const handleSubmit: ComponentProps<"form">["onSubmit"] = (event) => {
 		event.preventDefault();
-		const result = domainSchema.safeParse(domain);
+		const result = domainNameSchema.safeParse(domain);
 
 		if (!result.success) {
 			setError(result.error.issues[0]?.message ?? domainError);
@@ -68,7 +54,7 @@ function RouteComponent() {
 				type="button"
 			>
 				<ChevronLeftIcon className="size-4" />
-				Back
+				{m["dashboard.address.create.back"]()}
 			</button>
 
 			<form
@@ -77,11 +63,13 @@ function RouteComponent() {
 				onSubmit={handleSubmit}
 			>
 				<div className="flex flex-col gap-4">
-					<h1 className="text-balance font-medium text-3xl">Add Domain</h1>
+					<h1 className="text-balance font-medium text-3xl">
+						{m["dashboard.settings.domains.add_title"]()}
+					</h1>
 
 					<div>
 						<label className="sr-only" htmlFor="new-domain">
-							Domain
+							{m["dashboard.settings.domains.domain_name"]()}
 						</label>
 						<Input
 							aria-describedby={error ? "new-domain-error" : undefined}
@@ -93,7 +81,7 @@ function RouteComponent() {
 								setDomain(toDomainName(event.target.value));
 								setError(null);
 							}}
-							placeholder="yourdomain.com"
+							placeholder={m["dashboard.settings.domains.placeholder"]()}
 							value={domain}
 						/>
 						{error ? (
@@ -112,7 +100,7 @@ function RouteComponent() {
 					size="lg"
 					type="submit"
 				>
-					Add domain
+					{m["dashboard.settings.domains.add"]()}
 				</Button>
 			</form>
 		</main>

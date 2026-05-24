@@ -39,6 +39,8 @@ const PROD_SHARED_DOMAIN = "selfmail.app";
 const DEV_SHARED_DOMAIN = "selfmail.local";
 const DEV_LOCALHOST_DOMAIN = "selfmail.localhost";
 const protocolRegex = /:$/;
+const INVALID_TOKEN_RATE_LIMIT = 25;
+const INVALID_TOKEN_RATE_LIMIT_WINDOW_SECONDS = 60;
 
 export class Authentication {
   private readonly logger: ReturnType<typeof createLogger>;
@@ -116,6 +118,27 @@ export class Authentication {
     cookies.delete(this.COOKIE_NAME, this.getCookieConfig(request, 0));
   }
 
+  private async trackInvalidSessionToken(sessionTokenHash: string) {
+    try {
+      const result = await this.limiter.limit(sessionTokenHash, {
+        limit: INVALID_TOKEN_RATE_LIMIT,
+        windowSeconds: INVALID_TOKEN_RATE_LIMIT_WINDOW_SECONDS,
+      });
+
+      if (!result.allowed) {
+        this.logger.warn("Rate limit exceeded for invalid session token", {
+          sessionTokenHashPrefix: sessionTokenHash.slice(0, 12),
+        });
+      }
+    } catch (error) {
+      this.logger.error(
+        "Invalid session token rate limit check failed",
+        error instanceof Error ? error : undefined,
+        { sessionTokenHashPrefix: sessionTokenHash.slice(0, 12) }
+      );
+    }
+  }
+
   async getCurrentUser(input: TokenInput | CookieInput): Promise<User | null> {
     const token =
       "cookies" in input ? input.cookies.get(this.COOKIE_NAME) : input.token;
@@ -126,18 +149,6 @@ export class Authentication {
     }
 
     const sessionTokenHash = await this.hashToken(token);
-    const result = await this.limiter.limit(sessionTokenHash, {
-      limit: 100,
-      windowSeconds: 60,
-    });
-
-    if (!result.allowed) {
-      this.logger.warn("Rate limit exceeded for session token", {
-        sessionTokenHashPrefix: sessionTokenHash.slice(0, 12),
-      });
-      throw new Error("Too many requests. Please try again later.");
-    }
-
     const session = await db.session.findUnique({
       where: {
         sessionToken: sessionTokenHash,
@@ -146,6 +157,7 @@ export class Authentication {
     });
 
     if (!session) {
+      await this.trackInvalidSessionToken(sessionTokenHash);
       this.logger.warn("Invalid session token", {
         sessionTokenHashPrefix: sessionTokenHash.slice(0, 12),
       });

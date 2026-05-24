@@ -2,6 +2,7 @@ import { db } from "@selfmail/db";
 import { permissions as getPermissions } from "@selfmail/permissions";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
+import { m } from "#/paraglide/messages";
 import { authMiddleware } from "#/utils/auth";
 import { defaultDomainId, defaultDomainSuffix } from "./constants";
 import {
@@ -17,7 +18,47 @@ import type {
 	DashboardWorkspace,
 	DashboardWorkspaceDomainsData,
 	DashboardWorkspaceMembersData,
+	DashboardWorkspaceSettingsData,
+	WorkspaceDataExportResult,
+	WorkspaceDataExportValue,
 } from "./types";
+
+function toExportValue(value: unknown): WorkspaceDataExportValue {
+	if (value === null) {
+		return null;
+	}
+
+	if (value instanceof Date) {
+		return value.toISOString();
+	}
+
+	if (typeof value === "bigint") {
+		return value.toString();
+	}
+
+	if (
+		typeof value === "boolean" ||
+		typeof value === "number" ||
+		typeof value === "string"
+	) {
+		return value;
+	}
+
+	if (Array.isArray(value)) {
+		return value.map(toExportValue);
+	}
+
+	if (value && typeof value === "object") {
+		return Object.fromEntries(
+			Object.entries(value).map(([key, nestedValue]) => [
+				key,
+				toExportValue(nestedValue),
+			]),
+		);
+	}
+
+	return null;
+}
 
 async function getMemberAddresses(userId: string, workspaceSlug: string) {
 	const memberAddresses = await db.memberAddress.findMany({
@@ -212,7 +253,9 @@ export const getAddressInboxFn = createServerFn({ method: "GET" })
 			);
 
 			if (!address) {
-				throw new Response("Address not found", { status: 404 });
+				throw new Response(m["dashboard.errors.address_not_found"](), {
+					status: 404,
+				});
 			}
 
 			const emails = await getAddressEmails([address.id]);
@@ -263,7 +306,9 @@ export const getDashboardEmailFn = createServerFn({ method: "GET" })
 		});
 
 		if (!email) {
-			throw new Response("Email not found", { status: 404 });
+			throw new Response(m["dashboard.errors.email_not_found"](), {
+				status: 404,
+			});
 		}
 
 		return toDashboardEmail(email);
@@ -305,7 +350,9 @@ export const getWorkspaceAddressDomainsFn = createServerFn({ method: "GET" })
 			});
 
 			if (!workspace) {
-				throw new Response("Workspace not found", { status: 404 });
+				throw new Response(m["dashboard.errors.workspace_not_found"](), {
+					status: 404,
+				});
 			}
 
 			return [
@@ -367,7 +414,9 @@ export const getWorkspaceDomainsFn = createServerFn({ method: "GET" })
 			});
 
 			if (!currentMember) {
-				throw new Response("Workspace not found", { status: 404 });
+				throw new Response(m["dashboard.errors.workspace_not_found"](), {
+					status: 404,
+				});
 			}
 
 			const grantedPermissions = await getPermissions({
@@ -455,7 +504,9 @@ export const getWorkspaceMembersFn = createServerFn({ method: "GET" })
 			});
 
 			if (!currentMember) {
-				throw new Response("Workspace not found", { status: 404 });
+				throw new Response(m["dashboard.errors.workspace_not_found"](), {
+					status: 404,
+				});
 			}
 
 			const removePermissions = await getPermissions({
@@ -482,6 +533,364 @@ export const getWorkspaceMembersFn = createServerFn({ method: "GET" })
 					roles: member.roles.map((role) => role.name),
 					storageBytes: member.storageBytes.toString(),
 				})),
+			};
+		},
+	);
+
+export const getWorkspaceSettingsFn = createServerFn({ method: "GET" })
+	.middleware([authMiddleware])
+	.inputValidator(workspaceSlugSchema)
+	.handler(
+		async ({
+			context: { user },
+			data: { workspaceSlug },
+		}): Promise<DashboardWorkspaceSettingsData> => {
+			const currentMember = await db.member.findFirst({
+				select: {
+					id: true,
+					userId: true,
+					workspace: {
+						select: {
+							_count: {
+								select: {
+									Domain: true,
+									Draft: true,
+									Member: true,
+								},
+							},
+							createdAt: true,
+							description: true,
+							id: true,
+							name: true,
+							ownerId: true,
+							slug: true,
+							updatedAt: true,
+						},
+					},
+				},
+				where: {
+					userId: user.id,
+					workspace: {
+						slug: workspaceSlug,
+					},
+				},
+			});
+
+			if (!currentMember) {
+				throw new Response(m["dashboard.errors.workspace_not_found"](), {
+					status: 404,
+				});
+			}
+
+			const addressLinks = await db.memberAddress.findMany({
+				select: {
+					addressId: true,
+				},
+				where: {
+					member: {
+						workspaceId: currentMember.workspace.id,
+					},
+				},
+			});
+			const addressIds = [
+				...new Set(addressLinks.map(({ addressId }) => addressId)),
+			];
+			const [emailCount, storage] = await Promise.all([
+				addressIds.length
+					? db.email.count({
+							where: {
+								addressId: {
+									in: addressIds,
+								},
+							},
+						})
+					: 0,
+				addressIds.length
+					? db.address.aggregate({
+							_sum: {
+								usedStorageBytes: true,
+							},
+							where: {
+								id: {
+									in: addressIds,
+								},
+							},
+						})
+					: null,
+			]);
+			const grantedPermissions = await getPermissions({
+				memberId: currentMember.id,
+				permissions: ["settings:delete", "settings:update-workspace"],
+				workspaceId: currentMember.workspace.id,
+			});
+
+			return {
+				counts: {
+					addresses: addressIds.length,
+					domains: currentMember.workspace._count.Domain,
+					drafts: currentMember.workspace._count.Draft,
+					emails: emailCount,
+					members: currentMember.workspace._count.Member,
+					storageBytes: (
+						storage?._sum.usedStorageBytes ?? BigInt(0)
+					).toString(),
+				},
+				permissions: {
+					canDeleteWorkspace: grantedPermissions.includes("settings:delete"),
+					canUpdateWorkspace: grantedPermissions.includes(
+						"settings:update-workspace",
+					),
+				},
+				workspace: {
+					createdAt: currentMember.workspace.createdAt.toISOString(),
+					defaultDomain: `${currentMember.workspace.slug}.${defaultDomainSuffix}`,
+					description: currentMember.workspace.description,
+					id: currentMember.workspace.id,
+					isOwner: currentMember.userId === currentMember.workspace.ownerId,
+					name: currentMember.workspace.name,
+					slug: currentMember.workspace.slug,
+					updatedAt: currentMember.workspace.updatedAt.toISOString(),
+				},
+			};
+		},
+	);
+
+export const exportWorkspaceDataFn = createServerFn({ method: "GET" })
+	.middleware([authMiddleware])
+	.inputValidator(workspaceSlugSchema)
+	.handler(
+		async ({
+			context: { user },
+			data: { workspaceSlug },
+		}): Promise<WorkspaceDataExportResult> => {
+			const currentMember = await db.member.findFirst({
+				select: {
+					MemberPermission: {
+						select: {
+							permissionName: true,
+						},
+					},
+					createdAt: true,
+					description: true,
+					id: true,
+					image: true,
+					profileName: true,
+					roles: {
+						select: {
+							name: true,
+						},
+					},
+					storageBytes: true,
+					workspace: {
+						select: {
+							description: true,
+							id: true,
+							name: true,
+							slug: true,
+						},
+					},
+				},
+				where: {
+					userId: user.id,
+					workspace: {
+						slug: workspaceSlug,
+					},
+				},
+			});
+
+			if (!currentMember) {
+				return {
+					error: m["dashboard.errors.workspace_not_found"](),
+					status: "error",
+				};
+			}
+
+			const memberAddresses = await db.memberAddress.findMany({
+				select: {
+					role: true,
+					address: {
+						select: {
+							addressSlug: true,
+							domainId: true,
+							email: true,
+							handle: true,
+							id: true,
+							usedStorageBytes: true,
+						},
+					},
+				},
+				where: {
+					memberId: currentMember.id,
+				},
+			});
+			const addressIds = memberAddresses.map(({ address }) => address.id);
+			const [contacts, drafts, emails, notifications, smtpCredentials] =
+				await Promise.all([
+					db.contact.findMany({
+						orderBy: {
+							email: "asc",
+						},
+						select: {
+							additionalInformation: true,
+							addressId: true,
+							blocked: true,
+							description: true,
+							email: true,
+							id: true,
+							image: true,
+							name: true,
+						},
+						where: {
+							addressId: {
+								in: addressIds,
+							},
+						},
+					}),
+					db.draft.findMany({
+						orderBy: {
+							updatedAt: "desc",
+						},
+						select: {
+							bcc: true,
+							body: true,
+							cc: true,
+							createdAt: true,
+							from: true,
+							id: true,
+							public: true,
+							subject: true,
+							title: true,
+							to: true,
+							updatedAt: true,
+						},
+						where: {
+							memberId: currentMember.id,
+						},
+					}),
+					db.email.findMany({
+						orderBy: {
+							date: "desc",
+						},
+						select: {
+							addressId: true,
+							attachments: true,
+							bcc: true,
+							cc: true,
+							contactId: true,
+							createdAt: true,
+							date: true,
+							from: true,
+							headers: true,
+							html: true,
+							id: true,
+							messageId: true,
+							processed: true,
+							processingError: true,
+							rawEmail: true,
+							read: true,
+							readAt: true,
+							replyTo: true,
+							sizeBytes: true,
+							sort: true,
+							spamScore: true,
+							subject: true,
+							text: true,
+							to: true,
+							updatedAt: true,
+							virusStatus: true,
+							warning: true,
+						},
+						where: {
+							addressId: {
+								in: addressIds,
+							},
+						},
+					}),
+					db.notification.findMany({
+						orderBy: {
+							createdAt: "desc",
+						},
+						select: {
+							createdAt: true,
+							id: true,
+							message: true,
+							read: true,
+							readAt: true,
+							title: true,
+							type: true,
+						},
+						where: {
+							OR: [
+								{
+									memberId: currentMember.id,
+								},
+								{
+									userId: user.id,
+								},
+							],
+						},
+					}),
+					db.smtpCredentials.findMany({
+						orderBy: {
+							createdAt: "desc",
+						},
+						select: {
+							activeUntil: true,
+							addressId: true,
+							createdAt: true,
+							description: true,
+							id: true,
+							passwordViewedAt: true,
+							title: true,
+							updatedAt: true,
+							username: true,
+						},
+						where: {
+							memberId: currentMember.id,
+						},
+					}),
+				]);
+
+			return {
+				data: {
+					data: {
+						addresses: memberAddresses.map(({ address, role }) => ({
+							...address,
+							role,
+							usedStorageBytes: address.usedStorageBytes.toString(),
+						})),
+						contacts: contacts.map(toExportValue),
+						drafts: drafts.map(toExportValue),
+						emails: emails.map(toExportValue),
+						notifications: notifications.map(toExportValue),
+						smtpCredentials: smtpCredentials.map((credential) =>
+							toExportValue({
+								...credential,
+								passwordRedacted: true,
+							}),
+						),
+					},
+					exportedAt: new Date().toISOString(),
+					member: {
+						createdAt: currentMember.createdAt.toISOString(),
+						description: currentMember.description,
+						id: currentMember.id,
+						image: currentMember.image,
+						permissions: currentMember.MemberPermission.map(
+							(permission) => permission.permissionName,
+						),
+						profileName: currentMember.profileName,
+						roles: currentMember.roles.map((role) => role.name),
+						storageBytes: currentMember.storageBytes.toString(),
+					},
+					user: {
+						email: user.email,
+						id: user.id,
+						name: user.name,
+					},
+					workspace: currentMember.workspace,
+				},
+				status: "success",
 			};
 		},
 	);

@@ -1,11 +1,12 @@
 import z from "zod";
+import { m } from "#/paraglide/messages";
 
 const domainPattern = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/;
 const protocolPattern = /^https?:\/\//;
 const wwwPattern = /^www\./;
 const pathPattern = /\/.*$/;
 
-export const domainError = "Enter a valid domain, without https://.";
+export const domainError = m["dashboard.settings.domains.invalid"]();
 
 export const toDomainName = (value: string) =>
 	value

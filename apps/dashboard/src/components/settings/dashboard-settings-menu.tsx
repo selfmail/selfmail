@@ -8,6 +8,7 @@ import {
 	SettingsMenu,
 	SettingsMenuItem,
 } from "#/components/ui";
+import { m } from "#/paraglide/messages";
 import { SettingsPageContent } from "./settings-page-content";
 import { getSettingsPage, settingsPages } from "./settings-pages";
 import { useSettingsPage } from "./use-settings-page";
@@ -31,7 +32,7 @@ export function DashboardSettingsMenu({
 		<SettingsDialog onOpenChange={handleOpenChange} open={pageId !== null}>
 			<SettingsDialogContent>
 				<SettingsDialogSidebar>
-					<SettingsMenu aria-label="Settings sections">
+					<SettingsMenu aria-label={m["dashboard.settings.menu.aria_label"]()}>
 						{settingsPages.map((page) => (
 							<SettingsMenuItem
 								active={activePage.id === page.id}

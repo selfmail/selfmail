@@ -26,9 +26,9 @@ function EmailItem({ email, isLast, onSelect, selected }: EmailItemProps) {
 	return (
 		<button
 			className={cn(
-				"group cursor-pointer px-4 py-3 text-left transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25",
+				"group cursor-pointer px-4 py-3 text-left transition-colors hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25",
 				!isLast && "border-border border-b",
-				selected && "bg-muted/60",
+				selected && "bg-accent/60",
 			)}
 			onClick={() => onSelect(email.id)}
 			type="button"

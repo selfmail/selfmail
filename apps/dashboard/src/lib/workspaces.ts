@@ -2,10 +2,13 @@ export {
 	createWorkspaceAddressFn,
 	createWorkspaceDomainFn,
 	deleteWorkspaceDomainFn,
+	deleteWorkspaceFn,
 	removeWorkspaceMemberFn,
+	updateWorkspaceSettingsFn,
 	verifyWorkspaceDomainFn,
 } from "./workspaces/mutations";
 export {
+	exportWorkspaceDataFn,
 	getAddressInboxFn,
 	getDashboardEmailFn,
 	getDashboardWorkspacesFn,
@@ -14,6 +17,7 @@ export {
 	getWorkspaceDomainsFn,
 	getWorkspaceInboxFn,
 	getWorkspaceMembersFn,
+	getWorkspaceSettingsFn,
 } from "./workspaces/queries";
 export type {
 	CreateWorkspaceAddressResult,
@@ -28,8 +32,12 @@ export type {
 	DashboardWorkspaceDomainsData,
 	DashboardWorkspaceMember,
 	DashboardWorkspaceMembersData,
+	DashboardWorkspaceSettingsData,
 	DeleteWorkspaceDomainResult,
+	WorkspaceDataExport,
+	WorkspaceDataExportResult,
 	WorkspaceDomainError,
 	WorkspaceDomainResult,
 	WorkspaceDomainSuccess,
+	WorkspaceSettingsResult,
 } from "./workspaces/types";

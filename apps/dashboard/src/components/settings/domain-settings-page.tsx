@@ -48,6 +48,7 @@ import {
 	domainNameSchema,
 	toDomainName,
 } from "#/lib/workspaces/domain-utils";
+import { m } from "#/paraglide/messages";
 import type { SettingsPageComponent } from "./settings-pages";
 
 const domainDialogSteps = ["domain", "dns", "success"] as const;
@@ -90,9 +91,9 @@ const cloudflareDnsUrl =
 	"https://dash.cloudflare.com/?to=/:account/:zone/dns/records";
 
 const domainStatusLabel = {
-	pending: "Draft",
-	verified: "Verified",
-} satisfies Record<DashboardWorkspaceDomain["status"], string>;
+	pending: m["dashboard.settings.domains.draft"],
+	verified: m["dashboard.settings.domains.verified"],
+} satisfies Record<DashboardWorkspaceDomain["status"], () => string>;
 
 const domainMenuQueryOptions = {
 	history: "replace",
@@ -116,14 +117,20 @@ function DnsRecordControl({ record }: { record: DashboardDomainDnsRecord }) {
 
 	return (
 		<Button
-			aria-label={`Copy ${record.type} record`}
+			aria-label={m["dashboard.settings.domains.copy_record"]({
+				type: record.type,
+			})}
 			onClick={() => void copyRecord()}
 			size="icon-sm"
 			type="button"
 			variant="ghost"
 		>
 			<ClipboardIcon className="size-4" />
-			<span className="sr-only">{copied ? "Copied" : "Copy"}</span>
+			<span className="sr-only">
+				{copied
+					? m["dashboard.settings.domains.copied"]()
+					: m["dashboard.settings.domains.copy"]()}
+			</span>
 		</Button>
 	);
 }
@@ -137,11 +144,12 @@ function DnsRecords({ records }: { records: DashboardDomainDnsRecord[] }) {
 					description={
 						<div className="grid gap-1">
 							<code className="truncate rounded-md bg-muted px-2 py-1 text-xs">
-								Host: {record.host}
+								{m["dashboard.settings.domains.host"]({ host: record.host })}
 							</code>
 							<code className="truncate rounded-md bg-muted px-2 py-1 text-xs">
-								Value: {record.priority ? `${record.priority} ` : ""}
-								{record.value}
+								{m["dashboard.settings.domains.value"]({
+									value: `${record.priority ? `${record.priority} ` : ""}${record.value}`,
+								})}
 							</code>
 						</div>
 					}
@@ -163,14 +171,16 @@ function CloudflareBanner({ domain }: { domain: DashboardWorkspaceDomain }) {
 			action={
 				<Button asChild size="sm" variant="outline">
 					<a href={cloudflareDnsUrl} rel="noreferrer" target="_blank">
-						Open Cloudflare
+						{m["dashboard.settings.domains.open_cloudflare"]()}
 						<ArrowUpRightIcon className="size-4" />
 					</a>
 				</Button>
 			}
-			description={`Add these DNS records to ${domain.domain} in Cloudflare.`}
+			description={m["dashboard.settings.domains.cloudflare_description"]({
+				domain: domain.domain,
+			})}
 			icon={<GlobeIcon />}
-			title="Cloudflare detected"
+			title={m["dashboard.settings.domains.cloudflare_detected"]()}
 		/>
 	);
 }
@@ -206,7 +216,9 @@ function DomainSetupContent({
 						type="button"
 					>
 						<RefreshCwIcon className="size-4" />
-						{isSubmitting ? "Checking..." : "Verify records"}
+						{isSubmitting
+							? m["dashboard.settings.domains.checking"]()
+							: m["dashboard.settings.domains.verify_records"]()}
 					</Button>
 				</div>
 			) : null}
@@ -313,15 +325,17 @@ function AddDomainDialog({
 		>
 			<SettingsDialogContent
 				className="max-w-2xl sm:h-[34rem] sm:flex-col"
-				closeLabel="Close domain setup"
+				closeLabel={m["dashboard.settings.domains.close_setup"]()}
 			>
 				<SettingsDialogMain>
 					{step === "domain" ? (
 						<form className="grid gap-5" noValidate onSubmit={submitDomain}>
 							<SettingsDialogHeader>
-								<SettingsDialogTitle>Add domain</SettingsDialogTitle>
+								<SettingsDialogTitle>
+									{m["dashboard.settings.domains.add_title"]()}
+								</SettingsDialogTitle>
 								<SettingsDialogDescription>
-									Enter the email domain you want to verify for this workspace.
+									{m["dashboard.settings.domains.add_description"]()}
 								</SettingsDialogDescription>
 							</SettingsDialogHeader>
 							<SettingsGroup>
@@ -339,7 +353,9 @@ function AddDomainDialog({
 													setDomain(toDomainName(event.target.value));
 													setError(null);
 												}}
-												placeholder="yourdomain.com"
+												placeholder={m[
+													"dashboard.settings.domains.placeholder"
+												]()}
 												value={domain}
 											/>
 											{error ? (
@@ -352,12 +368,18 @@ function AddDomainDialog({
 											) : null}
 										</div>
 									}
-									title={<label htmlFor="domain-name">Domain name</label>}
+									title={
+										<label htmlFor="domain-name">
+											{m["dashboard.settings.domains.domain_name"]()}
+										</label>
+									}
 								/>
 							</SettingsGroup>
 							<div className="flex justify-end">
 								<Button disabled={isSubmitting} size="sm" type="submit">
-									{isSubmitting ? "Adding..." : "Continue"}
+									{isSubmitting
+										? m["dashboard.settings.domains.adding"]()
+										: m["dashboard.settings.domains.continue"]()}
 								</Button>
 							</div>
 						</form>
@@ -365,9 +387,11 @@ function AddDomainDialog({
 					{step === "dns" && workspaceDomain ? (
 						<>
 							<SettingsDialogHeader>
-								<SettingsDialogTitle>Create DNS records</SettingsDialogTitle>
+								<SettingsDialogTitle>
+									{m["dashboard.settings.domains.create_records"]()}
+								</SettingsDialogTitle>
 								<SettingsDialogDescription>
-									Add these records, then verify the domain.
+									{m["dashboard.settings.domains.create_records_description"]()}
 								</SettingsDialogDescription>
 							</SettingsDialogHeader>
 							<DomainSetupContent
@@ -386,15 +410,17 @@ function AddDomainDialog({
 								</div>
 								<SettingsDialogHeader className="text-center">
 									<SettingsDialogTitle>
-										{workspaceDomain.domain} is verified
+										{m["dashboard.settings.domains.verified_title"]({
+											domain: workspaceDomain.domain,
+										})}
 									</SettingsDialogTitle>
 									<SettingsDialogDescription>
-										The domain is ready for new workspace addresses.
+										{m["dashboard.settings.domains.verified_description"]()}
 									</SettingsDialogDescription>
 								</SettingsDialogHeader>
 								<div className="flex justify-center">
 									<Button onClick={closeDialog} size="sm" type="button">
-										Done
+										{m["dashboard.settings.domains.done"]()}
 									</Button>
 								</div>
 							</div>
@@ -457,14 +483,16 @@ function ManageDomainDialog({
 		>
 			<SettingsDialogContent
 				className="max-w-2xl sm:h-[34rem] sm:flex-col"
-				closeLabel={`Close ${domain?.domain ?? "domain"} management`}
+				closeLabel={m["dashboard.settings.domains.close_manage"]({
+					domain: domain?.domain ?? m["dashboard.settings.domains.domain"](),
+				})}
 			>
 				{domain ? (
 					<SettingsDialogMain>
 						<SettingsDialogHeader>
 							<SettingsDialogTitle>{domain.domain}</SettingsDialogTitle>
 							<SettingsDialogDescription>
-								Review DNS records and verification status.
+								{m["dashboard.settings.domains.manage_description"]()}
 							</SettingsDialogDescription>
 						</SettingsDialogHeader>
 						<DomainSetupContent
@@ -494,7 +522,9 @@ function DeleteDomainButton({
 	const [error, setError] = useState<string | null>(null);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const isDraft = domain.status === "pending";
-	const label = isDraft ? "Delete draft" : "Delete domain";
+	const label = isDraft
+		? m["dashboard.settings.domains.delete_draft"]()
+		: m["dashboard.settings.domains.delete_domain"]();
 
 	const removeDomain = async () => {
 		setError(null);
@@ -545,7 +575,9 @@ function DeleteDomainButton({
 			</AlertDialogTrigger>
 			<AlertDialogContent className="rounded-3xl border shadow-xl">
 				<AlertDialogCancel
-					aria-label="Close delete confirmation"
+					aria-label={m[
+						"dashboard.settings.domains.close_delete_confirmation"
+					]()}
 					className="absolute top-5 right-5 size-8 rounded-full border-0 p-0"
 					disabled={isDeleting}
 				>
@@ -553,12 +585,15 @@ function DeleteDomainButton({
 				</AlertDialogCancel>
 				<AlertDialogHeader>
 					<AlertDialogTitle>
-						{label} {domain.domain}?
+						{m["dashboard.settings.domains.delete_title"]({
+							domain: domain.domain,
+							label,
+						})}
 					</AlertDialogTitle>
 					<AlertDialogDescription>
 						{isDraft
-							? "This removes the pending domain draft from the workspace."
-							: "This removes the verified domain from the workspace. Domains with addresses cannot be deleted."}
+							? m["dashboard.settings.domains.delete_draft_description"]()
+							: m["dashboard.settings.domains.delete_domain_description"]()}
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				{error ? (
@@ -567,14 +602,16 @@ function DeleteDomainButton({
 					</p>
 				) : null}
 				<AlertDialogFooter>
-					<AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+					<AlertDialogCancel disabled={isDeleting}>
+						{m["dashboard.settings.cancel"]()}
+					</AlertDialogCancel>
 					<Button
 						disabled={isDeleting}
 						onClick={removeDomain}
 						type="button"
 						variant="destructive"
 					>
-						{isDeleting ? "Deleting..." : label}
+						{isDeleting ? m["dashboard.settings.domains.deleting"]() : label}
 					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>
@@ -621,7 +658,7 @@ export const DomainSettingsPage: SettingsPageComponent = ({
 		try {
 			setData(await fetchDomains());
 		} catch {
-			setError("Domains could not be loaded.");
+			setError(m["dashboard.settings.domains.load_error"]());
 		} finally {
 			setIsLoading(false);
 		}
@@ -642,7 +679,7 @@ export const DomainSettingsPage: SettingsPageComponent = ({
 				}
 			} catch {
 				if (!ignoreResult) {
-					setError("Domains could not be loaded.");
+					setError(m["dashboard.settings.domains.load_error"]());
 				}
 			} finally {
 				if (!ignoreResult) {
@@ -728,11 +765,11 @@ export const DomainSettingsPage: SettingsPageComponent = ({
 						type="button"
 						variant="outline"
 					>
-						Retry
+						{m["dashboard.settings.domains.retry"]()}
 					</Button>
 				}
 				description={error}
-				title="Domains could not be loaded"
+				title={m["dashboard.settings.domains.load_error"]()}
 				variant="destructive"
 			/>
 		);
@@ -764,7 +801,7 @@ export const DomainSettingsPage: SettingsPageComponent = ({
 			/>
 			<div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
 				<p className="max-w-xl text-pretty text-muted-foreground text-sm">
-					Verify DNS before using custom domains for new email addresses.
+					{m["dashboard.settings.domains.intro"]()}
 				</p>
 				<Button
 					disabled={!data?.canAddDomains}
@@ -773,7 +810,7 @@ export const DomainSettingsPage: SettingsPageComponent = ({
 					type="button"
 				>
 					<PlusIcon className="size-4" />
-					Add domain
+					{m["dashboard.settings.domains.add"]()}
 				</Button>
 			</div>
 			{error ? (
@@ -793,7 +830,7 @@ export const DomainSettingsPage: SettingsPageComponent = ({
 										type="button"
 										variant="outline"
 									>
-										Manage
+										{m["dashboard.settings.domains.manage"]()}
 									</Button>
 									<DeleteDomainButton
 										canDeleteDomains={data?.canDeleteDomains ?? false}
@@ -815,12 +852,18 @@ export const DomainSettingsPage: SettingsPageComponent = ({
 											domain.status === "verified" ? "default" : "outline"
 										}
 									>
-										{domainStatusLabel[domain.status]}
+										{domainStatusLabel[domain.status]()}
 									</Badge>
 									<span className="tabular-nums">
-										{domain.addressCount} addresses
+										{m["dashboard.settings.domains.address_count"]({
+											count: domain.addressCount,
+										})}
 									</span>
-									<span>{domain.dnsRecords.length} DNS records</span>
+									<span>
+										{m["dashboard.settings.domains.dns_record_count"]({
+											count: domain.dnsRecords.length,
+										})}
+									</span>
 									{domain.dnsProvider === "cloudflare" ? (
 										<Badge variant="secondary">Cloudflare</Badge>
 									) : null}
@@ -841,12 +884,12 @@ export const DomainSettingsPage: SettingsPageComponent = ({
 							type="button"
 						>
 							<PlusIcon className="size-4" />
-							Add domain
+							{m["dashboard.settings.domains.add"]()}
 						</Button>
 					}
-					description="Add a domain draft, create the DNS records, then verify it."
+					description={m["dashboard.settings.domains.empty_description"]()}
 					icon={<GlobeIcon />}
-					title="No domains connected"
+					title={m["dashboard.settings.domains.empty_title"]()}
 				/>
 			)}
 		</div>

@@ -1,16 +1,16 @@
 import {
 	Button,
-	Dropdown,
-	DropdownContent,
-	DropdownGroup,
-	DropdownItem,
-	DropdownLabel,
-	DropdownSeparator,
-	DropdownTrigger,
 	Input,
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue,
 } from "@selfmail/ui";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { CheckIcon, ChevronDownIcon, ChevronLeftIcon } from "lucide-react";
+import { ChevronLeftIcon } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import {
 	createWorkspaceAddressFn,
@@ -38,9 +38,7 @@ export function CreateAddressPage({
 	const [address, setAddress] = useState("");
 	const [error, setError] = useState<string | null>(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [selectedDomainId, setSelectedDomainId] = useState(
-		domains[0]?.id ?? "",
-	);
+	const [selectedDomainId, setSelectedDomainId] = useState(domains[0]?.id);
 	const navigate = useNavigate();
 	const selectedDomain =
 		domains.find((domain) => domain.id === selectedDomainId) ?? domains[0];
@@ -122,54 +120,45 @@ export function CreateAddressPage({
 								placeholder={m["dashboard.address.create.placeholder"]()}
 								value={address}
 							/>
-							<Dropdown>
-								<DropdownTrigger
-									className="h-12 min-w-0 cursor-pointer justify-between rounded-l-none border-l-0 px-5 text-lg"
+							<Select
+								disabled={domains.length === 0}
+								onValueChange={(domainId) => {
+									setSelectedDomainId(domainId);
+									setError(null);
+								}}
+								value={selectedDomain?.id}
+							>
+								<SelectTrigger
+									className="min-w-0 rounded-l-none border-l-0 px-5 text-lg [&>span]:min-w-0 [&>span]:truncate"
 									title={domain}
 								>
-									<span className="min-w-0 truncate">@ {domain}</span>
-									<ChevronDownIcon className="size-4 text-muted-foreground" />
-								</DropdownTrigger>
-								<DropdownContent
+									<SelectValue placeholder={`@ ${domain}`} />
+								</SelectTrigger>
+								<SelectContent
 									align="end"
 									className="w-96 max-w-[calc(100vw-2rem)]"
 								>
-									<DropdownGroup>
-										<DropdownLabel>
-											{m["dashboard.address.create.domain_label"]()}
-										</DropdownLabel>
-										{domains.map((domain) => (
-											<DropdownItem
-												className="grid-cols-[1rem_minmax(0,1fr)_auto]"
-												icon={
-													domain.id === selectedDomain?.id ? (
-														<CheckIcon className="size-4" />
-													) : null
-												}
-												key={domain.id}
-												onClick={() => {
-													setSelectedDomainId(domain.id);
-													setError(null);
-												}}
-												title={domain.domain}
+									<SelectGroup>
+										<div className="flex items-center justify-between gap-3 px-4 py-2">
+											<SelectLabel className="p-0">
+												{m["dashboard.address.create.domain_label"]()}
+											</SelectLabel>
+											<Link
+												className="font-medium text-muted-foreground text-xs underline underline-offset-4 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
+												params={domainRouteParams}
+												to="/$workspaceSlug/domains"
 											>
+												{m["dashboard.address.create.connect_domain"]()}
+											</Link>
+										</div>
+										{domains.map((domain) => (
+											<SelectItem key={domain.id} value={domain.id}>
 												@ {domain.domain}
-											</DropdownItem>
+											</SelectItem>
 										))}
-									</DropdownGroup>
-									<DropdownSeparator />
-									<DropdownItem
-										onClick={() =>
-											navigate({
-												params: domainRouteParams,
-												to: "/$workspaceSlug/domains",
-											})
-										}
-									>
-										{m["dashboard.address.create.connect_domain"]()}
-									</DropdownItem>
-								</DropdownContent>
-							</Dropdown>
+									</SelectGroup>
+								</SelectContent>
+							</Select>
 						</div>
 						{error ? (
 							<p

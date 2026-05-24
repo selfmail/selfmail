@@ -80,7 +80,7 @@ export function EmailPreview({
 				</h2>
 				<div className="flex items-center gap-2">
 					<button
-						className="flex items-center gap-2 rounded-lg px-3 py-2 text-muted-foreground text-sm transition-colors hover:bg-muted hover:text-foreground"
+						className="flex items-center gap-2 rounded-lg px-3 py-2 text-muted-foreground text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
 						type="button"
 					>
 						<Maximize2Icon className="size-4" />
@@ -88,7 +88,7 @@ export function EmailPreview({
 					</button>
 					<button
 						aria-label={m["dashboard.email.close_preview"]()}
-						className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+						className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
 						onClick={handleClose}
 						type="button"
 					>

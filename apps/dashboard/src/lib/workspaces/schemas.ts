@@ -1,4 +1,5 @@
 import z from "zod";
+import { m } from "#/paraglide/messages";
 import { domainNameSchema } from "./domain-utils";
 
 export const workspaceSlugSchema = z.object({
@@ -10,11 +11,11 @@ export const createAddressSchema = workspaceSlugSchema.extend({
 	handle: z
 		.string()
 		.trim()
-		.min(1, "Address is required.")
-		.max(64, "Address is too long.")
+		.min(1, m["dashboard.validation.address_required"]())
+		.max(64, m["dashboard.validation.address_too_long"]())
 		.regex(
 			/^[a-z0-9]+(?:[._-]?[a-z0-9]+)*$/,
-			"Use letters, numbers, dots, underscores, or hyphens.",
+			m["dashboard.validation.address_format"](),
 		),
 });
 
@@ -32,4 +33,17 @@ export const createWorkspaceDomainSchema = workspaceSlugSchema.extend({
 
 export const workspaceDomainSchema = workspaceSlugSchema.extend({
 	domainId: z.string().min(1),
+});
+
+export const updateWorkspaceSettingsSchema = workspaceSlugSchema.extend({
+	description: z
+		.string()
+		.trim()
+		.max(280, m["dashboard.validation.description_too_long"]())
+		.optional(),
+	name: z
+		.string()
+		.trim()
+		.min(1, m["dashboard.validation.workspace_name_required"]())
+		.max(80, m["dashboard.validation.workspace_name_too_long"]()),
 });

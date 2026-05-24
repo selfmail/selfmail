@@ -5,9 +5,17 @@ import {
 	setStoredThemeMode,
 	type ThemeMode,
 } from "#/lib/theme";
+import { m } from "#/paraglide/messages";
 
 export default function ThemeToggle() {
 	const [mode, setMode] = useState<ThemeMode>("auto");
+	let buttonLabel = m["dashboard.settings.app.theme.light"]();
+
+	if (mode === "auto") {
+		buttonLabel = m["dashboard.settings.app.theme.auto"]();
+	} else if (mode === "dark") {
+		buttonLabel = m["dashboard.settings.app.theme.dark"]();
+	}
 
 	useEffect(() => {
 		const initialMode = getStoredThemeMode();
@@ -30,26 +38,33 @@ export default function ThemeToggle() {
 	}, [mode]);
 
 	function toggleMode() {
-		const nextMode: ThemeMode =
-			mode === "light" ? "dark" : mode === "dark" ? "auto" : "light";
+		let nextMode: ThemeMode;
+		if (mode === "light") {
+			nextMode = "dark";
+		} else if (mode === "dark") {
+			nextMode = "auto";
+		} else {
+			nextMode = "light";
+		}
+
 		setMode(nextMode);
 		setStoredThemeMode(nextMode);
 	}
 
 	const label =
 		mode === "auto"
-			? "Theme mode: auto (system). Click to switch to light mode."
-			: `Theme mode: ${mode}. Click to switch mode.`;
+			? m["dashboard.settings.app.theme.toggle_auto_label"]()
+			: m["dashboard.settings.app.theme.toggle_mode_label"]({ mode });
 
 	return (
 		<button
 			aria-label={label}
-			className="rounded-full border border-border bg-background px-3 py-1.5 font-semibold text-foreground text-sm shadow-sm transition-colors hover:bg-muted"
+			className="rounded-full border border-border bg-background px-3 py-1.5 font-semibold text-foreground text-sm shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
 			onClick={toggleMode}
 			title={label}
 			type="button"
 		>
-			{mode === "auto" ? "Auto" : mode === "dark" ? "Dark" : "Light"}
+			{buttonLabel}
 		</button>
 	);
 }

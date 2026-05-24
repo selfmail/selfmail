@@ -65,6 +65,31 @@ export interface DashboardWorkspaceMembersData {
 	members: DashboardWorkspaceMember[];
 }
 
+export interface DashboardWorkspaceSettingsData {
+	counts: {
+		addresses: number;
+		domains: number;
+		drafts: number;
+		emails: number;
+		members: number;
+		storageBytes: string;
+	};
+	permissions: {
+		canDeleteWorkspace: boolean;
+		canUpdateWorkspace: boolean;
+	};
+	workspace: {
+		createdAt: string;
+		defaultDomain: string;
+		description: string | null;
+		id: string;
+		isOwner: boolean;
+		name: string;
+		slug: string;
+		updatedAt: string;
+	};
+}
+
 export interface DashboardEmail {
 	attachments?: number;
 	date: string;
@@ -134,3 +159,67 @@ export interface RemoveWorkspaceMemberError {
 export type RemoveWorkspaceMemberResult =
 	| RemoveWorkspaceMemberSuccess
 	| RemoveWorkspaceMemberError;
+
+export interface WorkspaceSettingsSuccess {
+	status: "success";
+	workspace: DashboardWorkspaceSettingsData["workspace"];
+}
+
+export interface WorkspaceSettingsError {
+	error: string;
+	status: "error";
+}
+
+export type WorkspaceSettingsResult =
+	| WorkspaceSettingsSuccess
+	| WorkspaceSettingsError;
+
+export type WorkspaceDataExportValue =
+	| WorkspaceDataExportValue[]
+	| boolean
+	| null
+	| number
+	| string
+	| { [key: string]: WorkspaceDataExportValue };
+
+export interface WorkspaceDataExport {
+	exportedAt: string;
+	member: {
+		createdAt: string;
+		description: string | null;
+		id: string;
+		image: string | null;
+		permissions: string[];
+		profileName: string;
+		roles: string[];
+		storageBytes: string;
+	};
+	user: {
+		email: string;
+		id: string;
+		name: string | null;
+	};
+	workspace: {
+		description: string | null;
+		id: string;
+		name: string;
+		slug: string;
+	};
+	data: {
+		addresses: WorkspaceDataExportValue[];
+		contacts: WorkspaceDataExportValue[];
+		drafts: WorkspaceDataExportValue[];
+		emails: WorkspaceDataExportValue[];
+		notifications: WorkspaceDataExportValue[];
+		smtpCredentials: WorkspaceDataExportValue[];
+	};
+}
+
+export interface WorkspaceDataExportSuccess {
+	data: WorkspaceDataExport;
+	status: "success";
+}
+
+export type WorkspaceDataExportResult =
+	| WorkspaceDataExportSuccess
+	| WorkspaceSettingsError;

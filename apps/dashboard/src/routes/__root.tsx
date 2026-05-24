@@ -8,6 +8,7 @@ import {
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Agentation } from "agentation";
 import { NuqsAdapter } from "nuqs/adapters/tanstack-router";
+import { m } from "#/paraglide/messages";
 import { getLocale } from "#/paraglide/runtime";
 import PostHogProvider from "../integrations/posthog/provider";
 
@@ -40,13 +41,13 @@ export const Route = createRootRoute({
 	shellComponent: RootDocument,
 	notFoundComponent: () => (
 		<main className="flex min-h-dvh items-center justify-center">
-			<h2 className="text-2xl">Page Not Found</h2>
+			<h2 className="text-2xl">{m["root.not_found"]()}</h2>
 		</main>
 	),
 	errorComponent: ({ error }) => (
 		<main className="flex min-h-dvh items-center justify-center">
 			<div>
-				<h2 className="text-2xl">An error occurred</h2>
+				<h2 className="text-2xl">{m["root.error_title"]()}</h2>
 				<pre className="mt-4 rounded bg-destructive/10 p-4 text-destructive text-sm">
 					{error.message}
 				</pre>
