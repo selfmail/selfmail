@@ -61,6 +61,7 @@ export const ModelName = {
   AdminSession: 'AdminSession',
   AdminAccount: 'AdminAccount',
   AdminVerification: 'AdminVerification',
+  AuditLog: 'AuditLog',
   User: 'User',
   Account: 'Account',
   Session: 'Session',
@@ -251,6 +252,26 @@ export const AdminVerificationScalarFieldEnum = {
 } as const
 
 export type AdminVerificationScalarFieldEnum = (typeof AdminVerificationScalarFieldEnum)[keyof typeof AdminVerificationScalarFieldEnum]
+
+
+export const AuditLogScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  actorType: 'actorType',
+  actorId: 'actorId',
+  actorEmail: 'actorEmail',
+  action: 'action',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  requestId: 'requestId',
+  sessionId: 'sessionId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
@@ -727,6 +748,24 @@ export const AdminVerificationOrderByRelevanceFieldEnum = {
 } as const
 
 export type AdminVerificationOrderByRelevanceFieldEnum = (typeof AdminVerificationOrderByRelevanceFieldEnum)[keyof typeof AdminVerificationOrderByRelevanceFieldEnum]
+
+
+export const AuditLogOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  actorType: 'actorType',
+  actorId: 'actorId',
+  actorEmail: 'actorEmail',
+  action: 'action',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  requestId: 'requestId',
+  sessionId: 'sessionId'
+} as const
+
+export type AuditLogOrderByRelevanceFieldEnum = (typeof AuditLogOrderByRelevanceFieldEnum)[keyof typeof AuditLogOrderByRelevanceFieldEnum]
 
 
 export const UserOrderByRelevanceFieldEnum = {

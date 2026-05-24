@@ -16,6 +16,7 @@ export type {
   AdminSession,
   AdminUser,
   AdminVerification,
+  AuditLog,
   AuthProvider,
   BillingCheckout,
   BillingCustomer,

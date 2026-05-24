@@ -92,6 +92,11 @@ export type AdminAccount = Prisma.AdminAccountModel
  */
 export type AdminVerification = Prisma.AdminVerificationModel
 /**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel
+/**
  * Model User
  * 
  */
