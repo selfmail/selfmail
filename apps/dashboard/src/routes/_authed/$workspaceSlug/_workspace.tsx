@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { getWorkspace } from "#/lib/workspaces";
 import { m } from "#/paraglide/messages";
 
@@ -67,8 +67,12 @@ export const Route = createFileRoute("/_authed/$workspaceSlug/_workspace")({
 				hasWorkspace: Boolean(workspace),
 				workspaceSlug,
 			});
-			throw new Response(m["dashboard.errors.workspace_not_found"](), {
-				status: 404,
+			throw redirect({
+				replace: true,
+				search: {
+					error: "workspace-access",
+				},
+				to: "/",
 			});
 		}
 

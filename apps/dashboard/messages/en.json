@@ -51,6 +51,7 @@
       "workspace_name_too_long": "Workspace name is too long."
     },
     "errors": {
+      "workspace_access": "This workspace either does not exist or you don't have access to it.",
       "workspace_not_found": "Workspace not found.",
       "workspace_required": "Workspace slug is required.",
       "workspace_lookup_failed": "Workspace lookup failed.",

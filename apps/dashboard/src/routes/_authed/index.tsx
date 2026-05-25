@@ -1,3 +1,4 @@
+import { Alert, AlertDescription } from "@selfmail/ui";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
 	type DashboardWorkspace,
@@ -10,17 +11,29 @@ export const Route = createFileRoute("/_authed/")({
 	loader: async () => ({
 		workspaces: await getDashboardWorkspacesFn(),
 	}),
+	validateSearch: (
+		search: Record<string, unknown>,
+	): { error?: "workspace-access" } =>
+		search.error === "workspace-access" ? { error: search.error } : {},
 });
 
 function RouteComponent() {
 	const { user } = Route.useRouteContext();
 	const { workspaces } = Route.useLoaderData();
+	const { error } = Route.useSearch();
 
 	return (
 		<main className="flex min-h-dvh w-full flex-col items-center justify-center gap-y-3 bg-background px-5 py-10 text-foreground">
 			<h1 className="text-balance font-medium text-lg">
 				{m["dashboard.workspace_picker.title"]()}
 			</h1>
+			{error ? (
+				<Alert className="lg:max-w-md" variant="destructive">
+					<AlertDescription>
+						{m["dashboard.errors.workspace_access"]()}
+					</AlertDescription>
+				</Alert>
+			) : null}
 			<div className="flex w-full flex-col gap-6 rounded-lg border border-border bg-card p-5 lg:max-w-md">
 				{workspaces.length === 0 ? (
 					<p className="text-center text-muted-foreground text-sm">

@@ -7,9 +7,14 @@ checksums:
     language_label: 277fd1a41cc237a437cd1d5e4a80463b
     current_locale: db08433b966bdc69bae29aced15a1687
     learn_router: c9f8f55cae3ad60c1b06b23a4f76247a
+    root/not_found: 97612e6230bc7a1ebd99380bf561b732
+    root/error_title: 53a2b5f5e7d83c737c8e02fe18fb4bdb
     dashboard/inbox/unified: 772b991d3b7469ffbed574b30d765e1e
     dashboard/inbox/email_count: 6525eb0292d44204d0879a94a001380a
     dashboard/inbox/email_count_one: 1cfd2de5f9c6e6cb7f6b2f27a0b4192f
+    dashboard/workspace_picker/title: 9d55fb6c65cb108279004b32b365a670
+    dashboard/workspace_picker/empty: 23f24112537a69e0c7e8f1a7b25e9a8b
+    dashboard/workspace_picker/create: 2d74973f7e67c329758965412e5fbff8
     dashboard/address/subtitle: d0f7f1a9ffa30592a2adb09e4bb882f9
     dashboard/address/navigation_label: 87b49e2ffcdbe3cc4bfd2d25cc75c096
     dashboard/address/add: 4d321c12b08718bd55b108c3a4cd51ac
@@ -27,6 +32,39 @@ checksums:
     dashboard/address/create/saving: c949fe6aa47b326f345b405fe9c4d6e7
     dashboard/address/create/error: c0e46e6ec37f4c70b0abc06456517c32
     dashboard/address/create/success: 6a45101bfc4145ad3adf39380a7e5345
+    dashboard/validation/address_required: b79fd68d644c9d4e5dc5d9e05667acef
+    dashboard/validation/address_too_long: b0c58835bb6d0f3605bb93723833f1b3
+    dashboard/validation/address_format: cb251ddc726d122e4b082cfc468ac74e
+    dashboard/validation/description_too_long: e584a0d311585a3be7c92716f3f1330f
+    dashboard/validation/workspace_name_required: 256df4e9122caaccd30b0d10d665b4c4
+    dashboard/validation/workspace_name_too_long: 40b41534090eab5b13d9c7968f9778ca
+    dashboard/errors/workspace_access: 72d948f739de1c2b8760f0c3c13ca4e6
+    dashboard/errors/workspace_not_found: a55918b4f91a3897564c7f53b4fb4d45
+    dashboard/errors/workspace_required: 91469edae2b0991cf44e83f210994b76
+    dashboard/errors/workspace_lookup_failed: d95ed14873f7924bc9d0210fd0c320f7
+    dashboard/errors/workspace_lookup_mismatch: 2bb661ce1f985f72df5259bc953a987c
+    dashboard/errors/workspace_context_missing: d1436d695e1b64a311aebd73a6a31d72
+    dashboard/errors/address_not_found: 717aa0687c5702a8f51c12d69eb1898c
+    dashboard/errors/email_not_found: 364ce3b4d43dda13ac403e30b2c77d85
+    dashboard/errors/email_taken: effd203c28ebeb38486b43d005266397
+    dashboard/errors/address_domain_required: 09804d31ff64e259465662aade112483
+    dashboard/errors/address_create_failed: 3a1f6940083e82a7f0248d7338431efe
+    dashboard/errors/short_address_failed: 88187eac8afdc3ee7e86fd91528edbab
+    dashboard/errors/workspace_update_permission: dee9b017c723dd2a3b4323b63e8eedaf
+    dashboard/errors/workspace_delete_permission: 2457fcb6322fe8886ccc88fc5d8cd122
+    dashboard/errors/domain_add_permission: 261499db652ff4613c3b4b8ae47e64d0
+    dashboard/errors/domain_taken: 582008f1ac135655b1cf6ec8429a7f25
+    dashboard/errors/domain_add_failed: 2ebb49acf21252957a0229e28bed29c8
+    dashboard/errors/domain_verify_permission: a1cc9d19a26165dcfb74a1eda0b22754
+    dashboard/errors/domain_not_found: 508e6f717627639f59cdcae1e03fb15c
+    dashboard/errors/verification_txt_missing: d9ae3ec6305e298986cc187c5f5f05ea
+    dashboard/errors/dns_check_failed: c1eac24eec69397a2da14339a001d6dc
+    dashboard/errors/domain_delete_permission: 80aff81d49c181fa5ec0ce5bdeeddff9
+    dashboard/errors/domain_delete_addresses: 8b07b66e6e51a7ad4fa43e7ce062b438
+    dashboard/errors/remove_self: 5efef7389dd92843cae450edb43de2b3
+    dashboard/errors/member_remove_permission: 3987f94795e0f047818823bc04ef5f4a
+    dashboard/errors/member_not_found: 4569d4ebd7b07fcfaf25f506702c09f2
+    dashboard/errors/owner_remove_denied: 5d005d7331c2fbf0d49c956da4236178
     dashboard/navigation/build: b9133d1d6f232e6d15178f12bbae79aa
     dashboard/navigation/platform: c68862170146325333c7f25af11a3fa2
     dashboard/navigation/workspace: b63ef0e99ee6f7fef6cbe4971ca6cf0f
@@ -38,6 +76,8 @@ checksums:
     dashboard/navigation/storage: 99d4c24fb975d64b57a6ca3acd428558
     dashboard/navigation/settings: 8df6777277469c1fd88cc18dde2f1cc3
     dashboard/navigation/domains: 87955beb56bd7e2da09e44bacb294b6a
+    dashboard/navigation/contacts: d5b6c3f890b3904eaf5754081945c03d
+    dashboard/navigation/spam_analysis: 612c9b0899aa8adb354739922d3fb931
     dashboard/header/switch_workspace: 4248dd13e96f40d15ddb4f7f62752c67
     dashboard/header/workspaces: 8ba082a84aa35cf851af1cf874b853e2
     dashboard/header/manage: a3d40c0267b81ae53c9598eaeb05087d
@@ -60,6 +100,20 @@ checksums:
     dashboard/email/attachment_label: 06344b3df33be376073e6720f0be21df
     dashboard/email/attachment_size: 294754bb65c4605de180122c4af79f30
     dashboard/email/to: 009ee3383c4002af6e850cfd46742af2
+    dashboard/email/unknown_sender: 1c9bdeee6146ecec01831d8200f63bfe
+    dashboard/email/no_preview: f92d3fb25d91fcb077d83af0d55c5b8f
+    dashboard/email/minute_ago: 44aed4142fc9d928be0d61f6da5b793b
+    dashboard/email/hour_ago: dadbfaa20c13cde96e5fb75c7d5e690d
+    dashboard/email/day_ago: fcdfa15f1138647a32f83848a3d9c7db
+    dashboard/sample_emails/alerts_from: 6fce3200ec49c78744d87d0332cafa02
+    dashboard/sample_emails/daily_deliverability_subject: b52e5a39097739fb3a3a50273615b62b
+    dashboard/sample_emails/daily_deliverability_snippet: 669f7f6715a74d723b9a2bb3346a372c
+    dashboard/sample_emails/migration_from: 690f98279507826b8da35602d7877752
+    dashboard/sample_emails/migration_subject: d83fdf56d41f43fb5b7793916ac40c3b
+    dashboard/sample_emails/migration_snippet: c1a5d1640598e163e395b35dba557c77
+    dashboard/sample_emails/billing_from: b01dbdd049ebbd4a349fa64d6ce65a3b
+    dashboard/sample_emails/invoice_subject: 7afedf09a0a7f12ba58091a73169587d
+    dashboard/sample_emails/invoice_snippet: 5f00caa3fa582ea445b1c32461d95b55
     dashboard/settings/title: f34fba7d342342e7e079cd991559bff3
     dashboard/settings/description: 3572547702d98d7ccff61f14c71f4ffe
     dashboard/settings/general: b891e8f15579fc5d97bcaf3637f5ae59
@@ -72,14 +126,43 @@ checksums:
     dashboard/settings/workspace_image: 0d1498a019de42a71ca488b238a1ea59
     dashboard/settings/saved: 392494c22212cb9459d092de988771ae
     dashboard/settings/saving: 7cb2d8f012d57db8a62187b65ef164dc
+    dashboard/settings/save_changes: 53dd9f4f0a4accc822fa5c1f2f6d118a
     dashboard/settings/update: c2dcd98ab6bbb4459149648334434da3
+    dashboard/settings/load_error: 64cc5d76ae90078e191fb17eb6210c30
+    dashboard/settings/name_required: 256df4e9122caaccd30b0d10d665b4c4
+    dashboard/settings/save_error: 33904b7f264b19653a357a3335a5192a
+    dashboard/settings/delete_error: 7d9524e10cef229551e9ff881baeca43
     dashboard/settings/delete_title: 9017c821209528d9b20d40a488854cdf
     dashboard/settings/delete_description: d95fe7752a10d7cbd4ece8a4d0da7270
     dashboard/settings/delete_trigger: 9017c821209528d9b20d40a488854cdf
     dashboard/settings/delete_confirm_title: 5158bd3cc3bb75cbc0f6356f774b85b5
     dashboard/settings/delete_confirm_description: 4df6cb7777aa7c95f5f50db32687a604
+    dashboard/settings/delete_type_confirm: 1420ff40bd3f7e0fa5343672a54ceb2a
+    dashboard/settings/delete_unavailable: 1f967394c51f1a7076c56659ffdbb422
     dashboard/settings/cancel: 2e2a849c2223911717de8caa2c71bade
     dashboard/settings/deleting: 683cd814a3fc94e50b3e4e4a9c90c19c
+    dashboard/settings/retry: 6e44d18639560596569a1278f9c83676
+    dashboard/settings/readonly_title: c87572ea047e77e81f26b36a78d5c7d6
+    dashboard/settings/readonly_description: 081d39feb071076946ef79ab9dccbf76
+    dashboard/settings/your_access: a86411fac7cc2f723e7577ef5bbf07d4
+    dashboard/settings/default_email_domain: 9dd6dd037d448623fd7e12c7d98f2ec1
+    dashboard/settings/created_updated: 8073a079ca4d1be1952072f34fb39846
+    dashboard/settings/workspace_data: be765a997226ecb9a81e02356ae734de
+    dashboard/settings/workspace_data_description: 3963194aed755c08e6c2335128eed565
+    dashboard/settings/summary_members: 0932e80cba1e3e0a7f52bb67ff31da32
+    dashboard/settings/summary_addresses: 87b49e2ffcdbe3cc4bfd2d25cc75c096
+    dashboard/settings/summary_domains: 87955beb56bd7e2da09e44bacb294b6a
+    dashboard/settings/summary_emails: 230344f713c89383f51389be1e0d3f0d
+    dashboard/settings/summary_drafts: 76dab0f0b2e6c4933b80f69e388070d0
+    dashboard/settings/summary_storage: 99d4c24fb975d64b57a6ca3acd428558
+    dashboard/settings/exporting: 7538a6b9286a7d84b3cdcb48f712c8f9
+    dashboard/settings/export_json: 350bf9d5b7780f13cfb8ff829fdc94a3
+    dashboard/settings/export_error: 73fa42046d68277483b398ab0a392623
+    dashboard/settings/export_title: 5d0f9625b79ebba6a44209033fcce3f9
+    dashboard/settings/export_description: f2edcd715661d907b1e62dd7ebf77a52
+    dashboard/settings/danger_zone: 79466492fd0b4e50e28c490441959ea2
+    dashboard/settings/danger_zone_description: d2d3cafeba85f7242c8f45a8ab3588d6
+    dashboard/settings/cannot_undo: 3d8b13374ffd3cefc0f3f7ce077bd9c9
     dashboard/settings/member_settings/member: 1606dc30b369856b9dba1fe9aec425d2
     dashboard/settings/member_settings/access: 550606d4a12bdf108c1b12b925ca1b3a
     dashboard/settings/member_settings/addresses: 87b49e2ffcdbe3cc4bfd2d25cc75c096
@@ -89,6 +172,10 @@ checksums:
     dashboard/settings/member_settings/owner: 9c0b3aeca046c3ebd3bdc352edc83e88
     dashboard/settings/member_settings/member_role: 1606dc30b369856b9dba1fe9aec425d2
     dashboard/settings/member_settings/you: db2a4a796b70cc1430d1b21f6ffb6dcb
+    dashboard/settings/member_settings/pending_member: 836ac0274fb98171345d80156aa4f65e
+    dashboard/settings/member_settings/pending: 030a6f3395d5d4efddd3cc67d6009039
+    dashboard/settings/member_settings/pending_invite: 8f1b808f189a936f52e0b58b3d3cf936
+    dashboard/settings/member_settings/invited: f86eea76ae5f07605d84e85fe9f1f4c7
     dashboard/settings/member_settings/address_count: 22d48f3a52ac67ab2dfbfe20c6c16bce
     dashboard/settings/member_settings/remove: dba2fe5fe9f83f8078c687f28cba4b52
     dashboard/settings/member_settings/removing: 6689d93ec92668ccf7fb95f21ad780f6
@@ -98,15 +185,76 @@ checksums:
     dashboard/settings/member_settings/owner_locked: 9c0b3aeca046c3ebd3bdc352edc83e88
     dashboard/settings/member_settings/self_locked: 646e67df070b1bb218cb5db30d3491db
     dashboard/settings/member_settings/no_permission: 713c538e0933e29802ce0f766d1333a1
+    dashboard/settings/member_settings/add: 11979625770516ca287e929381778e02
+    dashboard/settings/member_settings/add_description: 0790c8cb558ce66345a041304ee05321
+    dashboard/settings/member_settings/add_title: 11979625770516ca287e929381778e02
+    dashboard/settings/member_settings/add_dialog_description: 0f614e3824611359ef9e925d1b5b6ecd
+    dashboard/settings/member_settings/close_invite: 1f574dcddba215bc9a16db828f233253
+    dashboard/settings/member_settings/current_email: a1265eee7728cd04affa55cea5aad3e9
+    dashboard/settings/member_settings/email_placeholder: a20aec269f13fd81c8fd303c258566ac
+    dashboard/settings/member_settings/email_invalid: a615b67b73c83c6b68b9b96863f57db5
+    dashboard/settings/member_settings/email_duplicate: 829c5a0b5a63ee25469981e5d22f2dbd
+    dashboard/settings/member_settings/staged_title: d655ceebb930dd61333140ce881e1eac
+    dashboard/settings/member_settings/staged_description: 1d854e534dee75abf27118a8434fa3ae
+    dashboard/settings/member_settings/done: ffd408fa29d5bc9039ef8ea1b9b699bb
+    dashboard/settings/member_settings/pending_banner: 6d53d28190638b535ad5b5c67918f5bb
+    dashboard/settings/member_settings/pending_invite_count: 4d3634cf8339b2813c8369884defddb8
+    dashboard/settings/member_settings/pending_invite_count_one: fb2fdddbc3a0b8a6a47db3db9d5c6f78
     dashboard/settings/member_settings/empty_title: aa6378d4455825a3535e8c7ba187bfc0
     dashboard/settings/member_settings/empty_description: dfaab63c5d4f9d49c5a9576d53cc6453
     dashboard/settings/member_settings/load_error: c32327763ce143d5f140b4c2241e1d72
     dashboard/settings/member_settings/retry: 6e44d18639560596569a1278f9c83676
+    dashboard/settings/domains/invalid: 74c6684b435ca3b395af917007438021
+    dashboard/settings/domains/draft: e8a92958ad300aacfe46c2bf6644927e
+    dashboard/settings/domains/verified: 9566bd61c1f754dd5082eea5101f15a8
+    dashboard/settings/domains/copy_record: be15b6f464e7f8235404cb4f25365105
+    dashboard/settings/domains/copied: 29208e06d704c4fc4b8b534dc7acc4ef
+    dashboard/settings/domains/copy: 627c00d2c850b9b45f7341a6ac01b6bb
+    dashboard/settings/domains/host: a2cb4c12f29257aec4330b2b830c9e6b
+    dashboard/settings/domains/value: 66057ff8c8bfd949a79bee1e1983ccf9
+    dashboard/settings/domains/open_cloudflare: 852fc25502f3a913719f0d29a92ee0a7
+    dashboard/settings/domains/cloudflare_detected: dcdaf5c857dbd928d159b86be599729b
+    dashboard/settings/domains/cloudflare_description: b0c5d51cbeceddef27a5022ef33504bf
+    dashboard/settings/domains/checking: 7fb996bee0359e5dbdd92bd6e147a814
+    dashboard/settings/domains/verify_records: 73f94b08f765cec02f24cc331ab22a1c
+    dashboard/settings/domains/close_setup: 1950388096b0be0ed554da618d91e85e
+    dashboard/settings/domains/domain: 9ea7e558d336ebc2ac711f5063117c81
+    dashboard/settings/domains/add: 5554a2fa6783e1d658a1222bcefe5204
+    dashboard/settings/domains/add_title: 5554a2fa6783e1d658a1222bcefe5204
+    dashboard/settings/domains/add_description: 3cc54587686058087f9c2fb623d69e8a
+    dashboard/settings/domains/domain_name: fe4e66f20a746846f2e1c132dd8cbabe
+    dashboard/settings/domains/placeholder: 25190de5efbbbf3a43bf52c2d5f3347a
+    dashboard/settings/domains/adding: 7d16e074064398614c282f10ea47adf4
+    dashboard/settings/domains/continue: 3cfba90b4600131e82fc4260c568d044
+    dashboard/settings/domains/create_records: 578316ca3eccd229433ddf75bdf644fe
+    dashboard/settings/domains/create_records_description: e59efdcea3a3ff0da5355c9559a6d944
+    dashboard/settings/domains/verified_title: d2d3ec86c3879815a0e38018a781a265
+    dashboard/settings/domains/verified_description: 668c957f4ef893fd31ef4b5f4d84713d
+    dashboard/settings/domains/done: ffd408fa29d5bc9039ef8ea1b9b699bb
+    dashboard/settings/domains/close_manage: cd4ad6623e83ff7c710060e868818ef4
+    dashboard/settings/domains/manage_description: e80b86aa1f88d56fb9d9614c67378de0
+    dashboard/settings/domains/delete_draft: c9250b188d1ffa6f675935b422e53b1b
+    dashboard/settings/domains/delete_domain: bbb6d594f0153af0ac888fe99ae0d521
+    dashboard/settings/domains/close_delete_confirmation: c5d2e62d84fc594a76cefe747cb30eaa
+    dashboard/settings/domains/delete_title: cc44756c02df1fe6582d954eda60c79c
+    dashboard/settings/domains/delete_draft_description: 18c5f8d7d6de51851830d486cdde036b
+    dashboard/settings/domains/delete_domain_description: 74c20f8ab224219ee41dbe765fd51bea
+    dashboard/settings/domains/deleting: 683cd814a3fc94e50b3e4e4a9c90c19c
+    dashboard/settings/domains/load_error: 5013e3e90c594112e45ad95fbc804676
+    dashboard/settings/domains/retry: 6e44d18639560596569a1278f9c83676
+    dashboard/settings/domains/intro: 1e1abd438364318c8eaec6577f28a7c7
+    dashboard/settings/domains/manage: a3d40c0267b81ae53c9598eaeb05087d
+    dashboard/settings/domains/address_count: 22d48f3a52ac67ab2dfbfe20c6c16bce
+    dashboard/settings/domains/dns_record_count: 3b587f882404784d6db366311e23153c
+    dashboard/settings/domains/empty_title: 3f931e56b8ad85a2de74941b9b2ee176
+    dashboard/settings/domains/empty_description: 48c793c739d14d10b3fbe7f8a3d653c1
     dashboard/settings/app/theme/title: 21fe00b7a518089576fb83c08631107a
     dashboard/settings/app/theme/description: 3e66319da56fe6d6711b1c9644dc9ffc
     dashboard/settings/app/theme/auto: d477ad57b6ffec9fb6b2676b9433ec0c
     dashboard/settings/app/theme/light: bb78ea2c6edd8662676c81a8a13ecb93
     dashboard/settings/app/theme/dark: 73e6e208ba628b26e90fcf6dce15e1b2
+    dashboard/settings/app/theme/toggle_auto_label: 7f329270569efd0fbc338369de1164fa
+    dashboard/settings/app/theme/toggle_mode_label: 0b9e565a47c318cf0596321837cc804a
     dashboard/settings/app/language/title: 277fd1a41cc237a437cd1d5e4a80463b
     dashboard/settings/app/language/description: f290f7629d246fd94e81952374912efc
     dashboard/settings/app/language/auto: db98c0cc5ed89eb4562e3e7f08b68a6c
@@ -114,6 +262,7 @@ checksums:
     dashboard/settings/app/language/en: e1eeeb379f86a015d6e581fcbc4af7f3
     dashboard/settings/app/language/es: e1cd9645ddb854071941a3a23af9eaaf
     dashboard/settings/app/language/de: f13cde514c5daa2cb08f5f22be97a066
+    dashboard/settings/menu/aria_label: 648208aecc23b4ce1aa9f34e33907bfc
     dashboard/settings/menu/app/title: 75d5fde26bf2d28584228aa77b15b854
     dashboard/settings/menu/member_settings/title: 4554838b41dd0d013f777f1b025939c5
     dashboard/settings/menu/member_settings/description: 18e2679c369a9fe224dbd150f6de7a7b
@@ -173,7 +322,17 @@ checksums:
     onboarding/review/members: 0932e80cba1e3e0a7f52bb67ff31da32
     onboarding/review/not_set: 380482630d60ee2d1531b31246caa467
     onboarding/errors/workspace_name: 0ea43276ea118dc9a1b0226c0d03b663
+    onboarding/errors/workspace_name_required: b8c5162dd08c4d941bc57f9d0cbee451
+    onboarding/errors/workspace_name_too_long: 1353603482ff4c455361c3debe56f636
     onboarding/errors/workspace_handle: ca55dad2add18a6e993a85c83a197614
+    onboarding/errors/workspace_handle_required: 6a6ca4cbed5ad21f7d48de905aa33b3d
+    onboarding/errors/workspace_handle_too_long: 8b0b4e49b5dad42f0a1285bd21972b6e
     onboarding/errors/domain: 74c6684b435ca3b395af917007438021
     onboarding/errors/address: f0e30547956424c8b3a8b329e01d456f
+    onboarding/errors/address_required: b04673b7166d062dae928b559fb08699
+    onboarding/errors/address_too_long: 0fa19fd186a8dcf608a1e181a4ba053c
+    onboarding/errors/workspace_taken: e81741027e2875545861895e0d6650bd
+    onboarding/errors/address_taken: effd203c28ebeb38486b43d005266397
+    onboarding/errors/create_workspace_failed: 72ff581b7b4196edfb338d4cd8c4eca6
+    onboarding/errors/short_address_failed: 88187eac8afdc3ee7e86fd91528edbab
     onboarding/errors/member_email: a615b67b73c83c6b68b9b96863f57db5
