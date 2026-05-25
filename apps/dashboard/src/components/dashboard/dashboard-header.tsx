@@ -2,15 +2,9 @@ import { useNavigate } from "@tanstack/react-router";
 import {
 	CheckIcon,
 	ChevronsUpDownIcon,
-	CreditCardIcon,
-	GlobeIcon,
-	LifeBuoyIcon,
 	PlaneTakeoffIcon,
 	PlusIcon,
 	SettingsIcon,
-	ShieldCheckIcon,
-	UsersIcon,
-	WebhookIcon,
 } from "lucide-react";
 import {
 	cn,
@@ -47,7 +41,11 @@ export function DashboardHeader({
 					</h3>
 					<ChevronsUpDownIcon className="size-4 text-muted-foreground" />
 				</DropdownTrigger>
-				<DropdownContent align="start" className="min-w-72">
+				<DropdownContent
+					align="start"
+					className="w-72 max-w-[calc(100vw-2rem)] min-w-0"
+					collisionPadding={16}
+				>
 					<DropdownGroup>
 						<DropdownLabel>{m["dashboard.header.workspaces"]()}</DropdownLabel>
 						{workspaces.map((workspace) => (
@@ -80,7 +78,6 @@ export function DashboardHeader({
 					</DropdownGroup>
 					<DropdownSeparator />
 					<DropdownGroup>
-						<DropdownLabel>{m["dashboard.header.manage"]()}</DropdownLabel>
 						<DropdownItem
 							className={dropdownItemClassName}
 							icon={<SettingsIcon className="size-4" />}
@@ -90,59 +87,16 @@ export function DashboardHeader({
 						</DropdownItem>
 						<DropdownItem
 							className={dropdownItemClassName}
-							icon={<UsersIcon className="size-4" />}
-							onClick={() => onOpenSettings("members")}
+							icon={<PlusIcon className="size-4" />}
+							onClick={() =>
+								navigate({
+									to: "/onboarding",
+								})
+							}
 						>
-							{m["dashboard.header.members"]()}
-						</DropdownItem>
-						<DropdownItem
-							className={dropdownItemClassName}
-							icon={<CreditCardIcon className="size-4" />}
-							onClick={() => onOpenSettings("billing")}
-						>
-							{m["dashboard.header.billing"]()}
-						</DropdownItem>
-						<DropdownItem
-							className={dropdownItemClassName}
-							icon={<GlobeIcon className="size-4" />}
-							onClick={() => onOpenSettings("domains")}
-						>
-							{m["dashboard.header.domains"]()}
-						</DropdownItem>
-						<DropdownItem
-							className={dropdownItemClassName}
-							icon={<WebhookIcon className="size-4" />}
-							onClick={() => onOpenSettings("workspace")}
-						>
-							{m["dashboard.header.webhooks"]()}
-						</DropdownItem>
-						<DropdownItem
-							className={dropdownItemClassName}
-							icon={<ShieldCheckIcon className="size-4" />}
-							onClick={() => onOpenSettings("auditLogs")}
-						>
-							{m["dashboard.header.security"]()}
-						</DropdownItem>
-						<DropdownItem
-							className={dropdownItemClassName}
-							icon={<LifeBuoyIcon className="size-4" />}
-							onClick={() => onOpenSettings("support")}
-						>
-							{m["dashboard.header.support"]()}
+							{m["dashboard.header.create_workspace"]()}
 						</DropdownItem>
 					</DropdownGroup>
-					<DropdownSeparator />
-					<DropdownItem
-						className={dropdownItemClassName}
-						icon={<PlusIcon className="size-4" />}
-						onClick={() =>
-							navigate({
-								to: "/onboarding",
-							})
-						}
-					>
-						{m["dashboard.header.create_workspace"]()}
-					</DropdownItem>
 				</DropdownContent>
 			</Dropdown>
 

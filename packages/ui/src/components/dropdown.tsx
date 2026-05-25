@@ -4,14 +4,26 @@ import type { ComponentProps, ReactNode } from "react";
 import { cn } from "../lib/cn";
 
 const Dropdown = Menu.Root;
-const DropdownGroup = Menu.Group;
 const DropdownPortal = Menu.Portal;
 const DropdownSub = Menu.SubmenuRoot;
 
 const dropdownItemClass =
-  "grid h-11 cursor-default grid-cols-[1rem_1fr_auto] items-center gap-3 rounded-xl px-3 text-muted-foreground text-sm outline-none select-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0";
+  "grid min-h-9 cursor-default grid-cols-[1rem_1fr_auto] items-center gap-2.5 rounded-lg px-3 py-1.5 text-sm outline-none select-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0";
 
 type DropdownTriggerProps = ComponentProps<typeof Menu.Trigger>;
+
+function DropdownGroup({
+  className,
+  ...props
+}: ComponentProps<typeof Menu.Group>) {
+  return (
+    <Menu.Group
+      className={cn("grid gap-0.5", className)}
+      data-slot="dropdown-group"
+      {...props}
+    />
+  );
+}
 
 function DropdownTrigger({ className, ...props }: DropdownTriggerProps) {
   return (
@@ -63,7 +75,7 @@ function DropdownContent({
       >
         <Menu.Popup
           className={cn(
-            "min-w-64 overflow-hidden rounded-2xl border border-border bg-popover p-1.5 text-popover-foreground shadow-lg",
+            "flex max-h-[var(--available-height)] min-w-40 flex-col gap-0.5 overflow-y-auto overflow-x-hidden rounded-3xl border-2 border-border bg-popover p-1 text-popover-foreground shadow-md [--dropdown-content-padding:calc(var(--spacing)*1)] [--dropdown-content-radius:var(--radius-3xl)] [scrollbar-color:gray_transparent] [scrollbar-width:thin] [&>[data-slot=dropdown-group]:first-child>[data-slot=dropdown-item]:nth-child(1_of_[data-slot=dropdown-item])]:rounded-t-[calc(var(--dropdown-content-radius)-var(--dropdown-content-padding))] [&>[data-slot=dropdown-group]:last-child>[data-slot=dropdown-item]:nth-last-child(1_of_[data-slot=dropdown-item])]:rounded-b-[calc(var(--dropdown-content-radius)-var(--dropdown-content-padding))] [&>[data-slot=dropdown-item]:first-child]:rounded-t-[calc(var(--dropdown-content-radius)-var(--dropdown-content-padding))] [&>[data-slot=dropdown-item]:last-child]:rounded-b-[calc(var(--dropdown-content-radius)-var(--dropdown-content-padding))]",
             className
           )}
           data-slot="dropdown-content"
@@ -104,7 +116,7 @@ function DropdownItem({
     >
       <span
         className={cn(
-          "flex size-4 items-center justify-center text-current",
+          "flex size-4 items-center justify-center text-muted-foreground",
           iconClassName
         )}
       >
@@ -126,7 +138,7 @@ function DropdownSeparator({
 }: ComponentProps<typeof Menu.Separator>) {
   return (
     <Menu.Separator
-      className={cn("-mx-1.5 my-1.5 h-px bg-border", className)}
+      className={cn("-mx-1 my-1 h-px bg-border", className)}
       data-slot="dropdown-separator"
       {...props}
     />
@@ -139,7 +151,7 @@ function DropdownLabel({
 }: ComponentProps<typeof Menu.GroupLabel>) {
   return (
     <Menu.GroupLabel
-      className={cn("px-3 py-1.5 text-muted-foreground text-xs", className)}
+      className={cn("px-3 py-1 text-muted-foreground text-xs", className)}
       data-slot="dropdown-label"
       {...props}
     />
