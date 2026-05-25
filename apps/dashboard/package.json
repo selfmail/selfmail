@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@posthog/react": "^1.7.0",
+    "@selfmail/audit": "workspace:*",
     "@selfmail/db": "workspace:*",
     "@selfmail/permissions": "workspace:*",
     "@selfmail/ui": "workspace:*",

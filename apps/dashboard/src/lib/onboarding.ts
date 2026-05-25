@@ -1,3 +1,4 @@
+import { createAuditLog } from "@selfmail/audit";
 import { db } from "@selfmail/db";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
@@ -104,6 +105,23 @@ export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
 								role: "owner",
 							},
 						});
+
+						await createAuditLog(
+							{
+								action: "mailbox.created",
+								actor: {
+									email: user.email,
+									id: user.id,
+									type: "user",
+								},
+								target: {
+									id: address.id,
+									type: "mailbox",
+								},
+								tenantId: workspace.id,
+							},
+							tx,
+						);
 
 						return workspace;
 					});

@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { resolveTxt } from "node:dns/promises";
+import { createAuditLog } from "@selfmail/audit";
 import { db } from "@selfmail/db";
 import { hasAnyPermission, hasPermissions } from "@selfmail/permissions";
 import { createServerFn } from "@tanstack/react-start";
@@ -218,12 +219,65 @@ export const deleteWorkspaceFn = createServerFn({ method: "POST" })
 						},
 					},
 				});
+				const domains = await tx.domain.findMany({
+					select: {
+						id: true,
+					},
+					where: {
+						workspaceId: member.workspace.id,
+					},
+				});
 				const addressIds = [
 					...new Set([
 						...addressLinks.map(({ addressId }) => addressId),
 						...domainAddresses.map(({ id }) => id),
 					]),
 				];
+
+				await Promise.all([
+					...addressIds.map((id) =>
+						createAuditLog(
+							{
+								action: "mailbox.deleted",
+								actor: {
+									email: user.email,
+									id: user.id,
+									type: "user",
+								},
+								metadata: {
+									reason: "workspace_deleted",
+								},
+								target: {
+									id,
+									type: "mailbox",
+								},
+								tenantId: member.workspace.id,
+							},
+							tx,
+						),
+					),
+					...domains.map(({ id }) =>
+						createAuditLog(
+							{
+								action: "domain.deleted",
+								actor: {
+									email: user.email,
+									id: user.id,
+									type: "user",
+								},
+								metadata: {
+									reason: "workspace_deleted",
+								},
+								target: {
+									id,
+									type: "domain",
+								},
+								tenantId: member.workspace.id,
+							},
+							tx,
+						),
+					),
+				]);
 
 				if (addressIds.length) {
 					await tx.email.deleteMany({
@@ -472,6 +526,23 @@ export const createWorkspaceAddressFn = createServerFn({ method: "POST" })
 							},
 						});
 
+						await createAuditLog(
+							{
+								action: "mailbox.created",
+								actor: {
+									email: user.email,
+									id: user.id,
+									type: "user",
+								},
+								target: {
+									id: address.id,
+									type: "mailbox",
+								},
+								tenantId: member.workspace.id,
+							},
+							tx,
+						);
+
 						return address;
 					});
 
@@ -534,25 +605,49 @@ export const createWorkspaceDomainFn = createServerFn({ method: "POST" })
 			}
 
 			try {
-				const createdDomain = await db.domain.create({
-					data: {
-						domain,
-						verificationToken: randomUUID(),
-						workspaceId: member.workspace.id,
-					},
-					select: {
-						_count: {
-							select: {
-								addresses: true,
-							},
+				const createdDomain = await db.$transaction(async (tx) => {
+					const createdDomain = await tx.domain.create({
+						data: {
+							domain,
+							verificationToken: randomUUID(),
+							workspaceId: member.workspace.id,
 						},
-						createdAt: true,
-						domain: true,
-						id: true,
-						verificationToken: true,
-						verified: true,
-						verifiedAt: true,
-					},
+						select: {
+							_count: {
+								select: {
+									addresses: true,
+								},
+							},
+							createdAt: true,
+							domain: true,
+							id: true,
+							verificationToken: true,
+							verified: true,
+							verifiedAt: true,
+						},
+					});
+
+					await createAuditLog(
+						{
+							action: "domain.created",
+							actor: {
+								email: user.email,
+								id: user.id,
+								type: "user",
+							},
+							metadata: {
+								domain: createdDomain.domain,
+							},
+							target: {
+								id: createdDomain.id,
+								type: "domain",
+							},
+							tenantId: member.workspace.id,
+						},
+						tx,
+					);
+
+					return createdDomain;
 				});
 
 				return {
@@ -639,20 +734,66 @@ export const verifyWorkspaceDomainFn = createServerFn({ method: "POST" })
 				};
 			}
 
+			let records: string[][];
+
 			try {
-				const records = await resolveTxt(domainTxtHost(domain.domain));
-				const hasVerificationRecord = records
-					.map((record) => record.join(""))
-					.includes(domainTxtValue(domain.verificationToken));
+				records = await resolveTxt(domainTxtHost(domain.domain));
+			} catch {
+				await createAuditLog({
+					action: "domain.dns_check_failed",
+					actor: {
+						email: user.email,
+						id: user.id,
+						type: "user",
+					},
+					metadata: {
+						domain: domain.domain,
+						reason: "dns_lookup_failed",
+					},
+					target: {
+						id: domain.id,
+						type: "domain",
+					},
+					tenantId: member.workspace.id,
+				});
 
-				if (!hasVerificationRecord) {
-					return {
-						error: m["dashboard.errors.verification_txt_missing"](),
-						status: "error",
-					};
-				}
+				return {
+					error: m["dashboard.errors.dns_check_failed"](),
+					status: "error",
+				};
+			}
 
-				const verifiedDomain = await db.domain.update({
+			const hasVerificationRecord = records
+				.map((record) => record.join(""))
+				.includes(domainTxtValue(domain.verificationToken));
+
+			if (!hasVerificationRecord) {
+				await createAuditLog({
+					action: "domain.dns_check_failed",
+					actor: {
+						email: user.email,
+						id: user.id,
+						type: "user",
+					},
+					metadata: {
+						domain: domain.domain,
+						reason: "verification_record_missing",
+					},
+					target: {
+						id: domain.id,
+						type: "domain",
+					},
+					tenantId: member.workspace.id,
+				});
+
+				return {
+					error: m["dashboard.errors.verification_txt_missing"](),
+					status: "error",
+				};
+			}
+
+			const verifiedDomain = await db.$transaction(async (tx) => {
+				const verifiedDomain = await tx.domain.update({
 					data: {
 						verified: true,
 						verifiedAt: new Date(),
@@ -675,19 +816,37 @@ export const verifyWorkspaceDomainFn = createServerFn({ method: "POST" })
 					},
 				});
 
-				return {
-					domain: toDashboardWorkspaceDomain(
-						verifiedDomain,
-						await detectDnsProvider(verifiedDomain.domain),
-					),
-					status: "success",
-				};
-			} catch {
-				return {
-					error: m["dashboard.errors.dns_check_failed"](),
-					status: "error",
-				};
-			}
+				await createAuditLog(
+					{
+						action: "domain.verified",
+						actor: {
+							email: user.email,
+							id: user.id,
+							type: "user",
+						},
+						metadata: {
+							domain: verifiedDomain.domain,
+							method: "dns_txt",
+						},
+						target: {
+							id: verifiedDomain.id,
+							type: "domain",
+						},
+						tenantId: member.workspace.id,
+					},
+					tx,
+				);
+
+				return verifiedDomain;
+			});
+
+			return {
+				domain: toDashboardWorkspaceDomain(
+					verifiedDomain,
+					await detectDnsProvider(verifiedDomain.domain),
+				),
+				status: "success",
+			};
 		},
 	);
 
@@ -750,10 +909,29 @@ export const deleteWorkspaceDomainFn = createServerFn({ method: "POST" })
 				};
 			}
 
-			await db.domain.delete({
-				where: {
-					id: domain.id,
-				},
+			await db.$transaction(async (tx) => {
+				await tx.domain.delete({
+					where: {
+						id: domain.id,
+					},
+				});
+
+				await createAuditLog(
+					{
+						action: "domain.deleted",
+						actor: {
+							email: user.email,
+							id: user.id,
+							type: "user",
+						},
+						target: {
+							id: domain.id,
+							type: "domain",
+						},
+						tenantId: member.workspace.id,
+					},
+					tx,
+				);
 			});
 
 			return {

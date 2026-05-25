@@ -1,3 +1,4 @@
+import { createAuditLog, type AuditActorType } from "@selfmail/audit";
 import { db, type Prisma } from "@selfmail/db";
 import type {
   PaymentsProcessorPolar,
@@ -200,16 +201,46 @@ export class Billing {
     const workspaceId = getWorkspaceIdFromPayload(payload);
 
     if (payload.type === "customer.state_changed") {
-      await this.saveCustomerState(payload.data);
+      await this.saveCustomerState(payload.data, "webhook");
     }
 
-    await db.billingWebhookEvent.create({
-      data: {
-        polarEventId: eventId,
-        type: payload.type,
-        workspaceId,
-        payload: toJson(payload),
-      },
+    await db.$transaction(async (tx) => {
+      await tx.billingWebhookEvent.create({
+        data: {
+          polarEventId: eventId,
+          type: payload.type,
+          workspaceId,
+          payload: toJson(payload),
+        },
+      });
+
+      if (workspaceId && payload.type === "subscription.past_due") {
+        await createAuditLog(
+          {
+            tenantId: workspaceId,
+            actor: { type: "webhook" },
+            action: "billing.payment_failed",
+            target: { id: payload.data.id, type: "billing_subscription" },
+          },
+          tx
+        );
+      }
+
+      if (workspaceId && payload.type === "subscription.revoked") {
+        await createAuditLog(
+          {
+            tenantId: workspaceId,
+            actor: { type: "webhook" },
+            action:
+              payload.data.status === "unpaid"
+                ? "billing.payment_failed"
+                : "billing.subscription_cancelled",
+            target: { id: payload.data.id, type: "billing_subscription" },
+            metadata: { status: payload.data.status },
+          },
+          tx
+        );
+      }
     });
 
     return { eventId, processed: true as const, type: payload.type };
@@ -270,87 +301,124 @@ export class Billing {
     });
   }
 
-  private async saveCustomerState(state: CustomerState) {
+  private async saveCustomerState(
+    state: CustomerState,
+    actorType: Extract<AuditActorType, "system" | "webhook"> = "system"
+  ) {
     const workspaceId = state.externalId;
 
     if (!workspaceId) {
       throw new Error("Polar customer state is missing external id");
     }
 
-    const subscription = state.activeSubscriptions[0];
-    const activeEntitlements = state.grantedBenefits.map((benefit) =>
-      getBenefitKey(benefit)
-    );
-
-    await upsertBillingCustomer({
-      customer: state,
-      workspaceId,
-    });
-
-    if (subscription) {
-      await db.billingSubscription.upsert({
+    return db.$transaction(async (tx) => {
+      const subscription = state.activeSubscriptions[0];
+      const previousSubscription = await tx.billingSubscription.findUnique({
         where: { workspaceId },
-        create: mapSubscription({
-          polarCustomerId: state.id,
-          subscription,
-          workspaceId,
-          basicProductId: requireProductId(this.config.basicProductId, "basic"),
-        }),
-        update: mapSubscription({
-          polarCustomerId: state.id,
-          subscription,
-          workspaceId,
-          basicProductId: requireProductId(this.config.basicProductId, "basic"),
-        }),
       });
-    } else {
-      await db.billingSubscription.updateMany({
-        where: { workspaceId },
-        data: {
-          status: "inactive",
-        },
-      });
-    }
+      const activeEntitlements = state.grantedBenefits.map((benefit) =>
+        getBenefitKey(benefit)
+      );
 
-    await Promise.all(
-      state.grantedBenefits.map((benefit) =>
-        db.billingEntitlement.upsert({
-          where: {
-            workspaceId_key: {
-              key: getBenefitKey(benefit),
-              workspaceId,
-            },
-          },
-          create: {
-            workspaceId,
-            key: getBenefitKey(benefit),
-            polarBenefitId: benefit.benefitId,
-            active: true,
-            metadata: toJson(benefit.benefitMetadata),
-          },
-          update: {
-            polarBenefitId: benefit.benefitId,
-            active: true,
-            metadata: toJson(benefit.benefitMetadata),
-          },
-        })
-      )
-    );
-
-    await db.billingEntitlement.updateMany({
-      where: {
+      await upsertBillingCustomer({
+        client: tx,
+        customer: state,
         workspaceId,
-        key: {
-          notIn: activeEntitlements,
-        },
-      },
-      data: {
-        active: false,
-      },
-    });
+      });
 
-    return db.billingSubscription.findUnique({
-      where: { workspaceId },
+      if (subscription) {
+        const savedSubscription = await tx.billingSubscription.upsert({
+          where: { workspaceId },
+          create: mapSubscription({
+            polarCustomerId: state.id,
+            subscription,
+            workspaceId,
+            basicProductId: requireProductId(
+              this.config.basicProductId,
+              "basic"
+            ),
+          }),
+          update: mapSubscription({
+            polarCustomerId: state.id,
+            subscription,
+            workspaceId,
+            basicProductId: requireProductId(
+              this.config.basicProductId,
+              "basic"
+            ),
+          }),
+        });
+
+        if (
+          previousSubscription &&
+          previousSubscription.plan !== savedSubscription.plan
+        ) {
+          await createAuditLog(
+            {
+              tenantId: workspaceId,
+              actor: { type: actorType },
+              action: "billing.plan_changed",
+              target: {
+                id: savedSubscription.id,
+                type: "billing_subscription",
+              },
+              metadata: {
+                newPlan: savedSubscription.plan,
+                oldPlan: previousSubscription.plan,
+              },
+            },
+            tx
+          );
+        }
+      } else {
+        await tx.billingSubscription.updateMany({
+          where: { workspaceId },
+          data: {
+            status: "inactive",
+          },
+        });
+      }
+
+      await Promise.all(
+        state.grantedBenefits.map((benefit) =>
+          tx.billingEntitlement.upsert({
+            where: {
+              workspaceId_key: {
+                key: getBenefitKey(benefit),
+                workspaceId,
+              },
+            },
+            create: {
+              workspaceId,
+              key: getBenefitKey(benefit),
+              polarBenefitId: benefit.benefitId,
+              active: true,
+              metadata: toJson(benefit.benefitMetadata),
+            },
+            update: {
+              polarBenefitId: benefit.benefitId,
+              active: true,
+              metadata: toJson(benefit.benefitMetadata),
+            },
+          })
+        )
+      );
+
+      await tx.billingEntitlement.updateMany({
+        where: {
+          workspaceId,
+          key: {
+            notIn: activeEntitlements,
+          },
+        },
+        data: {
+          active: false,
+        },
+      });
+
+      return tx.billingSubscription.findUnique({
+        where: { workspaceId },
+      });
     });
   }
 }
@@ -415,9 +483,11 @@ const requireProductId = (productId: string, plan: string) => {
 };
 
 const upsertBillingCustomer = ({
+  client = db,
   customer,
   workspaceId,
 }: {
+  client?: Pick<typeof db, "billingCustomer">;
   customer: {
     email?: string | null;
     externalId?: string | null;
@@ -427,7 +497,7 @@ const upsertBillingCustomer = ({
   };
   workspaceId: string;
 }) =>
-  db.billingCustomer.upsert({
+  client.billingCustomer.upsert({
     where: { workspaceId },
     create: {
       workspaceId,

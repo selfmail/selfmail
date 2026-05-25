@@ -6,6 +6,7 @@
     "@types/bun": "latest"
   },
   "dependencies": {
+    "@selfmail/audit": "workspace:*",
     "@selfmail/payments-processor-polar": "workspace:*",
     "@selfmail/db": "workspace:*",
     "@selfmail/permissions": "workspace:*"

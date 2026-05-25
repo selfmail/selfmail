@@ -64,8 +64,13 @@ export interface CreateAuditLogInput {
   metadata?: Prisma.InputJsonObject;
 }
 
-export const createAuditLog = (input: CreateAuditLogInput): Promise<AuditLog> =>
-  db.auditLog.create({
+type AuditClient = Pick<typeof db, "auditLog">;
+
+export const createAuditLog = (
+  input: CreateAuditLogInput,
+  client: AuditClient = db
+): Promise<AuditLog> =>
+  client.auditLog.create({
     data: {
       tenantId: input.tenantId,
       actorType: input.actor.type,
