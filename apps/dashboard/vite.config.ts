@@ -1,14 +1,18 @@
 import { paraglideVitePlugin } from "@inlang/paraglide-js";
-import babel from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react";
+import viteReact from "@vitejs/plugin-react";
 import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 
 const config = defineConfig({
-  resolve: { tsconfigPaths: true },
+  resolve: {
+    dedupe: ["@tanstack/react-router", "react", "react-dom"],
+  },
+  ssr: {
+    noExternal: ["@base-ui/react", "@base-ui/utils", "@tanstack/react-router"],
+  },
   plugins: [
     devtools(),
     paraglideVitePlugin({
@@ -21,8 +25,11 @@ const config = defineConfig({
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
     tailwindcss(),
     tanstackStart(),
-    viteReact(),
-    babel({ presets: [reactCompilerPreset()] }),
+    viteReact({
+      babel: {
+        plugins: ["babel-plugin-react-compiler"],
+      },
+    }),
   ],
 });
 

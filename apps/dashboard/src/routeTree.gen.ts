@@ -12,9 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
 import { Route as AuthedOnboardingIndexRouteImport } from './routes/_authed/onboarding/index'
-import { Route as AuthedMailEmailIdRouteImport } from './routes/_authed/mail/$emailId'
 import { Route as AuthedWorkspaceSlugWorkspaceRouteImport } from './routes/_authed/$workspaceSlug/_workspace'
 import { Route as AuthedWorkspaceSlugWorkspaceIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/index'
+import { Route as AuthedWorkspaceSlugMailEmailIdRouteImport } from './routes/_authed/$workspaceSlug/mail/$emailId'
 import { Route as AuthedWorkspaceSlugWorkspaceNewAddressRouteImport } from './routes/_authed/$workspaceSlug/_workspace/new-address'
 import { Route as AuthedWorkspaceSlugWorkspaceAddressSlugRouteImport } from './routes/_authed/$workspaceSlug/_workspace/$addressSlug'
 import { Route as AuthedWorkspaceSlugWorkspaceDomainsIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/domains/index'
@@ -34,11 +34,6 @@ const AuthedOnboardingIndexRoute = AuthedOnboardingIndexRouteImport.update({
   path: '/onboarding/',
   getParentRoute: () => AuthedRoute,
 } as any)
-const AuthedMailEmailIdRoute = AuthedMailEmailIdRouteImport.update({
-  id: '/mail/$emailId',
-  path: '/mail/$emailId',
-  getParentRoute: () => AuthedRoute,
-} as any)
 const AuthedWorkspaceSlugWorkspaceRoute =
   AuthedWorkspaceSlugWorkspaceRouteImport.update({
     id: '/$workspaceSlug/_workspace',
@@ -50,6 +45,12 @@ const AuthedWorkspaceSlugWorkspaceIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthedWorkspaceSlugWorkspaceRoute,
+  } as any)
+const AuthedWorkspaceSlugMailEmailIdRoute =
+  AuthedWorkspaceSlugMailEmailIdRouteImport.update({
+    id: '/$workspaceSlug/mail/$emailId',
+    path: '/$workspaceSlug/mail/$emailId',
+    getParentRoute: () => AuthedRoute,
   } as any)
 const AuthedWorkspaceSlugWorkspaceNewAddressRoute =
   AuthedWorkspaceSlugWorkspaceNewAddressRouteImport.update({
@@ -79,20 +80,20 @@ const AuthedWorkspaceSlugWorkspaceDomainsAddRoute =
 export interface FileRoutesByFullPath {
   '/': typeof AuthedIndexRoute
   '/$workspaceSlug': typeof AuthedWorkspaceSlugWorkspaceRouteWithChildren
-  '/mail/$emailId': typeof AuthedMailEmailIdRoute
   '/onboarding/': typeof AuthedOnboardingIndexRoute
   '/$workspaceSlug/$addressSlug': typeof AuthedWorkspaceSlugWorkspaceAddressSlugRoute
   '/$workspaceSlug/new-address': typeof AuthedWorkspaceSlugWorkspaceNewAddressRoute
+  '/$workspaceSlug/mail/$emailId': typeof AuthedWorkspaceSlugMailEmailIdRoute
   '/$workspaceSlug/': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
   '/$workspaceSlug/domains/add': typeof AuthedWorkspaceSlugWorkspaceDomainsAddRoute
   '/$workspaceSlug/domains/': typeof AuthedWorkspaceSlugWorkspaceDomainsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AuthedIndexRoute
-  '/mail/$emailId': typeof AuthedMailEmailIdRoute
   '/onboarding': typeof AuthedOnboardingIndexRoute
   '/$workspaceSlug/$addressSlug': typeof AuthedWorkspaceSlugWorkspaceAddressSlugRoute
   '/$workspaceSlug/new-address': typeof AuthedWorkspaceSlugWorkspaceNewAddressRoute
+  '/$workspaceSlug/mail/$emailId': typeof AuthedWorkspaceSlugMailEmailIdRoute
   '/$workspaceSlug': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
   '/$workspaceSlug/domains/add': typeof AuthedWorkspaceSlugWorkspaceDomainsAddRoute
   '/$workspaceSlug/domains': typeof AuthedWorkspaceSlugWorkspaceDomainsIndexRoute
@@ -102,10 +103,10 @@ export interface FileRoutesById {
   '/_authed': typeof AuthedRouteWithChildren
   '/_authed/': typeof AuthedIndexRoute
   '/_authed/$workspaceSlug/_workspace': typeof AuthedWorkspaceSlugWorkspaceRouteWithChildren
-  '/_authed/mail/$emailId': typeof AuthedMailEmailIdRoute
   '/_authed/onboarding/': typeof AuthedOnboardingIndexRoute
   '/_authed/$workspaceSlug/_workspace/$addressSlug': typeof AuthedWorkspaceSlugWorkspaceAddressSlugRoute
   '/_authed/$workspaceSlug/_workspace/new-address': typeof AuthedWorkspaceSlugWorkspaceNewAddressRoute
+  '/_authed/$workspaceSlug/mail/$emailId': typeof AuthedWorkspaceSlugMailEmailIdRoute
   '/_authed/$workspaceSlug/_workspace/': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
   '/_authed/$workspaceSlug/_workspace/domains/add': typeof AuthedWorkspaceSlugWorkspaceDomainsAddRoute
   '/_authed/$workspaceSlug/_workspace/domains/': typeof AuthedWorkspaceSlugWorkspaceDomainsIndexRoute
@@ -115,20 +116,20 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$workspaceSlug'
-    | '/mail/$emailId'
     | '/onboarding/'
     | '/$workspaceSlug/$addressSlug'
     | '/$workspaceSlug/new-address'
+    | '/$workspaceSlug/mail/$emailId'
     | '/$workspaceSlug/'
     | '/$workspaceSlug/domains/add'
     | '/$workspaceSlug/domains/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/mail/$emailId'
     | '/onboarding'
     | '/$workspaceSlug/$addressSlug'
     | '/$workspaceSlug/new-address'
+    | '/$workspaceSlug/mail/$emailId'
     | '/$workspaceSlug'
     | '/$workspaceSlug/domains/add'
     | '/$workspaceSlug/domains'
@@ -137,10 +138,10 @@ export interface FileRouteTypes {
     | '/_authed'
     | '/_authed/'
     | '/_authed/$workspaceSlug/_workspace'
-    | '/_authed/mail/$emailId'
     | '/_authed/onboarding/'
     | '/_authed/$workspaceSlug/_workspace/$addressSlug'
     | '/_authed/$workspaceSlug/_workspace/new-address'
+    | '/_authed/$workspaceSlug/mail/$emailId'
     | '/_authed/$workspaceSlug/_workspace/'
     | '/_authed/$workspaceSlug/_workspace/domains/add'
     | '/_authed/$workspaceSlug/_workspace/domains/'
@@ -173,13 +174,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedOnboardingIndexRouteImport
       parentRoute: typeof AuthedRoute
     }
-    '/_authed/mail/$emailId': {
-      id: '/_authed/mail/$emailId'
-      path: '/mail/$emailId'
-      fullPath: '/mail/$emailId'
-      preLoaderRoute: typeof AuthedMailEmailIdRouteImport
-      parentRoute: typeof AuthedRoute
-    }
     '/_authed/$workspaceSlug/_workspace': {
       id: '/_authed/$workspaceSlug/_workspace'
       path: '/$workspaceSlug'
@@ -193,6 +187,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/$workspaceSlug/'
       preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceIndexRouteImport
       parentRoute: typeof AuthedWorkspaceSlugWorkspaceRoute
+    }
+    '/_authed/$workspaceSlug/mail/$emailId': {
+      id: '/_authed/$workspaceSlug/mail/$emailId'
+      path: '/$workspaceSlug/mail/$emailId'
+      fullPath: '/$workspaceSlug/mail/$emailId'
+      preLoaderRoute: typeof AuthedWorkspaceSlugMailEmailIdRouteImport
+      parentRoute: typeof AuthedRoute
     }
     '/_authed/$workspaceSlug/_workspace/new-address': {
       id: '/_authed/$workspaceSlug/_workspace/new-address'
@@ -255,16 +256,16 @@ const AuthedWorkspaceSlugWorkspaceRouteWithChildren =
 interface AuthedRouteChildren {
   AuthedIndexRoute: typeof AuthedIndexRoute
   AuthedWorkspaceSlugWorkspaceRoute: typeof AuthedWorkspaceSlugWorkspaceRouteWithChildren
-  AuthedMailEmailIdRoute: typeof AuthedMailEmailIdRoute
   AuthedOnboardingIndexRoute: typeof AuthedOnboardingIndexRoute
+  AuthedWorkspaceSlugMailEmailIdRoute: typeof AuthedWorkspaceSlugMailEmailIdRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedIndexRoute: AuthedIndexRoute,
   AuthedWorkspaceSlugWorkspaceRoute:
     AuthedWorkspaceSlugWorkspaceRouteWithChildren,
-  AuthedMailEmailIdRoute: AuthedMailEmailIdRoute,
   AuthedOnboardingIndexRoute: AuthedOnboardingIndexRoute,
+  AuthedWorkspaceSlugMailEmailIdRoute: AuthedWorkspaceSlugMailEmailIdRoute,
 }
 
 const AuthedRouteWithChildren =

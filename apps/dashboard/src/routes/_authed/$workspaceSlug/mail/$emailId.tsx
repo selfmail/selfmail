@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { EmailPreview } from "#/components/dashboard/email-preview";
 import { getDashboardEmailFn } from "#/lib/workspaces";
 
-export const Route = createFileRoute("/_authed/mail/$emailId")({
+export const Route = createFileRoute("/_authed/$workspaceSlug/mail/$emailId")({
 	component: RouteComponent,
 	loader: async ({ params }) => {
 		const email = await getDashboardEmailFn({

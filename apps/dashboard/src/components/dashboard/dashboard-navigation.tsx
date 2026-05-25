@@ -145,7 +145,7 @@ export function DashboardNavigation({
 						<button
 							className="group w-full cursor-pointer text-left"
 							key={link.action}
-							onClick={onOpenSettings}
+							onClick={() => onOpenSettings()}
 							type="button"
 						>
 							<span className="w-fit rounded-md font-medium text-foreground text-xl ring-accent transition-all group-hover:bg-accent group-hover:ring-4 group-focus-visible:bg-accent group-focus-visible:ring-4">
