@@ -69,7 +69,6 @@ export function OnboardingFlow() {
 			const result = await createOnboardingWorkspaceFn({
 				data: {
 					defaultAddress: data.defaultAddress,
-					workspaceHandle: data.workspaceHandle,
 					workspaceName: data.workspaceName,
 				},
 			});
@@ -77,12 +76,6 @@ export function OnboardingFlow() {
 			if (result.status === "success") {
 				reset();
 				await navigate({ to: "/" });
-				return;
-			}
-
-			if (result.error.code === "WORKSPACE_TAKEN") {
-				setPage(1);
-				setErrors({ workspaceHandle: result.error.message });
 				return;
 			}
 
@@ -130,7 +123,6 @@ export function OnboardingFlow() {
 				<OnboardingPageSlide currentPage={page} page={1}>
 					<OnboardingName
 						errors={{
-							workspaceHandle: errors.workspaceHandle,
 							workspaceName: errors.workspaceName,
 						}}
 					/>

@@ -17,7 +17,7 @@ export function OnboardingAddress({ error }: OnboardingAddressProps) {
 	const { data, setField } = useOnboardingStore();
 	const domain = data.useCustomDomain
 		? data.customDomain || "mail.yourdomain.com"
-		: `${data.workspaceHandle || "workspace"}.selfmail.app`;
+		: "workspace.selfmail.app";
 	const address = `${data.defaultAddress || "hello"}@${domain}`;
 
 	return (

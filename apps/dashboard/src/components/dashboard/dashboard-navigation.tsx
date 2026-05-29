@@ -11,7 +11,7 @@ const buildLinks = [
 ] as const;
 const workspaceLinks = [
 	{ href: "#workspace", label: m["dashboard.navigation.contacts"] },
-	{ href: "#workspace", label: m["dashboard.navigation.spam_analysis"] },
+	{ href: "#workspace", label: m["dashboard.navigation.conversations"] },
 	{ action: "settings", label: m["dashboard.navigation.settings"] },
 ] as const;
 

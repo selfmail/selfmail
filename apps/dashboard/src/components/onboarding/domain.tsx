@@ -14,7 +14,7 @@ interface OnboardingDomainProps {
 
 export function OnboardingDomain({ error }: OnboardingDomainProps) {
 	const { data, setCustomDomainEnabled, setField } = useOnboardingStore();
-	const fallbackDomain = `${data.workspaceHandle || "workspace"}.selfmail.app`;
+	const fallbackDomain = "workspace.selfmail.app";
 	const activeDomain = data.useCustomDomain
 		? data.customDomain || "yourdomain.com"
 		: fallbackDomain;

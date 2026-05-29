@@ -6,6 +6,7 @@ import {
 	LifeBuoyIcon,
 	type LucideIcon,
 	SettingsIcon,
+	ShieldAlertIcon,
 	ShieldCheckIcon,
 	SlidersHorizontalIcon,
 	UsersIcon,
@@ -27,6 +28,7 @@ export type SettingsPageId =
 	| "support"
 	| "domains"
 	| "members"
+	| "spamAnalysis"
 	| "workspaceAi";
 
 export interface SettingsPageContext {
@@ -102,6 +104,13 @@ export const settingsPages = [
 		icon: UsersIcon,
 		id: "members",
 		title: m["dashboard.settings.menu.members.title"],
+	},
+	{
+		component: PlaceholderSettingsPage,
+		description: m["dashboard.settings.menu.spam_analysis.description"],
+		icon: ShieldAlertIcon,
+		id: "spamAnalysis",
+		title: m["dashboard.settings.menu.spam_analysis.title"],
 	},
 	{
 		component: PlaceholderSettingsPage,

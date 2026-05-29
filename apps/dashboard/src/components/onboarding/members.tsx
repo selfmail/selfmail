@@ -15,12 +15,11 @@ export function OnboardingMembers({
 	const { data, removeMemberEmail, setMemberEmail } = useOnboardingStore();
 	const domain = data.useCustomDomain
 		? data.customDomain || "mail.yourdomain.com"
-		: `${data.workspaceHandle || "workspace"}.selfmail.app`;
+		: "workspace.selfmail.app";
 	const cleanMembers = data.memberInvites.filter(({ email }) => email.trim());
 	const notSet = m["onboarding.review.not_set"]();
 	const summaryItems = [
 		[m["onboarding.review.workspace"](), data.workspaceName || notSet],
-		[m["onboarding.review.handle"](), data.workspaceHandle || notSet],
 		[
 			m["onboarding.review.address"](),
 			`${data.defaultAddress || "hello"}@${domain}`,

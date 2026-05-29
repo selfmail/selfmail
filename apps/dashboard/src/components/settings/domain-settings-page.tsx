@@ -49,6 +49,7 @@ import {
 	toDomainName,
 } from "#/lib/workspaces/domain-utils";
 import { m } from "#/paraglide/messages";
+import { settingsDataCache } from "./settings-data-cache";
 import type { SettingsPageComponent } from "./settings-pages";
 
 const domainDialogSteps = ["domain", "dns", "success"] as const;
@@ -637,9 +638,13 @@ export const DomainSettingsPage: SettingsPageComponent = ({
 	workspaceSlug,
 }) => {
 	const getDomains = useServerFn(getWorkspaceDomainsFn);
-	const [data, setData] = useState<DashboardWorkspaceDomainsData | null>(null);
+	const [data, setData] = useState<DashboardWorkspaceDomainsData | null>(
+		() => settingsDataCache.domains.get(workspaceSlug) ?? null,
+	);
 	const [error, setError] = useState<string | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(
+		() => !settingsDataCache.domains.has(workspaceSlug),
+	);
 
 	const fetchDomains = useCallback(
 		() =>
@@ -650,19 +655,26 @@ export const DomainSettingsPage: SettingsPageComponent = ({
 			}),
 		[getDomains, workspaceSlug],
 	);
+	const setCachedData = useCallback(
+		(domainsData: DashboardWorkspaceDomainsData) => {
+			settingsDataCache.domains.set(workspaceSlug, domainsData);
+			setData(domainsData);
+		},
+		[workspaceSlug],
+	);
 
 	const loadDomains = useCallback(async () => {
 		setError(null);
 		setIsLoading(true);
 
 		try {
-			setData(await fetchDomains());
+			setCachedData(await fetchDomains());
 		} catch {
 			setError(m["dashboard.settings.domains.load_error"]());
 		} finally {
 			setIsLoading(false);
 		}
-	}, [fetchDomains]);
+	}, [fetchDomains, setCachedData]);
 
 	useEffect(() => {
 		let ignoreResult = false;
@@ -675,7 +687,7 @@ export const DomainSettingsPage: SettingsPageComponent = ({
 				const domainsData = await fetchDomains();
 
 				if (!ignoreResult) {
-					setData(domainsData);
+					setCachedData(domainsData);
 				}
 			} catch {
 				if (!ignoreResult) {
@@ -693,28 +705,33 @@ export const DomainSettingsPage: SettingsPageComponent = ({
 		return () => {
 			ignoreResult = true;
 		};
-	}, [fetchDomains]);
+	}, [fetchDomains, setCachedData]);
 
-	const upsertDomain = useCallback((domain: DashboardWorkspaceDomain) => {
-		setData((currentData) => {
-			if (!currentData) {
-				return currentData;
-			}
+	const upsertDomain = useCallback(
+		(domain: DashboardWorkspaceDomain) => {
+			setData((currentData) => {
+				if (!currentData) {
+					return currentData;
+				}
 
-			const hasDomain = currentData.domains.some(
-				(currentDomain) => currentDomain.id === domain.id,
-			);
+				const hasDomain = currentData.domains.some(
+					(currentDomain) => currentDomain.id === domain.id,
+				);
+				const nextData = {
+					...currentData,
+					domains: hasDomain
+						? currentData.domains.map((currentDomain) =>
+								currentDomain.id === domain.id ? domain : currentDomain,
+							)
+						: [domain, ...currentData.domains],
+				};
 
-			return {
-				...currentData,
-				domains: hasDomain
-					? currentData.domains.map((currentDomain) =>
-							currentDomain.id === domain.id ? domain : currentDomain,
-						)
-					: [domain, ...currentData.domains],
-			};
-		});
-	}, []);
+				settingsDataCache.domains.set(workspaceSlug, nextData);
+				return nextData;
+			});
+		},
+		[workspaceSlug],
+	);
 	const domains = data?.domains ?? [];
 	const [domainMenu, setDomainMenu] = useQueryState(
 		"domainMenu",

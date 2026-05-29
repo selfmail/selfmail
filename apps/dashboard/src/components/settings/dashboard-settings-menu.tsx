@@ -7,10 +7,18 @@ import {
 	SettingsDialogTitle,
 	SettingsMenu,
 	SettingsMenuItem,
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
 } from "#/components/ui";
 import { m } from "#/paraglide/messages";
 import { SettingsPageContent } from "./settings-page-content";
-import { getSettingsPage, settingsPages } from "./settings-pages";
+import {
+	getSettingsPage,
+	type SettingsPageId,
+	settingsPages,
+} from "./settings-pages";
 import { useSettingsPage } from "./use-settings-page";
 
 interface DashboardSettingsMenuProps {
@@ -27,34 +35,52 @@ export function DashboardSettingsMenu({
 	const handleOpenChange = (open: boolean) => {
 		setPageId(open ? (pageId ?? "app") : null);
 	};
+	const setActivePage = (nextPageId: string) => {
+		void setPageId(nextPageId as SettingsPageId);
+	};
 
 	return (
 		<SettingsDialog onOpenChange={handleOpenChange} open={pageId !== null}>
 			<SettingsDialogContent>
-				<SettingsDialogSidebar>
-					<SettingsMenu aria-label={m["dashboard.settings.menu.aria_label"]()}>
-						{settingsPages.map((page) => (
-							<SettingsMenuItem
-								active={activePage.id === page.id}
-								icon={<page.icon />}
-								key={page.id}
-								onClick={() => setPageId(page.id)}
+				<Tabs
+					activationMode="automatic"
+					className="contents"
+					onValueChange={setActivePage}
+					orientation="vertical"
+					value={activePage.id}
+				>
+					<SettingsDialogSidebar>
+						<TabsList asChild>
+							<SettingsMenu
+								aria-label={m["dashboard.settings.menu.aria_label"]()}
 							>
-								{page.title()}
-							</SettingsMenuItem>
-						))}
-					</SettingsMenu>
-				</SettingsDialogSidebar>
-				<SettingsDialogMain>
-					<SettingsDialogHeader>
-						<SettingsDialogTitle>{activePage.title()}</SettingsDialogTitle>
-					</SettingsDialogHeader>
-					<SettingsPageContent
-						page={activePage}
-						workspaceName={workspaceName}
-						workspaceSlug={workspaceSlug}
-					/>
-				</SettingsDialogMain>
+								{settingsPages.map((page) => (
+									<TabsTrigger asChild key={page.id} value={page.id}>
+										<SettingsMenuItem
+											active={activePage.id === page.id}
+											icon={<page.icon />}
+										>
+											{page.title()}
+										</SettingsMenuItem>
+									</TabsTrigger>
+								))}
+							</SettingsMenu>
+						</TabsList>
+					</SettingsDialogSidebar>
+					<TabsContent asChild className="mt-0" value={activePage.id}>
+						<SettingsDialogMain>
+							<SettingsDialogHeader>
+								<SettingsDialogTitle>{activePage.title()}</SettingsDialogTitle>
+							</SettingsDialogHeader>
+							<SettingsPageContent
+								key={workspaceSlug}
+								page={activePage}
+								workspaceName={workspaceName}
+								workspaceSlug={workspaceSlug}
+							/>
+						</SettingsDialogMain>
+					</TabsContent>
+				</Tabs>
 			</SettingsDialogContent>
 		</SettingsDialog>
 	);

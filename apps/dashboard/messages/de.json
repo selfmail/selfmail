@@ -92,6 +92,7 @@
       "settings": "Einstellungen",
       "domains": "Domains",
       "contacts": "Kontakte",
+      "conversations": "Unterhaltungen",
       "spam_analysis": "Spam-Analyse"
     },
     "header": {
@@ -336,6 +337,10 @@
           "title": "Members",
           "description": "Workspace-Zugriff, Rollen und Einladungen."
         },
+        "spam_analysis": {
+          "title": "Spam-Analyse",
+          "description": "Überprüfen und konfigurieren Sie die Spamerkennung für diesen Workspace."
+        },
         "workspace_ai": {
           "title": "KI-Funktionen",
           "description": "KI-gestützte Workspace-Funktionen und Kontrollen."
@@ -390,7 +395,7 @@
       "preview": "Vorschau:"
     },
     "members": {
-      "title": "Lade dein Workspace ein",
+      "title": "Lade deine Kollegen ein",
       "label": "Per E-Mail einladen",
       "input_label": "E-Mail-Adresse von Mitglied {number}",
       "placeholder": "name@company.com",

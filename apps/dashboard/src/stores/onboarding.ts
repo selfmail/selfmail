@@ -2,7 +2,6 @@ import { create } from "zustand";
 
 export interface OnboardingData {
 	workspaceName: string;
-	workspaceHandle: string;
 	defaultAddress: string;
 	customDomain: string;
 	useCustomDomain: boolean;
@@ -29,7 +28,6 @@ interface OnboardingStore {
 
 const initialData: OnboardingData = {
 	workspaceName: "",
-	workspaceHandle: "",
 	defaultAddress: "",
 	customDomain: "",
 	useCustomDomain: false,

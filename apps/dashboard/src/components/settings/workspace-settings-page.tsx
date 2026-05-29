@@ -35,6 +35,7 @@ import {
 } from "#/lib/workspaces";
 import { m } from "#/paraglide/messages";
 import { getLocale } from "#/paraglide/runtime";
+import { settingsDataCache } from "./settings-data-cache";
 import type { SettingsPageComponent } from "./settings-pages";
 
 function formatStorage(storageBytes: string) {
@@ -99,17 +100,25 @@ export const WorkspaceSettingsPage: SettingsPageComponent = ({
 	const updateWorkspaceSettings = useServerFn(updateWorkspaceSettingsFn);
 	const navigate = useNavigate();
 	const router = useRouter();
-	const [data, setData] = useState<DashboardWorkspaceSettingsData | null>(null);
-	const [description, setDescription] = useState("");
+	const cachedSettingsData =
+		settingsDataCache.workspace.get(workspaceSlug) ?? null;
+	const [data, setData] = useState<DashboardWorkspaceSettingsData | null>(
+		cachedSettingsData,
+	);
+	const [description, setDescription] = useState(
+		() => cachedSettingsData?.workspace.description ?? "",
+	);
 	const [deleteConfirmation, setDeleteConfirmation] = useState("");
 	const [deleteError, setDeleteError] = useState<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [exportError, setExportError] = useState<string | null>(null);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [isExporting, setIsExporting] = useState(false);
-	const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(!cachedSettingsData);
 	const [isSaving, setIsSaving] = useState(false);
-	const [name, setName] = useState(workspaceName);
+	const [name, setName] = useState(
+		() => cachedSettingsData?.workspace.name ?? workspaceName,
+	);
 	const [success, setSuccess] = useState<string | null>(null);
 
 	const fetchSettings = useCallback(
@@ -121,6 +130,13 @@ export const WorkspaceSettingsPage: SettingsPageComponent = ({
 			}),
 		[getWorkspaceSettings, workspaceSlug],
 	);
+	const setCachedData = useCallback(
+		(settingsData: DashboardWorkspaceSettingsData) => {
+			settingsDataCache.workspace.set(workspaceSlug, settingsData);
+			setData(settingsData);
+		},
+		[workspaceSlug],
+	);
 
 	const loadSettings = useCallback(async () => {
 		setError(null);
@@ -128,7 +144,7 @@ export const WorkspaceSettingsPage: SettingsPageComponent = ({
 
 		try {
 			const settingsData = await fetchSettings();
-			setData(settingsData);
+			setCachedData(settingsData);
 			setName(settingsData.workspace.name);
 			setDescription(settingsData.workspace.description ?? "");
 		} catch {
@@ -136,7 +152,7 @@ export const WorkspaceSettingsPage: SettingsPageComponent = ({
 		} finally {
 			setIsLoading(false);
 		}
-	}, [fetchSettings]);
+	}, [fetchSettings, setCachedData]);
 
 	useEffect(() => {
 		let ignoreResult = false;
@@ -149,7 +165,7 @@ export const WorkspaceSettingsPage: SettingsPageComponent = ({
 				const settingsData = await fetchSettings();
 
 				if (!ignoreResult) {
-					setData(settingsData);
+					setCachedData(settingsData);
 					setName(settingsData.workspace.name);
 					setDescription(settingsData.workspace.description ?? "");
 				}
@@ -169,7 +185,7 @@ export const WorkspaceSettingsPage: SettingsPageComponent = ({
 		return () => {
 			ignoreResult = true;
 		};
-	}, [fetchSettings]);
+	}, [fetchSettings, setCachedData]);
 
 	const saveWorkspace = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -197,14 +213,20 @@ export const WorkspaceSettingsPage: SettingsPageComponent = ({
 				return;
 			}
 
-			setData((currentData) =>
-				currentData
+			setData((currentData) => {
+				const nextData = currentData
 					? {
 							...currentData,
 							workspace: result.workspace,
 						}
-					: currentData,
-			);
+					: currentData;
+
+				if (nextData) {
+					settingsDataCache.workspace.set(workspaceSlug, nextData);
+				}
+
+				return nextData;
+			});
 			setName(result.workspace.name);
 			setDescription(result.workspace.description ?? "");
 			setSuccess(m["dashboard.settings.saved"]());

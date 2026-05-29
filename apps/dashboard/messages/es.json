@@ -92,6 +92,7 @@
       "settings": "Ajustes",
       "domains": "Dominios",
       "contacts": "Contactos",
+      "conversations": "Conversaciones",
       "spam_analysis": "Análisis de spam"
     },
     "header": {
@@ -335,6 +336,10 @@
         "members": {
           "title": "Members",
           "description": "Acceso al workspace, roles e invitaciones."
+        },
+        "spam_analysis": {
+          "title": "Análisis de spam",
+          "description": "Revisa y configura la detección de spam para este espacio de trabajo."
         },
         "workspace_ai": {
           "title": "Funciones de IA",

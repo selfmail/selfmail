@@ -6,9 +6,11 @@ import { m } from "#/paraglide/messages";
 import { authMiddleware } from "#/utils/auth";
 
 const defaultDomainSuffix = "selfmail.app";
-const handlePattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const localPartPattern = /^[a-z0-9]+(?:[._-]?[a-z0-9]+)*$/;
 const addressSlugAlphabet = "abcdefghijklmnopqrstuvwxyz";
+const workspaceSlugAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+const workspaceSlugLength = 7;
+const maximumCreationAttempts = 8;
 
 const onboardingSchema = z.object({
 	defaultAddress: z
@@ -17,12 +19,6 @@ const onboardingSchema = z.object({
 		.min(1, m["onboarding.errors.address_required"]())
 		.max(64, m["onboarding.errors.address_too_long"]())
 		.regex(localPartPattern, m["dashboard.validation.address_format"]()),
-	workspaceHandle: z
-		.string()
-		.trim()
-		.min(1, m["onboarding.errors.workspace_handle_required"]())
-		.max(63, m["onboarding.errors.workspace_handle_too_long"]())
-		.regex(handlePattern, m["onboarding.errors.workspace_handle"]()),
 	workspaceName: z
 		.string()
 		.trim()
@@ -34,7 +30,7 @@ export type CreateOnboardingResult =
 	| {
 			status: "error";
 			error: {
-				code: "ADDRESS_TAKEN" | "UNKNOWN_ERROR" | "WORKSPACE_TAKEN";
+				code: "ADDRESS_TAKEN" | "UNKNOWN_ERROR";
 				message: string;
 			};
 	  }
@@ -51,24 +47,32 @@ function createAddressSlug() {
 	).join("");
 }
 
+function createWorkspaceSlug() {
+	return Array.from({ length: workspaceSlugLength }, () =>
+		workspaceSlugAlphabet.charAt(
+			Math.floor(Math.random() * workspaceSlugAlphabet.length),
+		),
+	).join("");
+}
+
 export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
 	.inputValidator(onboardingSchema)
 	.handler(
 		async ({ context: { user }, data }): Promise<CreateOnboardingResult> => {
-			const workspaceHandle = data.workspaceHandle.toLowerCase();
 			const addressHandle = data.defaultAddress.toLowerCase();
-			const email = `${addressHandle}@${workspaceHandle}.${defaultDomainSuffix}`;
 
-			for (let attempt = 0; attempt < 8; attempt += 1) {
+			for (let attempt = 0; attempt < maximumCreationAttempts; attempt += 1) {
 				try {
 					const addressSlug = createAddressSlug();
+					const workspaceSlug = createWorkspaceSlug();
+					const email = `${addressHandle}@${workspaceSlug}.${defaultDomainSuffix}`;
 					const workspace = await db.$transaction(async (tx) => {
 						const workspace = await tx.workspace.create({
 							data: {
 								name: data.workspaceName,
 								ownerId: user.id,
-								slug: workspaceHandle,
+								slug: workspaceSlug,
 							},
 							select: {
 								id: true,
@@ -140,18 +144,8 @@ export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
 						Array.isArray(targetValue) ? targetValue : [targetValue],
 					);
 
-					if (target.has("addressSlug")) {
+					if (target.has("addressSlug") || target.has("slug")) {
 						continue;
-					}
-
-					if (target.has("slug")) {
-						return {
-							status: "error",
-							error: {
-								code: "WORKSPACE_TAKEN",
-								message: m["onboarding.errors.workspace_taken"](),
-							},
-						};
 					}
 
 					if (target.has("email")) {
@@ -178,7 +172,7 @@ export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
 				status: "error",
 				error: {
 					code: "UNKNOWN_ERROR",
-					message: m["onboarding.errors.short_address_failed"](),
+					message: m["onboarding.errors.create_workspace_failed"](),
 				},
 			};
 		},

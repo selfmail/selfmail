@@ -77,6 +77,7 @@ checksums:
     dashboard/navigation/settings: 8df6777277469c1fd88cc18dde2f1cc3
     dashboard/navigation/domains: 87955beb56bd7e2da09e44bacb294b6a
     dashboard/navigation/contacts: d5b6c3f890b3904eaf5754081945c03d
+    dashboard/navigation/conversations: 6dd493bfcba36eaa4b9844e55400cc29
     dashboard/navigation/spam_analysis: 612c9b0899aa8adb354739922d3fb931
     dashboard/header/switch_workspace: 4248dd13e96f40d15ddb4f7f62752c67
     dashboard/header/workspaces: 8ba082a84aa35cf851af1cf874b853e2
@@ -282,6 +283,8 @@ checksums:
     dashboard/settings/menu/analytics/description: 6ea3e6752e76fd9d5f375c1be7c07c75
     dashboard/settings/menu/members/title: 0932e80cba1e3e0a7f52bb67ff31da32
     dashboard/settings/menu/members/description: 881313c2cd941ee1517d81aad48fdafe
+    dashboard/settings/menu/spam_analysis/title: 2acca2ca3709aa41af00fb72f0ad58db
+    dashboard/settings/menu/spam_analysis/description: a2ae43ac12de242b7be74377063691b1
     dashboard/settings/menu/workspace_ai/title: 16ada40297df1df3849d4fa44d0d09e9
     dashboard/settings/menu/workspace_ai/description: cf4c6248c346268ab56a168e58ba4b93
     dashboard/settings/menu/placeholder: 55627145af56840812f45893d700e52e

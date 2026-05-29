@@ -40,6 +40,7 @@ import {
 } from "#/lib/workspaces";
 import { m } from "#/paraglide/messages";
 import { getLocale } from "#/paraglide/runtime";
+import { settingsDataCache } from "./settings-data-cache";
 import type { SettingsPageComponent } from "./settings-pages";
 
 interface RemoveMemberButtonProps {
@@ -392,9 +393,13 @@ export const MemberSettingsPage: SettingsPageComponent = ({
 	workspaceSlug,
 }) => {
 	const getWorkspaceMembers = useServerFn(getWorkspaceMembersFn);
-	const [data, setData] = useState<DashboardWorkspaceMembersData | null>(null);
+	const [data, setData] = useState<DashboardWorkspaceMembersData | null>(
+		() => settingsDataCache.members.get(workspaceSlug) ?? null,
+	);
 	const [error, setError] = useState<string | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(
+		() => !settingsDataCache.members.has(workspaceSlug),
+	);
 	const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
 	const [pendingMembers, setPendingMembers] = useState<
 		PendingWorkspaceMember[]
@@ -409,19 +414,26 @@ export const MemberSettingsPage: SettingsPageComponent = ({
 			}),
 		[getWorkspaceMembers, workspaceSlug],
 	);
+	const setCachedData = useCallback(
+		(membersData: DashboardWorkspaceMembersData) => {
+			settingsDataCache.members.set(workspaceSlug, membersData);
+			setData(membersData);
+		},
+		[workspaceSlug],
+	);
 
 	const loadMembers = useCallback(async () => {
 		setError(null);
 		setIsLoading(true);
 
 		try {
-			setData(await fetchMembers());
+			setCachedData(await fetchMembers());
 		} catch {
 			setError(m["dashboard.settings.member_settings.load_error"]());
 		} finally {
 			setIsLoading(false);
 		}
-	}, [fetchMembers]);
+	}, [fetchMembers, setCachedData]);
 
 	useEffect(() => {
 		let ignoreResult = false;
@@ -434,7 +446,7 @@ export const MemberSettingsPage: SettingsPageComponent = ({
 				const membersData = await fetchMembers();
 
 				if (!ignoreResult) {
-					setData(membersData);
+					setCachedData(membersData);
 				}
 			} catch {
 				if (!ignoreResult) {
@@ -454,7 +466,7 @@ export const MemberSettingsPage: SettingsPageComponent = ({
 		return () => {
 			ignoreResult = true;
 		};
-	}, [fetchMembers]);
+	}, [fetchMembers, setCachedData]);
 
 	if (isLoading && !data) {
 		return <MemberSettingsLoadingTable />;
