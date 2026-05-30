@@ -152,7 +152,7 @@ function SettingsMenuAccordionTrigger({
         {...props}
       >
         {icon ? (
-          <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground [&_svg]:size-4">
+          <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground group-hover/settings-menu-accordion-trigger:text-current group-data-[active=true]/settings-menu-accordion-trigger:text-current [&_svg]:size-4">
             {icon}
           </span>
         ) : null}
@@ -206,13 +206,13 @@ function SettingsMenuItem({
   ...props
 }: SettingsMenuItemProps) {
   const itemClassName = cn(
-    "flex h-9 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-left font-medium text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:bg-accent data-[active=true]:text-accent-foreground",
+    "group/settings-menu-item flex h-9 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-left font-medium text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:bg-accent data-[active=true]:text-accent-foreground",
     className
   );
   const content = (
     <>
       {icon ? (
-        <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground [&_svg]:size-4">
+        <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground group-hover/settings-menu-item:text-current group-data-[active=true]/settings-menu-item:text-current [&_svg]:size-4">
           {icon}
         </span>
       ) : null}

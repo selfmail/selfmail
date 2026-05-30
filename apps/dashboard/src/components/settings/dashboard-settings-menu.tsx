@@ -50,12 +50,20 @@ export function DashboardSettingsMenu({
 					value={activePage.id}
 				>
 					<SettingsDialogSidebar>
-						<TabsList asChild>
+						<TabsList
+							asChild
+							className="flex h-auto w-full flex-col items-stretch justify-start rounded-none bg-transparent p-0 text-foreground"
+						>
 							<SettingsMenu
 								aria-label={m["dashboard.settings.menu.aria_label"]()}
 							>
 								{settingsPages.map((page) => (
-									<TabsTrigger asChild key={page.id} value={page.id}>
+									<TabsTrigger
+										asChild
+										className="flex h-9 w-full justify-start rounded-lg px-3 py-0 text-left text-foreground shadow-none hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
+										key={page.id}
+										value={page.id}
+									>
 										<SettingsMenuItem
 											active={activePage.id === page.id}
 											icon={<page.icon />}

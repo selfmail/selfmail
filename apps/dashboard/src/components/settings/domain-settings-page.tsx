@@ -49,7 +49,7 @@ import {
 	toDomainName,
 } from "#/lib/workspaces/domain-utils";
 import { m } from "#/paraglide/messages";
-import { settingsDataCache } from "./settings-data-cache";
+import { settingsDataCache } from "./settings-data-cache.ts";
 import type { SettingsPageComponent } from "./settings-pages";
 
 const domainDialogSteps = ["domain", "dns", "success"] as const;

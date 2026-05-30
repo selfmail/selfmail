@@ -40,7 +40,7 @@ import {
 } from "#/lib/workspaces";
 import { m } from "#/paraglide/messages";
 import { getLocale } from "#/paraglide/runtime";
-import { settingsDataCache } from "./settings-data-cache";
+import { settingsDataCache } from "./settings-data-cache.ts";
 import type { SettingsPageComponent } from "./settings-pages";
 
 interface RemoveMemberButtonProps {
