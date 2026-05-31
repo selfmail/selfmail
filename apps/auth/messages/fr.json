@@ -51,6 +51,12 @@
     "title": "Vérification réussie",
     "description": "Votre lien magique a été vérifié. Vous êtes maintenant connecté et pouvez accéder à votre compte.",
     "cta": "Accéder au tableau de bord",
+    "ready": {
+      "title": "Confirmez votre connexion",
+      "description": "Appuyez sur le bouton ci-dessous pour vérifier ce lien magique et terminer la connexion.",
+      "submit": "Vérifier et se connecter",
+      "submitting": "Vérification..."
+    },
     "errors": {
       "incomplete": "Ce lien magique est incomplet. Veuillez demander un nouveau lien de connexion.",
       "invalid": "Ce lien magique est invalide ou a déjà été utilisé.",
@@ -176,7 +182,7 @@
   },
   "login_success": {
     "title": "Lien magique envoyé",
-    "description": "Nous avons envoyé un lien magique à votre adresse e-mail. Veuillez consulter votre boîte de réception et cliquer sur le lien pour vous connecter.",
+    "description": "Nous avons envoyé un lien magique à votre adresse e-mail. Ouvrez-le et appuyez sur le bouton de vérification pour vous connecter.",
     "resend": "Renvoyer l'e-mail"
   },
   "otp": {

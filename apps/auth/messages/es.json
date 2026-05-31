@@ -51,6 +51,12 @@
     "title": "Verificación exitosa",
     "description": "Tu enlace mágico ha sido verificado. Ahora has iniciado sesión y puedes acceder a tu cuenta.",
     "cta": "Ir al panel",
+    "ready": {
+      "title": "Confirma tu inicio de sesión",
+      "description": "Pulsa el botón de abajo para verificar este enlace mágico y terminar de iniciar sesión.",
+      "submit": "Verificar e iniciar sesión",
+      "submitting": "Verificando..."
+    },
     "errors": {
       "incomplete": "Este enlace mágico está incompleto. Por favor, solicita un nuevo enlace de inicio de sesión.",
       "invalid": "Este enlace mágico no es válido o ya ha sido utilizado.",
@@ -176,7 +182,7 @@
   },
   "login_success": {
     "title": "Enlace mágico enviado",
-    "description": "Hemos enviado un enlace mágico a tu dirección de correo electrónico. Por favor, revisa tu bandeja de entrada y haz clic en el enlace para iniciar sesión.",
+    "description": "Hemos enviado un enlace mágico a tu dirección de correo electrónico. Ábrelo y pulsa el botón de verificación para iniciar sesión.",
     "resend": "Reenviar correo"
   },
   "otp": {

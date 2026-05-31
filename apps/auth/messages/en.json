@@ -51,6 +51,12 @@
     "title": "Verification Successful",
     "description": "Your magic link has been verified. You are now signed in and can access your account.",
     "cta": "Go to Dashboard",
+    "ready": {
+      "title": "Confirm your sign-in",
+      "description": "Press the button below to verify this magic link and finish signing in.",
+      "submit": "Verify and sign in",
+      "submitting": "Verifying..."
+    },
     "errors": {
       "incomplete": "This magic link is incomplete. Please request a new login link.",
       "invalid": "This magic link is invalid or has already been used.",
@@ -176,7 +182,7 @@
   },
   "login_success": {
     "title": "Magic Link Sent",
-    "description": "We have sent a magic link to your email address. Please check your inbox and click the link to log in.",
+    "description": "We have sent a magic link to your email address. Please open it and press the verification button to log in.",
     "resend": "Resend Email"
   },
   "otp": {

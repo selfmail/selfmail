@@ -51,6 +51,12 @@
     "title": "Verifizierung erfolgreich",
     "description": "Ihr Magic Link wurde verifiziert. Sie sind jetzt angemeldet und können auf Ihr Konto zugreifen.",
     "cta": "Zum Dashboard",
+    "ready": {
+      "title": "Anmeldung bestätigen",
+      "description": "Drücken Sie den Button unten, um diesen Magic Link zu verifizieren und die Anmeldung abzuschließen.",
+      "submit": "Verifizieren und anmelden",
+      "submitting": "Wird verifiziert..."
+    },
     "errors": {
       "incomplete": "Dieser Magic-Link ist unvollständig. Bitte fordern Sie einen neuen Login-Link an.",
       "invalid": "Dieser Magic-Link ist ungültig oder wurde bereits verwendet.",
@@ -176,7 +182,7 @@
   },
   "login_success": {
     "title": "Magic Link versendet",
-    "description": "Wir haben einen Magic Link an Ihre E-Mail-Adresse gesendet. Bitte überprüfen Sie Ihr Postfach und klicken Sie auf den Link, um sich anzumelden.",
+    "description": "Wir haben einen Magic Link an Ihre E-Mail-Adresse gesendet. Bitte öffnen Sie ihn und drücken Sie den Verifizierungsbutton, um sich anzumelden.",
     "resend": "E-Mail erneut senden"
   },
   "otp": {
