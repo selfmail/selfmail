@@ -11,9 +11,15 @@ const config = defineConfig({
     dedupe: ["@tanstack/react-router", "react", "react-dom"],
   },
   ssr: {
-    noExternal: ["@base-ui/react", "@base-ui/utils", "@tanstack/react-router"],
+    noExternal: [
+      "@base-ui/react",
+      "@base-ui/utils",
+      "@tanstack/react-router",
+      "agentation",
+    ],
   },
   plugins: [
+    tanstackStart(),
     devtools(),
     paraglideVitePlugin({
       project: "./project.inlang",
@@ -24,12 +30,7 @@ const config = defineConfig({
     }),
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
     tailwindcss(),
-    tanstackStart(),
-    viteReact({
-      babel: {
-        plugins: ["babel-plugin-react-compiler"],
-      },
-    }),
+    viteReact({}),
   ],
 });
 

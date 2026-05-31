@@ -1,14 +1,41 @@
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import {
 	applyThemeMode,
 	getStoredThemeMode,
 	setStoredThemeMode,
 	type ThemeMode,
+	themeStorageKey,
 } from "#/lib/theme";
 import { m } from "#/paraglide/messages";
 
+const themeModeChangeEvent = "selfmail:theme-mode-change";
+
+function getServerThemeMode(): ThemeMode {
+	return "auto";
+}
+
+function subscribeToThemeMode(onStoreChange: () => void) {
+	const onStorage = (event: StorageEvent) => {
+		if (event.key === themeStorageKey) {
+			onStoreChange();
+		}
+	};
+
+	window.addEventListener("storage", onStorage);
+	window.addEventListener(themeModeChangeEvent, onStoreChange);
+
+	return () => {
+		window.removeEventListener("storage", onStorage);
+		window.removeEventListener(themeModeChangeEvent, onStoreChange);
+	};
+}
+
 export default function ThemeToggle() {
-	const [mode, setMode] = useState<ThemeMode>("auto");
+	const mode = useSyncExternalStore(
+		subscribeToThemeMode,
+		getStoredThemeMode,
+		getServerThemeMode,
+	);
 	let buttonLabel = m["dashboard.settings.app.theme.light"]();
 
 	if (mode === "auto") {
@@ -18,10 +45,8 @@ export default function ThemeToggle() {
 	}
 
 	useEffect(() => {
-		const initialMode = getStoredThemeMode();
-		setMode(initialMode);
-		applyThemeMode(initialMode);
-	}, []);
+		applyThemeMode(mode);
+	}, [mode]);
 
 	useEffect(() => {
 		if (mode !== "auto") {
@@ -47,8 +72,8 @@ export default function ThemeToggle() {
 			nextMode = "light";
 		}
 
-		setMode(nextMode);
 		setStoredThemeMode(nextMode);
+		window.dispatchEvent(new Event(themeModeChangeEvent));
 	}
 
 	const label =

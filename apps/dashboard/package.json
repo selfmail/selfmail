@@ -12,7 +12,8 @@
     "test": "vitest run",
     "format": "biome format",
     "lint": "biome lint",
-    "check": "biome check"
+    "check": "biome check",
+    "doctor": "npx react-doctor@latest"
   },
   "dependencies": {
     "@posthog/react": "^1.9.1",
@@ -32,8 +33,8 @@
     "nitro": "npm:nitro-nightly@latest",
     "nuqs": "^2.8.9",
     "posthog-js": "^1.376.0",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6",
+    "react": "latest",
+    "react-dom": "latest",
     "react-resizable-panels": "^4.11.2",
     "tailwindcss": "^4.3.0",
     "zod": "^4.4.3",
@@ -47,14 +48,15 @@
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^22.19.19",
-    "@types/react": "^19.2.15",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.2.0",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@vitejs/plugin-react": "^6.0.2",
     "agentation": "^2.3.2",
     "babel-plugin-react-compiler": "^1.0.0",
     "jsdom": "^28.1.0",
+    "react-doctor": "^0.2.14",
     "typescript": "^5.9.3",
-    "vite": "^7.3.3",
+    "vite": "^8.0.14",
     "vitest": "^3.2.4"
   },
   "pnpm": {
