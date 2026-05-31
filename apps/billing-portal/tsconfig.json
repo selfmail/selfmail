@@ -5,6 +5,7 @@
     "jsx": "react-jsx",
     "module": "ESNext",
     "paths": {
+      "vite": ["../../node_modules/vite"],
       "#/*": ["./src/*"],
       "@/*": ["./src/*"]
     },

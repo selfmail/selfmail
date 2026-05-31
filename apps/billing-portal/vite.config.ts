@@ -9,26 +9,26 @@ import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 
 const config = defineConfig({
-  resolve: { dedupe: ["react", "react-dom"], tsconfigPaths: true },
-  ssr: {
-    noExternal: ["agentation"],
-  },
-  plugins: [
-    devtools(),
-    paraglideVitePlugin({
-      project: "./project.inlang",
-      outdir: "./src/paraglide",
-      strategy: ["url", "baseLocale"],
-    }),
-    nitro({ rollupConfig: { external: [/^@sentry\//] } }),
-    tailwindcss(),
-    tanstackStart(),
-    viteReact({
-      babel: {
-        plugins: ["babel-plugin-react-compiler"],
-      },
-    }),
-  ],
+	resolve: { dedupe: ["react", "react-dom"] },
+	ssr: {
+		noExternal: ["agentation"],
+	},
+	plugins: [
+		devtools(),
+		paraglideVitePlugin({
+			project: "./project.inlang",
+			outdir: "./src/paraglide",
+			strategy: ["url", "baseLocale"],
+		}),
+		nitro({ rollupConfig: { external: [/^@sentry\//] } }),
+		tailwindcss(),
+		tanstackStart(),
+		viteReact({
+			babel: {
+				plugins: ["babel-plugin-react-compiler"],
+			},
+		}),
+	],
 });
 
 export default config;
