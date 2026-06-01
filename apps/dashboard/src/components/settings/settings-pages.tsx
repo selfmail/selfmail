@@ -123,6 +123,6 @@ export const settingsPages = [
 
 export const settingsPageIds = settingsPages.map((page) => page.id);
 
-export function getSettingsPage(pageId: SettingsPageId) {
+export function getSettingsPage(pageId: SettingsPageId): SettingsPage {
 	return settingsPages.find((page) => page.id === pageId) ?? settingsPages[0];
 }

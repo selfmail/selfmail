@@ -1,6 +1,7 @@
 import {
 	SettingsDialog,
 	SettingsDialogContent,
+	SettingsDialogDescription,
 	SettingsDialogHeader,
 	SettingsDialogMain,
 	SettingsDialogSidebar,
@@ -32,6 +33,13 @@ export function DashboardSettingsMenu({
 }: DashboardSettingsMenuProps) {
 	const [pageId, setPageId] = useSettingsPage();
 	const activePage = getSettingsPage(pageId ?? "app");
+	const activePageTitle = activePage.title();
+	const activePageDescription =
+		activePage.description?.() ??
+		m["dashboard.settings.menu.placeholder_description"]({
+			pageTitle: activePageTitle,
+			workspaceName,
+		});
 	const handleOpenChange = (open: boolean) => {
 		setPageId(open ? (pageId ?? "app") : null);
 	};
@@ -78,7 +86,10 @@ export function DashboardSettingsMenu({
 					<TabsContent asChild className="mt-0" value={activePage.id}>
 						<SettingsDialogMain>
 							<SettingsDialogHeader>
-								<SettingsDialogTitle>{activePage.title()}</SettingsDialogTitle>
+								<SettingsDialogTitle>{activePageTitle}</SettingsDialogTitle>
+								<SettingsDialogDescription className="sr-only">
+									{activePageDescription}
+								</SettingsDialogDescription>
 							</SettingsDialogHeader>
 							<SettingsPageContent
 								key={workspaceSlug}
