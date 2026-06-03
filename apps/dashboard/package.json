@@ -16,7 +16,7 @@
     "doctor": "npx react-doctor@latest"
   },
   "dependencies": {
-    "@posthog/react": "^1.9.1",
+    "@posthog/react": "^1.10.0",
     "@selfmail/audit": "workspace:*",
     "@selfmail/db": "workspace:*",
     "@selfmail/permissions": "workspace:*",
@@ -28,36 +28,36 @@
     "@tanstack/react-router-devtools": "latest",
     "@tanstack/react-router-ssr-query": "latest",
     "@tanstack/react-start": "latest",
-    "@tanstack/router-plugin": "^1.168.11",
+    "@tanstack/router-plugin": "^1.168.13",
     "lucide-react": "^0.545.0",
     "nitro": "npm:nitro-nightly@latest",
     "nuqs": "^2.8.9",
-    "posthog-js": "^1.376.0",
-    "react": "latest",
-    "react-dom": "latest",
+    "posthog-js": "^1.378.1",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
     "react-resizable-panels": "^4.11.2",
     "tailwindcss": "^4.3.0",
     "zod": "^4.4.3",
-    "zustand": "^5.0.13"
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.5",
-    "@inlang/paraglide-js": "^2.18.1",
+    "@inlang/paraglide-js": "^2.18.2",
     "@tailwindcss/typography": "^0.5.19",
     "@tanstack/devtools-vite": "latest",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^22.19.19",
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
-    "@vitejs/plugin-react": "^5.1.4",
-    "agentation": "^2.3.2",
+    "@types/react": "^19.2.16",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.2.0",
+    "agentation": "^2.3.3",
     "babel-plugin-react-compiler": "^1.0.0",
     "jsdom": "^28.1.0",
-    "react-doctor": "^0.2.14",
+    "react-doctor": "^0.2.16",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1",
-    "vitest": "^3.2.4"
+    "vite": "^7.3.5",
+    "vitest": "^3.2.6"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

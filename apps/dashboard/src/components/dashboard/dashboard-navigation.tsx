@@ -1,3 +1,9 @@
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@selfmail/ui";
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { cn } from "#/lib/utils";
@@ -38,6 +44,12 @@ interface DashboardNavLinkProps {
 	title?: string;
 }
 
+interface AddressNavLinkProps {
+	active: boolean;
+	address: DashboardAddress;
+	workspaceSlug: string;
+}
+
 function NavColumn({ children, className, title }: NavColumnProps) {
 	return (
 		<div className={cn("flex min-w-0 flex-col gap-3", className)}>
@@ -75,6 +87,44 @@ function formatAddressLabel(address: string) {
 	return `${address.slice(0, addressLabelMaxLength - 3)}...`;
 }
 
+function AddressNavLink({
+	active,
+	address,
+	workspaceSlug,
+}: AddressNavLinkProps) {
+	const label = formatAddressLabel(address.email);
+	const link = (
+		<Link
+			className="group w-full"
+			params={{
+				addressSlug: address.addressSlug,
+				workspaceSlug,
+			}}
+			to="/$workspaceSlug/$addressSlug"
+		>
+			<span
+				className={cn(
+					"block w-fit max-w-64 truncate rounded-md font-medium text-foreground text-xl ring-accent transition-all group-hover:bg-accent group-hover:ring-4",
+					active && "bg-accent ring-4",
+				)}
+			>
+				{label}
+			</span>
+		</Link>
+	);
+
+	if (label === address.email) {
+		return link;
+	}
+
+	return (
+		<Tooltip>
+			<TooltipTrigger asChild>{link}</TooltipTrigger>
+			<TooltipContent side="bottom">{address.email}</TooltipContent>
+		</Tooltip>
+	);
+}
+
 export function DashboardNavigation({
 	addresses,
 	currentAddressSlug,
@@ -102,28 +152,16 @@ export function DashboardNavigation({
 						{m["dashboard.inbox.unified"]()}
 					</span>
 				</Link>
-				{addresses.map((address) => (
-					<Link
-						className="group w-full"
-						key={address.id}
-						params={{
-							addressSlug: address.addressSlug,
-							workspaceSlug,
-						}}
-						title={address.email}
-						to="/$workspaceSlug/$addressSlug"
-					>
-						<span
-							className={cn(
-								"block w-fit max-w-64 truncate rounded-md font-medium text-foreground text-xl ring-accent transition-all group-hover:bg-accent group-hover:ring-4",
-								address.addressSlug === currentAddressSlug &&
-									"bg-accent ring-4",
-							)}
-						>
-							{formatAddressLabel(address.email)}
-						</span>
-					</Link>
-				))}
+				<TooltipProvider delayDuration={500} disableHoverableContent>
+					{addresses.map((address) => (
+						<AddressNavLink
+							active={address.addressSlug === currentAddressSlug}
+							address={address}
+							key={address.id}
+							workspaceSlug={workspaceSlug}
+						/>
+					))}
+				</TooltipProvider>
 				<Link
 					className="text-muted-foreground text-sm hover:text-foreground hover:underline"
 					params={{ workspaceSlug }}

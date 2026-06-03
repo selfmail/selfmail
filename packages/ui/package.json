@@ -12,8 +12,8 @@
     "check-types": "tsc --noEmit"
   },
   "peerDependencies": {
-    "react": "latest",
-    "react-dom": "latest",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "typescript": "^5"
   },
   "dependencies": {
