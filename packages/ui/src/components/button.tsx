@@ -1,6 +1,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import type { ComponentProps } from "react";
+import { SendIcon, Trash2Icon } from "lucide-react";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cn } from "../lib/cn";
 
 export const buttonVariants = cva(
@@ -15,7 +16,10 @@ export const buttonVariants = cva(
           "border-2 border-border bg-background text-foreground hover:border-accent hover:bg-accent hover:text-accent-foreground",
         ghost: "text-foreground hover:bg-accent hover:text-accent-foreground",
         destructive: "bg-destructive text-white hover:bg-destructive/90",
+        discard:
+          "text-destructive hover:bg-destructive/10 hover:text-destructive",
         link: "rounded-none px-0 text-primary underline-offset-4 hover:underline",
+        send: "bg-primary text-primary-foreground hover:bg-primary/90",
       },
       size: {
         default: "h-10 px-5 py-2",
@@ -32,10 +36,14 @@ export const buttonVariants = cva(
   }
 );
 
-type ButtonProps = ComponentProps<"button"> &
+type ButtonProps = ComponentPropsWithoutRef<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
   };
+
+type ActionButtonProps = Omit<ButtonProps, "children" | "variant"> & {
+  children?: ReactNode;
+};
 
 function Button({
   asChild,
@@ -56,4 +64,22 @@ function Button({
   );
 }
 
-export { Button };
+function SendButton({ children = "Send", ...props }: ActionButtonProps) {
+  return (
+    <Button variant="send" {...props}>
+      <SendIcon />
+      {children}
+    </Button>
+  );
+}
+
+function DiscardButton({ children = "Discard", ...props }: ActionButtonProps) {
+  return (
+    <Button variant="discard" {...props}>
+      <Trash2Icon />
+      {children}
+    </Button>
+  );
+}
+
+export { Button, DiscardButton, SendButton, type ButtonProps };

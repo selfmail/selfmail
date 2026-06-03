@@ -102,7 +102,7 @@ export function DashboardHeader({
           </DropdownGroup>
         </DropdownContent>
       </Dropdown>
-      <ComposeDialog />
+      <ComposeDialog workspaceSlug={currentWorkspace.slug} />
       <Dialog.Trigger
         className="flex cursor-pointer items-center gap-x-3 rounded-xl border border-border border-dashed p-2 text-center text-muted-foreground text-sm hover:bg-accent hover:text-accent-foreground hover:ring-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
         handle={composeDialogHandle}

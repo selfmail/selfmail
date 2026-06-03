@@ -25,7 +25,13 @@ export {
   avatarVariants,
 } from "./components/avatar";
 export { Badge, badgeVariants } from "./components/badge";
-export { Button, buttonVariants } from "./components/button";
+export {
+  Button,
+  type ButtonProps,
+  buttonVariants,
+  DiscardButton,
+  SendButton,
+} from "./components/button";
 export {
   Card,
   CardContent,
