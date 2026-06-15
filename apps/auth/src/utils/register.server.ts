@@ -123,6 +123,26 @@ export abstract class RegisterUtils {
 		).join("");
 	}
 
+	private static getVerificationUrl(token: string) {
+		const host = getRequestHost({ xForwardedHost: true });
+		const protocol = getRequestProtocol({ xForwardedProto: true });
+		const url = new URL("/verify/", `${protocol}://${host}`);
+
+		url.searchParams.set("token", token);
+
+		return url.toString();
+	}
+
+	private static logDevVerificationUrl(email: string, token: string) {
+		if (process.env.NODE_ENV !== "development") {
+			return;
+		}
+
+		console.info(
+			`[auth-register] Verification url for ${email}: ${RegisterUtils.getVerificationUrl(token)}`,
+		);
+	}
+
 	private static getTempSessionCookie() {
 		return getCookie(TEMP_SESSION_COOKIE_NAME);
 	}
@@ -244,6 +264,7 @@ export abstract class RegisterUtils {
 			});
 
 			RegisterUtils.setTempSessionCookie(browserToken);
+			RegisterUtils.logDevVerificationUrl(email, rawToken);
 
 			logger.info("Register attempt succeeded", {
 				email,
@@ -377,6 +398,7 @@ export abstract class RegisterUtils {
 				email,
 				requestId,
 			});
+			RegisterUtils.logDevVerificationUrl(email, rawToken);
 
 			return {
 				status: "success",

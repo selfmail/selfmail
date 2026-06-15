@@ -24,9 +24,6 @@ function RouteComponent() {
 
   return (
     <main className="flex min-h-dvh w-full flex-col items-center justify-center gap-y-3 bg-background px-5 py-10 text-foreground">
-      <h1 className="text-balance font-medium text-lg">
-        {m["dashboard.workspace_picker.title"]()}
-      </h1>
       {error ? (
         <Alert className="lg:max-w-md" variant="destructive">
           <AlertDescription>
@@ -34,11 +31,11 @@ function RouteComponent() {
           </AlertDescription>
         </Alert>
       ) : null}
-      <div className="flex w-full flex-col gap-6 rounded-lg border border-border bg-card p-5 lg:max-w-md">
+      <div className="w-full rounded-md bg-neutral-100 p-2 md:max-w-sm md:rounded-xl xl:max-w-md dark:bg-neutral-700">
         {workspaces.length === 0 ? (
-          <p className="text-center text-muted-foreground text-sm">
+          <div className="w-full rounded-md bg-white p-2 text-center text-muted-foreground text-sm">
             {m["dashboard.workspace_picker.empty"]()}
-          </p>
+          </div>
         ) : (
           workspaces.map((workspace) => (
             <WorkspaceTile key={workspace.id} workspace={workspace} />
@@ -61,7 +58,7 @@ function RouteComponent() {
 function WorkspaceTile({ workspace }: { workspace: DashboardWorkspace }) {
   return (
     <Link
-      className="flex items-center gap-x-3 rounded-lg border border-border p-3 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
+      className="flex items-center justify-start gap-4 rounded-md bg-white p-2 hover:bg-neutral-50"
       params={{
         workspaceSlug: workspace.slug,
       }}
