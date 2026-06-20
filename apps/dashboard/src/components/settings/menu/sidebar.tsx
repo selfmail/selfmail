@@ -1,3 +1,5 @@
+import { Dialog } from "@base-ui/react";
+import { XIcon } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
@@ -57,10 +59,18 @@ export default function SettingsSidebar({
 }) {
   return (
     <aside
-      className="flex shrink-0 flex-col border-border border-b bg-neutral-100 p-3 sm:w-56 sm:border-b-0"
+      className="flex shrink-0 flex-col border-border border-b bg-muted/80 p-3 text-foreground sm:w-56 sm:border-b-0"
       data-slot="settings-dialog-sidebar"
     >
       <SettingsMenu aria-label={m["dashboard.settings.menu.aria_label"]()}>
+        <abbr className="no-underline" title={"Close Menu"}>
+          <Dialog.Close
+            className="mb-2 flex h-8 w-full cursor-pointer items-center gap-2 rounded-lg px-2 text-muted-foreground text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <XIcon className="size-4" />
+            {m["dashboard.settings.close"]()}
+          </Dialog.Close>
+        </abbr>
         {settingsPages.map((page) => (
           <abbr className="no-underline" key={page.id} title={page.title()}>
             <SettingsMenuItem

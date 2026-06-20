@@ -138,6 +138,7 @@
       "invoice_snippet": "Votre facture et le détail de votre utilisation sont joints pour la période de facturation en cours."
     },
     "settings": {
+      "close": "Fermer le menu des paramètres",
       "title": "Paramètres de l’espace de travail",
       "description": "Modifiez le profil, le handle public et les paramètres sensibles de {workspaceName}.",
       "general": "Général",
@@ -336,6 +337,14 @@
         "members": {
           "title": "Membres",
           "description": "Accès à l’espace de travail, rôles et invitations."
+        },
+        "addresses": {
+          "title": "Adresses",
+          "description": "Adresses e-mail du workspace et attributions des boîtes de réception."
+        },
+        "authentication": {
+          "title": "Authentification",
+          "description": "Méthodes de connexion et paramètres d’authentification du workspace."
         },
         "spam_analysis": {
           "title": "Analyse du spam",

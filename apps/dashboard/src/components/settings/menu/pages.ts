@@ -1,8 +1,10 @@
 import {
+  AtSignIcon,
   CreditCardIcon,
   DatabaseIcon,
   GlobeIcon,
   HardDriveIcon,
+  KeyRoundIcon,
   LifeBuoyIcon,
   type LucideIcon,
   SettingsIcon,
@@ -14,13 +16,15 @@ import {
 import type { ReactNode } from "react";
 import { m } from "#/paraglide/messages";
 import type { Page } from "..";
+import { AddressSettingsPage } from "../addresses";
 import { AppSettingsPage } from "../app";
+import { AuthenticationSettingsPage } from "../authentication";
 import { DomainSettingsPage } from "../domains";
 import { MemberSettingsPage } from "../members";
 import { PlaceholderSettingsPage } from "../placeholder-settings-page";
 import { WorkspaceSettingsPage } from "../workspace";
 
-interface SettingsPageContext {
+export interface SettingsPageContext {
   title: () => string;
   description?: () => string;
   id: string;
@@ -90,6 +94,20 @@ export const settingsPages: SettingsPage[] = [
     icon: UsersIcon,
     id: "members",
     title: m["dashboard.settings.menu.members.title"],
+  },
+  {
+    component: AddressSettingsPage,
+    description: m["dashboard.settings.menu.addresses.description"],
+    icon: AtSignIcon,
+    id: "addresses",
+    title: m["dashboard.settings.menu.addresses.title"],
+  },
+  {
+    component: AuthenticationSettingsPage,
+    description: m["dashboard.settings.menu.authentication.description"],
+    icon: KeyRoundIcon,
+    id: "authentication",
+    title: m["dashboard.settings.menu.authentication.title"],
   },
   {
     component: PlaceholderSettingsPage,

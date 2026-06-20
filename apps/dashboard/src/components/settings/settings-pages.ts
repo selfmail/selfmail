@@ -1,8 +1,10 @@
 import {
+  AtSignIcon,
   CreditCardIcon,
   DatabaseIcon,
   GlobeIcon,
   HardDriveIcon,
+  KeyRoundIcon,
   LifeBuoyIcon,
   type LucideIcon,
   SettingsIcon,
@@ -28,6 +30,8 @@ export type SettingsPageId =
   | "support"
   | "domains"
   | "members"
+  | "addresses"
+  | "authentication"
   | "spamAnalysis"
   | "workspaceAi";
 
@@ -35,6 +39,7 @@ export interface SettingsPageContext {
   page: SettingsPage;
   workspaceName: string;
   workspaceSlug: string;
+  memberId: string;
 }
 
 export type SettingsPageComponent = (props: SettingsPageContext) => ReactNode;
@@ -104,6 +109,20 @@ export const settingsPages: SettingsPage[] = [
     icon: UsersIcon,
     id: "members",
     title: m["dashboard.settings.menu.members.title"],
+  },
+  {
+    component: PlaceholderSettingsPage,
+    description: m["dashboard.settings.menu.addresses.description"],
+    icon: AtSignIcon,
+    id: "addresses",
+    title: m["dashboard.settings.menu.addresses.title"],
+  },
+  {
+    component: PlaceholderSettingsPage,
+    description: m["dashboard.settings.menu.authentication.description"],
+    icon: KeyRoundIcon,
+    id: "authentication",
+    title: m["dashboard.settings.menu.authentication.title"],
   },
   {
     component: PlaceholderSettingsPage,

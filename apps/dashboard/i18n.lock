@@ -115,6 +115,7 @@ checksums:
     dashboard/sample_emails/billing_from: b01dbdd049ebbd4a349fa64d6ce65a3b
     dashboard/sample_emails/invoice_subject: 7afedf09a0a7f12ba58091a73169587d
     dashboard/sample_emails/invoice_snippet: 5f00caa3fa582ea445b1c32461d95b55
+    dashboard/settings/close: a62a29da9976e964cdc21371a7f6dafc
     dashboard/settings/title: f34fba7d342342e7e079cd991559bff3
     dashboard/settings/description: 3572547702d98d7ccff61f14c71f4ffe
     dashboard/settings/general: b891e8f15579fc5d97bcaf3637f5ae59

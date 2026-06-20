@@ -1,6 +1,7 @@
 import { Dialog } from "@base-ui/react";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 import { useEffect, useRef, useState } from "react";
+import { create } from "zustand";
 import { cn } from "#/lib/utils";
 import { settingsPages } from "./menu/pages";
 import SettingsSidebar from "./menu/sidebar";
@@ -70,7 +71,9 @@ function SettingsDialogContent({
   }
   return (
     <Dialog.Portal>
-      <Dialog.Backdrop className={cn("fixed inset-0 z-50 bg-black/20")} />
+      <Dialog.Backdrop
+        className={cn("fixed inset-0 z-50 bg-black/20 dark:bg-black/50")}
+      />
       <Dialog.Viewport
         className={cn(
           "fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -78,7 +81,7 @@ function SettingsDialogContent({
       >
         <Dialog.Popup
           className={cn(
-            "flex w-[calc(100vw-2rem)] max-w-4xl flex-row overflow-hidden rounded-xl bg-neutral-100 sm:h-152"
+            "relative flex w-[calc(100vw-2rem)] max-w-4xl flex-row overflow-hidden rounded-xl bg-muted text-foreground sm:h-152"
           )}
           style={{
             maxHeight:
@@ -86,11 +89,9 @@ function SettingsDialogContent({
           }}
         >
           <SettingsSidebar activePageId={activePage} setPage={setPage} />
-          <div className="flex min-h-0 w-full flex-1 p-2">
-            <div className="min-h-0 flex-1 overflow-auto rounded-xl border border-border/50 bg-neutral-50 p-2">
-              <h1 className="font-medium text-xl">
-                {currentActivePage.title()}
-              </h1>
+          <div className="flex min-h-0 w-full flex-1 flex-col p-2">
+            <div className="min-h-0 flex-1 overflow-auto rounded-xl border border-border bg-background p-2">
+              <p className="font-medium text-lg">{currentActivePage.title()}</p>
               <currentActivePage.component
                 id={currentActivePage.id}
                 memberId={memberId}
@@ -100,7 +101,6 @@ function SettingsDialogContent({
             </div>
           </div>
           <Dialog.Description />
-          <Dialog.Close />
         </Dialog.Popup>
       </Dialog.Viewport>
     </Dialog.Portal>
@@ -117,6 +117,14 @@ function useSettingsPageQuery() {
   );
 }
 
+export const useSettingsMenuOpenStore = create<{
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}>((set) => ({
+  open: false,
+  setOpen: (open) => set({ open }),
+}));
+
 export default function SettingsDialog({
   workspaceId,
   memberId,
@@ -125,7 +133,7 @@ export default function SettingsDialog({
   memberId: string;
 }) {
   const [page, setPage] = useSettingsPageQuery();
-  const [open, setOpen] = useState(false);
+  const { open, setOpen } = useSettingsMenuOpenStore();
   const [triggerId, setTriggerId] = useState<string | null>(null);
 
   if (page !== null && !open) {

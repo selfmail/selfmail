@@ -28,7 +28,8 @@ const addressLabelMaxLength = 24;
 interface DashboardNavigationProps {
   addresses: DashboardAddress[];
   currentAddressSlug?: string;
-  onOpenSettings: () => void;
+  memberId: string;
+  workspaceId: string;
   previewOpen?: boolean;
   workspaceSlug: string;
 }
@@ -130,7 +131,8 @@ function AddressNavLink({
 export function DashboardNavigation({
   addresses,
   currentAddressSlug,
-  onOpenSettings,
+  workspaceId,
+  memberId,
   workspaceSlug,
 }: DashboardNavigationProps) {
   return (
@@ -180,23 +182,25 @@ export function DashboardNavigation({
         ))}
       </NavColumn>
       <NavColumn title={m["dashboard.navigation.workspace"]()}>
+        <SettingsDialog memberId={memberId} workspaceId={workspaceId} />
         {workspaceLinks.map((link) =>
           "action" in link ? (
-            <>
-              <SettingsDialog
-              key={"settings-dialog"}
-              memberId={}
-              workspaceId={} />
-              <Dialog.Trigger
-                handle={settingsDialogHandle}
-                id="navigation"
-                key={"dialogTrigger"}
-                payload={{ page: "app" }}
-                type="button"
+            <Dialog.Trigger
+              className="group w-full cursor-pointer"
+              handle={settingsDialogHandle}
+              id="navigation"
+              key={link.label()}
+              payload={{ page: "app" }}
+              type="button"
+            >
+              <span
+                className={cn(
+                  "block w-fit max-w-64 truncate rounded-md font-medium text-foreground text-xl ring-accent transition-all group-hover:bg-accent group-hover:ring-4"
+                )}
               >
-                Settings
-              </Dialog.Trigger>
-            </>
+                {link.label()}
+              </span>
+            </Dialog.Trigger>
           ) : (
             <DashboardNavLink href={link.href} key={link.label()}>
               {link.label()}

@@ -138,6 +138,7 @@
       "invoice_snippet": "Your invoice and usage details are attached for the current billing period."
     },
     "settings": {
+      "close": "Close settings menu",
       "title": "Workspace settings",
       "description": "Update the workspace profile, public handle, and destructive settings for {workspaceName}.",
       "general": "General",
@@ -336,6 +337,14 @@
         "members": {
           "title": "Members",
           "description": "Workspace access, roles, and invitations."
+        },
+        "addresses": {
+          "title": "Adresses",
+          "description": "Workspace email addresses and inbox assignments."
+        },
+        "authentication": {
+          "title": "authentication",
+          "description": "Sign-in methods and workspace authentication settings."
         },
         "spam_analysis": {
           "title": "Spam Analysis",

@@ -138,6 +138,7 @@
       "invoice_snippet": "Adjuntamos tu factura y los detalles de uso para el período de facturación actual."
     },
     "settings": {
+      "close": "Cerrar el menú de configuración",
       "title": "Ajustes del workspace",
       "description": "Actualiza el perfil del workspace, el identificador público y los ajustes destructivos de {workspaceName}.",
       "general": "General",
@@ -336,6 +337,14 @@
         "members": {
           "title": "Members",
           "description": "Acceso al workspace, roles e invitaciones."
+        },
+        "addresses": {
+          "title": "Direcciones",
+          "description": "Direcciones de correo y asignaciones de buzones del workspace."
+        },
+        "authentication": {
+          "title": "Autenticación",
+          "description": "Métodos de inicio de sesión y ajustes de autenticación del workspace."
         },
         "spam_analysis": {
           "title": "Análisis de spam",

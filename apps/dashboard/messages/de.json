@@ -138,6 +138,7 @@
       "invoice_snippet": "Ihre Rechnung und Nutzungsdetails für den aktuellen Abrechnungszeitraum sind im Anhang."
     },
     "settings": {
+      "close": "Einstellungen schließen",
       "title": "Workspace-Einstellungen",
       "description": "Aktualisiere das Workspace-Profil, das öffentliche Handle und kritische Einstellungen für {workspaceName}.",
       "general": "Allgemein",
@@ -336,6 +337,14 @@
         "members": {
           "title": "Members",
           "description": "Workspace-Zugriff, Rollen und Einladungen."
+        },
+        "addresses": {
+          "title": "Adressen",
+          "description": "Workspace-E-Mail-Adressen und Postfachzuweisungen."
+        },
+        "authentication": {
+          "title": "Authentifizierung",
+          "description": "Anmeldemethoden und Authentifizierungseinstellungen des Workspaces."
         },
         "spam_analysis": {
           "title": "Spam-Analyse",
