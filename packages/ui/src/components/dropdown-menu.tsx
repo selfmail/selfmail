@@ -14,7 +14,7 @@ function DropdownMenuContent({
 }: ComponentProps<typeof Menu.Popup> & { sideOffset?: number }) {
   return (
     <DropdownMenuPortal>
-      <Menu.Positioner className="outline-none" sideOffset={sideOffset}>
+      <Menu.Positioner className="z-50 outline-none" sideOffset={sideOffset}>
         <Menu.Popup
           className={cn(
             "relative min-w-40 overflow-hidden rounded-3xl border-2 border-border bg-popover p-1 text-popover-foreground shadow-md outline-none",
@@ -146,7 +146,7 @@ function DropdownMenuSubContent({
 }: ComponentProps<typeof Menu.Popup>) {
   return (
     <DropdownMenuPortal>
-      <Menu.Positioner className="outline-none" sideOffset={4}>
+      <Menu.Positioner className="z-50 outline-none" sideOffset={4}>
         <Menu.Popup
           className={cn(
             "relative min-w-40 overflow-hidden rounded-3xl border-2 border-border bg-popover p-1 text-popover-foreground shadow-md outline-none",

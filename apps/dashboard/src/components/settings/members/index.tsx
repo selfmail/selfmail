@@ -20,11 +20,14 @@ import { m } from "#/paraglide/messages";
 import { getLocale } from "#/paraglide/runtime";
 import type { SettingsPageContext } from "../menu/pages";
 import { SettingsPage } from "../ui";
+import MembersActionButton from "./action";
 
 interface Member {
   createdAt: Date;
   id: string;
   profileName: string;
+  isCurrentMember: boolean;
+  userId: string;
 }
 
 const emptyMembers: Member[] = [];
@@ -55,7 +58,6 @@ export function MemberSettingsPage({
         },
       }),
   });
-
   const columns = useMemo<ColumnDef<Member>[]>(
     () => [
       {
@@ -67,8 +69,15 @@ export function MemberSettingsPage({
               {getMemberInitials(row.original.profileName)}
             </div>
             <div className="min-w-0">
-              <div className="truncate font-medium text-foreground">
-                {row.original.profileName}
+              <div className="flex min-w-0 items-center gap-1.5">
+                <span className="truncate font-medium text-foreground">
+                  {row.original.profileName}
+                </span>
+                {row.original.isCurrentMember ? (
+                  <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-muted-foreground text-xs">
+                    {m["dashboard.settings.member_settings.you"]()}
+                  </span>
+                ) : null}
               </div>
               <div className="truncate text-muted-foreground text-xs">
                 {row.original.id}
@@ -88,8 +97,25 @@ export function MemberSettingsPage({
           </span>
         ),
       },
+      {
+        cell: ({ row }) => (
+          <div className="flex justify-end">
+            <MembersActionButton
+              canRemoveMembers={data?.canRemoveMembers ?? false}
+              isCurrentMember={row.original.isCurrentMember}
+              joinedAt={row.original.createdAt}
+              memberId={row.original.id}
+              memberName={row.original.profileName}
+              userId={row.original.userId}
+            />
+          </div>
+        ),
+        enableSorting: false,
+        header: m["dashboard.settings.member_settings.actions"](),
+        id: "actions",
+      },
     ],
-    []
+    [data?.canRemoveMembers]
   );
 
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -130,16 +156,46 @@ export function MemberSettingsPage({
     >
       <div className="min-h-0 flex-1 overflow-auto">
         <div className="overflow-hidden rounded-xl border border-border bg-background">
-          <table className="w-full min-w-128 border-collapse text-left text-sm">
+          <table className="w-full min-w-lg border-collapse text-left text-sm">
             <thead className="bg-muted/60 text-muted-foreground">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     const sorted = header.column.getIsSorted();
+                    const canSort = header.column.getCanSort();
+
+                    const headerContent = canSort ? (
+                      <button
+                        className={cn(
+                          "flex w-full cursor-pointer items-center justify-between gap-3 text-left outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
+                          sorted && "text-foreground"
+                        )}
+                        onClick={header.column.getToggleSortingHandler()}
+                        type="button"
+                      >
+                        <span className="truncate">
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                        </span>
+                        {renderSortIcon(sorted)}
+                      </button>
+                    ) : (
+                      <span className="sr-only">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </span>
+                    );
 
                     return (
                       <th
                         aria-sort={(() => {
+                          if (!header.column.getCanSort()) {
+                            return undefined;
+                          }
                           if (sorted === "asc") {
                             return "ascending";
                           }
@@ -148,28 +204,14 @@ export function MemberSettingsPage({
                           }
                           return "none";
                         })()}
-                        className="border-border border-b px-4 py-3 font-medium"
+                        className={cn(
+                          "border-border border-b px-4 py-3 font-medium",
+                          header.column.id === "actions" && "w-12 text-right"
+                        )}
                         key={header.id}
                         scope="col"
                       >
-                        {header.isPlaceholder ? null : (
-                          <button
-                            className={cn(
-                              "flex w-full cursor-pointer items-center justify-between gap-3 text-left outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
-                              sorted && "text-foreground"
-                            )}
-                            onClick={header.column.getToggleSortingHandler()}
-                            type="button"
-                          >
-                            <span className="truncate">
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                            </span>
-                            {renderSortIcon(sorted)}
-                          </button>
-                        )}
+                        {header.isPlaceholder ? null : headerContent}
                       </th>
                     );
                   })}
@@ -181,7 +223,13 @@ export function MemberSettingsPage({
                 rows.map((row) => (
                   <tr className="hover:bg-muted/40" key={row.id}>
                     {row.getVisibleCells().map((cell) => (
-                      <td className="px-4 py-3.5 align-middle" key={cell.id}>
+                      <td
+                        className={cn(
+                          "px-4 py-3.5 align-middle",
+                          cell.column.id === "actions" && "w-12"
+                        )}
+                        key={cell.id}
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

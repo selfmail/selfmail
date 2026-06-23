@@ -36,7 +36,10 @@ export function DashboardHeader({
       <Dropdown>
         <DropdownTrigger
           aria-label={m["dashboard.header.switch_workspace"]()}
-          className="h-auto max-w-full cursor-pointer justify-start rounded-lg border-0 bg-transparent p-0 pr-1 text-base hover:bg-accent hover:text-accent-foreground hover:ring-4 hover:ring-accent focus-visible:ring-ring/25 data-popup-open:bg-accent data-popup-open:text-accent-foreground data-popup-open:ring-4 data-popup-open:ring-accent"
+          className={cn(
+            "h-10 items-center justify-center gap-2 rounded-full border-2 border-border bg-background px-5 font-medium text-foreground text-sm outline-none hover:bg-accent hover:text-accent-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/25 disabled:pointer-events-none disabled:opacity-50 data-[popup-open]:bg-accent data-[popup-open]:text-accent-foreground [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+            "h-auto max-w-full cursor-pointer justify-start rounded-lg border-0 bg-transparent p-0 pr-1 text-base hover:bg-accent hover:text-accent-foreground hover:ring-4 hover:ring-accent focus-visible:ring-ring/25 data-popup-open:bg-accent data-popup-open:text-accent-foreground data-popup-open:ring-4 data-popup-open:ring-accent"
+          )}
         >
           <WorkspaceAvatar workspace={currentWorkspace} />
           <h3 className="max-w-42 truncate font-medium text-lg sm:max-w-none">

@@ -10,6 +10,7 @@ import {
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Agentation } from "agentation";
 import { enableHistorySync, NuqsAdapter } from "nuqs/adapters/react";
+import { Toaster } from "sonner";
 import { m } from "#/paraglide/messages";
 import { getLocale } from "#/paraglide/runtime";
 import PostHogProvider from "../integrations/posthog/provider";
@@ -75,6 +76,32 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <QueryClientProvider client={queryClient}>
           <PostHogProvider>
             {children}
+            <Toaster
+              closeButton
+              duration={4200}
+              gap={8}
+              mobileOffset={{
+                bottom: "calc(var(--spacing) * 4 + env(safe-area-inset-bottom))",
+                left: "calc(var(--spacing) * 4)",
+                right: "calc(var(--spacing) * 4)",
+              }}
+              offset={{
+                bottom: "calc(var(--spacing) * 4 + env(safe-area-inset-bottom))",
+                right: "calc(var(--spacing) * 5)",
+              }}
+              position="bottom-right"
+              toastOptions={{
+                classNames: {
+                  closeButton: "selfmail-sonner-close",
+                  description: "selfmail-sonner-description",
+                  error: "selfmail-sonner-error",
+                  success: "selfmail-sonner-success",
+                  toast: "selfmail-sonner-toast",
+                },
+                closeButtonAriaLabel: "Dismiss notification",
+              }}
+              visibleToasts={3}
+            />
             {process.env.NODE_ENV === "development" && <Agentation />}
             <TanStackDevtools
               config={{

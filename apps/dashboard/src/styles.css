@@ -58,3 +58,40 @@ body {
     transition: none !important;
   }
 }
+
+@layer components {
+  .selfmail-sonner-toast {
+    border: 1px solid color-mix(in oklab, var(--foreground) 18%, transparent) !important;
+    border-radius: var(--radius-lg) !important;
+    background: var(--popover) !important;
+    color: var(--foreground) !important;
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 16%),
+      0 4px 6px -4px rgb(0 0 0 / 16%) !important;
+  }
+
+  .selfmail-sonner-success {
+    border-color: color-mix(in oklab, var(--foreground) 24%, transparent) !important;
+  }
+
+  .selfmail-sonner-error {
+    border-color: color-mix(in oklab, var(--destructive) 78%, transparent) !important;
+    background: color-mix(in oklab, var(--destructive) 12%, var(--popover)) !important;
+    color: var(--destructive) !important;
+  }
+
+  .selfmail-sonner-description {
+    color: var(--muted-foreground) !important;
+  }
+
+  .selfmail-sonner-close {
+    border-color: color-mix(in oklab, var(--foreground) 18%, transparent) !important;
+    background: var(--popover) !important;
+    color: var(--muted-foreground) !important;
+  }
+
+  .selfmail-sonner-close:hover {
+    background: var(--accent) !important;
+    color: var(--foreground) !important;
+  }
+}

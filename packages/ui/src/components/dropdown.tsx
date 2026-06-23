@@ -28,10 +28,7 @@ function DropdownGroup({
 function DropdownTrigger({ className, ...props }: DropdownTriggerProps) {
   return (
     <Menu.Trigger
-      className={cn(
-        "inline-flex h-10 items-center justify-center gap-2 rounded-full border-2 border-border bg-background px-5 font-medium text-foreground text-sm outline-none hover:bg-accent hover:text-accent-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/25 disabled:pointer-events-none disabled:opacity-50 data-[popup-open]:bg-accent data-[popup-open]:text-accent-foreground [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-        className
-      )}
+      className={cn("inline-flex", className)}
       data-slot="dropdown-trigger"
       {...props}
     />

@@ -33,11 +33,14 @@ function AlertDialogOverlay({
 function AlertDialogContent({
   className,
   children,
+  overlayClassName,
   ...props
-}: ComponentProps<typeof AlertDialogPrimitiveContent>) {
+}: ComponentProps<typeof AlertDialogPrimitiveContent> & {
+  overlayClassName?: string;
+}) {
   return (
     <AlertDialogPrimitivePortal>
-      <AlertDialogOverlay />
+      <AlertDialogOverlay className={overlayClassName} />
       <AlertDialogPrimitiveContent
         className={cn(
           "fixed top-1/2 left-1/2 z-50 grid w-[calc(100%-2.5rem)] max-w-[26rem] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-3xl border-2 border-border bg-background p-6 text-foreground shadow-xl outline-none",

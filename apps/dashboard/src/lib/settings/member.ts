@@ -44,12 +44,16 @@ export const getMembers = createServerFn({ method: "GET" })
       select: {
         profileName: true,
         id: true,
+        userId: true,
         createdAt: true,
       },
     });
 
     return {
-      members,
+      members: members.map((member) => ({
+        ...member,
+        isCurrentMember: member.id === currentMember.id,
+      })),
       canRemoveMembers: removeMembers.includes("members:remove"),
       canInviteMembers: removeMembers.includes("members:invite"),
     };
