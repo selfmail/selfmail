@@ -138,7 +138,7 @@
       "invoice_snippet": "Votre facture et le détail de votre utilisation sont joints pour la période de facturation en cours."
     },
     "settings": {
-      "close": "Fermer le menu des paramètres",
+      "close": "Fermer le menu",
       "title": "Paramètres de l’espace de travail",
       "description": "Modifiez le profil, le handle public et les paramètres sensibles de {workspaceName}.",
       "general": "Général",

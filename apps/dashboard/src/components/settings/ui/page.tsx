@@ -11,8 +11,14 @@ import {
 interface SettingsPageProps {
   children: React.ReactNode;
   description?: string | null;
-  error?: (string | null | undefined)[];
+  error?: (string | null | Error | undefined)[];
   loading?: boolean[];
+  onRetry?: () => unknown;
+  retryLabel?: string;
+}
+
+interface SettingsPageErrorProps {
+  errors: string[];
   onRetry?: () => unknown;
   retryLabel?: string;
 }
@@ -66,11 +72,7 @@ function SettingsPageError({
   errors,
   onRetry,
   retryLabel,
-}: {
-  errors: string[];
-  onRetry?: () => unknown;
-  retryLabel?: string;
-}) {
+}: SettingsPageErrorProps) {
   return (
     <div className="grid min-h-64 place-items-center px-4 py-8">
       <Alert className="max-w-md" variant="destructive">
@@ -123,8 +125,9 @@ export function SettingsPage({
 
   const errors = [
     ...new Set(
-      error?.filter((message): message is string => Boolean(message?.trim())) ??
-        []
+      error
+        ?.map((value) => (value instanceof Error ? value.message : value))
+        .filter((message): message is string => Boolean(message?.trim())) ?? []
     ),
   ];
 

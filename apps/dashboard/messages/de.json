@@ -138,7 +138,7 @@
       "invoice_snippet": "Ihre Rechnung und Nutzungsdetails für den aktuellen Abrechnungszeitraum sind im Anhang."
     },
     "settings": {
-      "close": "Einstellungen schließen",
+      "close": "Menü schließen",
       "title": "Workspace-Einstellungen",
       "description": "Aktualisiere das Workspace-Profil, das öffentliche Handle und kritische Einstellungen für {workspaceName}.",
       "general": "Allgemein",

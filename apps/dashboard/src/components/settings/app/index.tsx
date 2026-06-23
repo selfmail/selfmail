@@ -18,7 +18,6 @@ import {
   locales,
   setLocale,
 } from "#/paraglide/runtime";
-import type { SettingsPageComponent } from "../settings-pages";
 
 const languageValues = ["auto", "fr", "en", "es", "de"] as const;
 
@@ -66,7 +65,7 @@ function clearLocaleCookie() {
   document.cookie = cookieDomain ? `${cookie}; domain=${cookieDomain}` : cookie;
 }
 
-export const AppSettingsPage: SettingsPageComponent = () => {
+export function AppSettingsPage() {
   const [languageValue, setLanguageValue] =
     useState<AppLanguageValue>(getCookieLocale);
   const [themeValue, setThemeValue] = useState<ThemeMode>(getStoredThemeMode);
@@ -136,4 +135,4 @@ export const AppSettingsPage: SettingsPageComponent = () => {
       />
     </SettingsGroup>
   );
-};
+}

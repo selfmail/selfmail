@@ -4,11 +4,13 @@ export const permissionNames = [
   "domains:add",
   "domains:delete",
   "domains:update",
-  "invite:member",
   "members:invite",
   "members:remove",
-  "settings:delete",
-  "settings:update-workspace",
+  "workspace:delete",
+  "workspace:update",
+  "billings:view",
+  "billings:update",
+  "audit_logs:view",
 ] as const;
 
 export type PermissionName = (typeof permissionNames)[number];

@@ -115,7 +115,7 @@ checksums:
     dashboard/sample_emails/billing_from: b01dbdd049ebbd4a349fa64d6ce65a3b
     dashboard/sample_emails/invoice_subject: 7afedf09a0a7f12ba58091a73169587d
     dashboard/sample_emails/invoice_snippet: 5f00caa3fa582ea445b1c32461d95b55
-    dashboard/settings/close: a62a29da9976e964cdc21371a7f6dafc
+    dashboard/settings/close: ec0f56ea3b39e28bc1aca998f4321a11
     dashboard/settings/title: f34fba7d342342e7e079cd991559bff3
     dashboard/settings/description: 3572547702d98d7ccff61f14c71f4ffe
     dashboard/settings/general: b891e8f15579fc5d97bcaf3637f5ae59
@@ -284,6 +284,10 @@ checksums:
     dashboard/settings/menu/analytics/description: 6ea3e6752e76fd9d5f375c1be7c07c75
     dashboard/settings/menu/members/title: 0932e80cba1e3e0a7f52bb67ff31da32
     dashboard/settings/menu/members/description: 881313c2cd941ee1517d81aad48fdafe
+    dashboard/settings/menu/addresses/title: 87b49e2ffcdbe3cc4bfd2d25cc75c096
+    dashboard/settings/menu/addresses/description: 3921808b26bf23e1a50f14a55ce03e2e
+    dashboard/settings/menu/authentication/title: 491fbb938cfe44df0438ad3e198d23e6
+    dashboard/settings/menu/authentication/description: f1baf18154c2212580ee9255795bf56c
     dashboard/settings/menu/spam_analysis/title: 2acca2ca3709aa41af00fb72f0ad58db
     dashboard/settings/menu/spam_analysis/description: a2ae43ac12de242b7be74377063691b1
     dashboard/settings/menu/workspace_ai/title: 16ada40297df1df3849d4fa44d0d09e9

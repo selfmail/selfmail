@@ -138,7 +138,7 @@
       "invoice_snippet": "Adjuntamos tu factura y los detalles de uso para el período de facturación actual."
     },
     "settings": {
-      "close": "Cerrar el menú de configuración",
+      "close": "Cerrar menú",
       "title": "Ajustes del workspace",
       "description": "Actualiza el perfil del workspace, el identificador público y los ajustes destructivos de {workspaceName}.",
       "general": "General",
