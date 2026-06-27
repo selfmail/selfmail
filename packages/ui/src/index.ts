@@ -66,19 +66,6 @@ export {
   DropdownSubTrigger,
   DropdownTrigger,
 } from "./components/dropdown";
-export {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "./components/dropdown-menu";
 export { Input } from "./components/input";
 export { Label } from "./components/label";
 export {

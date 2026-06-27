@@ -1,28 +1,87 @@
+import { AlertDialog as AlertDialogPrimitive } from "@base-ui/react/alert-dialog";
 import {
-  Action as AlertDialogPrimitiveAction,
-  Cancel as AlertDialogPrimitiveCancel,
-  Content as AlertDialogPrimitiveContent,
-  Description as AlertDialogPrimitiveDescription,
-  Overlay as AlertDialogPrimitiveOverlay,
-  Portal as AlertDialogPrimitivePortal,
-  Root as AlertDialogPrimitiveRoot,
-  Title as AlertDialogPrimitiveTitle,
-  Trigger as AlertDialogPrimitiveTrigger,
-} from "@radix-ui/react-alert-dialog";
-import type { ComponentProps } from "react";
+  Children,
+  type ComponentProps,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 import { cn } from "../lib/cn";
 import { buttonVariants } from "./button";
 
-const AlertDialog = AlertDialogPrimitiveRoot;
-const AlertDialogPortal = AlertDialogPrimitivePortal;
-const AlertDialogTrigger = AlertDialogPrimitiveTrigger;
+const AlertDialog = Object.assign(AlertDialogPrimitive.Root, {
+  createHandle: AlertDialogPrimitive.createHandle,
+});
+const AlertDialogPortal = AlertDialogPrimitive.Portal;
+
+interface AlertDialogChildProps {
+  asChild?: boolean;
+}
+
+type AlertDialogTriggerProps = ComponentProps<
+  typeof AlertDialogPrimitive.Trigger
+> &
+  AlertDialogChildProps;
+
+type AlertDialogCloseProps = ComponentProps<typeof AlertDialogPrimitive.Close> &
+  AlertDialogChildProps;
+
+function isNativeButtonChild(child: ReactNode) {
+  return isValidElement(child) && child.type === "button";
+}
+
+function AlertDialogTrigger({
+  asChild,
+  children,
+  nativeButton,
+  render,
+  ...props
+}: AlertDialogTriggerProps) {
+  const child = asChild ? (Children.only(children) as ReactElement) : undefined;
+
+  return (
+    <AlertDialogPrimitive.Trigger
+      data-slot="alert-dialog-trigger"
+      nativeButton={
+        nativeButton ?? (asChild ? isNativeButtonChild(child) : true)
+      }
+      render={asChild ? child : render}
+      {...props}
+    >
+      {asChild ? undefined : children}
+    </AlertDialogPrimitive.Trigger>
+  );
+}
+
+function AlertDialogClose({
+  asChild,
+  children,
+  nativeButton,
+  render,
+  ...props
+}: AlertDialogCloseProps) {
+  const child = asChild ? (Children.only(children) as ReactElement) : undefined;
+
+  return (
+    <AlertDialogPrimitive.Close
+      data-slot="alert-dialog-close"
+      nativeButton={
+        nativeButton ?? (asChild ? isNativeButtonChild(child) : true)
+      }
+      render={asChild ? child : render}
+      {...props}
+    >
+      {asChild ? undefined : children}
+    </AlertDialogPrimitive.Close>
+  );
+}
 
 function AlertDialogOverlay({
   className,
   ...props
-}: ComponentProps<typeof AlertDialogPrimitiveOverlay>) {
+}: ComponentProps<typeof AlertDialogPrimitive.Backdrop>) {
   return (
-    <AlertDialogPrimitiveOverlay
+    <AlertDialogPrimitive.Backdrop
       className={cn("fixed inset-0 z-50 bg-black/50", className)}
       data-slot="alert-dialog-overlay"
       {...props}
@@ -35,23 +94,32 @@ function AlertDialogContent({
   children,
   overlayClassName,
   ...props
-}: ComponentProps<typeof AlertDialogPrimitiveContent> & {
+}: ComponentProps<typeof AlertDialogPrimitive.Popup> & {
   overlayClassName?: string;
 }) {
   return (
-    <AlertDialogPrimitivePortal>
+    <AlertDialogPrimitive.Portal>
       <AlertDialogOverlay className={overlayClassName} />
-      <AlertDialogPrimitiveContent
-        className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid w-[calc(100%-2.5rem)] max-w-[26rem] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-3xl border-2 border-border bg-background p-6 text-foreground shadow-xl outline-none",
-          className
-        )}
-        data-slot="alert-dialog-content"
-        {...props}
+      <AlertDialogPrimitive.Viewport
+        className="fixed inset-0 z-50 flex items-center justify-center p-5"
+        data-slot="alert-dialog-viewport"
+        style={{
+          padding:
+            "max(1.25rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) max(1.25rem, env(safe-area-inset-left))",
+        }}
       >
-        {children}
-      </AlertDialogPrimitiveContent>
-    </AlertDialogPrimitivePortal>
+        <AlertDialogPrimitive.Popup
+          className={cn(
+            "grid max-h-[calc(100dvh-2.5rem)] w-full max-w-[26rem] gap-5 overflow-y-auto rounded-3xl border-2 border-border bg-background p-6 text-foreground shadow-xl outline-none",
+            className
+          )}
+          data-slot="alert-dialog-content"
+          {...props}
+        >
+          {children}
+        </AlertDialogPrimitive.Popup>
+      </AlertDialogPrimitive.Viewport>
+    </AlertDialogPrimitive.Portal>
   );
 }
 
@@ -81,9 +149,9 @@ function AlertDialogFooter({ className, ...props }: ComponentProps<"div">) {
 function AlertDialogTitle({
   className,
   ...props
-}: ComponentProps<typeof AlertDialogPrimitiveTitle>) {
+}: ComponentProps<typeof AlertDialogPrimitive.Title>) {
   return (
-    <AlertDialogPrimitiveTitle
+    <AlertDialogPrimitive.Title
       className={cn("text-balance font-medium text-2xl", className)}
       data-slot="alert-dialog-title"
       {...props}
@@ -94,9 +162,9 @@ function AlertDialogTitle({
 function AlertDialogDescription({
   className,
   ...props
-}: ComponentProps<typeof AlertDialogPrimitiveDescription>) {
+}: ComponentProps<typeof AlertDialogPrimitive.Description>) {
   return (
-    <AlertDialogPrimitiveDescription
+    <AlertDialogPrimitive.Description
       className={cn("text-pretty text-muted-foreground text-sm", className)}
       data-slot="alert-dialog-description"
       {...props}
@@ -104,12 +172,9 @@ function AlertDialogDescription({
   );
 }
 
-function AlertDialogAction({
-  className,
-  ...props
-}: ComponentProps<typeof AlertDialogPrimitiveAction>) {
+function AlertDialogAction({ className, ...props }: AlertDialogCloseProps) {
   return (
-    <AlertDialogPrimitiveAction
+    <AlertDialogClose
       className={cn(buttonVariants(), className)}
       data-slot="alert-dialog-action"
       {...props}
@@ -117,12 +182,9 @@ function AlertDialogAction({
   );
 }
 
-function AlertDialogCancel({
-  className,
-  ...props
-}: ComponentProps<typeof AlertDialogPrimitiveCancel>) {
+function AlertDialogCancel({ className, ...props }: AlertDialogCloseProps) {
   return (
-    <AlertDialogPrimitiveCancel
+    <AlertDialogClose
       className={cn(buttonVariants({ variant: "outline" }), className)}
       data-slot="alert-dialog-cancel"
       {...props}

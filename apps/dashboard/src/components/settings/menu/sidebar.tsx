@@ -31,10 +31,15 @@ function canShowPage(
 	permissions?: {
 		canViewAuditLogs: boolean;
 		canViewBilling: boolean;
+		canUpdatePermissions: boolean;
 	},
 ) {
 	if (pageId === "billing") {
 		return permissions?.canViewBilling ?? false;
+	}
+
+	if (pageId === "permissions") {
+		return permissions?.canUpdatePermissions ?? false;
 	}
 
 	if (pageId === "auditLogs") {

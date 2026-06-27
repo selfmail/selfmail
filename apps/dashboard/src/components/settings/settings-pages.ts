@@ -8,6 +8,7 @@ import {
   LifeBuoyIcon,
   type LucideIcon,
   SettingsIcon,
+  ShieldIcon,
   ShieldAlertIcon,
   ShieldCheckIcon,
   SlidersHorizontalIcon,
@@ -19,12 +20,14 @@ import { AppSettingsPage } from "./app";
 import { DomainSettingsPage } from "./domains";
 import { MemberSettingsPage } from "./members";
 import { PlaceholderSettingsPage } from "./placeholder-settings-page";
+import { PermissionsSettingsPage } from "./permissions";
 import { WorkspaceSettingsPage } from "./workspace";
 
 export type SettingsPageId =
   | "app"
   | "workspace"
   | "billing"
+  | "permissions"
   | "auditLogs"
   | "storage"
   | "support"
@@ -74,6 +77,13 @@ export const settingsPages: SettingsPage[] = [
     icon: CreditCardIcon,
     id: "billing",
     title: m["dashboard.settings.menu.billing.title"],
+  },
+  {
+    component: PermissionsSettingsPage,
+    description: m["dashboard.settings.menu.permissions.description"],
+    icon: ShieldIcon,
+    id: "permissions",
+    title: m["dashboard.settings.menu.permissions.title"],
   },
   {
     component: PlaceholderSettingsPage,

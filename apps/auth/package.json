@@ -30,6 +30,7 @@
     "@selfmail/db": "workspace:*",
     "@selfmail/logging": "workspace:*",
     "@selfmail/redis": "workspace:*",
+    "@selfmail/ui": "workspace:*",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-router": "latest",

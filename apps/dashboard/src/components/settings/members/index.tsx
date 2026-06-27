@@ -21,6 +21,7 @@ import { getLocale } from "#/paraglide/runtime";
 import type { SettingsPageContext } from "../menu/pages";
 import { SettingsPage } from "../ui";
 import MembersActionButton from "./action";
+import InviteMemberMenu from "./invite";
 
 interface Member {
   createdAt: Date;
@@ -104,9 +105,11 @@ export function MemberSettingsPage({
               canRemoveMembers={data?.canRemoveMembers ?? false}
               isCurrentMember={row.original.isCurrentMember}
               joinedAt={row.original.createdAt}
-              memberId={row.original.id}
+              memberId={memberId}
               memberName={row.original.profileName}
+              removeMemberId={row.original.id}
               userId={row.original.userId}
+              workspaceId={workspaceId}
             />
           </div>
         ),
@@ -115,7 +118,7 @@ export function MemberSettingsPage({
         id: "actions",
       },
     ],
-    [data?.canRemoveMembers]
+    [data?.canRemoveMembers, memberId, workspaceId]
   );
 
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -272,6 +275,9 @@ export function MemberSettingsPage({
             </tbody>
           </table>
         </div>
+      </div>
+      <div className="absolute right-7 bottom-7">
+        <InviteMemberMenu />
       </div>
     </SettingsPage>
   );

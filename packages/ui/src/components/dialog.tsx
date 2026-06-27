@@ -1,27 +1,84 @@
+import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import {
-  Close as DialogPrimitiveClose,
-  Content as DialogPrimitiveContent,
-  Description as DialogPrimitiveDescription,
-  Overlay as DialogPrimitiveOverlay,
-  Portal as DialogPrimitivePortal,
-  Root as DialogPrimitiveRoot,
-  Title as DialogPrimitiveTitle,
-  Trigger as DialogPrimitiveTrigger,
-} from "@radix-ui/react-dialog";
-import type { ComponentProps } from "react";
+  Children,
+  type ComponentProps,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 import { cn } from "../lib/cn";
 
-const Dialog = DialogPrimitiveRoot;
-const DialogClose = DialogPrimitiveClose;
-const DialogPortal = DialogPrimitivePortal;
-const DialogTrigger = DialogPrimitiveTrigger;
+const Dialog = Object.assign(DialogPrimitive.Root, {
+  createHandle: DialogPrimitive.createHandle,
+});
+const DialogPortal = DialogPrimitive.Portal;
+
+interface DialogChildProps {
+  asChild?: boolean;
+}
+
+type DialogTriggerProps = ComponentProps<typeof DialogPrimitive.Trigger> &
+  DialogChildProps;
+
+type DialogCloseProps = ComponentProps<typeof DialogPrimitive.Close> &
+  DialogChildProps;
+
+function isNativeButtonChild(child: ReactNode) {
+  return isValidElement(child) && child.type === "button";
+}
+
+function DialogTrigger({
+  asChild,
+  children,
+  nativeButton,
+  render,
+  ...props
+}: DialogTriggerProps) {
+  const child = asChild ? (Children.only(children) as ReactElement) : undefined;
+
+  return (
+    <DialogPrimitive.Trigger
+      data-slot="dialog-trigger"
+      nativeButton={
+        nativeButton ?? (asChild ? isNativeButtonChild(child) : true)
+      }
+      render={asChild ? child : render}
+      {...props}
+    >
+      {asChild ? undefined : children}
+    </DialogPrimitive.Trigger>
+  );
+}
+
+function DialogClose({
+  asChild,
+  children,
+  nativeButton,
+  render,
+  ...props
+}: DialogCloseProps) {
+  const child = asChild ? (Children.only(children) as ReactElement) : undefined;
+
+  return (
+    <DialogPrimitive.Close
+      data-slot="dialog-close"
+      nativeButton={
+        nativeButton ?? (asChild ? isNativeButtonChild(child) : true)
+      }
+      render={asChild ? child : render}
+      {...props}
+    >
+      {asChild ? undefined : children}
+    </DialogPrimitive.Close>
+  );
+}
 
 function DialogOverlay({
   className,
   ...props
-}: ComponentProps<typeof DialogPrimitiveOverlay>) {
+}: ComponentProps<typeof DialogPrimitive.Backdrop>) {
   return (
-    <DialogPrimitiveOverlay
+    <DialogPrimitive.Backdrop
       className={cn("fixed inset-0 z-50 bg-black/50", className)}
       data-slot="dialog-overlay"
       {...props}
@@ -33,21 +90,30 @@ function DialogContent({
   className,
   children,
   ...props
-}: ComponentProps<typeof DialogPrimitiveContent>) {
+}: ComponentProps<typeof DialogPrimitive.Popup>) {
   return (
-    <DialogPrimitivePortal>
+    <DialogPrimitive.Portal>
       <DialogOverlay />
-      <DialogPrimitiveContent
-        className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid w-[calc(100%-2.5rem)] max-w-[26rem] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-3xl border-2 border-border bg-background p-6 text-foreground shadow-xl outline-none",
-          className
-        )}
-        data-slot="dialog-content"
-        {...props}
+      <DialogPrimitive.Viewport
+        className="fixed inset-0 z-50 flex items-center justify-center p-5"
+        data-slot="dialog-viewport"
+        style={{
+          padding:
+            "max(1.25rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) max(1.25rem, env(safe-area-inset-left))",
+        }}
       >
-        {children}
-      </DialogPrimitiveContent>
-    </DialogPrimitivePortal>
+        <DialogPrimitive.Popup
+          className={cn(
+            "grid max-h-[calc(100dvh-2.5rem)] w-full max-w-[26rem] gap-5 overflow-y-auto rounded-3xl border-2 border-border bg-background p-6 text-foreground shadow-xl outline-none",
+            className
+          )}
+          data-slot="dialog-content"
+          {...props}
+        >
+          {children}
+        </DialogPrimitive.Popup>
+      </DialogPrimitive.Viewport>
+    </DialogPrimitive.Portal>
   );
 }
 
@@ -77,9 +143,9 @@ function DialogFooter({ className, ...props }: ComponentProps<"div">) {
 function DialogTitle({
   className,
   ...props
-}: ComponentProps<typeof DialogPrimitiveTitle>) {
+}: ComponentProps<typeof DialogPrimitive.Title>) {
   return (
-    <DialogPrimitiveTitle
+    <DialogPrimitive.Title
       className={cn("text-balance font-medium text-2xl", className)}
       data-slot="dialog-title"
       {...props}
@@ -90,9 +156,9 @@ function DialogTitle({
 function DialogDescription({
   className,
   ...props
-}: ComponentProps<typeof DialogPrimitiveDescription>) {
+}: ComponentProps<typeof DialogPrimitive.Description>) {
   return (
-    <DialogPrimitiveDescription
+    <DialogPrimitive.Description
       className={cn("text-pretty text-muted-foreground text-sm", className)}
       data-slot="dialog-description"
       {...props}

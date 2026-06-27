@@ -29,11 +29,12 @@ export const getSidebarPermissions = createServerFn({ method: "GET" })
     const p = await permissions({
       memberId: member.id,
       workspaceId,
-      permissions: ["billings:view", "audit_logs:view"],
+      permissions: ["billings:view", "audit_logs:view", "permissions:update"],
     });
 
     return {
       canViewBilling: p.includes("billings:view"),
       canViewAuditLogs: p.includes("audit_logs:view"),
+      canUpdatePermissions: p.includes("permissions:update"),
     };
   });

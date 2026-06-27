@@ -33,7 +33,7 @@ function SettingsPageSkeleton({
   return (
     <div
       aria-busy="true"
-      className="grid w-full gap-6 overflow-hidden motion-safe:animate-pulse"
+      className="relative grid w-full gap-6 overflow-hidden motion-safe:animate-pulse"
     >
       {showDescription ? <Skeleton className="h-4 w-3/4 max-w-md" /> : null}
       <SettingsGroup>

@@ -11,6 +11,7 @@ export const permissionNames = [
   "billings:view",
   "billings:update",
   "audit_logs:view",
+  "permissions:update",
 ] as const;
 
 export type PermissionName = (typeof permissionNames)[number];

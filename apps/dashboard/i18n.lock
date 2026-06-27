@@ -168,7 +168,12 @@ checksums:
     dashboard/settings/member_settings/member: 1606dc30b369856b9dba1fe9aec425d2
     dashboard/settings/member_settings/access: 550606d4a12bdf108c1b12b925ca1b3a
     dashboard/settings/member_settings/addresses: 87b49e2ffcdbe3cc4bfd2d25cc75c096
+    dashboard/settings/member_settings/remove_success: aa73330ba83b83aaf4ada5e276d055fb
     dashboard/settings/member_settings/storage: 99d4c24fb975d64b57a6ca3acd428558
+    dashboard/settings/member_settings/more_information: 750f06bf2ef04baa993c224109c4d7a8
+    dashboard/settings/member_settings/copy_user_id: 78c656b1a36277bce8e01439d0bf3a94
+    dashboard/settings/member_settings/copy_user_id_success: 7ff85f44c1e1adbb896c64fda250ae52
+    dashboard/settings/member_settings/copy_user_id_error: 1762fee8a6e53e7b60d91ce5f4708023
     dashboard/settings/member_settings/joined: 23f25c607ede93b0610497ccc3b001ae
     dashboard/settings/member_settings/actions: c46571856723b03262fd33f511116298
     dashboard/settings/member_settings/owner: 9c0b3aeca046c3ebd3bdc352edc83e88
@@ -272,6 +277,8 @@ checksums:
     dashboard/settings/menu/workspace/description: dfded3c21e97d029982cc61480cbeea4
     dashboard/settings/menu/billing/title: 7bd9e0e2854d342eae5c519a891bf3e5
     dashboard/settings/menu/billing/description: 831d3788ee2c1ada8a1c4aa2679334e8
+    dashboard/settings/menu/permissions/title: 2160be68b1d6b6577e64634e9feba2ed
+    dashboard/settings/menu/permissions/description: 8f36bb204a09426f2cadb7f49a4e8d8e
     dashboard/settings/menu/audit_logs/title: c7efb33d09676938d07651774b067bf6
     dashboard/settings/menu/audit_logs/description: 2a62fb580ec990c27e8528973ebcfd94
     dashboard/settings/menu/storage/title: 3fb27857303af05dac5e82239ddcfda9

@@ -192,6 +192,7 @@
         "member": "Member",
         "access": "Zugriff",
         "addresses": "Adressen",
+        "remove_success": "{memberName} wurde aus dem Workspace entfernt.",
         "storage": "Speicher",
         "more_information": "Weitere Informationen",
         "copy_user_id": "Benutzer-ID kopieren",
@@ -317,6 +318,10 @@
         "billing": {
           "title": "Abrechnungsinformationen",
           "description": "Plan, Rechnungen, Seats und Zahlungsdaten."
+        },
+        "permissions": {
+          "title": "Berechtigungen",
+          "description": "Workspace-Rollen, Funktionen und Zugriffskontrollen."
         },
         "audit_logs": {
           "title": "Audit-Logs",

@@ -10,6 +10,7 @@ import {
   SettingsIcon,
   ShieldAlertIcon,
   ShieldCheckIcon,
+  ShieldIcon,
   SlidersHorizontalIcon,
   UsersIcon,
 } from "lucide-react";
@@ -21,6 +22,7 @@ import { AppSettingsPage } from "../app";
 import { AuthenticationSettingsPage } from "../authentication";
 import { DomainSettingsPage } from "../domains";
 import { MemberSettingsPage } from "../members";
+import { PermissionsSettingsPage } from "../permissions";
 import { PlaceholderSettingsPage } from "../placeholder-settings-page";
 import { WorkspaceSettingsPage } from "../workspace";
 
@@ -59,6 +61,13 @@ export const settingsPages: SettingsPage[] = [
     icon: CreditCardIcon,
     id: "billing",
     title: m["dashboard.settings.menu.billing.title"],
+  },
+  {
+    component: PermissionsSettingsPage,
+    description: m["dashboard.settings.menu.permissions.description"],
+    icon: ShieldIcon,
+    id: "permissions",
+    title: m["dashboard.settings.menu.permissions.title"],
   },
   {
     component: PlaceholderSettingsPage,

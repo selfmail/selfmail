@@ -192,6 +192,7 @@
         "member": "Miembro",
         "access": "Acceso",
         "addresses": "Direcciones",
+        "remove_success": "{memberName} se ha eliminado del espacio de trabajo.",
         "storage": "Almacenamiento",
         "more_information": "Más información",
         "copy_user_id": "Copiar ID de usuario",
@@ -317,6 +318,10 @@
         "billing": {
           "title": "Información de facturación",
           "description": "Plan, facturas, seats y datos de pago."
+        },
+        "permissions": {
+          "title": "Permisos",
+          "description": "Roles, capacidades y controles de acceso del workspace."
         },
         "audit_logs": {
           "title": "Registros de auditoría",

@@ -58,3 +58,65 @@ export const getMembers = createServerFn({ method: "GET" })
       canInviteMembers: removeMembers.includes("members:invite"),
     };
   });
+
+export const removeMember = createServerFn({ method: "POST" })
+  .validator(
+    z.object({
+      memberId: z.string(),
+      workspaceId: z.string(),
+
+      removeMemberId: z.string(),
+    })
+  )
+  .middleware([authMiddleware])
+  .handler(
+    async ({
+      context: { user },
+      data: { memberId, workspaceId, removeMemberId },
+    }) => {
+      // Check whether memberId matches userid
+      const currentMember = await db.member.findUnique({
+        where: {
+          id: memberId,
+          workspaceId,
+          userId: user.id,
+        },
+      });
+
+      if (!currentMember) {
+        throw new Response("Workspace not found", { status: 404 });
+      }
+
+      // Check whether the current member has permission to remove members
+      const removeMembers = await permissions({
+        memberId: currentMember.id,
+        workspaceId,
+        permissions: ["members:remove"],
+      });
+
+      if (!removeMembers.includes("members:remove")) {
+        throw new Response("Forbidden", { status: 403 });
+      }
+
+      // Check whether the member to be removed exists in the workspace
+      const memberToRemove = await db.member.findUnique({
+        where: {
+          id: removeMemberId,
+          workspaceId,
+        },
+      });
+
+      if (!memberToRemove) {
+        throw new Response("Member not found", { status: 404 });
+      }
+
+      // Remove the member from the workspace
+      await db.member.delete({
+        where: {
+          id: removeMemberId,
+        },
+      });
+
+      return { success: true };
+    }
+  );

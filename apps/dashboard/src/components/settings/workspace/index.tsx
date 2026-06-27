@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getMemberPermissions } from "#/lib/settings/workspace";
+import { getWorkspaceInformations } from "#/lib/settings/workspace";
 import { m } from "#/paraglide/messages";
 import type { SettingsPageContext } from "../menu/pages";
 import { SettingsPage } from "../ui";
@@ -10,11 +10,12 @@ export function WorkspaceSettingsPage({
   workspaceId,
 }: SettingsPageContext) {
   const { data, error, isFetching, isLoading, refetch } = useQuery({
-    queryKey: ["workspace-permissions", workspaceId, memberId],
+    queryKey: ["workspace-informations", workspaceId, memberId],
     queryFn: () =>
-      getMemberPermissions({
+      getWorkspaceInformations({
         data: {
           workspaceId,
+          memberId,
         },
       }),
   });

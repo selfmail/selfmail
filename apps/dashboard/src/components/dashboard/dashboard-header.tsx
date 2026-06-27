@@ -13,7 +13,6 @@ import {
   DropdownContent,
   DropdownGroup,
   DropdownItem,
-  DropdownLabel,
   DropdownSeparator,
   DropdownTrigger,
 } from "#/components/ui";
@@ -53,7 +52,6 @@ export function DashboardHeader({
           collisionPadding={16}
         >
           <DropdownGroup>
-            <DropdownLabel>{m["dashboard.header.workspaces"]()}</DropdownLabel>
             {workspaces.map((workspace) => (
               <DropdownItem
                 className={cn(
