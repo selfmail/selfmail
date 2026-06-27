@@ -19,12 +19,12 @@ import {
 import { m } from "#/paraglide/messages";
 import ComposeDialog from "../compose";
 import { composeDialogHandle } from "../compose/handle";
+import { settingsDialogHandle } from "../settings";
 import type { DashboardHeaderProps } from "./types";
 import { WorkspaceAvatar } from "./workspace-avatar";
 
 export function DashboardHeader({
   currentWorkspace,
-  onOpenSettings,
   workspaces,
 }: DashboardHeaderProps) {
   const navigate = useNavigate();
@@ -85,7 +85,7 @@ export function DashboardHeader({
             <DropdownItem
               className={dropdownItemClassName}
               icon={<SettingsIcon className="size-4" />}
-              onClick={() => onOpenSettings()}
+              onClick={() => settingsDialogHandle.open(null)}
             >
               {m["dashboard.header.settings"]()}
             </DropdownItem>

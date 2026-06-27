@@ -1,5 +1,3 @@
-import type { SettingsPageId } from "#/components/settings/settings-pages";
-
 export interface WorkspaceSummary {
   id: string;
   image: string | null;
@@ -16,7 +14,6 @@ export interface DashboardAddress {
 
 export interface DashboardHeaderProps {
   currentWorkspace: WorkspaceSummary;
-  onOpenSettings: (pageId?: SettingsPageId) => void;
   workspaces: WorkspaceSummary[];
 }
 

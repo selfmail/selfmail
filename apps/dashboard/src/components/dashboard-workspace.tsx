@@ -1,7 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useSyncExternalStore } from "react";
-import { DashboardSettingsMenu } from "#/components/settings/dashboard-settings-menu";
-import type { SettingsPageId } from "#/components/settings/settings-pages";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
 import { useViewedEmail } from "#/stores/viewed-email";
@@ -10,7 +8,6 @@ import { DashboardNavigation } from "./dashboard/dashboard-navigation";
 import { EmailList } from "./dashboard/email-list";
 import { EmailPreview } from "./dashboard/email-preview";
 import type { DashboardWorkspaceProps } from "./dashboard/types";
-import { useSettingsPage } from "./settings/use-settings-page";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./ui";
 
 function formatEmailCount(count: number) {
@@ -67,7 +64,6 @@ export function DashboardWorkspace({
 }: DashboardWorkspaceProps) {
   const { emailId, setEmailId } = useViewedEmail();
   const navigate = useNavigate();
-  const [, setSettingsPage] = useSettingsPage();
   const previewOpen = emails.some((email) => email.id === emailId);
   const canResizePreview = useSyncExternalStore(
     (onStoreChange) =>
@@ -83,8 +79,6 @@ export function DashboardWorkspace({
   );
   const resolvedSubtitle = subtitle ?? formatEmailCount(emails.length);
   const resolvedTitle = title ?? m["dashboard.inbox.unified"]();
-  const openSettings = (pageId: SettingsPageId = "app") =>
-    setSettingsPage(pageId);
 
   logDashboardWorkspace("debug", "render", {
     addressCount: addresses.length,
@@ -146,7 +140,6 @@ export function DashboardWorkspace({
       >
         <DashboardHeader
           currentWorkspace={currentWorkspace}
-          onOpenSettings={openSettings}
           workspaces={workspaces}
         />
         <DashboardNavigation
@@ -171,10 +164,6 @@ export function DashboardWorkspace({
           <EmailList emails={emails} onSelectEmail={selectEmail} />
         </main>
       </div>
-      <DashboardSettingsMenu
-        workspaceName={currentWorkspace.name}
-        workspaceSlug={currentWorkspace.slug}
-      />
     </div>
   );
 
