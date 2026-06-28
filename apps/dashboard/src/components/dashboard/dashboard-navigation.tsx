@@ -135,6 +135,7 @@ export function DashboardNavigation({
   memberId,
   workspaceSlug,
 }: DashboardNavigationProps) {
+  // Fetch adresses
   return (
     <nav
       className={cn(

@@ -49,7 +49,7 @@ export default function AddressSelect({
       <Select
         disabled={addressesQuery.isLoading || addresses.length === 0}
         name="from"
-        onValueChange={setSelectedAddress}
+        onValueChange={(value) => setSelectedAddress(value ?? undefined)}
         value={selectedValue}
       >
         <SelectTrigger

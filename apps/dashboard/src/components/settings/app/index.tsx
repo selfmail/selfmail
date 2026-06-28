@@ -94,7 +94,11 @@ export function AppSettingsPage() {
     };
   }, [themeValue]);
 
-  const handleLanguageChange = (value: string) => {
+  const handleLanguageChange = (value: unknown) => {
+    if (typeof value !== "string") {
+      return;
+    }
+
     if (value === "auto") {
       setLanguageValue("auto");
       clearLocaleCookie();
@@ -108,7 +112,11 @@ export function AppSettingsPage() {
     }
   };
 
-  const handleThemeChange = (value: string) => {
+  const handleThemeChange = (value: unknown) => {
+    if (typeof value !== "string") {
+      return;
+    }
+
     if (!(value === "auto" || value === "light" || value === "dark")) {
       return;
     }
@@ -120,6 +128,7 @@ export function AppSettingsPage() {
   return (
     <SettingsGroup>
       <SettingsSelect
+        contentClassName="w-full"
         description={m["dashboard.settings.app.theme.description"]()}
         onValueChange={handleThemeChange}
         options={themeOptions}
@@ -127,6 +136,7 @@ export function AppSettingsPage() {
         value={themeValue}
       />
       <SettingsSelect
+        contentClassName="w-full"
         description={m["dashboard.settings.app.language.description"]()}
         onValueChange={handleLanguageChange}
         options={languageOptions}
