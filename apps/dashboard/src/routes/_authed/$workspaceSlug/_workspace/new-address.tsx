@@ -16,8 +16,14 @@ export const Route = createFileRoute(
 });
 
 function RouteComponent() {
-	const { workspace } = Route.useRouteContext();
+	const { member, workspace } = Route.useRouteContext();
 	const { domains } = Route.useLoaderData();
 
-	return <CreateAddressPage domains={domains} workspace={workspace} />;
+	return (
+		<CreateAddressPage
+			domains={domains}
+			memberId={member.id}
+			workspace={workspace}
+		/>
+	);
 }

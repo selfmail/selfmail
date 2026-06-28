@@ -65,6 +65,11 @@ async function getMemberAddresses(userId: string, workspaceSlug: string) {
     select: {
       address: {
         select: {
+          _count: {
+            select: {
+              Email: true,
+            },
+          },
           addressSlug: true,
           email: true,
           handle: true,
@@ -84,7 +89,12 @@ async function getMemberAddresses(userId: string, workspaceSlug: string) {
 
   return memberAddresses
     .map(({ address }) => address)
-    .sort((first, second) => first.email.localeCompare(second.email));
+    .sort(
+      (first, second) =>
+        second._count.Email - first._count.Email ||
+        first.email.localeCompare(second.email)
+    )
+    .map(({ _count, ...address }) => address);
 }
 
 async function getAddressEmails(addressIds: string[]) {

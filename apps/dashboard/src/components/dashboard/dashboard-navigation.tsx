@@ -1,4 +1,5 @@
 import { Dialog } from "@base-ui/react";
+import { Accordion as AccordionPrimitive } from "@base-ui/react/accordion";
 import {
   Tooltip,
   TooltipContent,
@@ -6,6 +7,7 @@ import {
   TooltipTrigger,
 } from "@selfmail/ui";
 import { Link } from "@tanstack/react-router";
+import { ChevronDownIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
@@ -34,15 +36,20 @@ interface DashboardNavigationProps {
   workspaceSlug: string;
 }
 
+type NavDensity = "compact" | "regular";
+type NavColumnValue = "addresses" | "build" | "workspace";
+
 interface NavColumnProps {
-  children: ReactNode;
-  className?: string;
+  compactAtTwoColumns?: boolean;
+  renderContent: (density: NavDensity) => ReactNode;
   title: string;
+  value: NavColumnValue;
 }
 
 interface DashboardNavLinkProps {
   active?: boolean;
   children: ReactNode;
+  density: NavDensity;
   href: string;
   title?: string;
 }
@@ -50,14 +57,65 @@ interface DashboardNavLinkProps {
 interface AddressNavLinkProps {
   active: boolean;
   address: DashboardAddress;
+  density: NavDensity;
   workspaceSlug: string;
 }
 
-function NavColumn({ children, className, title }: NavColumnProps) {
+const linkSizeClassName = {
+  compact: "max-w-full text-lg",
+  regular: "max-w-64 text-xl",
+} as const satisfies Record<NavDensity, string>;
+const linkSpacingClassName = {
+  compact: "mb-1 ml-1",
+  regular: "mb-1",
+} as const satisfies Record<NavDensity, string>;
+
+function NavColumn({
+  compactAtTwoColumns,
+  renderContent,
+  title,
+  value,
+}: NavColumnProps) {
   return (
-    <div className={cn("flex min-w-0 flex-col gap-3", className)}>
-      <p className="text-muted-foreground text-sm">{title}</p>
-      {children}
+    <div
+      className={cn(
+        "min-w-0 [@container_dashboard-shell_(max-height:_42rem)]:col-auto! [@container_dashboard-shell_(max-height:_42rem)]:max-w-none!",
+        compactAtTwoColumns &&
+          "@2xl/dashboard-shell:col-span-full @min-[68rem]/dashboard-shell:col-auto @2xl/dashboard-shell:max-w-96 @min-[68rem]/dashboard-shell:max-w-none"
+      )}
+    >
+      <div
+        className={cn(
+          "[@container_dashboard-shell_(max-height:_42rem)]:hidden! @2xl/dashboard-shell:flex hidden min-w-0 flex-col gap-3",
+          compactAtTwoColumns &&
+            "@min-[68rem]/dashboard-shell:flex @2xl/dashboard-shell:hidden"
+        )}
+      >
+        <p className="text-muted-foreground text-sm">{title}</p>
+        {renderContent("regular")}
+      </div>
+      <AccordionPrimitive.Root
+        className={cn(
+          "[@container_dashboard-shell_(max-height:_42rem)]:flex! flex @2xl/dashboard-shell:hidden min-w-0 flex-col",
+          compactAtTwoColumns &&
+            "@2xl/dashboard-shell:flex @min-[68rem]/dashboard-shell:hidden"
+        )}
+        defaultValue={[]}
+      >
+        <AccordionPrimitive.Item value={value}>
+          <AccordionPrimitive.Header className="flex">
+            <AccordionPrimitive.Trigger className="group/dashboard-nav-trigger flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg py-1 text-left font-medium text-muted-foreground text-sm outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring">
+              <span className="truncate">{title}</span>
+              <ChevronDownIcon className="size-4 shrink-0 group-data-panel-open/dashboard-nav-trigger:rotate-180" />
+            </AccordionPrimitive.Trigger>
+          </AccordionPrimitive.Header>
+          <AccordionPrimitive.Panel className="overflow-hidden" keepMounted>
+            <div className="flex min-w-0 flex-col gap-3 pt-3">
+              {renderContent("compact")}
+            </div>
+          </AccordionPrimitive.Panel>
+        </AccordionPrimitive.Item>
+      </AccordionPrimitive.Root>
     </div>
   );
 }
@@ -65,6 +123,7 @@ function NavColumn({ children, className, title }: NavColumnProps) {
 function DashboardNavLink({
   active,
   children,
+  density,
   href,
   title,
 }: DashboardNavLinkProps) {
@@ -72,7 +131,9 @@ function DashboardNavLink({
     <a className="group w-full" href={href} title={title}>
       <span
         className={cn(
-          "block w-fit max-w-64 truncate rounded-md font-medium text-foreground text-xl ring-accent transition-all group-hover:bg-accent group-hover:ring-4",
+          "block w-fit truncate rounded-md font-medium text-foreground ring-accent transition-all group-hover:bg-accent group-hover:ring-4",
+          linkSizeClassName[density],
+          linkSpacingClassName[density],
           active && "bg-accent ring-4"
         )}
       >
@@ -93,6 +154,7 @@ function formatAddressLabel(address: string) {
 function AddressNavLink({
   active,
   address,
+  density,
   workspaceSlug,
 }: AddressNavLinkProps) {
   const label = formatAddressLabel(address.email);
@@ -107,7 +169,9 @@ function AddressNavLink({
     >
       <span
         className={cn(
-          "block w-fit max-w-64 truncate rounded-md font-medium text-foreground text-xl ring-accent transition-all group-hover:bg-accent group-hover:ring-4",
+          "block w-fit truncate rounded-md font-medium text-foreground ring-accent transition-all group-hover:bg-accent group-hover:ring-4",
+          linkSizeClassName[density],
+          linkSpacingClassName[density],
           active && "bg-accent ring-4"
         )}
       >
@@ -135,80 +199,100 @@ export function DashboardNavigation({
   memberId,
   workspaceSlug,
 }: DashboardNavigationProps) {
-  // Fetch adresses
-  return (
-    <nav
-      className={cn(
-        "@container flex w-full min-w-0 flex-col gap-8 md:flex-row md:justify-between"
-      )}
-    >
-      <NavColumn title={m["dashboard.address.navigation_label"]()}>
-        <Link
-          className="group w-full"
-          params={{ workspaceSlug }}
-          to="/$workspaceSlug"
+  const renderAddressLinks = (density: NavDensity) => (
+    <>
+      <Link
+        className="group w-full"
+        params={{ workspaceSlug }}
+        to="/$workspaceSlug"
+      >
+        <span
+          className={cn(
+            "block w-fit truncate rounded-md font-medium text-foreground ring-accent transition-all group-hover:bg-accent group-hover:ring-4",
+            linkSizeClassName[density],
+            linkSpacingClassName[density],
+            !currentAddressSlug && "bg-accent ring-4"
+          )}
+        >
+          {m["dashboard.inbox.unified"]()}
+        </span>
+      </Link>
+      <TooltipProvider delayDuration={500} disableHoverableContent>
+        {addresses.map((address) => (
+          <AddressNavLink
+            active={address.addressSlug === currentAddressSlug}
+            address={address}
+            density={density}
+            key={address.id}
+            workspaceSlug={workspaceSlug}
+          />
+        ))}
+      </TooltipProvider>
+      <Link
+        className={cn(
+          "text-muted-foreground text-sm hover:text-foreground hover:underline",
+          linkSpacingClassName[density]
+        )}
+        params={{ workspaceSlug }}
+        to="/$workspaceSlug/new-address"
+      >
+        + {m["dashboard.address.add"]()}
+      </Link>
+    </>
+  );
+  const renderBuildLinks = (density: NavDensity) =>
+    buildLinks.map((link) => (
+      <DashboardNavLink density={density} href="#build" key={link}>
+        {m[link]()}
+      </DashboardNavLink>
+    ));
+  const renderWorkspaceLinks = (density: NavDensity) =>
+    workspaceLinks.map((link) =>
+      "action" in link ? (
+        <Dialog.Trigger
+          className="group w-full cursor-pointer text-left"
+          handle={settingsDialogHandle}
+          id={`navigation-${density}`}
+          key={link.label()}
+          payload={{ page: "app" }}
+          type="button"
         >
           <span
             className={cn(
-              "block w-fit max-w-64 truncate rounded-md font-medium text-foreground text-xl ring-accent transition-all group-hover:bg-accent group-hover:ring-4",
-              !currentAddressSlug && "bg-accent ring-4"
+              "block w-fit truncate rounded-md font-medium text-foreground ring-accent transition-all group-hover:bg-accent group-hover:ring-4",
+              linkSizeClassName[density],
+              linkSpacingClassName[density]
             )}
           >
-            {m["dashboard.inbox.unified"]()}
+            {link.label()}
           </span>
-        </Link>
-        <TooltipProvider delayDuration={500} disableHoverableContent>
-          {addresses.map((address) => (
-            <AddressNavLink
-              active={address.addressSlug === currentAddressSlug}
-              address={address}
-              key={address.id}
-              workspaceSlug={workspaceSlug}
-            />
-          ))}
-        </TooltipProvider>
-        <Link
-          className="text-muted-foreground text-sm hover:text-foreground hover:underline"
-          params={{ workspaceSlug }}
-          to="/$workspaceSlug/new-address"
-        >
-          + {m["dashboard.address.add"]()}
-        </Link>
-      </NavColumn>
-      <NavColumn title={m["dashboard.navigation.build"]()}>
-        {buildLinks.map((link) => (
-          <DashboardNavLink href="#build" key={link}>
-            {m[link]()}
-          </DashboardNavLink>
-        ))}
-      </NavColumn>
-      <NavColumn title={m["dashboard.navigation.workspace"]()}>
-        <SettingsDialog memberId={memberId} workspaceId={workspaceId} />
-        {workspaceLinks.map((link) =>
-          "action" in link ? (
-            <Dialog.Trigger
-              className="group w-full cursor-pointer"
-              handle={settingsDialogHandle}
-              id="navigation"
-              key={link.label()}
-              payload={{ page: "app" }}
-              type="button"
-            >
-              <span
-                className={cn(
-                  "block w-fit max-w-64 truncate rounded-md font-medium text-foreground text-xl ring-accent transition-all group-hover:bg-accent group-hover:ring-4"
-                )}
-              >
-                {link.label()}
-              </span>
-            </Dialog.Trigger>
-          ) : (
-            <DashboardNavLink href={link.href} key={link.label()}>
-              {link.label()}
-            </DashboardNavLink>
-          )
-        )}
-      </NavColumn>
+        </Dialog.Trigger>
+      ) : (
+        <DashboardNavLink density={density} href={link.href} key={link.label()}>
+          {link.label()}
+        </DashboardNavLink>
+      )
+    );
+
+  return (
+    <nav className="[@container_dashboard-shell_(max-height:_42rem)]:justify-stretch! grid w-full min-w-0 @2xl/dashboard-shell:grid-cols-[repeat(2,minmax(0,max-content))] @min-[68rem]/dashboard-shell:grid-cols-[repeat(3,minmax(0,max-content))] grid-cols-1 items-start @2xl/dashboard-shell:justify-between @2xl/dashboard-shell:gap-8 gap-4 [@container_dashboard-shell_(max-height:_42rem)]:grid-cols-1! [@container_dashboard-shell_(max-height:_42rem)]:gap-3!">
+      <SettingsDialog memberId={memberId} workspaceId={workspaceId} />
+      <NavColumn
+        renderContent={renderAddressLinks}
+        title={m["dashboard.address.navigation_label"]()}
+        value="addresses"
+      />
+      <NavColumn
+        renderContent={renderBuildLinks}
+        title={m["dashboard.navigation.build"]()}
+        value="build"
+      />
+      <NavColumn
+        compactAtTwoColumns
+        renderContent={renderWorkspaceLinks}
+        title={m["dashboard.navigation.workspace"]()}
+        value="workspace"
+      />
     </nav>
   );
 }

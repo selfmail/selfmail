@@ -1,3 +1,4 @@
+import { Dialog } from "@base-ui/react";
 import {
 	Button,
 	Input,
@@ -5,13 +6,13 @@ import {
 	SelectContent,
 	SelectGroup,
 	SelectItem,
-	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from "@selfmail/ui";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ChevronLeftIcon } from "lucide-react";
+import { ChevronLeftIcon, SettingsIcon } from "lucide-react";
 import { type FormEvent, useState } from "react";
+import SettingsDialog, { settingsDialogHandle } from "#/components/settings";
 import {
 	createWorkspaceAddressFn,
 	type DashboardAddressDomain,
@@ -21,6 +22,7 @@ import { m } from "#/paraglide/messages";
 
 interface CreateAddressPageProps {
 	domains: DashboardAddressDomain[];
+	memberId: string;
 	workspace: DashboardWorkspace;
 }
 
@@ -33,6 +35,7 @@ const toAddressLocalPart = (value: string) =>
 
 export function CreateAddressPage({
 	domains,
+	memberId,
 	workspace,
 }: CreateAddressPageProps) {
 	const [address, setAddress] = useState("");
@@ -43,7 +46,6 @@ export function CreateAddressPage({
 	const selectedDomain =
 		domains.find((domain) => domain.id === selectedDomainId) ?? domains[0];
 	const domain = selectedDomain?.domain ?? `${workspace.slug}.selfmail.app`;
-	const domainRouteParams = { workspaceSlug: workspace.slug };
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -84,6 +86,7 @@ export function CreateAddressPage({
 
 	return (
 		<main className="relative flex min-h-dvh w-full items-center justify-center bg-background px-5 py-20 text-foreground">
+			<SettingsDialog memberId={memberId} workspaceId={workspace.id} />
 			<Link
 				className="absolute top-5 left-5 inline-flex items-center gap-1 rounded-md py-2 pr-3 font-medium text-muted-foreground text-sm hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
 				params={{ workspaceSlug: workspace.slug }}
@@ -92,6 +95,16 @@ export function CreateAddressPage({
 				<ChevronLeftIcon className="size-4" />
 				{m["dashboard.address.create.back"]()}
 			</Link>
+			<Dialog.Trigger
+				aria-label={m["dashboard.navigation.settings"]()}
+				className="absolute top-5 right-5 inline-flex size-10 cursor-pointer items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
+				handle={settingsDialogHandle}
+				id="new-address-settings"
+				payload={{ page: "app" }}
+				type="button"
+			>
+				<SettingsIcon className="size-5" />
+			</Dialog.Trigger>
 
 			<form
 				className="flex w-full max-w-lg flex-col gap-5"
@@ -136,21 +149,9 @@ export function CreateAddressPage({
 								</SelectTrigger>
 								<SelectContent
 									align="end"
-									className="w-96 max-w-[calc(100vw-2rem)]"
+									className="w-auto max-w-[calc(100vw-2rem)]"
 								>
 									<SelectGroup>
-										<div className="flex items-center justify-between gap-3 px-4 py-2">
-											<SelectLabel className="p-0">
-												{m["dashboard.address.create.domain_label"]()}
-											</SelectLabel>
-											<Link
-												className="font-medium text-muted-foreground text-xs underline underline-offset-4 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
-												params={domainRouteParams}
-												to="/$workspaceSlug/domains"
-											>
-												{m["dashboard.address.create.connect_domain"]()}
-											</Link>
-										</div>
 										{domains.map((domain) => (
 											<SelectItem key={domain.id} value={domain.id}>
 												@ {domain.domain}
@@ -171,13 +172,15 @@ export function CreateAddressPage({
 					</div>
 				</div>
 
-				<Link
+				<Dialog.Trigger
 					className="w-fit font-medium text-lg underline underline-offset-4 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
-					params={domainRouteParams}
-					to="/$workspaceSlug/domains"
+					handle={settingsDialogHandle}
+					id="new-address-add-domain"
+					payload={{ page: "domains" }}
+					type="button"
 				>
 					{m["dashboard.address.create.connect_domain"]()}
-				</Link>
+				</Dialog.Trigger>
 
 				<Button
 					className="w-full cursor-pointer text-base"
