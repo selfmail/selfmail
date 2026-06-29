@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Building2Icon, XIcon } from "lucide-react";
-import { type ChangeEvent, type FormEvent, useState } from "react";
+import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
 import { z } from "zod";
 import { AuthFormField } from "#/components/AuthFormField";
 import EnterpriseWorkInProgressDialog from "#/components/EnterpriseWorkInProgressDialog";
@@ -20,6 +20,15 @@ const registerSchema = z.object({
 		.transform((email) => email.toLowerCase()),
 });
 
+const redirectSearchSchema = z
+	.string()
+	.optional()
+	.transform((redirect) =>
+		redirect?.startsWith("/") && !redirect.startsWith("//")
+			? redirect
+			: undefined,
+	);
+
 type RegisterFormValues = z.input<typeof registerSchema>;
 type RegisterFieldName = keyof RegisterFormValues;
 type RegisterFieldErrors = Partial<Record<RegisterFieldName, string>>;
@@ -38,6 +47,9 @@ export const Route = createFileRoute("/register/")({
 	loader: async () => ({
 		currentUser: await getCurrentUserFn(),
 		dashboardUrl: await getAppRedirectUrlFn(),
+	}),
+	validateSearch: z.object({
+		redirect: redirectSearchSchema,
 	}),
 });
 
@@ -80,6 +92,7 @@ const DashboardHint = ({
 
 function RouteComponent() {
 	const { currentUser, dashboardUrl } = Route.useLoaderData();
+	const { redirect } = Route.useSearch();
 	const [isDashboardHintDismissed, setIsDashboardHintDismissed] =
 		useState(false);
 	const [formValues, setFormValues] = useState<RegisterFormValues>({
@@ -93,6 +106,12 @@ function RouteComponent() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [submitError, setSubmitError] = useState<string | null>(null);
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (currentUser && redirect) {
+			window.location.assign(redirect);
+		}
+	}, [currentUser, redirect]);
 
 	const getSubmitErrorMessage = (
 		result: Extract<RegisterResult, { status: "error" }>,
@@ -181,7 +200,10 @@ function RouteComponent() {
 
 		try {
 			const result = await handleRegisterForm({
-				data: validation.data,
+				data: {
+					...validation.data,
+					redirect,
+				},
 			});
 
 			if (result.status === "success") {
@@ -189,6 +211,7 @@ function RouteComponent() {
 					to: "/register/success",
 					search: {
 						email: validation.data.email,
+						redirect,
 					},
 				});
 				return;
@@ -292,7 +315,11 @@ function RouteComponent() {
 						{m["register.login_text"]()}{" "}
 						<a
 							className="hit-area-2 text-blue-500 hover:underline"
-							href="/login"
+							href={
+								redirect
+									? `/login?redirect=${encodeURIComponent(redirect)}`
+									: "/login"
+							}
 						>
 							{m["register.login_link"]()}
 						</a>

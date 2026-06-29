@@ -9,6 +9,7 @@ import {
 	setCookie,
 } from "@tanstack/react-start/server";
 import { m } from "#/paraglide/messages";
+import { getSafeInternalRedirectUrl } from "#/utils/redirect.server";
 
 const logger = createLogger("auth-verify-email");
 const SESSION_COOKIE_NAME = "selfmail-session-token";
@@ -161,8 +162,10 @@ export abstract class VerifyEmailUtils {
 	}
 
 	static async verifyToken({
+		redirect: redirectPath,
 		token,
 	}: {
+		redirect?: string;
 		token: string;
 	}): Promise<VerifyResult> {
 		const requestId = VerifyEmailUtils.createRequestId();
@@ -245,7 +248,10 @@ export abstract class VerifyEmailUtils {
 			await VerifyEmailUtils.createSession(emailVerification.userId);
 
 			throw redirect({
-				href: VerifyEmailUtils.getAppRedirectUrl(),
+				href: getSafeInternalRedirectUrl(
+					redirectPath,
+					VerifyEmailUtils.getAppRedirectUrl(),
+				),
 				statusCode: 302,
 			});
 		} catch (error) {

@@ -8,6 +8,7 @@ import {
 export type { VerifyResult };
 
 const schema = z.object({
+	redirect: z.string().optional(),
 	token: z.string().min(1),
 });
 

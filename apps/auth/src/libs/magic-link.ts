@@ -5,6 +5,7 @@ import { MagicLinkUtils } from "#/utils/magic-link.server";
 export type { VerifyMagicLinkResult } from "#/utils/magic-link.server";
 
 const schema = z.object({
+	redirect: z.string().optional(),
 	token: z.string().min(32).max(64),
 });
 

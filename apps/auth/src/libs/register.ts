@@ -15,6 +15,7 @@ const registerSchema = z.object({
 		.min(1, "Name is required")
 		.max(120, "Name is too long"),
 	email: emailSchema,
+	redirect: z.string().optional(),
 });
 
 export const handleRegisterForm = createServerFn({ method: "POST" })
@@ -25,6 +26,7 @@ export const resendRegisterVerificationFn = createServerFn({ method: "POST" })
 	.inputValidator(
 		z.object({
 			email: emailSchema,
+			redirect: z.string().optional(),
 		}),
 	)
 	.handler((ctx) => RegisterUtils.resendVerification(ctx.data));

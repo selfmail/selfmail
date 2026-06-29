@@ -10,6 +10,14 @@ import {
 import { m } from "#/paraglide/messages";
 
 const magicLinkSearchSchema = z.object({
+	redirect: z
+		.string()
+		.optional()
+		.transform((redirect) =>
+			redirect?.startsWith("/") && !redirect.startsWith("//")
+				? redirect
+				: undefined,
+		),
 	token: z
 		.string()
 		.trim()
@@ -34,7 +42,7 @@ export const Route = createFileRoute("/magic/")({
 });
 
 function RouteComponent() {
-	const { token } = Route.useSearch();
+	const { redirect, token } = Route.useSearch();
 	const verifyMagicLink = useServerFn(verifyMagicLinkToken);
 	const [result, setResult] = useState<VerifyMagicLinkResult | null>(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -63,6 +71,7 @@ function RouteComponent() {
 		try {
 			const verificationResult = await verifyMagicLink({
 				data: {
+					redirect,
 					token,
 				},
 			});

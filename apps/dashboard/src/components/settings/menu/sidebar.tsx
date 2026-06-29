@@ -63,7 +63,7 @@ function SettingsMenuItem({
   return (
     <button
       className={cn(
-        "group/settings-menu-item flex h-9 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-left font-medium text-sm no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:bg-accent data-[active=true]:text-accent-foreground",
+        "group/settings-menu-item flex h-9 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-left font-medium text-sm no-underline outline-none transition-colors hover:bg-muted-foreground/15 hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:bg-muted-foreground/15 data-[active=true]:text-accent-foreground dark:hover:bg-accent dark:data-[active=true]:bg-accent",
         className
       )}
       data-active={active}
@@ -122,7 +122,7 @@ export default function SettingsSidebar({
     >
       <SettingsMenu aria-label={m["dashboard.settings.menu.aria_label"]()}>
         <abbr className="no-underline" title={"Close Menu"}>
-          <Dialog.Close className="mb-2 flex h-6 w-full cursor-pointer items-center gap-2 rounded-lg px-1 text-muted-foreground text-sm outline-none hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring">
+          <Dialog.Close className="mb-2 flex h-6 w-full cursor-pointer items-center gap-2 rounded-lg px-1 text-muted-foreground text-sm outline-none hover:bg-muted-foreground/15 hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring dark:hover:bg-accent">
             <XIcon className="size-4" />
             {m["dashboard.settings.close"]()}
           </Dialog.Close>

@@ -108,7 +108,27 @@ export abstract class LoginUtils {
     );
   }
 
-  static async handleLogin({ email }: { email: string }): Promise<LoginResult> {
+  private static getMagicLinkUrl(token: string, redirectPath?: string) {
+    const host = getRequestHost({ xForwardedHost: true });
+    const protocol = getRequestProtocol({ xForwardedProto: true });
+    const url = new URL("/magic/", `${protocol}://${host}`);
+
+    url.searchParams.set("token", token);
+
+    if (redirectPath?.startsWith("/") && !redirectPath.startsWith("//")) {
+      url.searchParams.set("redirect", redirectPath);
+    }
+
+    return url.toString();
+  }
+
+  static async handleLogin({
+    email,
+    redirect,
+  }: {
+    email: string;
+    redirect?: string;
+  }): Promise<LoginResult> {
     const requestId = LoginUtils.createRequestId();
     const rateLimit = await limiter.limit(email.toLowerCase(), {
       limit: 5,
@@ -163,7 +183,7 @@ export abstract class LoginUtils {
 
       console.log(
         "Magic link url:",
-        `http://auth.selfmail.localhost:1355/magic?token=${token}`
+        LoginUtils.getMagicLinkUrl(token, redirect)
       );
 
       await db.$transaction([

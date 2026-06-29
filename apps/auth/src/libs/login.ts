@@ -8,6 +8,7 @@ const loginSchema = z.object({
 	email: z
 		.email("Invalid email address")
 		.transform((email) => email.trim().toLowerCase()),
+	redirect: z.string().optional(),
 });
 
 export const handleLoginForm = createServerFn({

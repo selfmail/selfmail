@@ -123,23 +123,31 @@ export abstract class RegisterUtils {
 		).join("");
 	}
 
-	private static getVerificationUrl(token: string) {
+	private static getVerificationUrl(token: string, redirectPath?: string) {
 		const host = getRequestHost({ xForwardedHost: true });
 		const protocol = getRequestProtocol({ xForwardedProto: true });
 		const url = new URL("/verify/", `${protocol}://${host}`);
 
 		url.searchParams.set("token", token);
 
+		if (redirectPath?.startsWith("/") && !redirectPath.startsWith("//")) {
+			url.searchParams.set("redirect", redirectPath);
+		}
+
 		return url.toString();
 	}
 
-	private static logDevVerificationUrl(email: string, token: string) {
+	private static logDevVerificationUrl(
+		email: string,
+		token: string,
+		redirectPath?: string,
+	) {
 		if (process.env.NODE_ENV !== "development") {
 			return;
 		}
 
 		console.info(
-			`[auth-register] Verification url for ${email}: ${RegisterUtils.getVerificationUrl(token)}`,
+			`[auth-register] Verification url for ${email}: ${RegisterUtils.getVerificationUrl(token, redirectPath)}`,
 		);
 	}
 
@@ -209,9 +217,11 @@ export abstract class RegisterUtils {
 	static async handleRegister({
 		email,
 		name,
+		redirect,
 	}: {
 		email: string;
 		name: string;
+		redirect?: string;
 	}): Promise<RegisterResult> {
 		const requestId = RegisterUtils.createRequestId();
 		const rateLimit = await RegisterUtils.enforceRateLimit(email);
@@ -264,7 +274,7 @@ export abstract class RegisterUtils {
 			});
 
 			RegisterUtils.setTempSessionCookie(browserToken);
-			RegisterUtils.logDevVerificationUrl(email, rawToken);
+			RegisterUtils.logDevVerificationUrl(email, rawToken, redirect);
 
 			logger.info("Register attempt succeeded", {
 				email,
@@ -317,8 +327,10 @@ export abstract class RegisterUtils {
 
 	static async resendVerification({
 		email,
+		redirect,
 	}: {
 		email: string;
+		redirect?: string;
 	}): Promise<ResendRegisterVerificationResult> {
 		const requestId = RegisterUtils.createRequestId();
 		const rateLimit = await RegisterUtils.enforceRateLimit(email);
@@ -398,7 +410,7 @@ export abstract class RegisterUtils {
 				email,
 				requestId,
 			});
-			RegisterUtils.logDevVerificationUrl(email, rawToken);
+			RegisterUtils.logDevVerificationUrl(email, rawToken, redirect);
 
 			return {
 				status: "success",

@@ -20,6 +20,14 @@ const successSearchSchema = z.object({
 				? normalizedEmail
 				: undefined;
 		}),
+	redirect: z
+		.string()
+		.optional()
+		.transform((redirect) =>
+			redirect?.startsWith("/") && !redirect.startsWith("//")
+				? redirect
+				: undefined,
+		),
 });
 
 export const Route = createFileRoute("/login/success/")({
@@ -37,7 +45,7 @@ export const Route = createFileRoute("/login/success/")({
 });
 
 function RouteComponent() {
-	const { email } = Route.useSearch();
+	const { email, redirect } = Route.useSearch();
 	const [isResending, setIsResending] = useState(false);
 
 	const canResend = Boolean(email);
@@ -70,6 +78,7 @@ function RouteComponent() {
 							await resendLoginEmailFn({
 								data: {
 									email,
+									redirect,
 								},
 							});
 						} finally {

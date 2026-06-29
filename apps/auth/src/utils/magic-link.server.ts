@@ -9,6 +9,7 @@ import {
 	setCookie,
 } from "@tanstack/react-start/server";
 import { m } from "#/paraglide/messages";
+import { getSafeInternalRedirectUrl } from "#/utils/redirect.server";
 
 const logger = createLogger("auth-magic-link");
 const SESSION_COOKIE_NAME = "selfmail-session-token";
@@ -157,8 +158,10 @@ export abstract class MagicLinkUtils {
 	}
 
 	static async verify({
+		redirect: redirectPath,
 		token,
 	}: {
+		redirect?: string;
 		token: string;
 	}): Promise<VerifyMagicLinkResult> {
 		const requestId = MagicLinkUtils.createRequestId();
@@ -260,7 +263,10 @@ export abstract class MagicLinkUtils {
 			await MagicLinkUtils.createSession(user.id);
 
 			throw redirect({
-				href: MagicLinkUtils.getAppRedirectUrl(),
+				href: getSafeInternalRedirectUrl(
+					redirectPath,
+					MagicLinkUtils.getAppRedirectUrl(),
+				),
 				statusCode: 302,
 			});
 		} catch (error) {

@@ -16,6 +16,7 @@ import { Route as OtpIndexRouteImport } from './routes/otp/index'
 import { Route as MagicIndexRouteImport } from './routes/magic/index'
 import { Route as MagicLinkIndexRouteImport } from './routes/magic-link/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as InviteIndexRouteImport } from './routes/invite/index'
 import { Route as HelpIndexRouteImport } from './routes/help/index'
 import { Route as ContactIndexRouteImport } from './routes/contact/index'
 import { Route as RegisterSuccessIndexRouteImport } from './routes/register/success/index'
@@ -57,6 +58,11 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InviteIndexRoute = InviteIndexRouteImport.update({
+  id: '/invite/',
+  path: '/invite/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HelpIndexRoute = HelpIndexRouteImport.update({
   id: '/help/',
   path: '/help/',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/contact/': typeof ContactIndexRoute
   '/help/': typeof HelpIndexRoute
+  '/invite/': typeof InviteIndexRoute
   '/login/': typeof LoginIndexRoute
   '/magic-link/': typeof MagicLinkIndexRoute
   '/magic/': typeof MagicIndexRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/contact': typeof ContactIndexRoute
   '/help': typeof HelpIndexRoute
+  '/invite': typeof InviteIndexRoute
   '/login': typeof LoginIndexRoute
   '/magic-link': typeof MagicLinkIndexRoute
   '/magic': typeof MagicIndexRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/contact/': typeof ContactIndexRoute
   '/help/': typeof HelpIndexRoute
+  '/invite/': typeof InviteIndexRoute
   '/login/': typeof LoginIndexRoute
   '/magic-link/': typeof MagicLinkIndexRoute
   '/magic/': typeof MagicIndexRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/'
     | '/contact/'
     | '/help/'
+    | '/invite/'
     | '/login/'
     | '/magic-link/'
     | '/magic/'
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/'
     | '/contact'
     | '/help'
+    | '/invite'
     | '/login'
     | '/magic-link'
     | '/magic'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/'
     | '/contact/'
     | '/help/'
+    | '/invite/'
     | '/login/'
     | '/magic-link/'
     | '/magic/'
@@ -175,6 +187,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ContactIndexRoute: typeof ContactIndexRoute
   HelpIndexRoute: typeof HelpIndexRoute
+  InviteIndexRoute: typeof InviteIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
   MagicLinkIndexRoute: typeof MagicLinkIndexRoute
   MagicIndexRoute: typeof MagicIndexRoute
@@ -237,6 +250,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/invite/': {
+      id: '/invite/'
+      path: '/invite'
+      fullPath: '/invite/'
+      preLoaderRoute: typeof InviteIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/help/': {
       id: '/help/'
       path: '/help'
@@ -279,6 +299,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ContactIndexRoute: ContactIndexRoute,
   HelpIndexRoute: HelpIndexRoute,
+  InviteIndexRoute: InviteIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   MagicLinkIndexRoute: MagicLinkIndexRoute,
   MagicIndexRoute: MagicIndexRoute,

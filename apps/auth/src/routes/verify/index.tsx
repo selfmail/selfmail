@@ -9,6 +9,14 @@ import { verifyEmailTokenFn } from "#/libs/verify-email";
 import { m } from "#/paraglide/messages";
 
 const verifySearchSchema = z.object({
+	redirect: z
+		.string()
+		.optional()
+		.transform((redirect) =>
+			redirect?.startsWith("/") && !redirect.startsWith("//")
+				? redirect
+				: undefined,
+		),
 	token: z
 		.string()
 		.trim()
@@ -31,6 +39,7 @@ export const Route = createFileRoute("/verify/")({
 	}),
 	validateSearch: verifySearchSchema,
 	loaderDeps: ({ search }) => ({
+		redirect: search.redirect,
 		token: search.token,
 	}),
 	loader: ({ deps }) => {
@@ -46,6 +55,7 @@ export const Route = createFileRoute("/verify/")({
 
 		return verifyEmailTokenFn({
 			data: {
+				redirect: deps.redirect,
 				token: deps.token,
 			},
 		});
