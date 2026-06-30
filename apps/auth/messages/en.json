@@ -182,7 +182,7 @@
   },
   "login_success": {
     "title": "Magic Link Sent",
-    "description": "We have sent a magic link to your email address. Please open it and press the verification button to log in.",
+    "description": "We have sent an magic link to your inbox. If you don't see it, please check your spam folders and whether you don't have an account.",
     "resend": "Resend Email"
   },
   "otp": {

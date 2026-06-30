@@ -81,12 +81,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               duration={4200}
               gap={8}
               mobileOffset={{
-                bottom: "calc(var(--spacing) * 4 + env(safe-area-inset-bottom))",
+                bottom:
+                  "calc(var(--spacing) * 4 + env(safe-area-inset-bottom))",
                 left: "calc(var(--spacing) * 4)",
                 right: "calc(var(--spacing) * 4)",
               }}
               offset={{
-                bottom: "calc(var(--spacing) * 4 + env(safe-area-inset-bottom))",
+                bottom:
+                  "calc(var(--spacing) * 4 + env(safe-area-inset-bottom))",
                 right: "calc(var(--spacing) * 5)",
               }}
               position="bottom-right"
@@ -114,7 +116,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 },
                 {
                   name: "Tanstack Query",
-                  render: <ReactQueryDevtoolsPanel />,
+                  render: <ReactQueryDevtoolsPanel client={queryClient} />,
                 },
               ]}
             />

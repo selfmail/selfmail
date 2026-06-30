@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import { db } from "@selfmail/db";
 import { RateLimiter } from "@selfmail/web-ratelimit";
 import { createServerFn } from "@tanstack/react-start";
+import { setCookie } from "@tanstack/react-start/server";
 import z from "zod";
 
 export const handleLoginForm = createServerFn({
@@ -17,8 +18,6 @@ export const handleLoginForm = createServerFn({
 
     // Rate limiting
     const limiter = new RateLimiter("auth-login");
-
-    const idHash = crypto.createHash("sha256").update(randomId).digest("hex");
 
     // TODO: ratelimit users
 
@@ -49,6 +48,11 @@ export const handleLoginForm = createServerFn({
         .update(randomBrowserToken)
         .digest("hex");
 
+      if (process.env.NODE_ENV === "development") {
+        console.log("Magic link token:", randomToken);
+        console.log("Magic link browser token:", randomBrowserToken);
+      }
+
       await db.$transaction([
         db.magicLink.deleteMany({
           where: { email },
@@ -63,6 +67,14 @@ export const handleLoginForm = createServerFn({
           },
         }),
       ]);
+
+      setCookie("selfmail-temp-session-token", randomBrowserToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60, // 1 hour
+      });
     } catch (_) {
       throw new Error("Failed to create magic link token.");
     }

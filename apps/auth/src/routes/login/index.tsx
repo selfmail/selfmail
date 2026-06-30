@@ -6,9 +6,9 @@ import { useState } from "react";
 import { z } from "zod";
 import EnterpriseWorkInProgressDialog from "#/components/EnterpriseWorkInProgressDialog";
 import { Google } from "#/components/ui/svgs/google";
-import { handleLoginForm } from "#/libs/login";
 import { getAppRedirectUrlFn, getCurrentUserFn } from "#/libs/session";
 import { m } from "#/paraglide/messages";
+import { handleLoginForm } from "#/utils/login";
 
 export const Route = createFileRoute("/login/")({
   head: () => ({
@@ -71,15 +71,13 @@ function RouteComponent() {
         setError("Error occurred. Please try again later.");
       }
     },
-    onSuccess: async (result, values) => {
-      if (result.status === "success") {
-        await navigate({
-          to: "/login/success",
-          search: {
-            email: values.get("email") as string,
-          },
-        });
-      }
+    onSuccess: async (_, values) => {
+      await navigate({
+        to: "/login/success",
+        search: {
+          email: values.get("email") as string,
+        },
+      });
     },
   });
 

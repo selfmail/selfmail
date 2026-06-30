@@ -113,7 +113,8 @@ enum NotificationType {
 model Invitation {
     id String @id @default(uuid())
 
-    email String
+    email   String
+    message String?
 
     token String @unique
 

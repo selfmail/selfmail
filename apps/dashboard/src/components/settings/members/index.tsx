@@ -277,7 +277,7 @@ export function MemberSettingsPage({
         </div>
       </div>
       <div className="absolute right-7 bottom-7">
-        <InviteMemberMenu />
+        <InviteMemberMenu memberId={memberId} workspaceId={workspaceId} />
       </div>
     </SettingsPage>
   );

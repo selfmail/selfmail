@@ -20,12 +20,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@selfmail/ui";
+import { useMutation } from "@tanstack/react-query";
 import { PlusIcon, SendIcon, XIcon } from "lucide-react";
-import { type FormEvent, useId, useState } from "react";
+import { useId, useState } from "react";
 import { toast } from "sonner";
+import z from "zod";
+import { inviteMember } from "#/lib/settings/member";
 import { m } from "#/paraglide/messages";
-
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const roleOptions = [
   {
@@ -42,7 +43,13 @@ const roleOptions = [
 
 type RoleValue = (typeof roleOptions)[number]["value"];
 
-export default function InviteMemberMenu() {
+export default function InviteMemberMenu({
+  memberId,
+  workspaceId,
+}: {
+  memberId: string;
+  workspaceId: string;
+}) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [note, setNote] = useState("");
@@ -52,30 +59,61 @@ export default function InviteMemberMenu() {
   const emailId = useId();
   const noteId = useId();
   const roleId = useId();
+  const invite = useMutation({
+    mutationFn: () => {
+      console.log({
+        email,
+        note,
+        memberId,
+        workspaceId,
+      });
+      return inviteMember({
+        data: {
+          email,
+          message: note,
+          memberId,
+          workspaceId,
+        },
+      });
+    },
+    onSuccess: () => {
+      toast.success("Invite sent", {
+        description: `${email} has been invited to the workspace.`,
+        id: "invite-member-api",
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Invite failed", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred.",
+        id: "invite-member-api",
+      });
+    },
+  });
 
   const selectedRole =
     roleOptions.find((roleOption) => roleOption.value === role) ??
     roleOptions[0];
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  function handleSubmit() {
     const trimmedEmail = email.trim();
 
-    if (!emailPattern.test(trimmedEmail)) {
-      setError(m["dashboard.settings.member_settings.email_invalid"]());
+    const parse = z
+      .object({
+        email: z.email(),
+        message: z.string().max(180).optional(),
+      })
+      .safeParse({ email: trimmedEmail, message: note });
+
+    if (!parse.success) {
+      setError("Invalid email address or message too long.");
       return;
     }
 
-    setError(null);
-    setEmail("");
-    setNote("");
-    setRole(roleOptions[0].value);
-    toast.success("Invite staged", {
-      description: `${trimmedEmail} is ready to invite once member invitations are connected.`,
-      id: "invite-member-ui",
-    });
-    setOpen(false);
+    invite.mutate();
   }
 
   return (

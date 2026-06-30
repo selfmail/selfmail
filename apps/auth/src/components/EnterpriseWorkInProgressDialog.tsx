@@ -12,9 +12,9 @@ import {
 } from "#/components/ui/dialog";
 import { m } from "#/paraglide/messages";
 
-type EnterpriseWorkInProgressDialogProps = {
+interface EnterpriseWorkInProgressDialogProps {
   children: ReactNode;
-};
+}
 
 export default function EnterpriseWorkInProgressDialog({
   children,

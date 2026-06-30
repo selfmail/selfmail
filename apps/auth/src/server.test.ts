@@ -1,9 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const handlerFetch = vi.fn<(req: Request) => Promise<Response>>();
-const paraglideMiddleware = vi.fn<
-  (req: Request, next: () => Promise<Response>) => Promise<Response>
->();
+const paraglideMiddleware =
+  vi.fn<(req: Request, next: () => Promise<Response>) => Promise<Response>>();
 
 vi.mock("@tanstack/react-start/server-entry", () => ({
   default: {
@@ -25,7 +24,7 @@ describe("server origin checks", () => {
   it("rejects state-changing requests without an origin", async () => {
     const { default: server } = await import("./server");
     const response = await server.fetch(
-      new Request("https://auth.selfmail.app/login", { method: "POST" }),
+      new Request("https://auth.selfmail.localhost/login", { method: "POST" })
     );
 
     expect(response.status).toBe(403);
@@ -36,9 +35,9 @@ describe("server origin checks", () => {
 
   it("allows same-site post requests from known origins", async () => {
     const { default: server } = await import("./server");
-    const request = new Request("https://auth.selfmail.app/login", {
+    const request = new Request("https://auth.selfmail.localhost/login", {
       headers: {
-        Origin: "https://selfmail.app",
+        Origin: "https://selfmail.localhost",
       },
       method: "POST",
     });
@@ -52,12 +51,12 @@ describe("server origin checks", () => {
   it("allows selfmail subdomains for state-changing requests", async () => {
     const { default: server } = await import("./server");
     const response = await server.fetch(
-      new Request("https://auth.selfmail.app/login", {
+      new Request("https://auth.selfmail.localhost/login", {
         headers: {
-          Origin: "https://workspace.selfmail.app",
+          Origin: "https://workspace.selfmail.localhost",
         },
         method: "POST",
-      }),
+      })
     );
 
     expect(response.status).toBe(200);
@@ -67,7 +66,7 @@ describe("server origin checks", () => {
   it("skips the origin check for get requests", async () => {
     const { default: server } = await import("./server");
     const response = await server.fetch(
-      new Request("https://auth.selfmail.app/login", { method: "GET" }),
+      new Request("https://auth.selfmail.localhost/login", { method: "GET" })
     );
 
     expect(response.status).toBe(200);
