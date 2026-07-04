@@ -1,71 +1,72 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import {
-  Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+	Label,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
 } from "#/components/ui";
 import { getMemberAddresses } from "#/lib/workspaces/addresses";
+import { m } from "#/paraglide/messages";
 
 export default function AddressSelect({
-  defaultValue,
-  workspaceSlug,
+	defaultValue,
+	workspaceSlug,
 }: {
-  defaultValue?: string;
-  workspaceSlug: string;
+	defaultValue?: string;
+	workspaceSlug: string;
 }) {
-  const [selectedAddress, setSelectedAddress] = useState<string>();
-  const addressesQuery = useQuery({
-    queryKey: ["member-addresses", workspaceSlug],
-    queryFn: async () => {
-      return await getMemberAddresses({ data: { workspaceSlug } });
-    },
-  });
-  const addresses = addressesQuery.data ?? [];
-  const firstAddress = addresses[0]?.email;
-  const selectedValue = selectedAddress ?? firstAddress ?? defaultValue;
-  const placeholder = (() => {
-    if (addressesQuery.isLoading) {
-      return "Loading addresses";
-    }
-    if (addresses.length === 0) {
-      return "No addresses available";
-    }
-    return "Select an address";
-  })();
+	const [selectedAddress, setSelectedAddress] = useState<string>();
+	const addressesQuery = useQuery({
+		queryKey: ["member-addresses", workspaceSlug],
+		queryFn: async () => {
+			return await getMemberAddresses({ data: { workspaceSlug } });
+		},
+	});
+	const addresses = addressesQuery.data ?? [];
+	const firstAddress = addresses[0]?.email;
+	const selectedValue = selectedAddress ?? firstAddress ?? defaultValue;
+	const placeholder = (() => {
+		if (addressesQuery.isLoading) {
+			return m["dashboard.compose.loading_addresses"]();
+		}
+		if (addresses.length === 0) {
+			return m["dashboard.compose.no_addresses"]();
+		}
+		return m["dashboard.compose.select_address"]();
+	})();
 
-  useEffect(() => {
-    setSelectedAddress(firstAddress ?? defaultValue);
-  }, [defaultValue, firstAddress]);
+	useEffect(() => {
+		setSelectedAddress(firstAddress ?? defaultValue);
+	}, [defaultValue, firstAddress]);
 
-  return (
-    <div className="grid gap-2 sm:grid-cols-[4.5rem_1fr] sm:items-center">
-      <Label className="text-muted-foreground" htmlFor="compose-from">
-        From
-      </Label>
-      <Select
-        disabled={addressesQuery.isLoading || addresses.length === 0}
-        name="from"
-        onValueChange={(value) => setSelectedAddress(value ?? undefined)}
-        value={selectedValue}
-      >
-        <SelectTrigger
-          className="h-10 rounded-lg border-0 bg-muted px-3 text-sm"
-          id="compose-from"
-        >
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-        <SelectContent>
-          {addresses.map((address) => (
-            <SelectItem key={address.id} value={address.email}>
-              {address.email}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
-  );
+	return (
+		<div className="grid gap-2 sm:grid-cols-[4.5rem_1fr] sm:items-center">
+			<Label className="text-muted-foreground" htmlFor="compose-from">
+				{m["dashboard.compose.from"]()}
+			</Label>
+			<Select
+				disabled={addressesQuery.isLoading || addresses.length === 0}
+				name="from"
+				onValueChange={(value) => setSelectedAddress(value ?? undefined)}
+				value={selectedValue}
+			>
+				<SelectTrigger
+					className="h-10 rounded-lg border-0 bg-muted px-3 text-sm"
+					id="compose-from"
+				>
+					<SelectValue placeholder={placeholder} />
+				</SelectTrigger>
+				<SelectContent>
+					{addresses.map((address) => (
+						<SelectItem key={address.id} value={address.email}>
+							{address.email}
+						</SelectItem>
+					))}
+				</SelectContent>
+			</Select>
+		</div>
+	);
 }

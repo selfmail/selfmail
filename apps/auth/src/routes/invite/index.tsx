@@ -10,6 +10,7 @@ import { type ReactNode, useState } from "react";
 import z from "zod";
 import { getAppRedirectUrlFn, getCurrentUserFn } from "#/libs/session";
 import { cn } from "#/libs/utils";
+import { m } from "#/paraglide/messages";
 import { acceptInvite, checkInviteToken } from "#/utils/invite";
 
 const inviteSearchSchema = z.object({
@@ -25,7 +26,7 @@ export const Route = createFileRoute("/invite/")({
 	head: () => ({
 		meta: [
 			{
-				title: "Workspace invite",
+				title: m["invite.meta_title"](),
 			},
 		],
 	}),
@@ -50,8 +51,9 @@ function RouteComponent() {
 	const { invite, dashboardUrl, currentUser } = Route.useLoaderData();
 	const [error, setError] = useState<string | null>(null);
 	const { token } = Route.useSearch();
-	const invitedBy = invite?.invitedBy ?? "A teammate";
-	const workspaceName = invite?.workspaceName ?? "a Selfmail workspace";
+	const invitedBy = invite?.invitedBy ?? m["invite.default_inviter"]();
+	const workspaceName =
+		invite?.workspaceName ?? m["invite.default_workspace_name"]();
 	const acceptInviteMutation = useMutation({
 		mutationFn: async () =>
 			token &&
@@ -67,7 +69,7 @@ function RouteComponent() {
 			if (error instanceof Error) {
 				setError(error.message);
 			} else {
-				setError("An unknown error occurred");
+				setError(m["invite.unknown_error"]());
 			}
 		},
 		onSuccess: () => {
@@ -78,16 +80,16 @@ function RouteComponent() {
 	if (!token) {
 		return (
 			<InviteShell
-				description="Open the invitation link from your email to review the workspace details."
+				description={m["invite.no_invite.description"]()}
 				icon={<MailIcon className="size-6" />}
-				title="No invite selected"
+				title={m["invite.no_invite.title"]()}
 			>
 				<div className="flex flex-col gap-3">
 					<Link className={primaryButtonClassName} to="/login">
-						Sign in
+						{m["invite.sign_in"]()}
 					</Link>
 					<Link className={secondaryButtonClassName} to="/register">
-						Create account
+						{m["invite.create_account"]()}
 					</Link>
 				</div>
 			</InviteShell>
@@ -97,12 +99,12 @@ function RouteComponent() {
 	if (invite?.valid !== true) {
 		return (
 			<InviteShell
-				description="This invitation link is invalid or has already been used. Ask the workspace owner for a new invite."
+				description={m["invite.unavailable.description"]()}
 				icon={<CircleAlertIcon className="size-6" />}
-				title="Invite unavailable"
+				title={m["invite.unavailable.title"]()}
 			>
 				<Link className={secondaryButtonClassName} to="/login">
-					Back to login
+					{m["invite.back_to_login"]()}
 				</Link>
 			</InviteShell>
 		);
@@ -111,16 +113,19 @@ function RouteComponent() {
 	if (!currentUser) {
 		return (
 			<InviteShell
-				description={`${invitedBy} invited you to join ${workspaceName}. Sign in or create an account to continue.`}
+				description={m["invite.guest_description"]({
+					invitedBy,
+					workspaceName,
+				})}
 				icon={<MailIcon className="size-6" />}
-				title="Workspace invite"
+				title={m["invite.auth_required.title"]()}
 			>
 				<div className="flex flex-col gap-3">
 					<Link className={primaryButtonClassName} to="/login">
-						Sign in
+						{m["invite.sign_in"]()}
 					</Link>
 					<Link className={secondaryButtonClassName} to="/register">
-						Create account
+						{m["invite.create_account"]()}
 					</Link>
 				</div>
 			</InviteShell>
@@ -129,15 +134,24 @@ function RouteComponent() {
 
 	return (
 		<InviteShell
-			description={`${invitedBy} invited you to join this workspace.`}
+			description={m["invite.authenticated_description"]({ invitedBy })}
 			icon={<Building2Icon className="size-6" />}
 			title={workspaceName}
 		>
 			<div className="rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm">
 				<div className="grid gap-2">
-					<InviteMetaRow label="Signed in as" value={currentUser.email} />
-					<InviteMetaRow label="Invited by" value={invitedBy} />
-					<InviteMetaRow label="Workspace" value={workspaceName} />
+					<InviteMetaRow
+						label={m["invite.labels.signed_in_as"]()}
+						value={currentUser.email}
+					/>
+					<InviteMetaRow
+						label={m["invite.labels.invited_by"]()}
+						value={invitedBy}
+					/>
+					<InviteMetaRow
+						label={m["invite.labels.workspace"]()}
+						value={workspaceName}
+					/>
 				</div>
 			</div>
 
@@ -158,11 +172,11 @@ function RouteComponent() {
 					type="button"
 				>
 					{acceptInviteMutation.isPending ? (
-						"Accepting..."
+						m["invite.accepting"]()
 					) : (
 						<>
 							<CheckIcon className="size-4" />
-							Accept invite
+							{m["invite.accept"]()}
 						</>
 					)}
 				</button>

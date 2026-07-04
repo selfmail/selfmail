@@ -1,5 +1,6 @@
 import type { ComponentProps } from "react";
 import { cn, Input, Label } from "#/components/ui";
+import { m } from "#/paraglide/messages";
 
 type FromInputProps = ComponentProps<"input">;
 
@@ -11,7 +12,7 @@ export function FromInput({
 	return (
 		<div className="grid gap-2 sm:grid-cols-[4.5rem_1fr] sm:items-center">
 			<Label className="text-muted-foreground" htmlFor={id}>
-				From
+				{m["dashboard.compose.from"]()}
 			</Label>
 			<Input
 				autoComplete="email"
@@ -22,7 +23,7 @@ export function FromInput({
 				id={id}
 				inputMode="email"
 				name="from"
-				placeholder="name@selfmail.app"
+				placeholder={m["dashboard.compose.from_placeholder"]()}
 				type="email"
 				{...props}
 			/>

@@ -1,5 +1,5 @@
-import type { SettingsPageContext } from "../menu/pages";
+import { m } from "#/paraglide/messages";
 
-export function DomainSettingsPage({ id }: SettingsPageContext) {
-  return <div>hey</div>;
+export function DomainSettingsPage() {
+	return <div>{m["dashboard.settings.domains.settings_placeholder"]()}</div>;
 }

@@ -110,7 +110,7 @@ function NavColumn({
             </AccordionPrimitive.Trigger>
           </AccordionPrimitive.Header>
           <AccordionPrimitive.Panel
-            className="overflow-hidden motion-safe:data-open:animate-in motion-safe:data-open:fade-in-0 motion-safe:data-open:slide-in-from-top-1 motion-safe:data-open:duration-150 motion-safe:data-open:ease-out"
+            className="motion-safe:data-open:fade-in-0 motion-safe:data-open:slide-in-from-top-1 overflow-hidden motion-safe:data-open:animate-in motion-safe:data-open:duration-150 motion-safe:data-open:ease-out"
             keepMounted
           >
             <div className="flex min-w-0 flex-col gap-3 pt-3">

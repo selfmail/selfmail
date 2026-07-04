@@ -10,6 +10,7 @@ import {
 	Label,
 	SendButton,
 } from "#/components/ui";
+import { m } from "#/paraglide/messages";
 import AddressSelect from "../compose/address-select";
 import {
 	AttachmentUpload,
@@ -65,10 +66,10 @@ export function ComposeSidebar({
 				<header className="flex items-center justify-between gap-3 border-border border-b px-6 py-4">
 					<div className="min-w-0">
 						<h2 className="truncate font-medium text-lg text-balance">
-							Compose email
+							{m["dashboard.compose.title"]()}
 						</h2>
 						<p className="truncate text-muted-foreground text-sm text-pretty">
-							Draft a message with Markdown formatting.
+							{m["dashboard.compose.sidebar_description"]()}
 						</p>
 					</div>
 					<div className="flex shrink-0 items-center gap-2">
@@ -77,10 +78,10 @@ export function ComposeSidebar({
 							type="button"
 						>
 							<Maximize2Icon className="size-4" />
-							<span>Fullscreen</span>
+							<span>{m["dashboard.compose.fullscreen"]()}</span>
 						</button>
 						<button
-							aria-label="Close compose"
+							aria-label={m["dashboard.compose.close_label"]()}
 							className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
 							onClick={onClose}
 							type="button"
@@ -101,14 +102,14 @@ export function ComposeSidebar({
 								className="text-muted-foreground"
 								htmlFor="compose-sidebar-subject"
 							>
-								Subject
+								{m["dashboard.compose.subject"]()}
 							</Label>
 							<Input
 								className="h-10 rounded-lg border-0 bg-muted px-3 text-sm"
 								defaultValue={draft?.subject}
 								id="compose-sidebar-subject"
 								name="subject"
-								placeholder="Subject"
+								placeholder={m["dashboard.compose.subject"]()}
 							/>
 						</div>
 					</div>
@@ -139,7 +140,7 @@ export function ComposeSidebar({
 							onClick={onClose}
 							type="button"
 						>
-							Close
+							{m["dashboard.compose.close"]()}
 						</button>
 						<SendButton className="rounded-lg" type="submit" />
 					</div>
@@ -152,10 +153,10 @@ export function ComposeSidebar({
 						<AlertDialog.Popup className="grid w-full max-w-sm gap-5 rounded-xl border border-border bg-background p-5 text-foreground shadow-xl outline-none">
 							<div className="grid gap-2">
 								<AlertDialog.Title className="text-balance font-medium text-xl">
-									Discard draft?
+									{m["dashboard.compose.discard_title"]()}
 								</AlertDialog.Title>
 								<AlertDialog.Description className="text-muted-foreground text-pretty text-sm">
-									This clears the message, recipients, subject, and attachments.
+									{m["dashboard.compose.discard_description"]()}
 								</AlertDialog.Description>
 							</div>
 							<div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
@@ -166,7 +167,7 @@ export function ComposeSidebar({
 									)}
 									type="button"
 								>
-									Keep editing
+									{m["dashboard.compose.keep_editing"]()}
 								</AlertDialog.Close>
 								<AlertDialog.Close
 									className={cn(
@@ -176,7 +177,7 @@ export function ComposeSidebar({
 									onClick={handleDiscard}
 									type="button"
 								>
-									Discard draft
+									{m["dashboard.compose.discard"]()}
 								</AlertDialog.Close>
 							</div>
 						</AlertDialog.Popup>

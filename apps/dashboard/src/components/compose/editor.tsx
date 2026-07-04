@@ -31,6 +31,7 @@ import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
 import { unified } from "unified";
 import { Button, cn } from "#/components/ui";
+import { m } from "#/paraglide/messages";
 
 type ComposeEditorProps = {
 	initialMarkdown?: string;
@@ -74,7 +75,7 @@ export function ComposeEditor({
 		const extension = union(
 			defineBasicExtension(),
 			definePlaceholder({
-				placeholder: "Write your email...",
+				placeholder: m["dashboard.compose.editor_placeholder"](),
 				strategy: "doc",
 			}),
 			defineBlockquoteInputRule(),
@@ -123,44 +124,44 @@ export function ComposeEditor({
 		<div className="flex min-h-64 flex-col overflow-hidden rounded-lg border border-border bg-background">
 			<div className="flex items-center gap-1 border-border border-b bg-muted p-2">
 				<Button
-					aria-label="Bold"
+					aria-label={m["dashboard.compose.toolbar.bold"]()}
 					className={toolbarButtonClassName}
 					data-active={active.bold}
 					onClick={() => editor.commands.toggleBold()}
-					title="Bold"
+					title={m["dashboard.compose.toolbar.bold"]()}
 					type="button"
 					variant="ghost"
 				>
 					B
 				</Button>
 				<Button
-					aria-label="Italic"
+					aria-label={m["dashboard.compose.toolbar.italic"]()}
 					className={toolbarButtonClassName}
 					data-active={active.italic}
 					onClick={() => editor.commands.toggleItalic()}
-					title="Italic"
+					title={m["dashboard.compose.toolbar.italic"]()}
 					type="button"
 					variant="ghost"
 				>
 					I
 				</Button>
 				<Button
-					aria-label="Heading"
+					aria-label={m["dashboard.compose.toolbar.heading"]()}
 					className={toolbarButtonClassName}
 					data-active={active.heading}
 					onClick={() => editor.commands.toggleHeading({ level: 2 })}
-					title="Heading"
+					title={m["dashboard.compose.toolbar.heading"]()}
 					type="button"
 					variant="ghost"
 				>
 					H
 				</Button>
 				<Button
-					aria-label="Bullet list"
+					aria-label={m["dashboard.compose.toolbar.bullet_list"]()}
 					className={toolbarButtonClassName}
 					data-active={active.bulletList}
 					onClick={() => editor.commands.toggleList({ kind: "bullet" })}
-					title="Bullet list"
+					title={m["dashboard.compose.toolbar.bullet_list"]()}
 					type="button"
 					variant="ghost"
 				>

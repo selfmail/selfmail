@@ -35,7 +35,7 @@ function RouteComponent() {
 								{m["dashboard.workspace_picker.title"]()}
 							</h1>
 							<p className="text-muted-foreground text-pretty text-sm sm:text-base">
-								Choose where you want to read, route, and manage mail.
+								{m["dashboard.workspace_picker.description"]()}
 							</p>
 						</div>
 					</div>
@@ -105,7 +105,7 @@ function EmptyState() {
 					{m["dashboard.workspace_picker.empty"]()}
 				</p>
 				<p className="max-w-sm text-muted-foreground text-pretty text-sm">
-					Create your first workspace to start receiving and organizing mail.
+					{m["dashboard.workspace_picker.empty_description"]()}
 				</p>
 			</div>
 			<Button asChild>

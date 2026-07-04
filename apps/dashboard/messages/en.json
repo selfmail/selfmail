@@ -18,8 +18,44 @@
     },
     "workspace_picker": {
       "title": "Pick your workspace",
+      "description": "Choose where you want to read, route, and manage mail.",
       "empty": "You have no workspaces. Create one.",
+      "empty_description": "Create your first workspace to start receiving and organizing mail.",
       "create": "Create a new workspace"
+    },
+    "compose": {
+      "title": "Compose email",
+      "document_title": "Compose new Email - Selfmail",
+      "dialog_description": "Draft a message with Markdown formatting and attachments.",
+      "sidebar_description": "Draft a message with Markdown formatting.",
+      "fullscreen": "Fullscreen",
+      "close": "Close",
+      "close_label": "Close compose",
+      "subject": "Subject",
+      "from": "From",
+      "to": "To",
+      "to_placeholder": "recipient@example.com",
+      "from_placeholder": "name@selfmail.app",
+      "loading_addresses": "Loading addresses",
+      "no_addresses": "No addresses available",
+      "select_address": "Select an address",
+      "discard_title": "Discard draft?",
+      "discard_description": "This clears the message, recipients, subject, and attachments.",
+      "keep_editing": "Keep editing",
+      "discard": "Discard draft",
+      "editor_placeholder": "Write your email...",
+      "toolbar": {
+        "bold": "Bold",
+        "italic": "Italic",
+        "heading": "Heading",
+        "bullet_list": "Bullet list"
+      },
+      "attachments": {
+        "label": "Attachments",
+        "count": "{count} attached",
+        "upload": "Upload",
+        "remove": "Remove {filename}"
+      }
     },
     "address": {
       "subtitle": "{address} - {count}",
@@ -198,6 +234,8 @@
         "copy_user_id": "Copy user ID",
         "copy_user_id_success": "User ID copied",
         "copy_user_id_error": "User ID could not be copied.",
+        "member_id": "Member ID",
+        "user_id": "User ID",
         "joined": "Joined",
         "actions": "Actions",
         "owner": "Owner",
@@ -222,9 +260,22 @@
         "add_dialog_description": "Use the email address this person already uses to sign in.",
         "close_invite": "Close member invite",
         "current_email": "Current email",
+        "role": "Role",
+        "role_member_label": "Member",
+        "role_member_description": "Can read and manage workspace mail.",
+        "role_viewer_label": "Viewer",
+        "role_viewer_description": "Can review settings without changing them.",
+        "select_role": "Select a role",
+        "message": "Message",
+        "message_placeholder": "Add a short note for the invitation.",
         "email_placeholder": "name@company.com",
         "email_invalid": "Enter a valid email address.",
         "email_duplicate": "This email is already listed for this workspace.",
+        "form_error": "Invalid email address or message too long.",
+        "invite_sent": "Invite sent",
+        "invite_sent_description": "{email} has been invited to the workspace.",
+        "invite_failed": "Invite failed",
+        "unexpected_error": "An unexpected error occurred.",
         "staged_title": "{email} is staged",
         "staged_description": "The member appears as pending until invitations are connected.",
         "done": "Done",
@@ -280,7 +331,8 @@
         "address_count": "{count} addresses",
         "dns_record_count": "{count} DNS records",
         "empty_title": "No domains connected",
-        "empty_description": "Add a domain draft, create the DNS records, then verify it."
+        "empty_description": "Add a domain draft, create the DNS records, then verify it.",
+        "settings_placeholder": "Domain settings"
       },
       "app": {
         "theme": {

@@ -47,6 +47,57 @@
     "description": "We're still working on the enterprise login and onboarding flow. Please use the regular sign-in or registration flow for now.",
     "close": "Close"
   },
+  "language_select_label": "Select language",
+  "invite": {
+    "meta_title": "Workspace invite",
+    "missing_token_error": "This invite link is missing a token.",
+    "unknown_error": "An unknown error occurred",
+    "default_inviter": "A teammate",
+    "default_workspace_name": "a Selfmail workspace",
+    "sign_in": "Sign in",
+    "create_account": "Create account",
+    "switch_account": "Switch account",
+    "back_to_login": "Back to login",
+    "accept": "Accept invite",
+    "accepting": "Accepting...",
+    "decline": "Decline",
+    "declining": "Declining...",
+    "already_answered": "This invitation is already {status}.",
+    "description": "{inviter} invited {email} to join this workspace.",
+    "guest_description": "{invitedBy} invited you to join {workspaceName}. Sign in or create an account to continue.",
+    "authenticated_description": "{invitedBy} invited you to join this workspace.",
+    "labels": {
+      "signed_in_as": "Signed in as",
+      "role": "Role",
+      "workspace": "Workspace",
+      "invited_by": "Invited by"
+    },
+    "default_role": "Workspace member",
+    "no_invite": {
+      "title": "No invite selected",
+      "description": "Open the invitation link from your email to review the workspace details.",
+      "saved_description": "Open the invitation link from your email, or sign in and we will continue if an invitation is saved in this browser."
+    },
+    "declined": {
+      "title": "Invitation declined",
+      "description": "You declined this workspace invitation. You can close this page."
+    },
+    "auth_required": {
+      "title": "Workspace invite",
+      "description": "Sign in or create an account to review this workspace invitation."
+    },
+    "unavailable": {
+      "title": "Invite unavailable",
+      "description": "This invitation link is invalid or has already been used. Ask the workspace owner for a new invite."
+    },
+    "sign_in_page": {
+      "title": "You got an invite! Sign in to continue.",
+      "register_title": "Register",
+      "register_description": "Don't have an account? Sign up to get started.",
+      "login_title": "Login",
+      "login_description": "Already have an account? Sign in to continue."
+    }
+  },
   "magic_link": {
     "title": "Verification Successful",
     "description": "Your magic link has been verified. You are now signed in and can access your account.",

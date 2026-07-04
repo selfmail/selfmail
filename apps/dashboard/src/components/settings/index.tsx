@@ -96,6 +96,7 @@ function SettingsDialogContent({
   if (!currentActivePage) {
     return;
   }
+
   return (
     <Dialog.Portal>
       <Dialog.Backdrop
@@ -194,7 +195,7 @@ export default function SettingsDialog({
     >
       {({ payload }) => {
         if (!payload) {
-          return null;
+          payload = { page: "app" };
         }
         return (
           <SettingsDialogContent

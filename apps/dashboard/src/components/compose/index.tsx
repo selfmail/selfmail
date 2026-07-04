@@ -9,6 +9,7 @@ import {
 	Label,
 	SendButton,
 } from "#/components/ui";
+import { m } from "#/paraglide/messages";
 import AddressSelect from "./address-select";
 import { AttachmentUpload, type ComposeAttachment } from "./attachments";
 import { ComposeEditor } from "./editor";
@@ -28,7 +29,7 @@ export default function ComposeDialog({
 
 	useEffect(() => {
 		if (open) {
-			document.title = "Compose new Email - Selfmail";
+			document.title = m["dashboard.compose.document_title"]();
 		} else {
 			document.title = "Selfmail";
 		}
@@ -78,10 +79,10 @@ export default function ComposeDialog({
 								<header className="flex items-start justify-between gap-4 border-border border-b p-5">
 									<div>
 										<Dialog.Title className="text-balance font-medium text-xl">
-											Compose email
+											{m["dashboard.compose.title"]()}
 										</Dialog.Title>
 										<Dialog.Description className="text-muted-foreground text-sm text-pretty">
-											Draft a message with Markdown formatting and attachments.
+											{m["dashboard.compose.dialog_description"]()}
 										</Dialog.Description>
 									</div>
 								</header>
@@ -97,14 +98,14 @@ export default function ComposeDialog({
 												className="text-muted-foreground"
 												htmlFor="compose-subject"
 											>
-												Subject
+												{m["dashboard.compose.subject"]()}
 											</Label>
 											<Input
 												className="h-10 rounded-lg border-0 bg-muted px-3 text-sm"
 												defaultValue={payload?.subject}
 												id="compose-subject"
 												name="subject"
-												placeholder="Subject"
+												placeholder={m["dashboard.compose.subject"]()}
 											/>
 										</div>
 									</div>
@@ -137,7 +138,7 @@ export default function ComposeDialog({
 											)}
 											type="button"
 										>
-											Close
+											{m["dashboard.compose.close"]()}
 										</Dialog.Close>
 										<SendButton className="rounded-lg" type="submit" />
 									</div>
@@ -153,11 +154,10 @@ export default function ComposeDialog({
 										<AlertDialog.Popup className="grid w-full max-w-sm gap-5 rounded-xl border border-border bg-background p-5 text-foreground shadow-xl outline-none">
 											<div className="grid gap-2">
 												<AlertDialog.Title className="text-balance font-medium text-xl">
-													Discard draft?
+													{m["dashboard.compose.discard_title"]()}
 												</AlertDialog.Title>
 												<AlertDialog.Description className="text-muted-foreground text-pretty text-sm">
-													This clears the message, recipients, subject, and
-													attachments.
+													{m["dashboard.compose.discard_description"]()}
 												</AlertDialog.Description>
 											</div>
 											<div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
@@ -168,7 +168,7 @@ export default function ComposeDialog({
 													)}
 													type="button"
 												>
-													Keep editing
+													{m["dashboard.compose.keep_editing"]()}
 												</AlertDialog.Close>
 												<AlertDialog.Close
 													className={cn(
@@ -178,7 +178,7 @@ export default function ComposeDialog({
 													onClick={handleDiscard}
 													type="button"
 												>
-													Discard draft
+													{m["dashboard.compose.discard"]()}
 												</AlertDialog.Close>
 											</div>
 										</AlertDialog.Popup>

@@ -77,12 +77,12 @@ export function MemberInformationDialog({
 				<div className="grid gap-2 rounded-xl border border-border bg-muted p-2">
 					<MemberDetail
 						icon={<FingerprintIcon />}
-						label="Member ID"
+						label={m["dashboard.settings.member_settings.member_id"]()}
 						value={memberId}
 					/>
 					<MemberDetail
 						icon={<UserRoundIcon />}
-						label="User ID"
+						label={m["dashboard.settings.member_settings.user_id"]()}
 						value={userId}
 					/>
 					<MemberDetail
