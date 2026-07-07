@@ -41,7 +41,9 @@ export function CreateAddressPage({
 	const [address, setAddress] = useState("");
 	const [error, setError] = useState<string | null>(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [selectedDomainId, setSelectedDomainId] = useState(domains[0]?.id);
+	const [selectedDomainId, setSelectedDomainId] = useState<string | undefined>(
+		domains[0]?.id,
+	);
 	const navigate = useNavigate();
 	const selectedDomain =
 		domains.find((domain) => domain.id === selectedDomainId) ?? domains[0];
@@ -86,7 +88,11 @@ export function CreateAddressPage({
 
 	return (
 		<main className="relative flex min-h-dvh w-full items-center justify-center bg-background px-5 py-20 text-foreground">
-			<SettingsDialog memberId={memberId} workspaceId={workspace.id} />
+			<SettingsDialog
+				memberId={memberId}
+				workspaceId={workspace.id}
+				workspaceSlug={workspace.slug}
+			/>
 			<Link
 				className="absolute top-5 left-5 inline-flex items-center gap-1 rounded-md py-2 pr-3 font-medium text-muted-foreground text-sm hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
 				params={{ workspaceSlug: workspace.slug }}
@@ -136,7 +142,7 @@ export function CreateAddressPage({
 							<Select
 								disabled={domains.length === 0}
 								onValueChange={(domainId) => {
-									setSelectedDomainId(domainId);
+									setSelectedDomainId(domainId ?? undefined);
 									setError(null);
 								}}
 								value={selectedDomain?.id}

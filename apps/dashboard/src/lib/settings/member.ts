@@ -166,6 +166,7 @@ export const inviteMember = createServerFn({ method: "POST" })
         .createHash("sha256")
         .update(token)
         .digest("hex");
+
       // Create an invitation for the member
       await db.invitation.create({
         data: {

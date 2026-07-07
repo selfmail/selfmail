@@ -3,106 +3,106 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { ChevronLeftIcon } from "lucide-react";
 import { type ComponentProps, useState } from "react";
 import {
-	domainError,
-	domainNameSchema,
-	toDomainName,
+  domainError,
+  domainNameSchema,
+  toDomainName,
 } from "#/lib/workspaces/domain-utils";
 import { m } from "#/paraglide/messages";
 
 export const Route = createFileRoute(
-	"/_authed/$workspaceSlug/_workspace/domains/add",
+  "/_authed/$workspaceSlug/_workspace/domains/add"
 )({
-	component: RouteComponent,
+  component: RouteComponent,
 });
 
 function RouteComponent() {
-	const { workspace } = Route.useRouteContext();
-	const router = useRouter();
-	const [domain, setDomain] = useState("");
-	const [error, setError] = useState<string | null>(null);
+  const { workspace } = Route.useRouteContext();
+  const router = useRouter();
+  const [domain, setDomain] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
-	const handleBack: ComponentProps<"button">["onClick"] = () => {
-		if (router.history.canGoBack()) {
-			router.history.back();
-			return;
-		}
+  const handleBack: ComponentProps<"button">["onClick"] = () => {
+    if (router.history.canGoBack()) {
+      router.history.back();
+      return;
+    }
 
-		throw router.navigate({
-			params: { workspaceSlug: workspace.slug },
-			to: "/$workspaceSlug",
-		});
-	};
+    throw router.navigate({
+      params: { workspaceSlug: workspace.slug },
+      to: "/$workspaceSlug",
+    });
+  };
 
-	const handleSubmit: ComponentProps<"form">["onSubmit"] = (event) => {
-		event.preventDefault();
-		const result = domainNameSchema.safeParse(domain);
+  const handleSubmit: ComponentProps<"form">["onSubmit"] = (event) => {
+    event.preventDefault();
+    const result = domainNameSchema.safeParse(domain);
 
-		if (!result.success) {
-			setError(result.error.issues[0]?.message ?? domainError);
-			return;
-		}
+    if (!result.success) {
+      setError(result.error.issues[0]?.message ?? domainError);
+      return;
+    }
 
-		setDomain(result.data);
-		setError(null);
-	};
+    setDomain(result.data);
+    setError(null);
+  };
 
-	return (
-		<main className="relative flex min-h-dvh w-full items-center justify-center bg-background px-5 py-20 text-foreground">
-			<button
-				className="absolute top-5 left-5 inline-flex items-center gap-1 rounded-md py-2 pr-3 font-medium text-muted-foreground text-sm hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
-				onClick={handleBack}
-				type="button"
-			>
-				<ChevronLeftIcon className="size-4" />
-				{m["dashboard.address.create.back"]()}
-			</button>
+  return (
+    <main className="relative flex min-h-dvh w-full items-center justify-center bg-background px-5 py-20 text-foreground">
+      <button
+        className="absolute top-5 left-5 inline-flex items-center gap-1 rounded-md py-2 pr-3 font-medium text-muted-foreground text-sm hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
+        onClick={handleBack}
+        type="button"
+      >
+        <ChevronLeftIcon className="size-4" />
+        {m["dashboard.address.create.back"]()}
+      </button>
 
-			<form
-				className="flex w-full max-w-lg flex-col gap-5"
-				noValidate
-				onSubmit={handleSubmit}
-			>
-				<div className="flex flex-col gap-4">
-					<h1 className="text-balance font-medium text-3xl">
-						{m["dashboard.settings.domains.add_title"]()}
-					</h1>
+      <form
+        className="flex w-full max-w-lg flex-col gap-5"
+        noValidate
+        onSubmit={handleSubmit}
+      >
+        <div className="flex flex-col gap-4">
+          <h1 className="text-balance font-medium text-3xl">
+            {m["dashboard.settings.domains.add_title"]()}
+          </h1>
 
-					<div>
-						<label className="sr-only" htmlFor="new-domain">
-							{m["dashboard.settings.domains.domain_name"]()}
-						</label>
-						<Input
-							aria-describedby={error ? "new-domain-error" : undefined}
-							aria-invalid={Boolean(error)}
-							className="text-lg"
-							id="new-domain"
-							inputMode="url"
-							onChange={(event) => {
-								setDomain(toDomainName(event.target.value));
-								setError(null);
-							}}
-							placeholder={m["dashboard.settings.domains.placeholder"]()}
-							value={domain}
-						/>
-						{error ? (
-							<p
-								className="mt-2 text-destructive text-sm"
-								id="new-domain-error"
-							>
-								{error}
-							</p>
-						) : null}
-					</div>
-				</div>
+          <div>
+            <label className="sr-only" htmlFor="new-domain">
+              {m["dashboard.settings.domains.domain_name"]()}
+            </label>
+            <Input
+              aria-describedby={error ? "new-domain-error" : undefined}
+              aria-invalid={Boolean(error)}
+              className="text-lg"
+              id="new-domain"
+              inputMode="url"
+              onChange={(event) => {
+                setDomain(toDomainName(event.target.value));
+                setError(null);
+              }}
+              placeholder={m["dashboard.settings.domains.placeholder"]()}
+              value={domain}
+            />
+            {error ? (
+              <p
+                className="mt-2 text-destructive text-sm"
+                id="new-domain-error"
+              >
+                {error}
+              </p>
+            ) : null}
+          </div>
+        </div>
 
-				<Button
-					className="w-full cursor-pointer text-base"
-					size="lg"
-					type="submit"
-				>
-					{m["dashboard.settings.domains.add"]()}
-				</Button>
-			</form>
-		</main>
-	);
+        <Button
+          className="w-full cursor-pointer text-base"
+          size="lg"
+          type="submit"
+        >
+          {m["dashboard.settings.domains.add"]()}
+        </Button>
+      </form>
+    </main>
+  );
 }

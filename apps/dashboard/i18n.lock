@@ -13,8 +13,38 @@ checksums:
     dashboard/inbox/email_count: 6525eb0292d44204d0879a94a001380a
     dashboard/inbox/email_count_one: 1cfd2de5f9c6e6cb7f6b2f27a0b4192f
     dashboard/workspace_picker/title: 9d55fb6c65cb108279004b32b365a670
+    dashboard/workspace_picker/description: d7e5f1e8c6fc5e75c4d5bde3302cedfe
     dashboard/workspace_picker/empty: 23f24112537a69e0c7e8f1a7b25e9a8b
+    dashboard/workspace_picker/empty_description: d70267436f662c4fe776fc76c8fd448d
     dashboard/workspace_picker/create: 2d74973f7e67c329758965412e5fbff8
+    dashboard/compose/title: de9979e5ac0784a56b795ed8d67df2be
+    dashboard/compose/document_title: 126b23d87924b8bec5e4a8170954a895
+    dashboard/compose/dialog_description: ccbdc15b594b3948f4b94e9a630f762a
+    dashboard/compose/sidebar_description: fe029fac6e53d6f793a9d1fa01173abf
+    dashboard/compose/fullscreen: b91a5ead5b61021207f462adbaf82528
+    dashboard/compose/close: 2c2e22f8424a1031de89063bd0022e16
+    dashboard/compose/close_label: af734639ca1ea59dbf252f45c872c88d
+    dashboard/compose/subject: de5b885eb327b2f233f3b67aab4c4c0a
+    dashboard/compose/from: 3d84daca8c92c8609deeab4b294b4afb
+    dashboard/compose/to: 24ef32707b456cff90a91d438df59bbe
+    dashboard/compose/to_placeholder: 0a23b21cb9a62ca823ec96ea22ccb2e0
+    dashboard/compose/from_placeholder: 438cae356153a9fd40bf415dbaba036e
+    dashboard/compose/loading_addresses: fc6526f87c016610db68c390f5ffe807
+    dashboard/compose/no_addresses: 1415df3a54ec11b1c01efddbb800dbec
+    dashboard/compose/select_address: dc9716a2c2bf40227ca5b719b661d5b5
+    dashboard/compose/discard_title: d6fde218b3c42fc01323bbe0d763af99
+    dashboard/compose/discard_description: d8172c72ea88897dcbee4459f0fe944b
+    dashboard/compose/keep_editing: 9778ce7d47a83d1d43b204fc177d2c4a
+    dashboard/compose/discard: c4282d656568d5fd74f37003ee3fa125
+    dashboard/compose/editor_placeholder: f91f8bf2b70129563aecfc326f57aa38
+    dashboard/compose/toolbar/bold: 4d7306bc355ed2befd6a9237c5452ee6
+    dashboard/compose/toolbar/italic: 555c60fb1d12ae305136202afa6deb3d
+    dashboard/compose/toolbar/heading: 79e9dfa461f38a239d34b9833ca103f1
+    dashboard/compose/toolbar/bullet_list: 219b4b8fcec39c504b2ecea8449d11f1
+    dashboard/compose/attachments/label: c07b0f71c56630aef60ef8d754efd867
+    dashboard/compose/attachments/count: c5d7ba19bbd7d67b8faca3283297de79
+    dashboard/compose/attachments/upload: 4a6c84aa16db0f4e5697f49b45257bc7
+    dashboard/compose/attachments/remove: abf56b24b76a9c5db5c50c9cf03bbb00
     dashboard/address/subtitle: d0f7f1a9ffa30592a2adb09e4bb882f9
     dashboard/address/navigation_label: 87b49e2ffcdbe3cc4bfd2d25cc75c096
     dashboard/address/add: 4d321c12b08718bd55b108c3a4cd51ac
@@ -125,7 +155,14 @@ checksums:
     dashboard/settings/workspace_handle_help: 20cb6a6cf493274964bcf82d1df92866
     dashboard/settings/workspace_description: e17686a22ffad04cc7bb70524ed4478b
     dashboard/settings/workspace_description_placeholder: 9a60e63a24ad39b752df047b85a58ea3
-    dashboard/settings/workspace_image: 0d1498a019de42a71ca488b238a1ea59
+    dashboard/settings/workspace_image: ac2ceec6b32c6a4c104b668e4082c97f
+    dashboard/settings/workspace_image_drop: dfbbfbbf875d3ced97492d3bd4f3140d
+    dashboard/settings/workspace_image_helper: aa2298e909f4d7f2d2db0e9a777ab8a5
+    dashboard/settings/workspace_image_select: 41afbb1ce9a018ff6638723858909ca9
+    dashboard/settings/workspace_image_replace: 8e576480348938b2f108f3434ea394fe
+    dashboard/settings/workspace_image_remove: 4407bc63f34e13b8050d72f8921ca487
+    dashboard/settings/workspace_image_invalid: cd48650e3c351889d17af7e81e747c03
+    dashboard/settings/workspace_image_too_large: 1abe9bfdc67134810769bde7ccc3b407
     dashboard/settings/saved: 392494c22212cb9459d092de988771ae
     dashboard/settings/saving: 7cb2d8f012d57db8a62187b65ef164dc
     dashboard/settings/save_changes: 53dd9f4f0a4accc822fa5c1f2f6d118a
@@ -174,6 +211,8 @@ checksums:
     dashboard/settings/member_settings/copy_user_id: 78c656b1a36277bce8e01439d0bf3a94
     dashboard/settings/member_settings/copy_user_id_success: 7ff85f44c1e1adbb896c64fda250ae52
     dashboard/settings/member_settings/copy_user_id_error: 1762fee8a6e53e7b60d91ce5f4708023
+    dashboard/settings/member_settings/member_id: 8a5a6fb8a28755110a99791ab670a368
+    dashboard/settings/member_settings/user_id: 37f5ba37f71cb50607af32a6a203b1d4
     dashboard/settings/member_settings/joined: 23f25c607ede93b0610497ccc3b001ae
     dashboard/settings/member_settings/actions: c46571856723b03262fd33f511116298
     dashboard/settings/member_settings/owner: 9c0b3aeca046c3ebd3bdc352edc83e88
@@ -198,9 +237,22 @@ checksums:
     dashboard/settings/member_settings/add_dialog_description: 0f614e3824611359ef9e925d1b5b6ecd
     dashboard/settings/member_settings/close_invite: 1f574dcddba215bc9a16db828f233253
     dashboard/settings/member_settings/current_email: a1265eee7728cd04affa55cea5aad3e9
+    dashboard/settings/member_settings/role: 53743bbb6ca938f5b893552e839d067f
+    dashboard/settings/member_settings/role_member_label: 1606dc30b369856b9dba1fe9aec425d2
+    dashboard/settings/member_settings/role_member_description: bcc2ba8982a26038879aeab37ec8caa3
+    dashboard/settings/member_settings/role_viewer_label: 72254e9f15074c0135b110fac2b9f5ce
+    dashboard/settings/member_settings/role_viewer_description: 0894f6c6c4b0f6ba08d6dab4ada5e5e0
+    dashboard/settings/member_settings/select_role: 511782cfbf0e2709be707ef2d748a985
+    dashboard/settings/member_settings/message: f2f72126bd244cfc534eab395e054362
+    dashboard/settings/member_settings/message_placeholder: aed111c2291349c60e9989b41036ecf6
     dashboard/settings/member_settings/email_placeholder: a20aec269f13fd81c8fd303c258566ac
     dashboard/settings/member_settings/email_invalid: a615b67b73c83c6b68b9b96863f57db5
     dashboard/settings/member_settings/email_duplicate: 829c5a0b5a63ee25469981e5d22f2dbd
+    dashboard/settings/member_settings/form_error: f935d849b6d0d96e72c1bd9be0d9097b
+    dashboard/settings/member_settings/invite_sent: 05aa086d8e47d934fc5d6149b7fa109b
+    dashboard/settings/member_settings/invite_sent_description: 7de32eca76caa5095a1935c1683c71ba
+    dashboard/settings/member_settings/invite_failed: 4f0ac236dc2a4c2327b64f8fa1cde80b
+    dashboard/settings/member_settings/unexpected_error: cda3c1de74fb03d34c8e4971ef9fe45c
     dashboard/settings/member_settings/staged_title: d655ceebb930dd61333140ce881e1eac
     dashboard/settings/member_settings/staged_description: 1d854e534dee75abf27118a8434fa3ae
     dashboard/settings/member_settings/done: ffd408fa29d5bc9039ef8ea1b9b699bb
@@ -255,6 +307,7 @@ checksums:
     dashboard/settings/domains/dns_record_count: 3b587f882404784d6db366311e23153c
     dashboard/settings/domains/empty_title: 3f931e56b8ad85a2de74941b9b2ee176
     dashboard/settings/domains/empty_description: 48c793c739d14d10b3fbe7f8a3d653c1
+    dashboard/settings/domains/settings_placeholder: e41ccaecadacb951a247fe065aa3c92b
     dashboard/settings/app/theme/title: 21fe00b7a518089576fb83c08631107a
     dashboard/settings/app/theme/description: 3e66319da56fe6d6711b1c9644dc9ffc
     dashboard/settings/app/theme/auto: d477ad57b6ffec9fb6b2676b9433ec0c

@@ -1,3 +1,3 @@
 # Selfmail
 
-Open source business email provider.
+EU-first privacy focused email provider for your company.

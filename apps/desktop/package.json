@@ -1,5 +1,5 @@
 {
-  "name": "desktop",
+  "name": "@selfmail/desktop",
   "module": "src/index.ts",
   "type": "module",
   "private": true,

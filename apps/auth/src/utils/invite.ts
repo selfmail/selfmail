@@ -65,7 +65,7 @@ export const acceptInvite = createServerFn({
     });
 
     if (!invite) {
-      throw new Response("Invalid invite token", { status: 400 });
+      throw new Error("Invalid invite token");
     }
 
     // Check whether the user is already a member of the workspace
@@ -81,6 +81,18 @@ export const acceptInvite = createServerFn({
     if (existingMembership) {
       throw new Error("User is already a member of the workspace");
     }
+
+    // Billing: add user to subscription and check whether the workspace has a subscription
+    const subscription = await db.billingSubscription.findUnique({
+      where: {
+        workspaceId: invite.workspaceId,
+      },
+    });
+
+    if (!subscription) {
+      throw new Error("Workspace does not have a subscription");
+    }
+
     const randomMemberId = crypto.randomBytes(32).toString("base64url");
 
     await db.$transaction([

@@ -1,3 +1,9 @@
-import { Billing } from "../billing";
+export class Subscription {
+  private workspaceId: string;
 
-export class Subscription extends Billing {}
+  constructor(workspaceId: string) {
+    this.workspaceId = workspaceId;
+  }
+
+  async getSubscriptionDetails() {}
+}

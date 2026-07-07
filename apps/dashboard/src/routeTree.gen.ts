@@ -17,7 +17,12 @@ import { Route as AuthedWorkspaceSlugWorkspaceIndexRouteImport } from './routes/
 import { Route as AuthedWorkspaceSlugMailEmailIdRouteImport } from './routes/_authed/$workspaceSlug/mail/$emailId'
 import { Route as AuthedWorkspaceSlugWorkspaceNewAddressRouteImport } from './routes/_authed/$workspaceSlug/_workspace/new-address'
 import { Route as AuthedWorkspaceSlugWorkspaceAddressSlugRouteImport } from './routes/_authed/$workspaceSlug/_workspace/$addressSlug'
+import { Route as AuthedWorkspaceSlugWorkspaceWorkflowsIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/workflows/index'
 import { Route as AuthedWorkspaceSlugWorkspaceDomainsIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/domains/index'
+import { Route as AuthedWorkspaceSlugWorkspaceDevIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/dev/index'
+import { Route as AuthedWorkspaceSlugWorkspaceConversationsIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/conversations/index'
+import { Route as AuthedWorkspaceSlugWorkspaceContactsIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/contacts/index'
+import { Route as AuthedWorkspaceSlugWorkspaceAiIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/ai/index'
 import { Route as AuthedWorkspaceSlugWorkspaceDomainsAddRouteImport } from './routes/_authed/$workspaceSlug/_workspace/domains/add'
 
 const AuthedRoute = AuthedRouteImport.update({
@@ -64,10 +69,40 @@ const AuthedWorkspaceSlugWorkspaceAddressSlugRoute =
     path: '/$addressSlug',
     getParentRoute: () => AuthedWorkspaceSlugWorkspaceRoute,
   } as any)
+const AuthedWorkspaceSlugWorkspaceWorkflowsIndexRoute =
+  AuthedWorkspaceSlugWorkspaceWorkflowsIndexRouteImport.update({
+    id: '/workflows/',
+    path: '/workflows/',
+    getParentRoute: () => AuthedWorkspaceSlugWorkspaceRoute,
+  } as any)
 const AuthedWorkspaceSlugWorkspaceDomainsIndexRoute =
   AuthedWorkspaceSlugWorkspaceDomainsIndexRouteImport.update({
     id: '/domains/',
     path: '/domains/',
+    getParentRoute: () => AuthedWorkspaceSlugWorkspaceRoute,
+  } as any)
+const AuthedWorkspaceSlugWorkspaceDevIndexRoute =
+  AuthedWorkspaceSlugWorkspaceDevIndexRouteImport.update({
+    id: '/dev/',
+    path: '/dev/',
+    getParentRoute: () => AuthedWorkspaceSlugWorkspaceRoute,
+  } as any)
+const AuthedWorkspaceSlugWorkspaceConversationsIndexRoute =
+  AuthedWorkspaceSlugWorkspaceConversationsIndexRouteImport.update({
+    id: '/conversations/',
+    path: '/conversations/',
+    getParentRoute: () => AuthedWorkspaceSlugWorkspaceRoute,
+  } as any)
+const AuthedWorkspaceSlugWorkspaceContactsIndexRoute =
+  AuthedWorkspaceSlugWorkspaceContactsIndexRouteImport.update({
+    id: '/contacts/',
+    path: '/contacts/',
+    getParentRoute: () => AuthedWorkspaceSlugWorkspaceRoute,
+  } as any)
+const AuthedWorkspaceSlugWorkspaceAiIndexRoute =
+  AuthedWorkspaceSlugWorkspaceAiIndexRouteImport.update({
+    id: '/ai/',
+    path: '/ai/',
     getParentRoute: () => AuthedWorkspaceSlugWorkspaceRoute,
   } as any)
 const AuthedWorkspaceSlugWorkspaceDomainsAddRoute =
@@ -86,7 +121,12 @@ export interface FileRoutesByFullPath {
   '/$workspaceSlug/mail/$emailId': typeof AuthedWorkspaceSlugMailEmailIdRoute
   '/$workspaceSlug/': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
   '/$workspaceSlug/domains/add': typeof AuthedWorkspaceSlugWorkspaceDomainsAddRoute
+  '/$workspaceSlug/ai/': typeof AuthedWorkspaceSlugWorkspaceAiIndexRoute
+  '/$workspaceSlug/contacts/': typeof AuthedWorkspaceSlugWorkspaceContactsIndexRoute
+  '/$workspaceSlug/conversations/': typeof AuthedWorkspaceSlugWorkspaceConversationsIndexRoute
+  '/$workspaceSlug/dev/': typeof AuthedWorkspaceSlugWorkspaceDevIndexRoute
   '/$workspaceSlug/domains/': typeof AuthedWorkspaceSlugWorkspaceDomainsIndexRoute
+  '/$workspaceSlug/workflows/': typeof AuthedWorkspaceSlugWorkspaceWorkflowsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AuthedIndexRoute
@@ -96,7 +136,12 @@ export interface FileRoutesByTo {
   '/$workspaceSlug/mail/$emailId': typeof AuthedWorkspaceSlugMailEmailIdRoute
   '/$workspaceSlug': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
   '/$workspaceSlug/domains/add': typeof AuthedWorkspaceSlugWorkspaceDomainsAddRoute
+  '/$workspaceSlug/ai': typeof AuthedWorkspaceSlugWorkspaceAiIndexRoute
+  '/$workspaceSlug/contacts': typeof AuthedWorkspaceSlugWorkspaceContactsIndexRoute
+  '/$workspaceSlug/conversations': typeof AuthedWorkspaceSlugWorkspaceConversationsIndexRoute
+  '/$workspaceSlug/dev': typeof AuthedWorkspaceSlugWorkspaceDevIndexRoute
   '/$workspaceSlug/domains': typeof AuthedWorkspaceSlugWorkspaceDomainsIndexRoute
+  '/$workspaceSlug/workflows': typeof AuthedWorkspaceSlugWorkspaceWorkflowsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -109,7 +154,12 @@ export interface FileRoutesById {
   '/_authed/$workspaceSlug/mail/$emailId': typeof AuthedWorkspaceSlugMailEmailIdRoute
   '/_authed/$workspaceSlug/_workspace/': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
   '/_authed/$workspaceSlug/_workspace/domains/add': typeof AuthedWorkspaceSlugWorkspaceDomainsAddRoute
+  '/_authed/$workspaceSlug/_workspace/ai/': typeof AuthedWorkspaceSlugWorkspaceAiIndexRoute
+  '/_authed/$workspaceSlug/_workspace/contacts/': typeof AuthedWorkspaceSlugWorkspaceContactsIndexRoute
+  '/_authed/$workspaceSlug/_workspace/conversations/': typeof AuthedWorkspaceSlugWorkspaceConversationsIndexRoute
+  '/_authed/$workspaceSlug/_workspace/dev/': typeof AuthedWorkspaceSlugWorkspaceDevIndexRoute
   '/_authed/$workspaceSlug/_workspace/domains/': typeof AuthedWorkspaceSlugWorkspaceDomainsIndexRoute
+  '/_authed/$workspaceSlug/_workspace/workflows/': typeof AuthedWorkspaceSlugWorkspaceWorkflowsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -122,7 +172,12 @@ export interface FileRouteTypes {
     | '/$workspaceSlug/mail/$emailId'
     | '/$workspaceSlug/'
     | '/$workspaceSlug/domains/add'
+    | '/$workspaceSlug/ai/'
+    | '/$workspaceSlug/contacts/'
+    | '/$workspaceSlug/conversations/'
+    | '/$workspaceSlug/dev/'
     | '/$workspaceSlug/domains/'
+    | '/$workspaceSlug/workflows/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -132,7 +187,12 @@ export interface FileRouteTypes {
     | '/$workspaceSlug/mail/$emailId'
     | '/$workspaceSlug'
     | '/$workspaceSlug/domains/add'
+    | '/$workspaceSlug/ai'
+    | '/$workspaceSlug/contacts'
+    | '/$workspaceSlug/conversations'
+    | '/$workspaceSlug/dev'
     | '/$workspaceSlug/domains'
+    | '/$workspaceSlug/workflows'
   id:
     | '__root__'
     | '/_authed'
@@ -144,7 +204,12 @@ export interface FileRouteTypes {
     | '/_authed/$workspaceSlug/mail/$emailId'
     | '/_authed/$workspaceSlug/_workspace/'
     | '/_authed/$workspaceSlug/_workspace/domains/add'
+    | '/_authed/$workspaceSlug/_workspace/ai/'
+    | '/_authed/$workspaceSlug/_workspace/contacts/'
+    | '/_authed/$workspaceSlug/_workspace/conversations/'
+    | '/_authed/$workspaceSlug/_workspace/dev/'
     | '/_authed/$workspaceSlug/_workspace/domains/'
+    | '/_authed/$workspaceSlug/_workspace/workflows/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -209,11 +274,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceAddressSlugRouteImport
       parentRoute: typeof AuthedWorkspaceSlugWorkspaceRoute
     }
+    '/_authed/$workspaceSlug/_workspace/workflows/': {
+      id: '/_authed/$workspaceSlug/_workspace/workflows/'
+      path: '/workflows'
+      fullPath: '/$workspaceSlug/workflows/'
+      preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceWorkflowsIndexRouteImport
+      parentRoute: typeof AuthedWorkspaceSlugWorkspaceRoute
+    }
     '/_authed/$workspaceSlug/_workspace/domains/': {
       id: '/_authed/$workspaceSlug/_workspace/domains/'
       path: '/domains'
       fullPath: '/$workspaceSlug/domains/'
       preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceDomainsIndexRouteImport
+      parentRoute: typeof AuthedWorkspaceSlugWorkspaceRoute
+    }
+    '/_authed/$workspaceSlug/_workspace/dev/': {
+      id: '/_authed/$workspaceSlug/_workspace/dev/'
+      path: '/dev'
+      fullPath: '/$workspaceSlug/dev/'
+      preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceDevIndexRouteImport
+      parentRoute: typeof AuthedWorkspaceSlugWorkspaceRoute
+    }
+    '/_authed/$workspaceSlug/_workspace/conversations/': {
+      id: '/_authed/$workspaceSlug/_workspace/conversations/'
+      path: '/conversations'
+      fullPath: '/$workspaceSlug/conversations/'
+      preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceConversationsIndexRouteImport
+      parentRoute: typeof AuthedWorkspaceSlugWorkspaceRoute
+    }
+    '/_authed/$workspaceSlug/_workspace/contacts/': {
+      id: '/_authed/$workspaceSlug/_workspace/contacts/'
+      path: '/contacts'
+      fullPath: '/$workspaceSlug/contacts/'
+      preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceContactsIndexRouteImport
+      parentRoute: typeof AuthedWorkspaceSlugWorkspaceRoute
+    }
+    '/_authed/$workspaceSlug/_workspace/ai/': {
+      id: '/_authed/$workspaceSlug/_workspace/ai/'
+      path: '/ai'
+      fullPath: '/$workspaceSlug/ai/'
+      preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceAiIndexRouteImport
       parentRoute: typeof AuthedWorkspaceSlugWorkspaceRoute
     }
     '/_authed/$workspaceSlug/_workspace/domains/add': {
@@ -231,7 +331,12 @@ interface AuthedWorkspaceSlugWorkspaceRouteChildren {
   AuthedWorkspaceSlugWorkspaceNewAddressRoute: typeof AuthedWorkspaceSlugWorkspaceNewAddressRoute
   AuthedWorkspaceSlugWorkspaceIndexRoute: typeof AuthedWorkspaceSlugWorkspaceIndexRoute
   AuthedWorkspaceSlugWorkspaceDomainsAddRoute: typeof AuthedWorkspaceSlugWorkspaceDomainsAddRoute
+  AuthedWorkspaceSlugWorkspaceAiIndexRoute: typeof AuthedWorkspaceSlugWorkspaceAiIndexRoute
+  AuthedWorkspaceSlugWorkspaceContactsIndexRoute: typeof AuthedWorkspaceSlugWorkspaceContactsIndexRoute
+  AuthedWorkspaceSlugWorkspaceConversationsIndexRoute: typeof AuthedWorkspaceSlugWorkspaceConversationsIndexRoute
+  AuthedWorkspaceSlugWorkspaceDevIndexRoute: typeof AuthedWorkspaceSlugWorkspaceDevIndexRoute
   AuthedWorkspaceSlugWorkspaceDomainsIndexRoute: typeof AuthedWorkspaceSlugWorkspaceDomainsIndexRoute
+  AuthedWorkspaceSlugWorkspaceWorkflowsIndexRoute: typeof AuthedWorkspaceSlugWorkspaceWorkflowsIndexRoute
 }
 
 const AuthedWorkspaceSlugWorkspaceRouteChildren: AuthedWorkspaceSlugWorkspaceRouteChildren =
@@ -244,8 +349,18 @@ const AuthedWorkspaceSlugWorkspaceRouteChildren: AuthedWorkspaceSlugWorkspaceRou
       AuthedWorkspaceSlugWorkspaceIndexRoute,
     AuthedWorkspaceSlugWorkspaceDomainsAddRoute:
       AuthedWorkspaceSlugWorkspaceDomainsAddRoute,
+    AuthedWorkspaceSlugWorkspaceAiIndexRoute:
+      AuthedWorkspaceSlugWorkspaceAiIndexRoute,
+    AuthedWorkspaceSlugWorkspaceContactsIndexRoute:
+      AuthedWorkspaceSlugWorkspaceContactsIndexRoute,
+    AuthedWorkspaceSlugWorkspaceConversationsIndexRoute:
+      AuthedWorkspaceSlugWorkspaceConversationsIndexRoute,
+    AuthedWorkspaceSlugWorkspaceDevIndexRoute:
+      AuthedWorkspaceSlugWorkspaceDevIndexRoute,
     AuthedWorkspaceSlugWorkspaceDomainsIndexRoute:
       AuthedWorkspaceSlugWorkspaceDomainsIndexRoute,
+    AuthedWorkspaceSlugWorkspaceWorkflowsIndexRoute:
+      AuthedWorkspaceSlugWorkspaceWorkflowsIndexRoute,
   }
 
 const AuthedWorkspaceSlugWorkspaceRouteWithChildren =
