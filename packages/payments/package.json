@@ -3,15 +3,23 @@
   "module": "src/index.ts",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/node": "^26.1.1"
   },
   "dependencies": {
     "@selfmail/audit": "workspace:*",
+    "@selfmail/logs": "workspace:*",
     "@selfmail/payments-processor-polar": "workspace:*",
     "@selfmail/db": "workspace:*",
     "@selfmail/permissions": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
   }
 }

@@ -25,6 +25,7 @@ export type {
   BillingSubscription,
   BillingWebhookEvent,
   Blocked,
+  CheckoutStatus,
   Contact,
   Domain,
   Draft,

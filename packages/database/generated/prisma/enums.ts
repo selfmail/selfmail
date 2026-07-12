@@ -64,6 +64,15 @@ export const BillingPlan = {
 export type BillingPlan = (typeof BillingPlan)[keyof typeof BillingPlan]
 
 
+export const CheckoutStatus = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  CANCELED: 'CANCELED'
+} as const
+
+export type CheckoutStatus = (typeof CheckoutStatus)[keyof typeof CheckoutStatus]
+
+
 export const NotificationType = {
   info: 'info',
   warning: 'warning',

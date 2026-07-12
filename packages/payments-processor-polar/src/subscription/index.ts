@@ -1,7 +1,7 @@
 import type { Polar } from "@polar-sh/sdk";
 
 export class PolarSubscription {
-  polar: Polar;
+  private readonly polar: Polar;
   constructor(polarClient: Polar) {
     this.polar = polarClient;
   }
@@ -34,7 +34,7 @@ export class PolarSubscription {
     };
   }
 
-  async upgradeToPaidSubscription({
+  async createCheckout({
     seats,
     includeTrial = true,
     customerEmail,
@@ -43,11 +43,13 @@ export class PolarSubscription {
     subscriptionId,
     productId,
     successUrl,
+    locale = "en",
     returnBackUrl,
   }: {
     seats: number;
     productId: string;
     subscriptionId: string;
+    locale?: string;
     successUrl: string;
     customerEmail: string;
     externalCustomerId: string;
@@ -64,6 +66,7 @@ export class PolarSubscription {
       subscriptionId,
       successUrl,
       returnUrl: returnBackUrl,
+      locale,
       metadata: {
         ...metadata,
         plan: "BASIC",

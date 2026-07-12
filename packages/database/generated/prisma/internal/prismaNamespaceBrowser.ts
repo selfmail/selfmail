@@ -281,7 +281,8 @@ export const UserScalarFieldEnum = {
   name: 'name',
   image: 'image',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  maxWorkspaces: 'maxWorkspaces'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -558,6 +559,7 @@ export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[k
 export const InvitationScalarFieldEnum = {
   id: 'id',
   email: 'email',
+  message: 'message',
   token: 'token',
   userToken: 'userToken',
   roleId: 'roleId',
@@ -861,7 +863,6 @@ export const BillingCheckoutOrderByRelevanceFieldEnum = {
   id: 'id',
   workspaceId: 'workspaceId',
   polarCheckoutId: 'polarCheckoutId',
-  status: 'status',
   url: 'url',
   createdByMemberId: 'createdByMemberId'
 } as const
@@ -991,6 +992,7 @@ export type NotificationOrderByRelevanceFieldEnum = (typeof NotificationOrderByR
 export const InvitationOrderByRelevanceFieldEnum = {
   id: 'id',
   email: 'email',
+  message: 'message',
   token: 'token',
   userToken: 'userToken',
   roleId: 'roleId',

@@ -1,7 +1,7 @@
 import type { Polar } from "@polar-sh/sdk";
 
 export class PolarPortal {
-  polar: Polar;
+  private readonly polar: Polar;
 
   constructor(polar: Polar) {
     this.polar = polar;

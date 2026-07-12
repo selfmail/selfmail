@@ -1,28 +1,33 @@
 import type { Polar } from "@polar-sh/sdk";
 
 export class PolarSeats {
-  polar: Polar;
+  private readonly polar: Polar;
 
   constructor(polarClient: Polar) {
     this.polar = polarClient;
   }
 
   async leaveSeatBasedSubscription({
-    customerId,
-    seatId,
+    externalMemberId,
     subscriptionId,
   }: {
-    seatId: string;
-    customerId: string;
-    seats: number;
+    externalMemberId: string;
     subscriptionId: string;
   }) {
-    await this.polar.customerSeats.revokeSeat({
-      seatId,
+    const { seats } = await this.polar.customerSeats.listSeats({
+      subscriptionId,
     });
+    const seat = seats.find(
+      ({ member, status }) =>
+        member?.externalId === externalMemberId && status !== "revoked"
+    );
 
-    await this.polar.customers.delete({
-      id: customerId,
+    if (!seat) {
+      throw new Error("Member does not have an active subscription seat");
+    }
+
+    await this.polar.customerSeats.revokeSeat({
+      seatId: seat.id,
     });
 
     // Seat is now unassigned, but still exists
@@ -36,7 +41,7 @@ export class PolarSeats {
       throw new Error("Subscription does not have seats");
     }
 
-    // Reduce subscription quantity by 1
+    // Reduce subscription seat quantity by 1
     await this.polar.subscriptions.update({
       id: subscriptionId,
       subscriptionUpdate: {
@@ -47,22 +52,13 @@ export class PolarSeats {
 
   async joinSeatBasedSubscription({
     subscriptionId,
-    ownerEmail,
+    memberEmail,
     memberId,
   }: {
     subscriptionId: string;
     memberId: string;
-    ownerEmail: string;
+    memberEmail: string;
   }) {
-    // create customer
-    const customer = await this.polar.customers.create({
-      type: "team",
-      owner: {
-        email: ownerEmail,
-      },
-    });
-
-    // Create new seat for customer in subscription
     const subscription = await this.polar.subscriptions.get({
       id: subscriptionId,
     });
@@ -80,8 +76,9 @@ export class PolarSeats {
 
     const seat = await this.polar.customerSeats.assignSeat({
       subscriptionId,
-      customerId: customer.id,
-      memberId,
+      email: memberEmail,
+      externalMemberId: memberId,
+      immediateClaim: true,
     });
 
     return seat;

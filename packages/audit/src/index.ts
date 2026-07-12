@@ -20,6 +20,9 @@ export const auditActions = [
   "billing.plan_changed",
   "billing.payment_failed",
   "billing.subscription_cancelled",
+  "billing.checkout_created",
+  "workspace.member_joined",
+  "workspace.member_left",
   "admin.user_suspended",
   "admin.user_unsuspended",
   "admin.login_as_user",
@@ -66,7 +69,7 @@ export interface CreateAuditLogInput {
 
 type AuditClient = Pick<typeof db, "auditLog">;
 
-export const createAuditLog = (
+export const audit = (
   input: CreateAuditLogInput,
   client: AuditClient = db
 ): Promise<AuditLog> =>

@@ -117,6 +117,7 @@
     },
     "navigation": {
       "build": "Build",
+      "api": "API",
       "platform": "Platform",
       "workspace": "Workspace",
       "ai": "AI",
@@ -387,7 +388,7 @@
           "description": "Security events and recent workspace changes."
         },
         "storage": {
-          "title": "Memory and Space Left",
+          "title": "Storage",
           "description": "Mailbox storage, attachments, and remaining workspace capacity."
         },
         "support": {

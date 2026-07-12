@@ -3,7 +3,7 @@ import type { Customer } from "@polar-sh/sdk/models/components/customer.js";
 import type { CustomerState } from "@polar-sh/sdk/models/components/customerstate.js";
 
 export class PolarCustomers {
-  polar: Polar;
+  private readonly polar: Polar;
 
   constructor(polarClient: Polar) {
     this.polar = polarClient;

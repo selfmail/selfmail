@@ -55,6 +55,12 @@ model BillingSubscription {
   @@index([polarCustomerId])
 }
 
+enum CheckoutStatus {
+  PENDING
+  COMPLETED
+  CANCELED
+}
+
 model BillingCheckout {
   id String @id @default(uuid())
 
@@ -64,7 +70,7 @@ model BillingCheckout {
   polarCheckoutId String @unique
 
   plan   BillingPlan
-  status String
+  status CheckoutStatus @default(PENDING)
   seats  Int
   url    String?
 

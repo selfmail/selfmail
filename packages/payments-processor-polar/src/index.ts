@@ -15,11 +15,15 @@ export class PaymentsProcessorPolar {
   portal: PolarPortal;
   webhooks: PolarWebhooks;
 
-  constructor(
-    apiKey?: string,
-    mode?: "production" | "sandbox",
-    webhookSecret?: string
-  ) {
+  constructor({
+    apiKey,
+    mode,
+    webhookSecret,
+  }: {
+    apiKey?: string;
+    mode?: "production" | "sandbox";
+    webhookSecret?: string;
+  }) {
     this.polar = new Polar({
       accessToken: apiKey || process.env.POLAR_ACCESS_TOKEN,
       server:

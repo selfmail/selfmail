@@ -9,15 +9,15 @@ import { defineBlockquoteInputRule } from "prosekit/extensions/blockquote";
 import { defineBoldInputRule } from "prosekit/extensions/bold";
 import { defineCodeInputRule } from "prosekit/extensions/code";
 import {
-	defineCodeBlockEnterRule,
-	defineCodeBlockInputRule,
+  defineCodeBlockEnterRule,
+  defineCodeBlockInputRule,
 } from "prosekit/extensions/code-block";
 import { defineHeadingInputRule } from "prosekit/extensions/heading";
 import { defineItalicInputRule } from "prosekit/extensions/italic";
 import {
-	defineLinkEnterRule,
-	defineLinkInputRule,
-	defineLinkPasteRule,
+  defineLinkEnterRule,
+  defineLinkInputRule,
+  defineLinkPasteRule,
 } from "prosekit/extensions/link";
 import { defineListInputRules } from "prosekit/extensions/list";
 import { definePlaceholder } from "prosekit/extensions/placeholder";
@@ -33,154 +33,154 @@ import { unified } from "unified";
 import { Button, cn } from "#/components/ui";
 import { m } from "#/paraglide/messages";
 
-type ComposeEditorProps = {
-	initialMarkdown?: string;
-	onMarkdownChange?: (markdown: string) => void;
-};
+interface ComposeEditorProps {
+  initialMarkdown?: string;
+  onMarkdownChange?: (markdown: string) => void;
+}
 
-type ActiveEditorState = {
-	bold: boolean;
-	bulletList: boolean;
-	heading: boolean;
-	italic: boolean;
-};
+interface ActiveEditorState {
+  bold: boolean;
+  bulletList: boolean;
+  heading: boolean;
+  italic: boolean;
+}
 
 const toolbarButtonClassName =
-	"size-8 rounded-lg px-0 text-xs data-[active=true]:bg-accent data-[active=true]:text-accent-foreground";
+  "size-8 rounded-lg px-0 text-xs data-[active=true]:bg-accent data-[active=true]:text-accent-foreground";
 
 function markdownFromHTML(html: string): string {
-	return unified()
-		.use(rehypeParse)
-		.use(rehypeRemark)
-		.use(remarkGfm)
-		.use(remarkStringify)
-		.processSync(html)
-		.toString();
+  return unified()
+    .use(rehypeParse)
+    .use(rehypeRemark)
+    .use(remarkGfm)
+    .use(remarkStringify)
+    .processSync(html)
+    .toString();
 }
 
 function htmlFromMarkdown(markdown: string): string {
-	return unified()
-		.use(remarkParse)
-		.use(remarkGfm)
-		.use(remarkHtml)
-		.processSync(markdown)
-		.toString();
+  return unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkHtml)
+    .processSync(markdown)
+    .toString();
 }
 
 export function ComposeEditor({
-	initialMarkdown,
-	onMarkdownChange,
+  initialMarkdown,
+  onMarkdownChange,
 }: ComposeEditorProps) {
-	const editor = useMemo(() => {
-		const extension = union(
-			defineBasicExtension(),
-			definePlaceholder({
-				placeholder: m["dashboard.compose.editor_placeholder"](),
-				strategy: "doc",
-			}),
-			defineBlockquoteInputRule(),
-			defineBoldInputRule(),
-			defineCodeInputRule(),
-			defineCodeBlockEnterRule(),
-			defineCodeBlockInputRule(),
-			defineHeadingInputRule(),
-			defineItalicInputRule(),
-			defineLinkEnterRule(),
-			defineLinkInputRule(),
-			defineLinkPasteRule(),
-			defineListInputRules(),
-		);
-		const nextEditor = createEditor({ extension });
+  const editor = useMemo(() => {
+    const extension = union(
+      defineBasicExtension(),
+      definePlaceholder({
+        placeholder: m["dashboard.compose.editor_placeholder"](),
+        strategy: "doc",
+      }),
+      defineBlockquoteInputRule(),
+      defineBoldInputRule(),
+      defineCodeInputRule(),
+      defineCodeBlockEnterRule(),
+      defineCodeBlockInputRule(),
+      defineHeadingInputRule(),
+      defineItalicInputRule(),
+      defineLinkEnterRule(),
+      defineLinkInputRule(),
+      defineLinkPasteRule(),
+      defineListInputRules()
+    );
+    const nextEditor = createEditor({ extension });
 
-		if (initialMarkdown) {
-			nextEditor.setContent(
-				jsonFromHTML(htmlFromMarkdown(initialMarkdown), {
-					schema: nextEditor.schema,
-				}),
-			);
-		}
+    if (initialMarkdown) {
+      nextEditor.setContent(
+        jsonFromHTML(htmlFromMarkdown(initialMarkdown), {
+          schema: nextEditor.schema,
+        })
+      );
+    }
 
-		return nextEditor;
-	}, [initialMarkdown]);
+    return nextEditor;
+  }, [initialMarkdown]);
 
-	const deriveActiveState = useCallback(
-		(currentEditor: typeof editor): ActiveEditorState => ({
-			bold: currentEditor.marks.bold.isActive(),
-			bulletList: currentEditor.nodes.list.isActive({ kind: "bullet" }),
-			heading: currentEditor.nodes.heading.isActive({ level: 2 }),
-			italic: currentEditor.marks.italic.isActive(),
-		}),
-		[],
-	);
-	const active = useEditorDerivedValue(deriveActiveState, { editor });
+  const deriveActiveState = useCallback(
+    (currentEditor: typeof editor): ActiveEditorState => ({
+      bold: currentEditor.marks.bold.isActive(),
+      bulletList: currentEditor.nodes.list.isActive({ kind: "bullet" }),
+      heading: currentEditor.nodes.heading.isActive({ level: 2 }),
+      italic: currentEditor.marks.italic.isActive(),
+    }),
+    []
+  );
+  const active = useEditorDerivedValue(deriveActiveState, { editor });
 
-	const handleDocChange = useCallback(() => {
-		onMarkdownChange?.(markdownFromHTML(editor.getDocHTML()));
-	}, [editor, onMarkdownChange]);
+  const handleDocChange = useCallback(() => {
+    onMarkdownChange?.(markdownFromHTML(editor.getDocHTML()));
+  }, [editor, onMarkdownChange]);
 
-	useDocChange(handleDocChange, { editor });
+  useDocChange(handleDocChange, { editor });
 
-	return (
-		<div className="flex min-h-64 flex-col overflow-hidden rounded-lg border border-border bg-background">
-			<div className="flex items-center gap-1 border-border border-b bg-muted p-2">
-				<Button
-					aria-label={m["dashboard.compose.toolbar.bold"]()}
-					className={toolbarButtonClassName}
-					data-active={active.bold}
-					onClick={() => editor.commands.toggleBold()}
-					title={m["dashboard.compose.toolbar.bold"]()}
-					type="button"
-					variant="ghost"
-				>
-					B
-				</Button>
-				<Button
-					aria-label={m["dashboard.compose.toolbar.italic"]()}
-					className={toolbarButtonClassName}
-					data-active={active.italic}
-					onClick={() => editor.commands.toggleItalic()}
-					title={m["dashboard.compose.toolbar.italic"]()}
-					type="button"
-					variant="ghost"
-				>
-					I
-				</Button>
-				<Button
-					aria-label={m["dashboard.compose.toolbar.heading"]()}
-					className={toolbarButtonClassName}
-					data-active={active.heading}
-					onClick={() => editor.commands.toggleHeading({ level: 2 })}
-					title={m["dashboard.compose.toolbar.heading"]()}
-					type="button"
-					variant="ghost"
-				>
-					H
-				</Button>
-				<Button
-					aria-label={m["dashboard.compose.toolbar.bullet_list"]()}
-					className={toolbarButtonClassName}
-					data-active={active.bulletList}
-					onClick={() => editor.commands.toggleList({ kind: "bullet" })}
-					title={m["dashboard.compose.toolbar.bullet_list"]()}
-					type="button"
-					variant="ghost"
-				>
-					-
-				</Button>
-			</div>
-			<ProseKit editor={editor}>
-				<div className="relative min-h-52 flex-1 overflow-y-auto">
-					<div
-						className={cn(
-							"ProseMirror min-h-52 px-4 py-3 text-foreground text-sm outline-none",
-							"prosekit-typography max-w-none text-pretty",
-							"[&_a]:text-primary [&_a]:underline [&_blockquote]:border-border [&_blockquote]:text-muted-foreground",
-							"[&_.prosekit-placeholder:before]:text-muted-foreground",
-						)}
-						ref={editor.mount}
-					/>
-				</div>
-			</ProseKit>
-		</div>
-	);
+  return (
+    <div className="flex min-h-64 flex-col overflow-hidden rounded-lg border border-border bg-background">
+      <div className="flex items-center gap-1 border-border border-b bg-muted p-2">
+        <Button
+          aria-label={m["dashboard.compose.toolbar.bold"]()}
+          className={toolbarButtonClassName}
+          data-active={active.bold}
+          onClick={() => editor.commands.toggleBold()}
+          title={m["dashboard.compose.toolbar.bold"]()}
+          type="button"
+          variant="ghost"
+        >
+          B
+        </Button>
+        <Button
+          aria-label={m["dashboard.compose.toolbar.italic"]()}
+          className={toolbarButtonClassName}
+          data-active={active.italic}
+          onClick={() => editor.commands.toggleItalic()}
+          title={m["dashboard.compose.toolbar.italic"]()}
+          type="button"
+          variant="ghost"
+        >
+          I
+        </Button>
+        <Button
+          aria-label={m["dashboard.compose.toolbar.heading"]()}
+          className={toolbarButtonClassName}
+          data-active={active.heading}
+          onClick={() => editor.commands.toggleHeading({ level: 2 })}
+          title={m["dashboard.compose.toolbar.heading"]()}
+          type="button"
+          variant="ghost"
+        >
+          H
+        </Button>
+        <Button
+          aria-label={m["dashboard.compose.toolbar.bullet_list"]()}
+          className={toolbarButtonClassName}
+          data-active={active.bulletList}
+          onClick={() => editor.commands.toggleList({ kind: "bullet" })}
+          title={m["dashboard.compose.toolbar.bullet_list"]()}
+          type="button"
+          variant="ghost"
+        >
+          -
+        </Button>
+      </div>
+      <ProseKit editor={editor}>
+        <div className="relative min-h-52 flex-1 overflow-y-auto">
+          <div
+            className={cn(
+              "ProseMirror min-h-52 px-4 py-3 text-foreground text-sm outline-none",
+              "prosekit-typography max-w-none text-pretty",
+              "[&_a]:text-primary [&_a]:underline [&_blockquote]:border-border [&_blockquote]:text-muted-foreground",
+              "[&_.prosekit-placeholder:before]:text-muted-foreground"
+            )}
+            ref={editor.mount}
+          />
+        </div>
+      </ProseKit>
+    </div>
+  );
 }

@@ -63,7 +63,7 @@ function SettingsMenuItem({
   return (
     <button
       className={cn(
-        "group/settings-menu-item flex h-9 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-left font-medium text-sm no-underline outline-none transition-colors hover:bg-muted-foreground/15 hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:bg-muted-foreground/15 data-[active=true]:text-accent-foreground dark:hover:bg-accent dark:data-[active=true]:bg-accent",
+        "group/settings-menu-item flex h-9 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-left font-medium text-sm no-underline outline-none transition-colors hover:bg-muted-foreground/15 hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring data-[active=true]:bg-muted-foreground/15 data-[active=true]:text-accent-foreground dark:data-[active=true]:bg-accent dark:hover:bg-accent",
         className
       )}
       data-active={active}

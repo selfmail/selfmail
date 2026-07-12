@@ -3096,7 +3096,8 @@ export const UserScalarFieldEnum = {
   name: 'name',
   image: 'image',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  maxWorkspaces: 'maxWorkspaces'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -3373,6 +3374,7 @@ export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[k
 export const InvitationScalarFieldEnum = {
   id: 'id',
   email: 'email',
+  message: 'message',
   token: 'token',
   userToken: 'userToken',
   roleId: 'roleId',
@@ -3676,7 +3678,6 @@ export const BillingCheckoutOrderByRelevanceFieldEnum = {
   id: 'id',
   workspaceId: 'workspaceId',
   polarCheckoutId: 'polarCheckoutId',
-  status: 'status',
   url: 'url',
   createdByMemberId: 'createdByMemberId'
 } as const
@@ -3806,6 +3807,7 @@ export type NotificationOrderByRelevanceFieldEnum = (typeof NotificationOrderByR
 export const InvitationOrderByRelevanceFieldEnum = {
   id: 'id',
   email: 'email',
+  message: 'message',
   token: 'token',
   userToken: 'userToken',
   roleId: 'roleId',
@@ -3976,20 +3978,6 @@ export type ListEnumSortFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'AuthProvider'
- */
-export type EnumAuthProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuthProvider'>
-    
-
-
-/**
- * Reference to a field of type 'AuthProvider[]'
- */
-export type ListEnumAuthProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuthProvider[]'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -4004,6 +3992,20 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'AuthProvider'
+ */
+export type EnumAuthProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuthProvider'>
+    
+
+
+/**
+ * Reference to a field of type 'AuthProvider[]'
+ */
+export type ListEnumAuthProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuthProvider[]'>
+    
+
+
+/**
  * Reference to a field of type 'BillingPlan'
  */
 export type EnumBillingPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingPlan'>
@@ -4014,6 +4016,20 @@ export type EnumBillingPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'BillingPlan[]'
  */
 export type ListEnumBillingPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingPlan[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CheckoutStatus'
+ */
+export type EnumCheckoutStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CheckoutStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CheckoutStatus[]'
+ */
+export type ListEnumCheckoutStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CheckoutStatus[]'>
     
 
 
