@@ -24,7 +24,7 @@ import { useMutation } from "@tanstack/react-query";
 import { XIcon } from "lucide-react";
 import { type FormEvent, type ReactNode, useId, useState } from "react";
 import { toast } from "sonner";
-import { createWorkspaceAddressFn } from "#/lib/workspaces";
+import { createMemberAddress } from "#/lib/settings/adresses";
 import type { DashboardAddressDomain } from "#/lib/workspaces/types";
 import { m } from "#/paraglide/messages";
 import { toAddressLocalPart } from "./utils";
@@ -35,6 +35,7 @@ export interface CreateAddressDialogProps {
   onCreated: () => Promise<unknown>;
   tooltip?: string;
   trigger: ReactNode;
+  memberId: string;
   workspaceSlug: string;
 }
 
@@ -42,6 +43,7 @@ export function CreateAddressDialog({
   domains,
   domainsLoading,
   onCreated,
+  memberId,
   tooltip,
   trigger,
   workspaceSlug,
@@ -61,19 +63,14 @@ export function CreateAddressDialog({
   const previewAddress = address ? `${address}@${domain}` : null;
   const createAddress = useMutation({
     mutationFn: () =>
-      createWorkspaceAddressFn({
+      createMemberAddress({
         data: {
-          domainId: selectedDomain?.id,
+          domain: selectedDomain.domain,
           handle: address,
-          workspaceSlug,
+          memberId,
         },
       }),
-    onSuccess: async (result) => {
-      if (result.status === "error") {
-        setError(result.error);
-        return;
-      }
-
+    onSuccess: async (_) => {
       await onCreated();
       toast.success("Address created", {
         description: previewAddress ?? undefined,

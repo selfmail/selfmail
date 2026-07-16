@@ -28,6 +28,7 @@ type SettingsMenuItemProps = Omit<ComponentProps<"button">, "type"> & {
 
 function canShowPage(
   pageId: Page,
+  hasSubscription?: boolean,
   permissions?: {
     canViewAuditLogs: boolean;
     canViewBilling: boolean;
@@ -35,7 +36,7 @@ function canShowPage(
   }
 ) {
   if (pageId === "billing") {
-    return permissions?.canViewBilling ?? false;
+    return (permissions?.canViewBilling && hasSubscription === true) ?? false;
   }
 
   if (pageId === "permissions") {
@@ -44,6 +45,10 @@ function canShowPage(
 
   if (pageId === "auditLogs") {
     return permissions?.canViewAuditLogs ?? false;
+  }
+
+  if (pageId === "upgrade") {
+    return !hasSubscription;
   }
 
   return true;
@@ -102,7 +107,9 @@ export default function SettingsSidebar({
         },
       }),
     select: (permissions) =>
-      settingsPages.filter((page) => canShowPage(page.id, permissions)),
+      settingsPages.filter((page) =>
+        canShowPage(page.id, permissions.hasSubscription, permissions)
+      ),
   });
 
   useEffect(() => {

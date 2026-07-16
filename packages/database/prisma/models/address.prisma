@@ -3,8 +3,8 @@ model Address {
     // not the default uuid, because we want to have short ids for the email addresses, in order to short the url (uuid as backup)
     id String @id @default(uuid())
 
-    handle String
-    email  String @unique
+    handle      String
+    email       String @unique
     addressSlug String @unique @default(dbgenerated("translate(substring(md5((random())::text), 1, 5), '0123456789abcdef', 'abcdefghijklmnop')"))
 
     usedStorageBytes BigInt @default(0)
@@ -17,6 +17,9 @@ model Address {
 
     Domain   Domain? @relation(fields: [domainId], references: [id])
     domainId String?
+
+    // Same as complete email
+    @@unique([handle, domainId])
 }
 
 model MemberAddress {

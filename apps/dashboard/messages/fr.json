@@ -341,6 +341,10 @@
         "empty_description": "Ajoutez un brouillon de domaine, créez les enregistrements DNS, puis vérifiez‑le.",
         "settings_placeholder": "Paramètres de domaine"
       },
+      "billing": {
+        "empty_title": "Aucun abonnement actif",
+        "empty_description": "Cet espace de travail n’a actuellement aucun abonnement."
+      },
       "app": {
         "theme": {
           "title": "Thème",

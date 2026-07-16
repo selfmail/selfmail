@@ -342,6 +342,10 @@
         "empty_description": "Add a domain draft, create the DNS records, then verify it.",
         "settings_placeholder": "Domain settings"
       },
+      "billing": {
+        "empty_title": "No active subscription",
+        "empty_description": "This workspace currently has no subscription."
+      },
       "app": {
         "theme": {
           "title": "Theme",
@@ -378,6 +382,10 @@
         "billing": {
           "title": "Billing Information",
           "description": "Plan, invoices, seats, and payment details."
+        },
+        "upgrade": {
+          "title": "Upgrade to Pro",
+          "description": "Perform an update for more capabilities and collaberation."
         },
         "permissions": {
           "title": "Permissions",

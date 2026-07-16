@@ -18,7 +18,6 @@ const generateJWTKeys = async () => {
 			format: "pem",
 		},
 	});
-
 	await writeFile("./privkey.pem", privateKey);
 	await writeFile("./pubkey.pem", publicKey);
 

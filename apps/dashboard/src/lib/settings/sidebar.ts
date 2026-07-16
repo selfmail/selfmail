@@ -32,9 +32,21 @@ export const getSidebarPermissions = createServerFn({ method: "GET" })
       permissions: ["billings:view", "audit_logs:view", "permissions:update"],
     });
 
+    const s = await db.billingSubscription.findFirst({
+      where: {
+        workspaceId,
+        endsAt: {
+          gte: new Date(),
+        },
+      },
+    });
+
+    const hasSubscription = !!s;
+
     return {
       canViewBilling: p.includes("billings:view"),
       canViewAuditLogs: p.includes("audit_logs:view"),
       canUpdatePermissions: p.includes("permissions:update"),
+      hasSubscription,
     };
   });

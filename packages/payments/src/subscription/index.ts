@@ -130,9 +130,28 @@ export class Subscription {
     });
   }
 
-  async cancelSubscription() {}
+  async cancelSubscription({ memberId }: { memberId: string }) {}
 
-  async createSubscription() {}
+  async createSubscription({ memberId }: { memberId: string }) {
+    const workspace = await db.member.findUniqueOrThrow({
+      where: {
+        id: memberId,
+      },
+      select: {
+        workspace: {
+          select: {
+            ownerId: true,
+            BillingSubscription: true,
+            id: true,
+          },
+        },
+      },
+    });
+
+    if (workspace.workspace.BillingSubscription) {
+      throw new Error("Workspace already has a subscription");
+    }
+  }
 
   async createCheckout({
     memberId,

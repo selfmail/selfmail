@@ -341,6 +341,10 @@
         "empty_description": "Añade un borrador de dominio, crea los registros DNS y luego verifícalo.",
         "settings_placeholder": "Configuración de dominio"
       },
+      "billing": {
+        "empty_title": "No hay una suscripción activa",
+        "empty_description": "Este espacio de trabajo no tiene ninguna suscripción actualmente."
+      },
       "app": {
         "theme": {
           "title": "Tema",

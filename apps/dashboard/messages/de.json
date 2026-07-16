@@ -341,6 +341,10 @@
         "empty_description": "Fügen Sie einen Domain-Entwurf hinzu, erstellen Sie die DNS-Einträge und verifizieren Sie ihn anschließend.",
         "settings_placeholder": "Domain-Einstellungen"
       },
+      "billing": {
+        "empty_title": "Kein aktives Abonnement",
+        "empty_description": "Dieser Workspace hat derzeit kein Abonnement."
+      },
       "app": {
         "theme": {
           "title": "Design",

@@ -2,6 +2,7 @@ import { useState, useSyncExternalStore } from "react";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
 import { useViewedEmail } from "#/stores/viewed-email";
+import BottomBar from "./bottombar";
 import { ComposeSidebar, type ComposeSidebarDraft } from "./compose-sidebar";
 import { DashboardHeader } from "./dashboard/dashboard-header";
 import { DashboardNavigation } from "./dashboard/dashboard-navigation";
@@ -145,6 +146,7 @@ export function DashboardWorkspace({
           <EmailList emails={emails} onSelectEmail={selectEmail} />
         </main>
       </div>
+      <BottomBar />
     </div>
   );
 

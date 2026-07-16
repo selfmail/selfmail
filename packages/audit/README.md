@@ -1,15 +1,3 @@
 # @selfmail/audit
 
-To install dependencies:
-
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run src/index.ts
-```
-
-This project was created using `bun init` in bun v1.3.13. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+Create audit logs for workspaces. Audit logs are used to tell users and workspaces what's happening, for example when users join a workspace or an address is created.
