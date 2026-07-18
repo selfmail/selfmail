@@ -2,6 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import {
   CheckIcon,
   ChevronsUpDownIcon,
+  DoorOpenIcon,
   PlaneTakeoffIcon,
   PlusIcon,
   SettingsIcon,
@@ -86,6 +87,15 @@ export function DashboardHeader({
               onClick={() => settingsDialogHandle.open(null)}
             >
               {m["dashboard.header.settings"]()}
+            </DropdownItem>
+            <DropdownItem
+              className={dropdownItemClassName}
+              icon={<DoorOpenIcon />}
+              onClick={() => {
+                // TODO: logout user
+              }}
+            >
+              {m["dashboard.header.logout"]()}
             </DropdownItem>
             <DropdownItem
               className={dropdownItemClassName}

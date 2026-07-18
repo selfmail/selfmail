@@ -138,6 +138,7 @@
       "manage": "Manage",
       "settings": "Settings",
       "members": "Members",
+      "logout": "Logout",
       "billing": "Billing",
       "domains": "Domains",
       "webhooks": "Webhooks",

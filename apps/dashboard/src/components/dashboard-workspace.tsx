@@ -215,14 +215,6 @@ export function DashboardWorkspace({
   return (
     <div className="h-dvh w-full overflow-hidden bg-background">
       <div className="flex h-dvh w-full">{dashboardContent}</div>
-      {composeOpen ? (
-        <ComposeSidebar
-          className="fixed inset-0 z-30 rounded-none border-l-0"
-          draft={composeDraft}
-          onClose={closeCompose}
-          workspaceSlug={currentWorkspace.slug}
-        />
-      ) : null}
     </div>
   );
 }

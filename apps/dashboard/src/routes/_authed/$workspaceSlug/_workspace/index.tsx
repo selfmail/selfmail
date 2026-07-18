@@ -1,11 +1,9 @@
-import { createFileRoute, getRouteApi } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { DashboardWorkspace } from "#/components/dashboard-workspace";
 import {
   getDashboardWorkspacesFn,
   getWorkspaceInboxFn,
 } from "#/lib/workspaces";
-
-const workspaceRoute = getRouteApi("/_authed/$workspaceSlug/_workspace");
 
 export const Route = createFileRoute("/_authed/$workspaceSlug/_workspace/")({
   component: RouteComponent,
@@ -27,7 +25,7 @@ export const Route = createFileRoute("/_authed/$workspaceSlug/_workspace/")({
 });
 
 function RouteComponent() {
-  const { workspace, member } = workspaceRoute.useRouteContext();
+  const { workspace, member } = Route.useRouteContext();
   const { inbox, workspaces } = Route.useLoaderData();
 
   if (!workspace) {

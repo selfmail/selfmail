@@ -88,7 +88,6 @@ export const Route = createFileRoute("/_authed/$workspaceSlug/_workspace")({
       });
     }
 
-    const itemworkspace = "newworkspaceitems";
     logWorkspaceRoute("debug", "workspace loaded", {
       durationMs: Date.now() - startedAt,
       memberId: member.id,

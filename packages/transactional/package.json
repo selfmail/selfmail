@@ -1,5 +1,5 @@
 {
-  "name": "@selfmail/transactional",
+  "name": "transactional",
   "module": "index.ts",
   "type": "module",
   "exports": {
