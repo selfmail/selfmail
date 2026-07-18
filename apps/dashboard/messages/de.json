@@ -2,10 +2,8 @@
   "$schema": "https://inlang.com/schema/inlang-message-format",
   "home_page": "Startseite",
   "about_page": "Info-Seite",
-  "example_message": "Willkommen in deiner i18n-App.",
   "language_label": "Sprache",
   "current_locale": "Aktuelle Sprache: {locale}",
-  "learn_router": "Paraglide JS kennenlernen",
   "root": {
     "not_found": "Seite nicht gefunden",
     "error_title": "Es ist ein Fehler aufgetreten"
