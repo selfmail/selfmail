@@ -4,6 +4,7 @@ import { permissions } from "@selfmail/permissions";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
 import { authMiddleware } from "#/utils/auth";
+
 export const getMembers = createServerFn({ method: "GET" })
   .validator(
     z.object({

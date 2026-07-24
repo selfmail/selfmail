@@ -296,6 +296,15 @@
         "load_error": "Members could not be loaded.",
         "retry": "Retry"
       },
+      "audit_logs": {
+        "event": "Event",
+        "actor": "Actor",
+        "target": "Target",
+        "date": "Date",
+        "empty_title": "No activity yet",
+        "empty_description": "Workspace security events and changes will appear here.",
+        "load_error": "Audit logs could not be loaded."
+      },
       "domains": {
         "invalid": "Enter a valid domain, without https://.",
         "draft": "Draft",

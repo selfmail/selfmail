@@ -294,6 +294,15 @@
         "load_error": "Impossible de charger les membres.",
         "retry": "Réessayer"
       },
+      "audit_logs": {
+        "event": "Événement",
+        "actor": "Acteur",
+        "target": "Cible",
+        "date": "Date",
+        "empty_title": "Aucune activité pour le moment",
+        "empty_description": "Les événements de sécurité et les modifications de l’espace de travail apparaîtront ici.",
+        "load_error": "Impossible de charger les journaux d’audit."
+      },
       "domains": {
         "invalid": "Saisissez un domaine valide, sans https://.",
         "draft": "Brouillon",

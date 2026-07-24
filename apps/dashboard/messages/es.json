@@ -294,6 +294,15 @@
         "load_error": "No se pudieron cargar los miembros.",
         "retry": "Reintentar"
       },
+      "audit_logs": {
+        "event": "Evento",
+        "actor": "Actor",
+        "target": "Objetivo",
+        "date": "Fecha",
+        "empty_title": "Aún no hay actividad",
+        "empty_description": "Los eventos de seguridad y los cambios del espacio de trabajo aparecerán aquí.",
+        "load_error": "No se pudieron cargar los registros de auditoría."
+      },
       "domains": {
         "invalid": "Introduce un dominio válido, sin https://.",
         "draft": "Borrador",

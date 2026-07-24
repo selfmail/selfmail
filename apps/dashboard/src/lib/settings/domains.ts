@@ -227,9 +227,9 @@ export const verifyDomain = createServerFn({
         throw new Error("Domain not found");
       }
 
-      // Verify Domain records
+      // TODO: Verify Domain records
 
-      // Verify the domain
+      // update domain
       await db.domain.update({
         where: {
           id: domainId,
