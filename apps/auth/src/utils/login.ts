@@ -48,10 +48,8 @@ export const handleLoginForm = createServerFn({
         .update(randomBrowserToken)
         .digest("hex");
 
-      if (process.env.NODE_ENV === "development") {
-        console.log("Magic link token:", randomToken);
-        console.log("Magic link browser token:", randomBrowserToken);
-      }
+      console.log("Magic link token:", randomToken);
+      console.log("Magic link browser token:", randomBrowserToken);
 
       await db.$transaction([
         db.magicLink.deleteMany({
