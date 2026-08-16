@@ -6,6 +6,8 @@
 
 @import "shadcn/tailwind.css";
 
+@source "../../../packages/ui/src";
+
 @import "@fontsource-variable/geist";
 
 @custom-variant dark (&:is(.dark *));

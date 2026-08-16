@@ -8,28 +8,31 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 const config = defineConfig({
-  resolve: {
-    dedupe: ["react", "react-dom"],
-  },
-  plugins: [
-    paraglideVitePlugin({
-      project: "./project.inlang",
-      outdir: "./src/paraglide",
-      outputStructure: "message-modules",
-      cookieName: "LOCALE",
-      strategy: ["cookie", "preferredLanguage", "baseLocale"],
-    }),
-    devtools(),
-    nitro({ rollupConfig: { external: [/^@sentry\//] } }),
-    tsconfigPaths({ projects: ["./tsconfig.json"] }),
-    tailwindcss(),
-    tanstackStart(),
-    viteReact({
-      babel: {
-        plugins: ["babel-plugin-react-compiler"],
-      },
-    }),
-  ],
+	resolve: {
+		dedupe: ["react", "react-dom"],
+	},
+	ssr: {
+		noExternal: ["@base-ui/react", "@base-ui/utils"],
+	},
+	plugins: [
+		paraglideVitePlugin({
+			project: "./project.inlang",
+			outdir: "./src/paraglide",
+			outputStructure: "message-modules",
+			cookieName: "LOCALE",
+			strategy: ["cookie", "preferredLanguage", "baseLocale"],
+		}),
+		devtools(),
+		nitro({ rollupConfig: { external: [/^@sentry\//] } }),
+		tsconfigPaths({ projects: ["./tsconfig.json"] }),
+		tailwindcss(),
+		tanstackStart(),
+		viteReact({
+			babel: {
+				plugins: ["babel-plugin-react-compiler"],
+			},
+		}),
+	],
 });
 
 export default config;
