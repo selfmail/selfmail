@@ -22,6 +22,8 @@ import { Route as ContactIndexRouteImport } from './routes/contact/index'
 import { Route as RegisterSuccessIndexRouteImport } from './routes/register/success/index'
 import { Route as OtpBackupCodesIndexRouteImport } from './routes/otp/backup-codes/index'
 import { Route as LoginSuccessIndexRouteImport } from './routes/login/success/index'
+import { Route as ApiLoginGoogleIndexRouteImport } from './routes/api/login/google/index'
+import { Route as ApiLoginGoogleCallbackRouteImport } from './routes/api/login/google/callback'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -88,6 +90,16 @@ const LoginSuccessIndexRoute = LoginSuccessIndexRouteImport.update({
   path: '/login/success/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiLoginGoogleIndexRoute = ApiLoginGoogleIndexRouteImport.update({
+  id: '/api/login/google/',
+  path: '/api/login/google/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiLoginGoogleCallbackRoute = ApiLoginGoogleCallbackRouteImport.update({
+  id: '/api/login/google/callback',
+  path: '/api/login/google/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -103,6 +115,8 @@ export interface FileRoutesByFullPath {
   '/login/success/': typeof LoginSuccessIndexRoute
   '/otp/backup-codes/': typeof OtpBackupCodesIndexRoute
   '/register/success/': typeof RegisterSuccessIndexRoute
+  '/api/login/google/callback': typeof ApiLoginGoogleCallbackRoute
+  '/api/login/google/': typeof ApiLoginGoogleIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -118,6 +132,8 @@ export interface FileRoutesByTo {
   '/login/success': typeof LoginSuccessIndexRoute
   '/otp/backup-codes': typeof OtpBackupCodesIndexRoute
   '/register/success': typeof RegisterSuccessIndexRoute
+  '/api/login/google/callback': typeof ApiLoginGoogleCallbackRoute
+  '/api/login/google': typeof ApiLoginGoogleIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -134,6 +150,8 @@ export interface FileRoutesById {
   '/login/success/': typeof LoginSuccessIndexRoute
   '/otp/backup-codes/': typeof OtpBackupCodesIndexRoute
   '/register/success/': typeof RegisterSuccessIndexRoute
+  '/api/login/google/callback': typeof ApiLoginGoogleCallbackRoute
+  '/api/login/google/': typeof ApiLoginGoogleIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -151,6 +169,8 @@ export interface FileRouteTypes {
     | '/login/success/'
     | '/otp/backup-codes/'
     | '/register/success/'
+    | '/api/login/google/callback'
+    | '/api/login/google/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -166,6 +186,8 @@ export interface FileRouteTypes {
     | '/login/success'
     | '/otp/backup-codes'
     | '/register/success'
+    | '/api/login/google/callback'
+    | '/api/login/google'
   id:
     | '__root__'
     | '/'
@@ -181,6 +203,8 @@ export interface FileRouteTypes {
     | '/login/success/'
     | '/otp/backup-codes/'
     | '/register/success/'
+    | '/api/login/google/callback'
+    | '/api/login/google/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -197,6 +221,8 @@ export interface RootRouteChildren {
   LoginSuccessIndexRoute: typeof LoginSuccessIndexRoute
   OtpBackupCodesIndexRoute: typeof OtpBackupCodesIndexRoute
   RegisterSuccessIndexRoute: typeof RegisterSuccessIndexRoute
+  ApiLoginGoogleCallbackRoute: typeof ApiLoginGoogleCallbackRoute
+  ApiLoginGoogleIndexRoute: typeof ApiLoginGoogleIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -292,6 +318,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginSuccessIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/login/google/': {
+      id: '/api/login/google/'
+      path: '/api/login/google'
+      fullPath: '/api/login/google/'
+      preLoaderRoute: typeof ApiLoginGoogleIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/login/google/callback': {
+      id: '/api/login/google/callback'
+      path: '/api/login/google/callback'
+      fullPath: '/api/login/google/callback'
+      preLoaderRoute: typeof ApiLoginGoogleCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -309,6 +349,8 @@ const rootRouteChildren: RootRouteChildren = {
   LoginSuccessIndexRoute: LoginSuccessIndexRoute,
   OtpBackupCodesIndexRoute: OtpBackupCodesIndexRoute,
   RegisterSuccessIndexRoute: RegisterSuccessIndexRoute,
+  ApiLoginGoogleCallbackRoute: ApiLoginGoogleCallbackRoute,
+  ApiLoginGoogleIndexRoute: ApiLoginGoogleIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

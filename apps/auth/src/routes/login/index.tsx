@@ -27,6 +27,14 @@ export const Route = createFileRoute("/login/")({
   }),
   validateSearch: z.object({
     error: z.string().optional(),
+    redirect: z
+      .string()
+      .optional()
+      .transform((redirect) =>
+        redirect?.startsWith("/") && !redirect.startsWith("//")
+          ? redirect
+          : undefined
+      ),
   }),
 });
 
@@ -50,7 +58,7 @@ const DashboardHint = ({ dashboardUrl }: { dashboardUrl: string }) => {
 };
 
 function RouteComponent() {
-  const { error: routeError } = Route.useSearch();
+  const { error: routeError, redirect } = Route.useSearch();
   const [error, setError] = useState<string | null>(routeError ?? null);
   const { currentUser, dashboardUrl } = Route.useLoaderData();
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -76,6 +84,7 @@ function RouteComponent() {
         to: "/login/success",
         search: {
           email: values.get("email") as string,
+          redirect,
         },
       });
     },
@@ -135,7 +144,9 @@ function RouteComponent() {
           <div className="flex flex-col gap-2">
             <a
               className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-border px-6 py-3 transition-colors duration-200 hover:bg-accent"
-              href="/api/login/google"
+              href={`/api/login/google?flow=login${
+                redirect ? `&redirect=${encodeURIComponent(redirect)}` : ""
+              }`}
             >
               <Google className="absolute left-6 h-4 w-4" />
               <span className="ml-8 w-full text-left">

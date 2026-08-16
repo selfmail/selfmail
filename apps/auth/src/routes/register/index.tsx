@@ -49,6 +49,7 @@ export const Route = createFileRoute("/register/")({
 		dashboardUrl: await getAppRedirectUrlFn(),
 	}),
 	validateSearch: z.object({
+		error: z.string().optional(),
 		redirect: redirectSearchSchema,
 	}),
 });
@@ -92,7 +93,7 @@ const DashboardHint = ({
 
 function RouteComponent() {
 	const { currentUser, dashboardUrl } = Route.useLoaderData();
-	const { redirect } = Route.useSearch();
+	const { error: routeError, redirect } = Route.useSearch();
 	const [isDashboardHintDismissed, setIsDashboardHintDismissed] =
 		useState(false);
 	const [formValues, setFormValues] = useState<RegisterFormValues>({
@@ -104,7 +105,9 @@ function RouteComponent() {
 		Partial<Record<RegisterFieldName, boolean>>
 	>({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [submitError, setSubmitError] = useState<string | null>(null);
+	const [submitError, setSubmitError] = useState<string | null>(
+		routeError ?? null,
+	);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -290,8 +293,9 @@ function RouteComponent() {
 					<div className="flex flex-col gap-2">
 						<a
 							className="relative flex w-full cursor-pointer items-center justify-start rounded-full border-2 border-border px-6 py-3 transition-colors duration-200 hover:bg-accent"
-							href="/api/login/google"
-							type="button"
+							href={`/api/login/google?flow=register${
+								redirect ? `&redirect=${encodeURIComponent(redirect)}` : ""
+							}`}
 						>
 							<Google className="absolute left-6 h-4 w-4" />
 							<span className="ml-8 w-full text-left">
