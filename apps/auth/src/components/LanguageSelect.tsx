@@ -32,7 +32,7 @@ export default function LanguageSelect() {
       >
         <SelectTrigger
           aria-label={m.language_select_label()}
-          className="h-8 min-w-24 rounded-full border-2 border-neutral-200 bg-transparent px-3 py-1 text-xs outline-none ring-neutral-200 transition-colors duration-200 focus-visible:border-neutral-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-200 data-[size=default]:h-8 data-[size=sm]:h-8 data-placeholder:text-neutral-500"
+          className="h-8 min-w-24 rounded-full border-2 border-input bg-transparent px-3 py-1 text-xs outline-none ring-ring/50 transition-colors duration-200 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 data-[size=default]:h-8 data-[size=sm]:h-8 data-placeholder:text-muted-foreground"
           size="sm"
         >
           <SelectValue>
@@ -49,11 +49,11 @@ export default function LanguageSelect() {
         </SelectTrigger>
         <SelectContent
           align="start"
-          className="rounded-3xl border-2 border-neutral-200 bg-white p-1 shadow-none"
+          className="rounded-3xl border-2 border-border bg-popover p-1 text-popover-foreground shadow-none"
         >
           {locales.map((locale) => (
             <SelectItem
-              className="cursor-pointer rounded-full px-3 py-1.5 text-xs focus:bg-neutral-100 focus:text-neutral-900"
+              className="cursor-pointer rounded-full px-3 py-1.5 text-xs focus:bg-accent focus:text-accent-foreground"
               key={locale}
               value={locale}
             >

@@ -84,8 +84,8 @@ function RouteComponent() {
 					<div
 						className={
 							isSuccess
-								? "flex size-14 items-center justify-center rounded-full border border-green-200 bg-green-50 text-green-600"
-								: "flex size-14 items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-600"
+								? "flex size-14 items-center justify-center rounded-full border border-green-200 bg-green-50 text-green-600 dark:border-green-900 dark:bg-green-950/50 dark:text-green-400"
+								: "flex size-14 items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-600 dark:border-red-900 dark:bg-red-950/50 dark:text-red-400"
 						}
 					>
 						{isSuccess ? (
@@ -101,12 +101,12 @@ function RouteComponent() {
 							? m["verify.success.title"]()
 							: m["verify.error.title"]()}
 					</h1>
-					<p className="text-pretty text-neutral-700 text-sm">
+					<p className="text-pretty text-muted-foreground text-sm">
 						{isSuccess ? result.message : result.error.message}
 					</p>
 				</div>
 				{result.status === "error" ? (
-					<div className="rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-neutral-700 text-sm">
+					<div className="rounded-2xl border border-border bg-muted px-4 py-3 text-muted-foreground text-sm">
 						{m["verify.error.request_id"]()}{" "}
 						<span className="font-mono text-[13px]">
 							{result.error.requestId}
@@ -115,7 +115,7 @@ function RouteComponent() {
 				) : null}
 				<div className="flex flex-col gap-3">
 					<Link
-						className="w-full rounded-full bg-neutral-900 px-6 py-3 text-center text-white transition-colors duration-200 hover:bg-neutral-700"
+						className="w-full rounded-full bg-primary px-6 py-3 text-center text-primary-foreground transition-colors duration-200 hover:bg-primary/80"
 						to="/login"
 					>
 						{isSuccess
@@ -123,7 +123,7 @@ function RouteComponent() {
 							: m["verify.error.back_to_login"]()}
 					</Link>
 					<Link
-						className="flex items-center justify-center gap-2 rounded-full border border-neutral-200 px-6 py-3 text-center text-neutral-900 transition-colors duration-200 hover:bg-neutral-100"
+						className="flex items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-center text-foreground transition-colors duration-200 hover:bg-accent"
 						to="/contact"
 					>
 						<LifeBuoyIcon className="size-4" />

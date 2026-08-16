@@ -41,7 +41,7 @@ function DialogContent({
       <DialogOverlay />
       <DialogPrimitive.Content
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid w-[calc(100%-2.5rem)] max-w-[26rem] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-[32px] border-2 border-neutral-200 bg-white p-6 text-neutral-900 shadow-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100",
+          "fixed top-1/2 left-1/2 z-50 grid w-[calc(100%-2.5rem)] max-w-[26rem] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-[32px] border-2 border-border bg-background p-6 text-foreground shadow-xl",
           className
         )}
         data-slot="dialog-content"
@@ -98,7 +98,7 @@ function DialogDescription({
 }: ComponentProps<typeof DialogPrimitive.Description>) {
   return (
     <DialogPrimitive.Description
-      className={cn("text-neutral-600 text-pretty text-sm dark:text-neutral-300", className)}
+      className={cn("text-muted-foreground text-pretty text-sm", className)}
       data-slot="dialog-description"
       {...props}
     />

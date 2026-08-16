@@ -44,9 +44,9 @@ function NotFound() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-3 px-5 text-center sm:px-0">
       <h1 className="font-medium text-2xl">{m["not_found.title"]()}</h1>
-      <p className="text-neutral-700 text-sm">{m["not_found.description"]()}</p>
+      <p className="text-muted-foreground text-sm">{m["not_found.description"]()}</p>
       <a
-        className="rounded-full bg-neutral-900 px-6 py-3 text-white transition-colors duration-200 hover:bg-neutral-700"
+        className="rounded-full bg-primary px-6 py-3 text-primary-foreground transition-colors duration-200 hover:bg-primary/80"
         href="/login"
       >
         {m["not_found.cta"]()}
@@ -64,7 +64,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <QueryClientProvider client={queryClient}>
-        <body className="wrap-anywhere relative min-h-dvh w-full bg-white font-sans text-neutral-900 antialiased dark:bg-neutral-900 dark:text-neutral-100">
+        <body className="wrap-anywhere relative min-h-dvh w-full bg-background font-sans text-foreground antialiased">
           <TooltipProvider>
             <div className="relative flex min-h-dvh w-full flex-col">
               <div className="absolute inset-x-0 top-4 z-10 flex items-center justify-between px-4 sm:hidden">

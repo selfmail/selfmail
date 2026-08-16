@@ -35,7 +35,7 @@ function RouteComponent() {
 				</h1>
 				<Accordion className={"flex flex-col gap-4"}>
 					<AccordionItem
-						className="relative w-full rounded-[39px] border-2 border-neutral-200 px-6 py-3 transition duration-200 hover:bg-neutral-100"
+						className="relative w-full rounded-[39px] border-2 border-border px-6 py-3 transition duration-200 hover:bg-accent"
 						value="email-issues"
 					>
 						<AccordionTrigger className={"hit-area-4 cursor-pointer text-lg"}>
@@ -44,7 +44,7 @@ function RouteComponent() {
 						<AccordionContent>
 							{m["help.faq.email_access.description_before_link"]()}{" "}
 							<Link
-								className="hit-area-2 text-blue-500 hover:underline"
+								className="hit-area-2 text-blue-600 hover:underline dark:text-blue-400"
 								to="/contact"
 							>
 								{m["help.faq.email_access.description_link"]()}
@@ -53,7 +53,7 @@ function RouteComponent() {
 						</AccordionContent>
 					</AccordionItem>
 					<AccordionItem
-						className="relative w-full rounded-[39px] border-2 border-neutral-200 px-6 py-3 transition duration-200 hover:bg-neutral-100"
+						className="relative w-full rounded-[39px] border-2 border-border px-6 py-3 transition duration-200 hover:bg-accent"
 						value="unknown-error"
 					>
 						<AccordionTrigger className={"hit-area-4 cursor-pointer text-lg"}>
@@ -62,7 +62,7 @@ function RouteComponent() {
 						<AccordionContent>
 							{m["help.faq.unknown_error.description_before_link"]()}{" "}
 							<Link
-								className="hit-area-2 text-blue-500 hover:underline"
+								className="hit-area-2 text-blue-600 hover:underline dark:text-blue-400"
 								to="/contact"
 							>
 								{m["help.faq.unknown_error.description_link"]()}
@@ -71,7 +71,7 @@ function RouteComponent() {
 						</AccordionContent>
 					</AccordionItem>
 					<AccordionItem
-						className="relative w-full rounded-[39px] border-2 border-neutral-200 px-6 py-3 transition duration-200 hover:bg-neutral-100"
+						className="relative w-full rounded-[39px] border-2 border-border px-6 py-3 transition duration-200 hover:bg-accent"
 						value="passkey-issues"
 					>
 						<AccordionTrigger className={"hit-area-4 cursor-pointer text-lg"}>
@@ -80,7 +80,7 @@ function RouteComponent() {
 						<AccordionContent>
 							{m["help.faq.passkey.description_before_link"]()}{" "}
 							<Link
-								className="hit-area-2 text-blue-500 hover:underline"
+								className="hit-area-2 text-blue-600 hover:underline dark:text-blue-400"
 								to="/contact"
 							>
 								{m["help.faq.passkey.description_link"]()}
@@ -89,7 +89,7 @@ function RouteComponent() {
 						</AccordionContent>
 					</AccordionItem>
 					<AccordionItem
-						className="relative w-full rounded-[39px] border-2 border-neutral-200 px-6 py-3 transition duration-200 hover:bg-neutral-100"
+						className="relative w-full rounded-[39px] border-2 border-border px-6 py-3 transition duration-200 hover:bg-accent"
 						value="email-sending-issues"
 					>
 						<AccordionTrigger className={"hit-area-4 cursor-pointer text-lg"}>
@@ -98,7 +98,7 @@ function RouteComponent() {
 						<AccordionContent>
 							{m["help.faq.email_delivery.description_before_link"]()}{" "}
 							<Link
-								className="hit-area-2 text-blue-500 hover:underline"
+								className="hit-area-2 text-blue-600 hover:underline dark:text-blue-400"
 								to="/contact"
 							>
 								{m["help.faq.email_delivery.description_link"]()}
@@ -107,7 +107,7 @@ function RouteComponent() {
 						</AccordionContent>
 					</AccordionItem>
 					<AccordionItem
-						className="relative w-full rounded-[39px] border-2 border-neutral-200 px-6 py-3 transition duration-200 hover:bg-neutral-100"
+						className="relative w-full rounded-[39px] border-2 border-border px-6 py-3 transition duration-200 hover:bg-accent"
 						value="2fa-issues"
 					>
 						<AccordionTrigger className={"hit-area-4 cursor-pointer text-lg"}>
@@ -116,7 +116,7 @@ function RouteComponent() {
 						<AccordionContent>
 							{m["help.faq.two_factor.description_before_link"]()}{" "}
 							<Link
-								className="hit-area-2 text-blue-500 hover:underline"
+								className="hit-area-2 text-blue-600 hover:underline dark:text-blue-400"
 								to="/contact"
 							>
 								{m["help.faq.two_factor.description_link"]()}
@@ -128,7 +128,7 @@ function RouteComponent() {
 				<p className="text-balance pt-4 text-center">
 					{m["help.still_questions_before_link"]()}{" "}
 					<Link
-						className="hit-area-2 text-blue-500 hover:underline"
+						className="hit-area-2 text-blue-600 hover:underline dark:text-blue-400"
 						to="/contact"
 					>
 						{m["help.still_questions_link"]()}

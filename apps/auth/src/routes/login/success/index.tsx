@@ -79,11 +79,11 @@ function RouteComponent() {
         <h1 className="text-balance pb-2 text-center font-medium text-3xl">
           {m["login_success.title"]()}
         </h1>
-        <p className="text-balance pb-4 text-center text-neutral-700 text-sm">
+        <p className="text-balance pb-4 text-center text-muted-foreground text-sm">
           {m["login_success.description"]()}
         </p>
         <button
-          className="hit-area-2 w-full cursor-pointer rounded-full bg-neutral-900 px-6 py-3 text-white transition-colors duration-200 focus-within:bg-neutral-700 focus-within:ring-2 focus-within:ring-neutral-700 focus-within:ring-offset-2 hover:bg-neutral-700 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-500"
+          className="hit-area-2 w-full cursor-pointer rounded-full bg-primary px-6 py-3 text-primary-foreground transition-colors duration-200 focus-within:bg-primary/80 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background hover:bg-primary/80 focus:outline-none disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground"
           disabled={!email || resend.isPending}
           onClick={() => {
             if (!email) {
@@ -96,7 +96,7 @@ function RouteComponent() {
         >
           {m["login_success.resend"]()}
         </button>
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {error && <p className="text-red-600 text-sm dark:text-red-400">{error}</p>}
       </div>
     </>
   );

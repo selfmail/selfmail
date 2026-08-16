@@ -138,7 +138,7 @@ function RouteComponent() {
 			icon={<Building2Icon className="size-6" />}
 			title={workspaceName}
 		>
-			<div className="rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm">
+			<div className="rounded-2xl border border-border bg-muted px-4 py-3 text-sm">
 				<div className="grid gap-2">
 					<InviteMetaRow
 						label={m["invite.labels.signed_in_as"]()}
@@ -159,7 +159,7 @@ function RouteComponent() {
 				{error ? (
 					<p
 						aria-live="polite"
-						className="text-pretty rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 text-sm"
+						className="text-pretty rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 text-sm dark:border-red-900 dark:bg-red-950/50 dark:text-red-300"
 						role="alert"
 					>
 						{error}
@@ -206,13 +206,13 @@ function InviteShell({
 			</a>
 			<div className="flex w-full max-w-md flex-col gap-6 px-5 sm:px-10 md:px-0">
 				<div className="flex items-center justify-center">
-					<div className="flex size-14 items-center justify-center rounded-full border border-neutral-200 bg-neutral-50 text-neutral-900">
+					<div className="flex size-14 items-center justify-center rounded-full border border-border bg-muted text-foreground">
 						{icon}
 					</div>
 				</div>
 				<div className="space-y-2 text-center">
 					<h1 className="text-balance font-medium text-3xl">{title}</h1>
-					<p className="text-pretty text-neutral-700 text-sm">{description}</p>
+					<p className="text-pretty text-muted-foreground text-sm">{description}</p>
 				</div>
 				{children}
 			</div>
@@ -223,7 +223,7 @@ function InviteShell({
 function InviteMetaRow({ label, value }: { label: string; value: string }) {
 	return (
 		<div className="flex items-start justify-between gap-4">
-			<span className="shrink-0 text-neutral-500">{label}</span>
+			<span className="shrink-0 text-muted-foreground">{label}</span>
 			<span className="min-w-0 text-pretty text-right font-medium">
 				{value}
 			</span>
@@ -232,9 +232,9 @@ function InviteMetaRow({ label, value }: { label: string; value: string }) {
 }
 
 const primaryButtonClassName = cn(
-	"hit-area-2 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-neutral-900 px-6 py-3 text-center text-white transition-colors duration-200 hover:bg-neutral-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-700 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-500",
+	"hit-area-2 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-center text-primary-foreground transition-colors duration-200 hover:bg-primary/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground",
 );
 
 const secondaryButtonClassName = cn(
-	"hit-area-2 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-neutral-200 px-6 py-3 text-center text-neutral-900 transition-colors duration-200 hover:bg-neutral-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-700 focus-visible:ring-offset-2",
+	"hit-area-2 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-center text-foreground transition-colors duration-200 hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 );

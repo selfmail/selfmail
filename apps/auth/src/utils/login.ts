@@ -1,6 +1,5 @@
 import crypto from "node:crypto";
 import { db } from "@selfmail/db";
-import { RateLimiter } from "@selfmail/web-ratelimit";
 import { createServerFn } from "@tanstack/react-start";
 import { setCookie } from "@tanstack/react-start/server";
 import z from "zod";
@@ -16,11 +15,6 @@ export const handleLoginForm = createServerFn({
   .handler(async ({ data: { email } }) => {
     const normalizedEmail = email.trim().toLowerCase();
 
-    // Rate limiting
-    const limiter = new RateLimiter("auth-login");
-
-    // TODO: ratelimit users
-
     const account = await db.account.findUnique({
       where: {
         provider_providerAccountId: {
@@ -31,6 +25,9 @@ export const handleLoginForm = createServerFn({
     });
 
     if (!account) {
+      if (process.env.NODE_ENV === "development") {
+        console.log("No account found for email:", normalizedEmail);
+      }
       return;
     }
 
@@ -48,17 +45,20 @@ export const handleLoginForm = createServerFn({
         .update(randomBrowserToken)
         .digest("hex");
 
-      console.log("Magic link token:", randomToken);
-      console.log("Magic link browser token:", randomBrowserToken);
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          `Go to https://auth.selfmail.localhost/magic/?token=${randomToken} to verify the magic link.`
+        );
+      }
 
       await db.$transaction([
         db.magicLink.deleteMany({
-          where: { email },
+          where: { email: normalizedEmail },
         }),
         db.magicLink.create({
           data: {
             browserTokenHash,
-            email,
+            email: normalizedEmail,
             token: tokenHash,
             expiresAt,
             userId: account.userId,

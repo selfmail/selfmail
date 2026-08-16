@@ -48,19 +48,19 @@ function InputOTPSlot({
 	return (
 		<div
 			className={cn(
-				"relative flex size-11 items-center justify-center border-neutral-200 border-y-2 border-r-2 bg-white text-base text-neutral-900 outline-0 outline-neutral-300/20 transition-all first:rounded-l-lg first:border-l-2 last:rounded-r-lg hover:border-neutral-300 group-focus-within:border-neutral-400 group-hover:border-neutral-300 aria-invalid:border-destructive data-[active=true]:z-10 data-[active=true]:border-neutral-400 data-[active=true]:outline-3 data-[active=true]:outline-neutral-300 data-[active=true]:aria-invalid:border-destructive data-[active=true]:aria-invalid:outline-destructive/20 data-[active=true]:before:absolute data-[active=true]:before:inset-y-0 data-[active=true]:before:left-0 data-[active=true]:before:w-0.5 data-[active=true]:before:bg-neutral-400 data-[active=true]:before:content-[''] first:data-[active=true]:before:hidden dark:bg-neutral-900 dark:text-neutral-100 dark:data-[active=true]:outline-neutral-500 dark:data-[active=true]:aria-invalid:outline-destructive/40 dark:group-hover:border-neutral-600 dark:group-focus-within:border-neutral-500 dark:hover:border-neutral-600 dark:data-[active=true]:before:bg-neutral-500",
+				"relative flex size-11 items-center justify-center border-input border-y-2 border-r-2 bg-background text-base text-foreground outline-0 outline-ring/20 transition-all first:rounded-l-lg first:border-l-2 last:rounded-r-lg hover:border-ring/70 group-focus-within:border-ring group-hover:border-ring/70 aria-invalid:border-destructive data-[active=true]:z-10 data-[active=true]:border-ring data-[active=true]:outline-3 data-[active=true]:outline-ring/50 data-[active=true]:aria-invalid:border-destructive data-[active=true]:aria-invalid:outline-destructive/20 data-[active=true]:before:absolute data-[active=true]:before:inset-y-0 data-[active=true]:before:left-0 data-[active=true]:before:w-0.5 data-[active=true]:before:bg-ring data-[active=true]:before:content-[''] first:data-[active=true]:before:hidden dark:data-[active=true]:aria-invalid:outline-destructive/40",
 				className,
 			)}
 			data-active={isActive}
 			data-slot="input-otp-slot"
 			{...props}
 		>
-			<div className={cn("font-medium", !char && "text-neutral-400")}>
+			<div className={cn("font-medium", !char && "text-muted-foreground")}>
 				{char ?? placeholderChar}
 			</div>
 			{hasFakeCaret && (
 				<div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-					<div className="h-5 w-px animate-caret-blink bg-neutral-700 duration-1000 dark:bg-neutral-300" />
+					<div className="h-5 w-px animate-caret-blink bg-foreground duration-1000" />
 				</div>
 			)}
 		</div>

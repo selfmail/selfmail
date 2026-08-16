@@ -27,11 +27,11 @@ function RouteComponent() {
         <h1 className="pb-2 text-center font-medium text-3xl">
           {m["magic_link.title"]()}
         </h1>
-        <p className="text-balance pb-4 text-center text-neutral-700 text-sm">
+        <p className="text-balance pb-4 text-center text-muted-foreground text-sm">
           {m["magic_link.description"]()}
         </p>
         <a
-          className="hit-area-4 w-full cursor-pointer rounded-full bg-neutral-900 px-6 py-3 text-center text-white transition-colors duration-200 focus-within:bg-neutral-700 focus-within:ring-2 focus-within:ring-neutral-700 focus-within:ring-offset-2 hover:bg-neutral-700 focus:outline-none"
+          className="hit-area-4 w-full cursor-pointer rounded-full bg-primary px-6 py-3 text-center text-primary-foreground transition-colors duration-200 focus-within:bg-primary/80 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background hover:bg-primary/80 focus:outline-none"
           href="https://selfmail.app"
         >
           {m["magic_link.cta"]()}

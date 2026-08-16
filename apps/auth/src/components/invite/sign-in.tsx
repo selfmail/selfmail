@@ -18,7 +18,7 @@ export default function SignInInviteComponent() {
 					className="flex w-full flex-col gap-1 rounded-xl border border-border bg-muted p-4"
 					to="/register"
 				>
-					<h2 className="text-black text-lg dark:text-white">
+					<h2 className="text-foreground text-lg">
 						{m["invite.sign_in_page.register_title"]()}
 					</h2>
 					<p className="text-muted-foreground text-sm">
@@ -29,7 +29,7 @@ export default function SignInInviteComponent() {
 					className="flex w-full flex-col gap-1 rounded-xl border border-border bg-muted p-4"
 					to="/login"
 				>
-					<h2 className="text-black text-lg dark:text-white">
+					<h2 className="text-foreground text-lg">
 						{m["invite.sign_in_page.login_title"]()}
 					</h2>
 					<p className="text-muted-foreground text-sm">

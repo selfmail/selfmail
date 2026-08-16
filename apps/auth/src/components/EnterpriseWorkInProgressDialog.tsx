@@ -23,8 +23,8 @@ export default function EnterpriseWorkInProgressDialog({
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="gap-6">
-        <div className="mx-auto flex size-14 items-center justify-center rounded-full border-2 border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800">
-          <Building2Icon className="size-6 text-neutral-700 dark:text-neutral-200" />
+        <div className="mx-auto flex size-14 items-center justify-center rounded-full border-2 border-border bg-muted">
+          <Building2Icon className="size-6 text-muted-foreground" />
         </div>
         <DialogHeader className="items-center gap-3 text-center">
           <DialogTitle>{m["enterprise_dialog.title"]()}</DialogTitle>
@@ -35,7 +35,7 @@ export default function EnterpriseWorkInProgressDialog({
         <DialogFooter>
           <DialogClose asChild>
             <button
-              className="inline-flex w-full items-center justify-center rounded-full bg-neutral-900 px-6 py-3 font-medium text-sm text-white transition-colors duration-200 hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200"
+              className="inline-flex w-full items-center justify-center rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground text-sm transition-colors duration-200 hover:bg-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               type="button"
             >
               {m["enterprise_dialog.close"]()}

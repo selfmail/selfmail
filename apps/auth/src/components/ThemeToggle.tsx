@@ -70,7 +70,7 @@ export default function ThemeToggle() {
   return (
     <button
       aria-label={label}
-      className="rounded-full border border-[var(--chip-line)] bg-[var(--chip-bg)] px-3 py-1.5 font-semibold text-[var(--sea-ink)] text-sm shadow-[0_8px_22px_rgba(30,90,72,0.08)] transition hover:-translate-y-0.5"
+      className="rounded-full border border-border bg-background px-3 py-1.5 font-semibold text-foreground text-sm shadow-sm transition-colors duration-200 hover:bg-accent"
       onClick={toggleMode}
       title={label}
       type="button"

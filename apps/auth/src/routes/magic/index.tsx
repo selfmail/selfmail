@@ -106,7 +106,7 @@ function RouteComponent() {
 				{visibleResult ? (
 					<>
 						<div className="flex items-center justify-center">
-							<div className="flex size-14 items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-600">
+							<div className="flex size-14 items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-600 dark:border-red-900 dark:bg-red-950/50 dark:text-red-400">
 								<CircleAlertIcon className="size-6" />
 							</div>
 						</div>
@@ -116,13 +116,13 @@ function RouteComponent() {
 							</h1>
 							<p
 								aria-live="polite"
-								className="text-pretty text-neutral-700 text-sm"
+								className="text-pretty text-muted-foreground text-sm"
 								role="alert"
 							>
 								{visibleResult.error.message}
 							</p>
 						</div>
-						<div className="rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-neutral-700 text-sm">
+						<div className="rounded-2xl border border-border bg-muted px-4 py-3 text-muted-foreground text-sm">
 							{m["magic_link.page.request_id"]()}{" "}
 							<span className="font-mono text-[13px]">
 								{visibleResult.error.requestId}
@@ -130,13 +130,13 @@ function RouteComponent() {
 						</div>
 						<div className="flex flex-col gap-3">
 							<Link
-								className="w-full rounded-full bg-neutral-900 px-6 py-3 text-center text-white transition-colors duration-200 hover:bg-neutral-700"
+								className="w-full rounded-full bg-primary px-6 py-3 text-center text-primary-foreground transition-colors duration-200 hover:bg-primary/80"
 								to="/login"
 							>
 								{m["magic_link.page.back_to_login"]()}
 							</Link>
 							<Link
-								className="flex items-center justify-center gap-2 rounded-full border border-neutral-200 px-6 py-3 text-center text-neutral-900 transition-colors duration-200 hover:bg-neutral-100"
+								className="flex items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-center text-foreground transition-colors duration-200 hover:bg-accent"
 								to="/contact"
 							>
 								<LifeBuoyIcon className="size-4" />
@@ -147,7 +147,7 @@ function RouteComponent() {
 				) : (
 					<>
 						<div className="flex items-center justify-center">
-							<div className="flex size-14 items-center justify-center rounded-full border border-neutral-200 bg-neutral-50 text-neutral-900">
+							<div className="flex size-14 items-center justify-center rounded-full border border-border bg-muted text-foreground">
 								<ShieldCheckIcon className="size-6" />
 							</div>
 						</div>
@@ -155,13 +155,13 @@ function RouteComponent() {
 							<h1 className="text-balance font-medium text-3xl">
 								{m["magic_link.ready.title"]()}
 							</h1>
-							<p className="text-pretty text-neutral-700 text-sm">
+							<p className="text-pretty text-muted-foreground text-sm">
 								{m["magic_link.ready.description"]()}
 							</p>
 						</div>
 						<form className="flex flex-col gap-3" onSubmit={handleSubmit}>
 							<button
-								className="hit-area-2 w-full cursor-pointer rounded-full bg-neutral-900 px-6 py-3 text-white transition-colors duration-200 focus-within:bg-neutral-700 focus-within:ring-2 focus-within:ring-neutral-700 focus-within:ring-offset-2 hover:bg-neutral-700 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-500"
+								className="hit-area-2 w-full cursor-pointer rounded-full bg-primary px-6 py-3 text-primary-foreground transition-colors duration-200 focus-within:bg-primary/80 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background hover:bg-primary/80 focus:outline-none disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground"
 								disabled={isSubmitting}
 								type="submit"
 							>
@@ -170,7 +170,7 @@ function RouteComponent() {
 									: m["magic_link.ready.submit"]()}
 							</button>
 							<Link
-								className="w-full rounded-full border border-neutral-200 px-6 py-3 text-center text-neutral-900 transition-colors duration-200 hover:bg-neutral-100"
+								className="w-full rounded-full border border-border px-6 py-3 text-center text-foreground transition-colors duration-200 hover:bg-accent"
 								to="/login"
 							>
 								{m["magic_link.page.back_to_login"]()}
