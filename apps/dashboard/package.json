@@ -6,7 +6,7 @@
     "#/*": "./src/*"
   },
   "scripts": {
-    "dev": "portless dashboard.selfmail vite dev",
+    "dev": "SELFMAIL_AUTH_URL=http://localhost:3010 portless dashboard.selfmail --app-port 3020 vite dev",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",

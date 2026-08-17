@@ -18,7 +18,9 @@ export const getCurrentUserFn = createServerFn({
 
 export const getAppRedirectUrlFn = createServerFn({
   method: "GET",
-}).handler(() => "https://dashboard.selfmail.localhost");
+}).handler(() =>
+  process.env.SELFMAIL_APP_URL ?? "https://dashboard.selfmail.localhost"
+);
 
 export const logoutFn = createServerFn({
   method: "POST",
