@@ -16,6 +16,10 @@ body {
   margin: 0;
 }
 
+html[data-browser="safari"] .dashboard-viewport {
+  border-top: 1px solid var(--muted);
+}
+
 :root {
   --page-slide-dur: 200ms;
   --page-fade-dur: 200ms;

@@ -17,6 +17,7 @@ import PostHogProvider from "../integrations/posthog/provider";
 import appCss from "../styles.css?url";
 
 const THEME_INIT_SCRIPT = `(function(){try{var stored=window.localStorage.getItem('theme');var mode=(stored==='light'||stored==='dark'||stored==='auto')?stored:'auto';var prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;var resolved=mode==='auto'?(prefersDark?'dark':'light'):mode;var root=document.documentElement;root.classList.remove('light','dark');root.classList.add(resolved);root.setAttribute('data-theme',mode);root.style.colorScheme=resolved;}catch(e){}})();`;
+const SAFARI_INIT_SCRIPT = `(function(){var ua=navigator.userAgent;if(/Safari/.test(ua)&&!/Android|Chrome|Chromium|CriOS|Edg|FxiOS|OPR|OPiOS/.test(ua)){document.documentElement.dataset.browser='safari'}})();`;
 
 if (typeof window !== "undefined") {
   enableHistorySync();
@@ -70,6 +71,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: theme state must be applied before hydration */}
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: browser styling must be applied before paint */}
+        <script dangerouslySetInnerHTML={{ __html: SAFARI_INIT_SCRIPT }} />
         <HeadContent />
       </head>
       <body className="wrap-anywhere font-sans antialiased">

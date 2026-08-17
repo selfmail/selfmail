@@ -152,7 +152,7 @@ export function DashboardWorkspace({
 
   if (canResizePreview) {
     return (
-      <div className="h-dvh w-full overflow-hidden">
+      <div className="dashboard-viewport h-dvh w-full overflow-hidden">
         <ResizablePanelGroup
           className="h-dvh bg-muted"
           orientation="horizontal"
@@ -213,7 +213,7 @@ export function DashboardWorkspace({
   }
 
   return (
-    <div className="h-dvh w-full overflow-hidden bg-background">
+    <div className="dashboard-viewport h-dvh w-full overflow-hidden bg-background">
       <div className="flex h-dvh w-full">{dashboardContent}</div>
     </div>
   );
