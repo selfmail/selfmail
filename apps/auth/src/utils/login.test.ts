@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
 	accountFindUnique: vi.fn(),
+	deleteCookie: vi.fn(),
 	magicLinkCreate: vi.fn(),
 	magicLinkDeleteMany: vi.fn(),
 	setCookie: vi.fn(),
@@ -32,6 +33,9 @@ vi.mock("@tanstack/react-start", () => ({
 }));
 
 vi.mock("@tanstack/react-start/server", () => ({
+	deleteCookie: mocks.deleteCookie,
+	getRequestHost: () => "auth.selfmail.localhost",
+	getRequestProtocol: () => "https",
 	setCookie: mocks.setCookie,
 }));
 
@@ -77,6 +81,30 @@ describe("login magic link", () => {
 		);
 		expect(consoleLog).not.toHaveBeenCalledWith(
 			expect.stringContaining("/verify?token="),
+		);
+	});
+
+	it("replaces a legacy host-only browser token with a shared-domain cookie", async () => {
+		await handleLoginForm({ data: { email: "user@example.com" } });
+
+		expect(mocks.deleteCookie).toHaveBeenCalledWith(
+			"selfmail-temp-session-token",
+			expect.objectContaining({
+				domain: undefined,
+				path: "/",
+			}),
+		);
+		expect(mocks.setCookie).toHaveBeenCalledWith(
+			"selfmail-temp-session-token",
+			expect.any(String),
+			expect.objectContaining({
+				domain: ".selfmail.localhost",
+				httpOnly: true,
+				maxAge: 60 * 60,
+				path: "/",
+				sameSite: "lax",
+				secure: true,
+			}),
 		);
 	});
 });

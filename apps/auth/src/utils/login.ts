@@ -1,8 +1,41 @@
 import crypto from "node:crypto";
 import { db } from "@selfmail/db";
 import { createServerFn } from "@tanstack/react-start";
-import { setCookie } from "@tanstack/react-start/server";
+import {
+  deleteCookie,
+  getRequestHost,
+  getRequestProtocol,
+  setCookie,
+} from "@tanstack/react-start/server";
 import z from "zod";
+
+const TEMP_SESSION_COOKIE_NAME = "selfmail-temp-session-token";
+const PROD_DOMAIN = "selfmail.app";
+const SHARED_DOMAINS = [PROD_DOMAIN, "selfmail.localhost", "selfmail.local"];
+
+const getCookieOptions = (maxAge?: number, shared = true) => {
+  const host = getRequestHost({ xForwardedHost: true });
+  const protocol = getRequestProtocol({ xForwardedProto: true });
+  const hostname = host.split(":")[0]?.trim().toLowerCase() ?? "";
+  const domain = shared
+    ? SHARED_DOMAINS.find(
+        (candidate) =>
+          hostname === candidate || hostname.endsWith(`.${candidate}`)
+      )
+    : undefined;
+
+  return {
+    domain: domain ? `.${domain}` : undefined,
+    httpOnly: true,
+    maxAge,
+    path: "/",
+    sameSite: "lax" as const,
+    secure:
+      protocol === "https" ||
+      hostname === PROD_DOMAIN ||
+      hostname.endsWith(`.${PROD_DOMAIN}`),
+  };
+};
 
 export const handleLoginForm = createServerFn({
   method: "POST",
@@ -66,13 +99,15 @@ export const handleLoginForm = createServerFn({
         }),
       ]);
 
-      setCookie("selfmail-temp-session-token", randomBrowserToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60, // 1 hour
-      });
+      deleteCookie(
+        TEMP_SESSION_COOKIE_NAME,
+        getCookieOptions(undefined, false)
+      );
+      setCookie(
+        TEMP_SESSION_COOKIE_NAME,
+        randomBrowserToken,
+        getCookieOptions(60 * 60)
+      );
     } catch (_) {
       throw new Error("Failed to create magic link token.");
     }

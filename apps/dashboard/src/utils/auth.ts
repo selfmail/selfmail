@@ -42,12 +42,16 @@ const getCurrentUserFn = createServerFn({
   const token = getCookie("selfmail-session-token");
 
   if (!token) {
+    console.log("No session token found in cookies");
     return unauthenticated("No session token found in cookies");
   }
 
   try {
-    const user = await authentication.getCurrentUser({ token });
+    const user = await authentication.getCurrentUser(token);
     if (!user) {
+      console.log(
+        "Authentication check failed: No user found for provided session token"
+      );
       return unauthenticated("No user found for provided session token");
     }
 

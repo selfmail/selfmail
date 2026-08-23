@@ -13,13 +13,13 @@ export const getCurrentUserFn = createServerFn({
     return undefined;
   }
 
-  return auth.getCurrentUser({ token: cookie });
+  return auth.getCurrentUser(cookie);
 });
 
 export const getAppRedirectUrlFn = createServerFn({
   method: "GET",
-}).handler(() =>
-  process.env.SELFMAIL_APP_URL ?? "https://dashboard.selfmail.localhost"
+}).handler(
+  () => process.env.SELFMAIL_APP_URL ?? "https://dashboard.selfmail.localhost"
 );
 
 export const logoutFn = createServerFn({

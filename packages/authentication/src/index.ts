@@ -139,10 +139,7 @@ export class Authentication {
     }
   }
 
-  async getCurrentUser(input: TokenInput | CookieInput): Promise<User | null> {
-    const token =
-      "cookies" in input ? input.cookies.get(this.COOKIE_NAME) : input.token;
-
+  async getCurrentUser(token: string): Promise<User | null> {
     if (!token) {
       this.logger.warn("No session token provided");
       return null;
@@ -170,10 +167,6 @@ export class Authentication {
           sessionToken: sessionTokenHash,
         },
       });
-
-      if ("cookies" in input) {
-        this.clearSessionCookie(input);
-      }
 
       return null;
     }

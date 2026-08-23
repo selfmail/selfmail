@@ -1,184 +1,180 @@
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { CircleAlertIcon, LifeBuoyIcon, ShieldCheckIcon } from "lucide-react";
-import { type FormEvent, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
-import {
-	type VerifyMagicLinkResult,
-	verifyMagicLinkToken,
-} from "#/libs/magic-link";
+import { getAppRedirectUrlFn } from "#/libs/session";
 import { m } from "#/paraglide/messages";
+import { verifyMagicLinkToken } from "#/utils/magic-link";
 
 const magicLinkSearchSchema = z.object({
-	redirect: z
-		.string()
-		.optional()
-		.transform((redirect) =>
-			redirect?.startsWith("/") && !redirect.startsWith("//")
-				? redirect
-				: undefined,
-		),
-	token: z
-		.string()
-		.trim()
-		.optional()
-		.transform((token) =>
-			token && token.length >= 32 && token.length <= 64 ? token : undefined,
-		),
+  redirect: z
+    .string()
+    .optional()
+    .transform((redirect) =>
+      redirect?.startsWith("/") && !redirect.startsWith("//")
+        ? redirect
+        : undefined
+    ),
+  token: z
+    .string()
+    .trim()
+    .optional()
+    .transform((token) =>
+      token && token.length >= 32 && token.length <= 64 ? token : undefined
+    ),
 });
 
 export const Route = createFileRoute("/magic/")({
-	component: RouteComponent,
-	head: () => ({
-		meta: [
-			{ title: m["meta.magic_link.title"]() },
-			{
-				name: "description",
-				content: m["meta.magic_link.description"](),
-			},
-		],
-	}),
-	validateSearch: magicLinkSearchSchema,
+  component: RouteComponent,
+  head: () => ({
+    meta: [
+      { title: m["meta.magic_link.title"]() },
+      {
+        name: "description",
+        content: m["meta.magic_link.description"](),
+      },
+    ],
+  }),
+  loader: () => getAppRedirectUrlFn(),
+  validateSearch: magicLinkSearchSchema,
 });
 
 function RouteComponent() {
-	const { redirect, token } = Route.useSearch();
-	const verifyMagicLink = useServerFn(verifyMagicLinkToken);
-	const [result, setResult] = useState<VerifyMagicLinkResult | null>(null);
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [incompleteRequestId] = useState(() => crypto.randomUUID());
-	const initialError: VerifyMagicLinkResult | null = token
-		? null
-		: {
-				error: {
-					message: m["magic_link.errors.incomplete"](),
-					requestId: incompleteRequestId,
-				},
-				status: "error",
-			};
-	const visibleResult = result ?? initialError;
+  const { redirect, token } = Route.useSearch();
+  const dashboardUrl = Route.useLoaderData();
+  const [requestIds] = useState(() => ({
+    incomplete: crypto.randomUUID(),
+    unknown: crypto.randomUUID(),
+  }));
+  const verification = useMutation({
+    mutationFn: () => {
+      if (!token) {
+        throw new Error("Magic link token is required.");
+      }
 
-	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
+      return verifyMagicLinkToken({
+        data: {
+          redirect,
+          token,
+        },
+      });
+    },
+    onSuccess: (result) => {
+      if (!result) {
+        window.location.assign(
+          redirect ? new URL(redirect, dashboardUrl).toString() : dashboardUrl
+        );
+      }
+    },
+  });
+  const initialError = token
+    ? null
+    : {
+        error: {
+          message: m["magic_link.errors.incomplete"](),
+          requestId: requestIds.incomplete,
+        },
+        status: "error" as const,
+      };
+  const visibleResult =
+    verification.data ??
+    (verification.isError
+      ? {
+          error: {
+            message: m["magic_link.errors.unknown"](),
+            requestId: requestIds.unknown,
+          },
+          status: "error" as const,
+        }
+      : initialError);
 
-		if (!token) {
-			return;
-		}
-
-		setResult(null);
-		setIsSubmitting(true);
-
-		try {
-			const verificationResult = await verifyMagicLink({
-				data: {
-					redirect,
-					token,
-				},
-			});
-
-			setResult(verificationResult);
-		} catch {
-			setResult({
-				error: {
-					message: m["magic_link.errors.unknown"](),
-					requestId: crypto.randomUUID(),
-				},
-				status: "error",
-			});
-		} finally {
-			setIsSubmitting(false);
-		}
-	};
-
-	if (visibleResult?.status === "success") {
-		return null;
-	}
-
-	return (
-		<>
-			<a
-				className="absolute top-5 hidden font-medium text-xl sm:block"
-				href="https://selfmail.app"
-			>
-				Selfmail
-			</a>
-			<div className="flex w-full flex-col gap-6 px-5 sm:px-10 md:w-md md:px-0">
-				{visibleResult ? (
-					<>
-						<div className="flex items-center justify-center">
-							<div className="flex size-14 items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-600 dark:border-red-900 dark:bg-red-950/50 dark:text-red-400">
-								<CircleAlertIcon className="size-6" />
-							</div>
-						</div>
-						<div className="space-y-2 text-center">
-							<h1 className="text-balance font-medium text-3xl">
-								{m["magic_link.page.title"]()}
-							</h1>
-							<p
-								aria-live="polite"
-								className="text-pretty text-muted-foreground text-sm"
-								role="alert"
-							>
-								{visibleResult.error.message}
-							</p>
-						</div>
-						<div className="rounded-2xl border border-border bg-muted px-4 py-3 text-muted-foreground text-sm">
-							{m["magic_link.page.request_id"]()}{" "}
-							<span className="font-mono text-[13px]">
-								{visibleResult.error.requestId}
-							</span>
-						</div>
-						<div className="flex flex-col gap-3">
-							<Link
-								className="w-full rounded-full bg-primary px-6 py-3 text-center text-primary-foreground transition-colors duration-200 hover:bg-primary/80"
-								to="/login"
-							>
-								{m["magic_link.page.back_to_login"]()}
-							</Link>
-							<Link
-								className="flex items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-center text-foreground transition-colors duration-200 hover:bg-accent"
-								to="/contact"
-							>
-								<LifeBuoyIcon className="size-4" />
-								{m["magic_link.page.contact_support"]()}
-							</Link>
-						</div>
-					</>
-				) : (
-					<>
-						<div className="flex items-center justify-center">
-							<div className="flex size-14 items-center justify-center rounded-full border border-border bg-muted text-foreground">
-								<ShieldCheckIcon className="size-6" />
-							</div>
-						</div>
-						<div className="space-y-2 text-center">
-							<h1 className="text-balance font-medium text-3xl">
-								{m["magic_link.ready.title"]()}
-							</h1>
-							<p className="text-pretty text-muted-foreground text-sm">
-								{m["magic_link.ready.description"]()}
-							</p>
-						</div>
-						<form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-							<button
-								className="hit-area-2 w-full cursor-pointer rounded-full bg-primary px-6 py-3 text-primary-foreground transition-colors duration-200 focus-within:bg-primary/80 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background hover:bg-primary/80 focus:outline-none disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground"
-								disabled={isSubmitting}
-								type="submit"
-							>
-								{isSubmitting
-									? m["magic_link.ready.submitting"]()
-									: m["magic_link.ready.submit"]()}
-							</button>
-							<Link
-								className="w-full rounded-full border border-border px-6 py-3 text-center text-foreground transition-colors duration-200 hover:bg-accent"
-								to="/login"
-							>
-								{m["magic_link.page.back_to_login"]()}
-							</Link>
-						</form>
-					</>
-				)}
-			</div>
-		</>
-	);
+  return (
+    <>
+      <a
+        className="absolute top-5 hidden font-medium text-xl sm:block"
+        href="https://selfmail.app"
+      >
+        Selfmail
+      </a>
+      <div className="flex w-full flex-col gap-6 px-5 sm:px-10 md:w-md md:px-0">
+        {visibleResult ? (
+          <>
+            <div className="flex items-center justify-center">
+              <div className="flex size-14 items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-600 dark:border-red-900 dark:bg-red-950/50 dark:text-red-400">
+                <CircleAlertIcon className="size-6" />
+              </div>
+            </div>
+            <div className="space-y-2 text-center">
+              <h1 className="text-balance font-medium text-3xl">
+                {m["magic_link.page.title"]()}
+              </h1>
+              <p
+                aria-live="polite"
+                className="text-pretty text-muted-foreground text-sm"
+                role="alert"
+              >
+                {visibleResult.error.message}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border bg-muted px-4 py-3 text-muted-foreground text-sm">
+              {m["magic_link.page.request_id"]()}{" "}
+              <span className="font-mono text-[13px]">
+                {visibleResult.error.requestId}
+              </span>
+            </div>
+            <div className="flex flex-col gap-3">
+              <Link
+                className="w-full rounded-full bg-primary px-6 py-3 text-center text-primary-foreground transition-colors duration-200 hover:bg-primary/80"
+                to="/login"
+              >
+                {m["magic_link.page.back_to_login"]()}
+              </Link>
+              <Link
+                className="flex items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-center text-foreground transition-colors duration-200 hover:bg-accent"
+                to="/contact"
+              >
+                <LifeBuoyIcon className="size-4" />
+                {m["magic_link.page.contact_support"]()}
+              </Link>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex items-center justify-center">
+              <div className="flex size-14 items-center justify-center rounded-full border border-border bg-muted text-foreground">
+                <ShieldCheckIcon className="size-6" />
+              </div>
+            </div>
+            <div className="space-y-2 text-center">
+              <h1 className="text-balance font-medium text-3xl">
+                {m["magic_link.ready.title"]()}
+              </h1>
+              <p className="text-pretty text-muted-foreground text-sm">
+                {m["magic_link.ready.description"]()}
+              </p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <button
+                className="hit-area-2 w-full cursor-pointer rounded-full bg-primary px-6 py-3 text-primary-foreground transition-colors duration-200 focus-within:bg-primary/80 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background hover:bg-primary/80 focus:outline-none disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground"
+                disabled={verification.isPending}
+                onClick={() => verification.mutate()}
+                type="submit"
+              >
+                {verification.isPending
+                  ? m["magic_link.ready.submitting"]()
+                  : m["magic_link.ready.submit"]()}
+              </button>
+              <Link
+                className="w-full rounded-full border border-border px-6 py-3 text-center text-foreground transition-colors duration-200 hover:bg-accent"
+                to="/login"
+              >
+                {m["magic_link.page.back_to_login"]()}
+              </Link>
+            </div>
+          </>
+        )}
+      </div>
+    </>
+  );
 }

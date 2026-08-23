@@ -17,7 +17,7 @@ const successSearchSchema = z.object({
 
       const normalizedEmail = email.toLowerCase();
 
-      return z.string().email().safeParse(normalizedEmail).success
+      return z.email().safeParse(normalizedEmail).success
         ? normalizedEmail
         : undefined;
     }),
@@ -96,7 +96,9 @@ function RouteComponent() {
         >
           {m["login_success.resend"]()}
         </button>
-        {error && <p className="text-red-600 text-sm dark:text-red-400">{error}</p>}
+        {error && (
+          <p className="text-red-600 text-sm dark:text-red-400">{error}</p>
+        )}
       </div>
     </>
   );
