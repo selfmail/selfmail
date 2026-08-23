@@ -1,9 +1,11 @@
+import { encryptSessionMetadata } from "@selfmail/authentication/session-metadata";
 import { db } from "@selfmail/db";
 import { createLogger } from "@selfmail/logging";
 import { redirect } from "@tanstack/react-router";
 import {
 	deleteCookie,
 	getCookie,
+	getRequest,
 	getRequestHost,
 	getRequestProtocol,
 	setCookie,
@@ -110,6 +112,7 @@ export abstract class MagicLinkUtils {
 
 		await db.session.create({
 			data: {
+				encryptedMetadata: encryptSessionMetadata(getRequest().headers),
 				expires,
 				sessionToken,
 				userId,

@@ -1,8 +1,13 @@
 import crypto from "node:crypto";
+import { encryptSessionMetadata } from "@selfmail/authentication/session-metadata";
 import { db } from "@selfmail/db";
 import { createLogger } from "@selfmail/logging";
-import { deleteCookie, getCookie, setCookie } from "@tanstack/react-start/server";
-import { generateCodeVerifier, generateState, Google } from "arctic";
+import {
+	deleteCookie,
+	getCookie,
+	setCookie,
+} from "@tanstack/react-start/server";
+import { Google, generateCodeVerifier, generateState } from "arctic";
 import { z } from "zod";
 
 const logger = createLogger("auth-google");
@@ -56,7 +61,11 @@ const getRequestDetails = (request: Request) => {
 	};
 };
 
-const getCookieOptions = (request: Request, maxAge?: number, shared = false) => {
+const getCookieOptions = (
+	request: Request,
+	maxAge?: number,
+	shared = false,
+) => {
 	const { hostname, protocol } = getRequestDetails(request);
 	const domain = shared
 		? SHARED_DOMAINS.find(
@@ -161,7 +170,9 @@ export const startGoogleOAuth = (request: Request) => {
 	try {
 		const state = generateState();
 		const codeVerifier = generateCodeVerifier();
-		const redirectPath = normalizeRedirect(requestUrl.searchParams.get("redirect"));
+		const redirectPath = normalizeRedirect(
+			requestUrl.searchParams.get("redirect"),
+		);
 		const cookieOptions = getCookieOptions(request, OAUTH_COOKIE_MAX_AGE);
 
 		setCookie(STATE_COOKIE_NAME, state, cookieOptions);
@@ -308,6 +319,7 @@ export const finishGoogleOAuth = async (request: Request) => {
 
 			await tx.session.create({
 				data: {
+					encryptedMetadata: encryptSessionMetadata(request.headers),
 					expires: new Date(Date.now() + SESSION_MAX_AGE * 1000),
 					sessionToken: hashToken(rawSessionToken),
 					userId,

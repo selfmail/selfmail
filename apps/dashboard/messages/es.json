@@ -354,6 +354,37 @@
         "empty_title": "No hay una suscripción activa",
         "empty_description": "Este espacio de trabajo no tiene ninguna suscripción actualmente."
       },
+      "authentication": {
+        "email": "Email de la cuenta",
+        "change_email": "Cambiar email",
+        "change_email_title": "Cambiar el email de la cuenta",
+        "change_email_description": "Usa esta dirección para iniciar sesión sin contraseña y recibir notificaciones de la cuenta.",
+        "new_email": "Nueva dirección de email",
+        "changing_email": "Cambiando...",
+        "email_changed": "Email de la cuenta actualizado.",
+        "invalid_email": "Introduce una dirección de email válida.",
+        "verified": "Verificado",
+        "unverified": "Verificación necesaria",
+        "sign_in_methods": "Métodos de inicio de sesión",
+        "sign_in_methods_description": "Métodos conectados actualmente a tu cuenta.",
+        "provider_email": "Enlace por email",
+        "provider_google": "Google",
+        "sessions": "Sesiones activas",
+        "sessions_description": "{count} sesiones activas en tus dispositivos.",
+        "current_session": "Actual",
+        "unknown_region": "Región desconocida",
+        "unknown_user_agent": "Información del navegador no disponible",
+        "created_at": "Creada el {date}",
+        "expires_at": "Caduca el {date}",
+        "delete_session": "Finalizar sesión",
+        "delete_session_title": "¿Finalizar esta sesión?",
+        "delete_session_description": "Se revocará el acceso de este dispositivo. Si es tu sesión actual, tendrás que volver a iniciar sesión.",
+        "deleting_session": "Finalizando...",
+        "delete_sessions": "Eliminar todas las sesiones",
+        "delete_sessions_title": "¿Eliminar todas las sesiones activas?",
+        "delete_sessions_description": "Se eliminarán {count} sesiones, incluida la de este dispositivo. Tendrás que volver a iniciar sesión.",
+        "deleting_sessions": "Eliminando..."
+      },
       "app": {
         "theme": {
           "title": "Tema",
@@ -425,7 +456,7 @@
         },
         "authentication": {
           "title": "Autenticación",
-          "description": "Métodos de inicio de sesión y ajustes de autenticación del workspace."
+          "description": "Email de la cuenta, métodos de inicio de sesión y sesiones activas."
         },
         "spam_analysis": {
           "title": "Análisis de spam",

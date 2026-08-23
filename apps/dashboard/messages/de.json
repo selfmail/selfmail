@@ -352,6 +352,37 @@
         "empty_title": "Kein aktives Abonnement",
         "empty_description": "Dieser Workspace hat derzeit kein Abonnement."
       },
+      "authentication": {
+        "email": "Konto-E-Mail",
+        "change_email": "E-Mail ändern",
+        "change_email_title": "Konto-E-Mail ändern",
+        "change_email_description": "Verwende diese Adresse für die passwortlose Anmeldung und Kontobenachrichtigungen.",
+        "new_email": "Neue E-Mail-Adresse",
+        "changing_email": "Wird geändert...",
+        "email_changed": "Konto-E-Mail aktualisiert.",
+        "invalid_email": "Gib eine gültige E-Mail-Adresse ein.",
+        "verified": "Verifiziert",
+        "unverified": "Verifizierung erforderlich",
+        "sign_in_methods": "Anmeldemethoden",
+        "sign_in_methods_description": "Methoden, die aktuell mit deinem Konto verbunden sind.",
+        "provider_email": "E-Mail-Link",
+        "provider_google": "Google",
+        "sessions": "Aktive Sitzungen",
+        "sessions_description": "{count} aktive Sitzungen auf deinen Geräten.",
+        "current_session": "Aktuell",
+        "unknown_region": "Unbekannte Region",
+        "unknown_user_agent": "Browserinformationen nicht verfügbar",
+        "created_at": "Erstellt {date}",
+        "expires_at": "Läuft ab {date}",
+        "delete_session": "Sitzung beenden",
+        "delete_session_title": "Diese Sitzung beenden?",
+        "delete_session_description": "Der Zugriff dieses Geräts wird widerrufen. Wenn dies deine aktuelle Sitzung ist, musst du dich erneut anmelden.",
+        "deleting_session": "Wird beendet...",
+        "delete_sessions": "Alle Sitzungen löschen",
+        "delete_sessions_title": "Alle aktiven Sitzungen löschen?",
+        "delete_sessions_description": "Dadurch werden {count} Sitzungen gelöscht, einschließlich dieser. Du musst dich erneut anmelden.",
+        "deleting_sessions": "Wird gelöscht..."
+      },
       "app": {
         "theme": {
           "title": "Design",
@@ -423,7 +454,7 @@
         },
         "authentication": {
           "title": "Authentifizierung",
-          "description": "Anmeldemethoden und Authentifizierungseinstellungen des Workspaces."
+          "description": "Konto-E-Mail, Anmeldemethoden und aktive Sitzungen."
         },
         "spam_analysis": {
           "title": "Spam-Analyse",

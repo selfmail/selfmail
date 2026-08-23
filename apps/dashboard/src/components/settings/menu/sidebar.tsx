@@ -128,12 +128,15 @@ export default function SettingsSidebar({
       data-slot="settings-dialog-sidebar"
     >
       <SettingsMenu aria-label={m["dashboard.settings.menu.aria_label"]()}>
-        <abbr className="no-underline" title={"Close Menu"}>
-          <Dialog.Close className="mb-2 flex h-6 w-full cursor-pointer items-center gap-2 rounded-lg px-1 text-muted-foreground text-sm outline-none hover:bg-muted-foreground/15 hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring dark:hover:bg-accent">
-            <XIcon className="size-4" />
-            {m["dashboard.settings.close"]()}
+        <div className="mb-2 flex h-9 items-center justify-end px-1">
+          <Dialog.Close
+            aria-label={m["dashboard.settings.close"]()}
+            className="inline-flex size-8 cursor-pointer items-center justify-center rounded-lg border border-border bg-background text-muted-foreground shadow-xs outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring/25"
+            title={m["dashboard.settings.close"]()}
+          >
+            <XIcon aria-hidden="true" className="size-4" />
           </Dialog.Close>
-        </abbr>
+        </div>
         {visiblePages.map((page) => (
           <abbr className="no-underline" key={page.id} title={page.title()}>
             <SettingsMenuItem

@@ -40,6 +40,10 @@ vi.mock("@tanstack/react-start", () => ({
 vi.mock("@tanstack/react-start/server", () => ({
 	deleteCookie: mocks.deleteCookie,
 	getCookie: mocks.getCookie,
+	getRequest: () =>
+		new Request("https://auth.selfmail.localhost/verify", {
+			headers: { "user-agent": "Selfmail test browser" },
+		}),
 	getRequestHost: () => "auth.selfmail.localhost",
 	getRequestProtocol: () => "https",
 	setCookie: mocks.setCookie,

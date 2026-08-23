@@ -310,6 +310,7 @@ export const SessionScalarFieldEnum = {
   userId: 'userId',
   sessionToken: 'sessionToken',
   expires: 'expires',
+  encryptedMetadata: 'encryptedMetadata',
   createdAt: 'createdAt'
 } as const
 
@@ -796,7 +797,8 @@ export type AccountOrderByRelevanceFieldEnum = (typeof AccountOrderByRelevanceFi
 export const SessionOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId',
-  sessionToken: 'sessionToken'
+  sessionToken: 'sessionToken',
+  encryptedMetadata: 'encryptedMetadata'
 } as const
 
 export type SessionOrderByRelevanceFieldEnum = (typeof SessionOrderByRelevanceFieldEnum)[keyof typeof SessionOrderByRelevanceFieldEnum]

@@ -1,10 +1,12 @@
 import crypto from "node:crypto";
+import { encryptSessionMetadata } from "@selfmail/authentication/session-metadata";
 import { db } from "@selfmail/db";
 import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import {
 	deleteCookie,
 	getCookie,
+	getRequest as getIncomingRequest,
 	getRequestHost,
 	getRequestProtocol,
 	setCookie,
@@ -184,6 +186,9 @@ export const verifyEmailTokenFn = createServerFn({
 				if (rawSessionToken) {
 					await tx.session.create({
 						data: {
+							encryptedMetadata: encryptSessionMetadata(
+								getIncomingRequest().headers,
+							),
 							expires: new Date(Date.now() + SESSION_MAX_AGE * 1000),
 							sessionToken: hashToken(rawSessionToken),
 							userId: emailVerification.userId,

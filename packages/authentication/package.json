@@ -9,6 +9,10 @@
     ".": {
       "import": "./src/index.ts",
       "types": "./src/index.ts"
+    },
+    "./session-metadata": {
+      "import": "./src/session-metadata.ts",
+      "types": "./src/session-metadata.ts"
     }
   },
   "module": "src/index.ts",

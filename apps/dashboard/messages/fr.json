@@ -354,6 +354,37 @@
         "empty_title": "Aucun abonnement actif",
         "empty_description": "Cet espace de travail n’a actuellement aucun abonnement."
       },
+      "authentication": {
+        "email": "E-mail du compte",
+        "change_email": "Modifier l’e-mail",
+        "change_email_title": "Modifier l’e-mail du compte",
+        "change_email_description": "Utilisez cette adresse pour la connexion sans mot de passe et les notifications du compte.",
+        "new_email": "Nouvelle adresse e-mail",
+        "changing_email": "Modification...",
+        "email_changed": "E-mail du compte mis à jour.",
+        "invalid_email": "Saisissez une adresse e-mail valide.",
+        "verified": "Vérifié",
+        "unverified": "Vérification requise",
+        "sign_in_methods": "Méthodes de connexion",
+        "sign_in_methods_description": "Méthodes actuellement associées à votre compte.",
+        "provider_email": "Lien par e-mail",
+        "provider_google": "Google",
+        "sessions": "Sessions actives",
+        "sessions_description": "{count} sessions actives sur vos appareils.",
+        "current_session": "Actuelle",
+        "unknown_region": "Région inconnue",
+        "unknown_user_agent": "Informations du navigateur indisponibles",
+        "created_at": "Créée le {date}",
+        "expires_at": "Expire le {date}",
+        "delete_session": "Mettre fin à la session",
+        "delete_session_title": "Mettre fin à cette session ?",
+        "delete_session_description": "L’accès de cet appareil sera révoqué. S’il s’agit de votre session actuelle, vous devrez vous reconnecter.",
+        "deleting_session": "Fermeture...",
+        "delete_sessions": "Supprimer toutes les sessions",
+        "delete_sessions_title": "Supprimer toutes les sessions actives ?",
+        "delete_sessions_description": "Cette action supprime {count} sessions, y compris celle de cet appareil. Vous devrez vous reconnecter.",
+        "deleting_sessions": "Suppression..."
+      },
       "app": {
         "theme": {
           "title": "Thème",
@@ -425,7 +456,7 @@
         },
         "authentication": {
           "title": "Authentification",
-          "description": "Méthodes de connexion et paramètres d’authentification du workspace."
+          "description": "E-mail du compte, méthodes de connexion et sessions actives."
         },
         "spam_analysis": {
           "title": "Analyse du spam",

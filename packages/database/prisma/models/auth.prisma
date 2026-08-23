@@ -59,6 +59,8 @@ model Session {
     sessionToken String   @unique
     expires      DateTime
 
+    encryptedMetadata String? @db.Text
+
     createdAt DateTime @default(now())
 
     @@index([userId])

@@ -356,6 +356,37 @@
         "empty_title": "No active subscription",
         "empty_description": "This workspace currently has no subscription."
       },
+      "authentication": {
+        "email": "Account email",
+        "change_email": "Change email",
+        "change_email_title": "Change account email",
+        "change_email_description": "Use this address for passwordless sign-in and account notifications.",
+        "new_email": "New email address",
+        "changing_email": "Changing...",
+        "email_changed": "Account email updated.",
+        "invalid_email": "Enter a valid email address.",
+        "verified": "Verified",
+        "unverified": "Verification required",
+        "sign_in_methods": "Sign-in methods",
+        "sign_in_methods_description": "Methods currently connected to your account.",
+        "provider_email": "Email link",
+        "provider_google": "Google",
+        "sessions": "Active sessions",
+        "sessions_description": "{count} active sessions across your devices.",
+        "current_session": "Current",
+        "unknown_region": "Unknown region",
+        "unknown_user_agent": "Browser information unavailable",
+        "created_at": "Created {date}",
+        "expires_at": "Expires {date}",
+        "delete_session": "End session",
+        "delete_session_title": "End this session?",
+        "delete_session_description": "This device's access will be revoked. If this is your current session, you will need to sign in again.",
+        "deleting_session": "Ending...",
+        "delete_sessions": "Delete all sessions",
+        "delete_sessions_title": "Delete all active sessions?",
+        "delete_sessions_description": "This deletes {count} sessions, including the one on this device. You will need to sign in again.",
+        "deleting_sessions": "Deleting..."
+      },
       "app": {
         "theme": {
           "title": "Theme",
@@ -431,7 +462,7 @@
         },
         "authentication": {
           "title": "Authentication",
-          "description": "Sign-in methods and workspace authentication settings."
+          "description": "Account email, sign-in methods, and active sessions."
         },
         "spam_analysis": {
           "title": "Spam Analysis",

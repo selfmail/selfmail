@@ -31,6 +31,8 @@ export const middlewareAuthentication = async (
         user: true,
       },
     });
+    
+    
 
     if (!session) {
       return {
