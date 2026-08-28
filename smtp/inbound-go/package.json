@@ -1,0 +1,16 @@
+{
+  "name": "inbound-go",
+  "description": "Go SMTP Server for Selfmail.",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "go run main.go"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

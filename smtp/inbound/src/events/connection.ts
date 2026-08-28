@@ -61,7 +61,6 @@ export abstract class Connection {
   }
 
   static async init(session: SelfmailSmtpSession, callback: Callback) {
-    session.envelope.spamScore = 0; // Initialize spam score
     session.envelope.postmasterEmail = false; // Initialize postmaster flag
     session.envelope.bounceEmail = false; // Initialize bounce email flag
 

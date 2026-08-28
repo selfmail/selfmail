@@ -1,23 +1,15 @@
 {
-  "name": "spam",
+  "name": "@selfmail/spam",
   "module": "src/index.ts",
-  "exports": {
-    ".": {
-      "import": "./src/index.ts",
-      "types": "./src/index.ts"
-    }
-  },
   "type": "module",
-  "private": true,
   "devDependencies": {
-    "@types/bun": "latest",
-    "@types/sanitize-html": "^2.16.0"
+    "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
-    "ioredis": "^5.8.2",
-    "sanitize-html": "^2.17.0"
+    "@effect/language-service": "^0.87.2",
+    "install": "^0.13.0"
   }
 }

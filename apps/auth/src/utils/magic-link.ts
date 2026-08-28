@@ -82,7 +82,7 @@ export const verifyMagicLinkToken = createServerFn({ method: "POST" })
 
       const tokenHash = Buffer.from(hashBuffer).toString("hex");
 
-      const [_, session] = await db.$transaction([
+      await db.$transaction([
         db.magicLink.deleteMany({
           where: { email: magicLinkSession.email },
         }),
