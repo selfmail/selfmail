@@ -1,4 +1,5 @@
 import { PaperclipIcon } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
 import { useViewedEmail } from "#/stores/viewed-email";
@@ -12,6 +13,10 @@ function formatAttachmentCount(count: number) {
 
 interface EmailListProps {
   emails: Email[];
+  hasNextPage: boolean;
+  isLoadingMore: boolean;
+  loadMoreError: boolean;
+  onLoadMore: () => void;
   onSelectEmail?: (emailId: string) => void;
 }
 
@@ -85,9 +90,37 @@ function EmailItem({ email, isLast, onSelect, selected }: EmailItemProps) {
   );
 }
 
-export function EmailList({ emails, onSelectEmail }: EmailListProps) {
+export function EmailList({
+  emails,
+  hasNextPage,
+  isLoadingMore,
+  loadMoreError,
+  onLoadMore,
+  onSelectEmail,
+}: EmailListProps) {
   const { emailId, setEmailId } = useViewedEmail();
   const handleSelectEmail = onSelectEmail ?? setEmailId;
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const loadMoreElement = loadMoreRef.current;
+
+    if (!(loadMoreElement && hasNextPage) || isLoadingMore || loadMoreError) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          onLoadMore();
+        }
+      },
+      { rootMargin: "400px 0px" }
+    );
+
+    observer.observe(loadMoreElement);
+    return () => observer.disconnect();
+  }, [hasNextPage, isLoadingMore, loadMoreError, onLoadMore]);
 
   return (
     <div className="flex w-full flex-col overflow-hidden rounded-xl border border-border bg-card">
@@ -111,6 +144,29 @@ export function EmailList({ emails, onSelectEmail }: EmailListProps) {
           </p>
         </div>
       )}
+      {hasNextPage ? (
+        <div
+          className="flex min-h-12 items-center justify-center px-4 py-3"
+          ref={loadMoreRef}
+        >
+          {loadMoreError ? (
+            <button
+              className="font-medium text-destructive text-sm underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
+              onClick={onLoadMore}
+              type="button"
+            >
+              {m["dashboard.email.load_more_retry"]()}
+            </button>
+          ) : (
+            <output
+              aria-live="polite"
+              className="text-muted-foreground text-sm"
+            >
+              {isLoadingMore ? m["dashboard.email.loading_more"]() : null}
+            </output>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 }

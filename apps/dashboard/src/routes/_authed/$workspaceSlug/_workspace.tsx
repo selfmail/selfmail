@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { CommandMenu } from "#/components/command-menu";
 import { getWorkspace } from "#/lib/workspaces";
 import { m } from "#/paraglide/messages";
 
@@ -113,5 +114,10 @@ function WorkspaceRouteComponent() {
     throw new Error(m["dashboard.errors.workspace_context_missing"]());
   }
 
-  return <Outlet />;
+  return (
+    <>
+      <CommandMenu workspaceSlug={workspace.slug} />
+      <Outlet />
+    </>
+  );
 }

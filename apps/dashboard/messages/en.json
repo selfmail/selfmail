@@ -11,6 +11,16 @@
     "error_title": "An error occurred"
   },
   "dashboard": {
+    "command": {
+      "title": "Command menu",
+      "description": "Search for pages and actions.",
+      "placeholder": "Search for a command…",
+      "empty": "No results found.",
+      "navigation": "Navigation",
+      "actions": "Actions",
+      "settings": "Workspace settings",
+      "domains": "Manage domains"
+    },
     "inbox": {
       "unified": "Unified Inbox",
       "email_count": "{count} emails",
@@ -35,6 +45,8 @@
       "from": "From",
       "to": "To",
       "to_placeholder": "recipient@example.com",
+      "recipient_search_placeholder": "Name or email address",
+      "no_recipient_matches": "No contacts found",
       "from_placeholder": "name@selfmail.app",
       "loading_addresses": "Loading addresses",
       "no_addresses": "No addresses available",
@@ -152,6 +164,8 @@
       "attachment_count_one": "{count} attachment",
       "empty_title": "No emails yet",
       "empty_description": "Send a message to this address and it will appear here.",
+      "loading_more": "Loading more emails…",
+      "load_more_retry": "Loading failed — try again",
       "preview_title": "Email Preview",
       "fullscreen": "Fullscreen",
       "close_preview": "Close preview",

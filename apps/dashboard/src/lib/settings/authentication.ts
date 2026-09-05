@@ -4,11 +4,21 @@ import {
 } from "@selfmail/authentication/session-metadata";
 import { db } from "@selfmail/db";
 import { createServerFn } from "@tanstack/react-start";
-import { getCookie } from "@tanstack/react-start/server";
+import {
+	deleteCookie,
+	getCookie,
+	getRequestHost,
+} from "@tanstack/react-start/server";
 import z from "zod";
 import { authMiddleware } from "#/utils/auth";
 
 const emailSchema = z.email().trim().toLowerCase();
+const SESSION_COOKIE_NAME = "selfmail-session-token";
+const SHARED_COOKIE_DOMAINS = [
+	"selfmail.app",
+	"selfmail.localhost",
+	"selfmail.local",
+];
 
 const getLoginHref = () =>
 	process.env.SELFMAIL_AUTH_URL
@@ -17,10 +27,26 @@ const getLoginHref = () =>
 			? "https://auth.selfmail.app/login"
 			: "https://auth.selfmail.localhost/login";
 
+const deleteSessionCookie = () => {
+	const hostname =
+		getRequestHost({ xForwardedHost: true })
+			.split(":")[0]
+			?.trim()
+			.toLowerCase() ?? "";
+	const sharedDomain = SHARED_COOKIE_DOMAINS.find(
+		(domain) => hostname === domain || hostname.endsWith(`.${domain}`),
+	);
+
+	deleteCookie(SESSION_COOKIE_NAME, {
+		domain: sharedDomain ? `.${sharedDomain}` : undefined,
+		path: "/",
+	});
+};
+
 export const getAuthenticationSettings = createServerFn({ method: "GET" })
 	.middleware([authMiddleware])
 	.handler(async ({ context: { user } }) => {
-		const sessionToken = getCookie("selfmail-session-token");
+		const sessionToken = getCookie(SESSION_COOKIE_NAME);
 		const currentSessionTokenHash = sessionToken
 			? hashSessionToken(sessionToken)
 			: null;
@@ -145,6 +171,22 @@ export const changeAccountEmail = createServerFn({ method: "POST" })
 		return { email: normalizedEmail };
 	});
 
+export const logoutCurrentSession = createServerFn({ method: "POST" }).handler(
+	async () => {
+		const sessionToken = getCookie(SESSION_COOKIE_NAME);
+
+		if (sessionToken) {
+			await db.session.deleteMany({
+				where: { sessionToken: hashSessionToken(sessionToken) },
+			});
+		}
+
+		deleteSessionCookie();
+
+		return { loginHref: getLoginHref() };
+	},
+);
+
 export const deleteAllSessions = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
 	.handler(async ({ context: { user } }) => {
@@ -168,7 +210,7 @@ export const deleteSession = createServerFn({ method: "POST" })
 			throw new Error("Session not found.");
 		}
 
-		const currentToken = getCookie("selfmail-session-token");
+		const currentToken = getCookie(SESSION_COOKIE_NAME);
 		const isCurrent = currentToken
 			? session.sessionToken === hashSessionToken(currentToken)
 			: false;

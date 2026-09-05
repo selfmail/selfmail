@@ -102,9 +102,14 @@ export interface DashboardEmail {
 	to?: string;
 }
 
+export type DashboardEmailPage = {
+	emails: DashboardEmail[];
+	nextCursor: string | null;
+};
+
 export interface DashboardInboxData {
 	addresses: DashboardAddress[];
-	emails: DashboardEmail[];
+	emailPage: DashboardEmailPage;
 }
 
 export interface DashboardAddressInboxData extends DashboardInboxData {

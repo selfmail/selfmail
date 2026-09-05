@@ -11,7 +11,11 @@ import {
 } from "#/components/ui";
 import { m } from "#/paraglide/messages";
 import AddressSelect from "./address-select";
-import { AttachmentUpload, type ComposeAttachment } from "./attachments";
+import {
+	AttachmentUpload,
+	type ComposeAttachment,
+	createAttachment,
+} from "./attachments";
 import { ComposeEditor } from "./editor";
 import { composeDialogHandle } from "./handle";
 import { ToInput } from "./to-input";
@@ -111,6 +115,12 @@ export default function ComposeDialog({
 									</div>
 									<ComposeEditor
 										initialMarkdown={payload?.body}
+										onFilesDrop={(files) =>
+											setAttachments((current) => [
+												...current,
+												...files.map(createAttachment),
+											])
+										}
 										onMarkdownChange={setBodyMarkdown}
 									/>
 									<textarea

@@ -127,7 +127,7 @@ function SettingsDialogContent({
             workspaceId={workspaceId}
           />
           <div className="flex min-h-0 min-w-0 flex-1 flex-col p-2">
-            <div className="flex min-h-0 min-w-0 flex-1 flex-col space-y-1 overflow-auto rounded-xl border border-border bg-background p-2">
+            <div className="flex min-h-0 min-w-0 flex-1 flex-col space-y-1 overflow-auto rounded-xl border border-border bg-background p-2 [scrollbar-color:gray_transparent] [scrollbar-width:thin]">
               <h2 className="font-medium text-lg">
                 {currentActivePage.title()}
               </h2>

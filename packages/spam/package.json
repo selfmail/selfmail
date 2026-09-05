@@ -5,11 +5,16 @@
   "devDependencies": {
     "@types/bun": "latest"
   },
+  "scripts": {
+    "dev": "bun run src/index.ts"
+  },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
     "@effect/language-service": "^0.87.2",
-    "install": "^0.13.0"
+    "@effect/platform-bun": "^4.0.0-rc.112",
+    "bullmq": "^5.61.2",
+    "effect": "^4.0.0-rc.112"
   }
 }

@@ -157,7 +157,7 @@ export function MemberSettingsPage({
       onRetry={() => refetch()}
       retryLabel={m["dashboard.settings.member_settings.retry"]()}
     >
-      <div className="min-h-0 flex-1 overflow-auto">
+      <div className="min-h-0 flex-1 overflow-auto [scrollbar-color:gray_transparent] [scrollbar-width:thin]">
         <div className="overflow-hidden rounded-xl border border-border bg-background">
           <table className="w-full min-w-lg border-collapse text-left text-sm">
             <thead className="bg-muted/60 text-muted-foreground">

@@ -11,6 +11,16 @@
     "error_title": "Se ha producido un error"
   },
   "dashboard": {
+    "command": {
+      "title": "Menú de comandos",
+      "description": "Busca páginas y acciones.",
+      "placeholder": "Buscar un comando…",
+      "empty": "No se encontraron resultados.",
+      "navigation": "Navegación",
+      "actions": "Acciones",
+      "settings": "Ajustes del espacio de trabajo",
+      "domains": "Gestionar dominios"
+    },
     "inbox": {
       "unified": "Inbox unificado",
       "email_count": "{count} emails",
@@ -35,6 +45,8 @@
       "from": "De",
       "to": "Para",
       "to_placeholder": "recipient@example.com",
+      "recipient_search_placeholder": "Nombre o dirección de correo",
+      "no_recipient_matches": "No se encontraron contactos",
       "from_placeholder": "name@selfmail.app",
       "loading_addresses": "Cargando direcciones",
       "no_addresses": "No hay direcciones disponibles",
@@ -137,6 +149,7 @@
       "manage": "Gestionar",
       "settings": "Ajustes",
       "members": "Miembros",
+      "logout": "Cerrar sesión",
       "billing": "Facturación",
       "domains": "Dominios",
       "webhooks": "Webhooks",
@@ -150,6 +163,8 @@
       "attachment_count_one": "{count} archivo adjunto",
       "empty_title": "Aún no hay correos",
       "empty_description": "Envía un mensaje a esta dirección y aparecerá aquí.",
+      "loading_more": "Cargando más correos…",
+      "load_more_retry": "Error al cargar — inténtalo de nuevo",
       "preview_title": "Vista previa del correo",
       "fullscreen": "Pantalla completa",
       "close_preview": "Cerrar vista previa",

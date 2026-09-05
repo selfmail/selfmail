@@ -12,14 +12,10 @@ export interface Evidence {
   readonly category: EvidenceCategory;
 
   /**
-   * 0–100
-   * Wie verdächtig ist dieses Signal?
    */
   readonly score: number;
 
   /**
-   * 0–1
-   * Wie sehr vertrauen wir diesem Signal?
    */
   readonly confidence: number;
 

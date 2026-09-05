@@ -9,6 +9,16 @@
     "error_title": "Es ist ein Fehler aufgetreten"
   },
   "dashboard": {
+    "command": {
+      "title": "Befehlsmenü",
+      "description": "Suche nach Seiten und Aktionen.",
+      "placeholder": "Befehl suchen …",
+      "empty": "Keine Ergebnisse gefunden.",
+      "navigation": "Navigation",
+      "actions": "Aktionen",
+      "settings": "Workspace-Einstellungen",
+      "domains": "Domains verwalten"
+    },
     "inbox": {
       "unified": "Gemeinsame Inbox",
       "email_count": "{count} E-Mails",
@@ -33,6 +43,8 @@
       "from": "Von",
       "to": "An",
       "to_placeholder": "empfänger@example.com",
+      "recipient_search_placeholder": "Name oder E-Mail-Adresse",
+      "no_recipient_matches": "Keine Kontakte gefunden",
       "from_placeholder": "name@selfmail.app",
       "loading_addresses": "Adressen werden geladen",
       "no_addresses": "Keine Adressen verfügbar",
@@ -135,6 +147,7 @@
       "manage": "Verwalten",
       "settings": "Einstellungen",
       "members": "Members",
+      "logout": "Abmelden",
       "billing": "Abrechnung",
       "domains": "Domains",
       "webhooks": "Webhooks",
@@ -148,6 +161,8 @@
       "attachment_count_one": "{count} Anhang",
       "empty_title": "Noch keine E-Mails",
       "empty_description": "Sende eine Nachricht an diese Adresse, sie erscheint dann hier.",
+      "loading_more": "Weitere E-Mails werden geladen …",
+      "load_more_retry": "Laden fehlgeschlagen – erneut versuchen",
       "preview_title": "E-Mail-Vorschau",
       "fullscreen": "Vollbild",
       "close_preview": "Vorschau schließen",

@@ -1,5 +1,7 @@
-import { useState, useSyncExternalStore } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useCallback, useState, useSyncExternalStore } from "react";
 import { cn } from "#/lib/utils";
+import { getInboxEmailPageFn } from "#/lib/workspaces";
 import { m } from "#/paraglide/messages";
 import { useViewedEmail } from "#/stores/viewed-email";
 import BottomBar from "./bottombar";
@@ -8,7 +10,10 @@ import { DashboardHeader } from "./dashboard/dashboard-header";
 import { DashboardNavigation } from "./dashboard/dashboard-navigation";
 import { EmailList } from "./dashboard/email-list";
 import { EmailPreview } from "./dashboard/email-preview";
-import type { DashboardWorkspaceProps } from "./dashboard/types";
+import type {
+  DashboardWorkspaceProps,
+  EmailPage,
+} from "./dashboard/types";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./ui";
 
 function formatEmailCount(count: number) {
@@ -52,11 +57,61 @@ function subscribeToMediaQuery(
   return () => mediaQuery.removeEventListener("change", onStoreChange);
 }
 
+type InboxEmailsOptions = {
+  currentAddressSlug?: string;
+  initialEmailPage: EmailPage;
+  workspaceSlug: string;
+};
+
+function useInboxEmails({
+  currentAddressSlug,
+  initialEmailPage,
+  workspaceSlug,
+}: InboxEmailsOptions) {
+  const emailQuery = useInfiniteQuery({
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialData: {
+      pageParams: [null],
+      pages: [initialEmailPage],
+    },
+    initialPageParam: null as string | null,
+    queryFn: ({ pageParam }) =>
+      getInboxEmailPageFn({
+        data: {
+          addressSlug: currentAddressSlug,
+          cursor: pageParam ?? undefined,
+          workspaceSlug,
+        },
+      }),
+    queryKey: ["inbox-emails", workspaceSlug, currentAddressSlug ?? null],
+    staleTime: 30_000,
+  });
+  const {
+    fetchNextPage,
+    hasNextPage,
+    isFetchNextPageError,
+    isFetchingNextPage,
+  } = emailQuery;
+  const loadMore = useCallback(async () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      await fetchNextPage();
+    }
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  return {
+    emails: emailQuery.data.pages.flatMap((page) => page.emails),
+    hasNextPage,
+    isFetchNextPageError,
+    isFetchingNextPage,
+    loadMore,
+  };
+}
+
 export function DashboardWorkspace({
   addresses,
   currentAddressSlug,
   currentWorkspace,
-  emails,
+  initialEmailPage,
   subtitle,
   title,
   memberId,
@@ -67,6 +122,17 @@ export function DashboardWorkspace({
   >();
   const [composeOpen, setComposeOpen] = useState(false);
   const { emailId, setEmailId } = useViewedEmail();
+  const {
+    emails,
+    hasNextPage,
+    isFetchNextPageError,
+    isFetchingNextPage,
+    loadMore,
+  } = useInboxEmails({
+    currentAddressSlug,
+    initialEmailPage,
+    workspaceSlug: currentWorkspace.slug,
+  });
   const previewOpen = emails.some((email) => email.id === emailId);
   const sidePanelOpen = previewOpen || composeOpen;
   const canResizePreview = useSyncExternalStore(
@@ -75,7 +141,18 @@ export function DashboardWorkspace({
     () => getMediaQuerySnapshot(resizablePreviewBreakpoint),
     () => false
   );
-  const resolvedSubtitle = subtitle ?? formatEmailCount(emails.length);
+  const currentAddress = currentAddressSlug
+    ? addresses.find((address) => address.addressSlug === currentAddressSlug)
+    : undefined;
+  const emailCount = formatEmailCount(emails.length);
+  const resolvedSubtitle =
+    subtitle ??
+    (currentAddress
+      ? m["dashboard.address.subtitle"]({
+          address: currentAddress.email,
+          count: emailCount,
+        })
+      : emailCount);
   const resolvedTitle = title ?? m["dashboard.inbox.unified"]();
 
   logDashboardWorkspace("debug", "render", {
@@ -143,7 +220,14 @@ export function DashboardWorkspace({
               </p>
             </div>
           </div>
-          <EmailList emails={emails} onSelectEmail={selectEmail} />
+          <EmailList
+            emails={emails}
+            hasNextPage={hasNextPage}
+            isLoadingMore={isFetchingNextPage}
+            loadMoreError={isFetchNextPageError}
+            onLoadMore={loadMore}
+            onSelectEmail={selectEmail}
+          />
         </main>
       </div>
       <BottomBar />

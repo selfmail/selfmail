@@ -11,6 +11,16 @@
     "error_title": "Une erreur s’est produite"
   },
   "dashboard": {
+    "command": {
+      "title": "Menu de commandes",
+      "description": "Recherchez des pages et des actions.",
+      "placeholder": "Rechercher une commande…",
+      "empty": "Aucun résultat trouvé.",
+      "navigation": "Navigation",
+      "actions": "Actions",
+      "settings": "Paramètres de l’espace de travail",
+      "domains": "Gérer les domaines"
+    },
     "inbox": {
       "unified": "Inbox unifiée",
       "email_count": "{count} e‑mails",
@@ -35,6 +45,8 @@
       "from": "De",
       "to": "À",
       "to_placeholder": "destinataire@example.com",
+      "recipient_search_placeholder": "Nom ou adresse e-mail",
+      "no_recipient_matches": "Aucun contact trouvé",
       "from_placeholder": "name@selfmail.app",
       "loading_addresses": "Chargement des adresses",
       "no_addresses": "Aucune adresse disponible",
@@ -137,6 +149,7 @@
       "manage": "Gérer",
       "settings": "Paramètres",
       "members": "Membres",
+      "logout": "Se déconnecter",
       "billing": "Facturation",
       "domains": "Domaines",
       "webhooks": "Webhooks",
@@ -150,6 +163,8 @@
       "attachment_count_one": "{count} pièce jointe",
       "empty_title": "Pas encore d’e-mails",
       "empty_description": "Envoyez un message à cette adresse et il s’affichera ici.",
+      "loading_more": "Chargement d’autres e-mails…",
+      "load_more_retry": "Échec du chargement — réessayer",
       "preview_title": "Aperçu de l’e-mail",
       "fullscreen": "Plein écran",
       "close_preview": "Fermer l’aperçu",

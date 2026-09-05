@@ -23,6 +23,11 @@ export const addressInboxSchema = workspaceSlugSchema.extend({
 	addressSlug: z.string().min(1),
 });
 
+export const inboxEmailPageSchema = workspaceSlugSchema.extend({
+	addressSlug: z.string().min(1).optional(),
+	cursor: z.string().min(1).optional(),
+});
+
 export const removeWorkspaceMemberSchema = workspaceSlugSchema.extend({
 	memberId: z.string().min(1),
 });

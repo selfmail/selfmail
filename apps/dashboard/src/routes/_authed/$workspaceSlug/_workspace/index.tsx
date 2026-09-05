@@ -35,13 +35,13 @@ function RouteComponent() {
     return null;
   }
 
-  const { addresses, emails } = inbox;
+  const { addresses, emailPage } = inbox;
 
   return (
     <DashboardWorkspace
       addresses={addresses}
       currentWorkspace={workspace}
-      emails={emails}
+      initialEmailPage={emailPage}
       memberId={member.id}
       workspaces={workspaces}
     />

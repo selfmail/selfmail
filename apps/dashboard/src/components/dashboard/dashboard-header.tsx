@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import {
   CheckIcon,
@@ -7,6 +8,7 @@ import {
   PlusIcon,
   SettingsIcon,
 } from "lucide-react";
+import { toast } from "sonner";
 import {
   cn,
   Dropdown,
@@ -16,6 +18,7 @@ import {
   DropdownSeparator,
   DropdownTrigger,
 } from "#/components/ui";
+import { logoutCurrentSession } from "#/lib/settings/authentication";
 import { m } from "#/paraglide/messages";
 import { settingsDialogHandle } from "../settings";
 import type { DashboardHeaderProps } from "./types";
@@ -28,6 +31,11 @@ export function DashboardHeader({
 }: DashboardHeaderProps) {
   const navigate = useNavigate();
   const dropdownItemClassName = "cursor-pointer";
+  const logout = useMutation({
+    mutationFn: () => logoutCurrentSession(),
+    onError: (error) => toast.error(error.message),
+    onSuccess: ({ loginHref }) => window.location.assign(loginHref),
+  });
 
   return (
     <header className="flex w-full flex-row items-center justify-between gap-4">
@@ -90,10 +98,9 @@ export function DashboardHeader({
             </DropdownItem>
             <DropdownItem
               className={dropdownItemClassName}
+              disabled={logout.isPending}
               icon={<DoorOpenIcon />}
-              onClick={() => {
-                // TODO: logout user
-              }}
+              onClick={() => logout.mutate()}
             >
               {m["dashboard.header.logout"]()}
             </DropdownItem>

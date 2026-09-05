@@ -129,7 +129,7 @@ export function AuditLogsSettingsPage({
 			onRetry={() => refetch()}
 			retryLabel={m["dashboard.settings.retry"]()}
 		>
-			<div className="min-h-0 w-full min-w-0 flex-1 overflow-auto">
+			<div className="min-h-0 w-full min-w-0 flex-1 overflow-auto [scrollbar-color:gray_transparent] [scrollbar-width:thin]">
 				<div className="min-w-3xl overflow-hidden rounded-xl border border-border bg-background">
 					<table className="w-full border-collapse text-left text-sm">
 						<thead className="bg-muted/60 text-muted-foreground">

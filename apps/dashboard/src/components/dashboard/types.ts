@@ -24,12 +24,17 @@ export interface DashboardWorkspaceProps {
 	addresses: DashboardAddress[];
 	currentAddressSlug?: string;
 	currentWorkspace: WorkspaceSummary;
-	emails: Email[];
+	initialEmailPage: EmailPage;
 	memberId: string;
 	subtitle?: string;
 	title?: string;
 	workspaces: WorkspaceSummary[];
 }
+
+export type EmailPage = {
+	emails: Email[];
+	nextCursor: string | null;
+};
 
 export interface Email {
 	attachments?: number;

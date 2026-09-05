@@ -13,7 +13,7 @@ export interface ComposeAttachment {
 	id: string;
 }
 
-function createAttachment(file: File): ComposeAttachment {
+export function createAttachment(file: File): ComposeAttachment {
 	return {
 		file,
 		id: `${file.name}-${file.lastModified}-${file.size}-${crypto.randomUUID()}`,

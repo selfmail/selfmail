@@ -19,6 +19,14 @@ export {
   AlertDialogTrigger,
 } from "./components/alert-dialog";
 export {
+  Autocomplete,
+  AutocompleteContent,
+  AutocompleteEmpty,
+  AutocompleteInput,
+  AutocompleteItem,
+  AutocompleteList,
+} from "./components/autocomplete";
+export {
   Avatar,
   AvatarFallback,
   AvatarImage,

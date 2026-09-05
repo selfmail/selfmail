@@ -1,6 +1,6 @@
 import { Dialog } from "@base-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { XIcon } from "lucide-react";
+import { ArrowLeftIcon } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import { useEffect } from "react";
 import { getSidebarPermissions } from "#/lib/settings/sidebar";
@@ -124,17 +124,18 @@ export default function SettingsSidebar({
 
   return (
     <aside
-      className="flex shrink-0 flex-col border-border border-b bg-muted/80 p-3 text-foreground sm:w-56 sm:border-b-0"
+      className="flex min-h-0 shrink-0 flex-col overflow-auto border-border border-b bg-muted/80 p-3 text-foreground [scrollbar-color:gray_transparent] [scrollbar-width:thin] sm:w-56 sm:border-b-0"
       data-slot="settings-dialog-sidebar"
     >
       <SettingsMenu aria-label={m["dashboard.settings.menu.aria_label"]()}>
-        <div className="mb-2 flex h-9 items-center justify-end px-1">
+        <div className="flex cursor-pointer items-center justify-start rounded-sm px-2 py-1 transition-colors hover:bg-neutral-700">
           <Dialog.Close
             aria-label={m["dashboard.settings.close"]()}
-            className="inline-flex size-8 cursor-pointer items-center justify-center rounded-lg border border-border bg-background text-muted-foreground shadow-xs outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring/25"
+            className="flex cursor-pointer items-center space-x-2 text-neutral-200"
             title={m["dashboard.settings.close"]()}
           >
-            <XIcon aria-hidden="true" className="size-4" />
+            <ArrowLeftIcon size={16} />
+            <span className="text-sm">Close Menu</span>
           </Dialog.Close>
         </div>
         {visiblePages.map((page) => (

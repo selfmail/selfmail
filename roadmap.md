@@ -211,3 +211,7 @@ This roadmap outlines the missing features and improvements for Selfmail, priori
 12. **Phase 12**: Enterprise - capture large customers
 
 This roadmap prioritizes building a solid foundation first, then adding differentiating features (AI, workflows), followed by scalability, collaboration, and enterprise requirements.
+
+# ToDos:
+Future tasks, to scale selfmail:
+- save mails local in an nvme ssd, after that save the email to the redis queue to process it

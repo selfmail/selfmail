@@ -10,10 +10,15 @@ import {
   toDashboardWorkspaceDomain,
 } from "./domain-presenter";
 import { toDashboardEmail } from "./email-format";
-import { addressInboxSchema, workspaceSlugSchema } from "./schemas";
+import {
+  addressInboxSchema,
+  inboxEmailPageSchema,
+  workspaceSlugSchema,
+} from "./schemas";
 import type {
   DashboardAddressDomain,
   DashboardAddressInboxData,
+  DashboardEmailPage,
   DashboardInboxData,
   DashboardWorkspace,
   DashboardWorkspaceDomainsData,
@@ -97,15 +102,42 @@ async function getMemberAddresses(userId: string, workspaceSlug: string) {
     .map(({ _count, ...address }) => address);
 }
 
-async function getAddressEmails(addressIds: string[]) {
+async function getMemberAddressIds(
+  userId: string,
+  workspaceSlug: string,
+  addressSlug?: string
+) {
+  const addresses = await db.address.findMany({
+    select: { id: true },
+    where: {
+      addressSlug,
+      MemberAddress: {
+        some: {
+          member: {
+            userId,
+            workspace: { slug: workspaceSlug },
+          },
+        },
+      },
+    },
+  });
+
+  return addresses.map(({ id }) => id);
+}
+
+const inboxEmailPageSize = 50;
+
+async function getAddressEmails(
+  addressIds: string[],
+  cursor?: string
+): Promise<DashboardEmailPage> {
   if (addressIds.length === 0) {
-    return [];
+    return { emails: [], nextCursor: null };
   }
 
   const emails = await db.email.findMany({
-    orderBy: {
-      date: "desc",
-    },
+    cursor: cursor ? { id: cursor } : undefined,
+    orderBy: [{ date: "desc" }, { id: "desc" }],
     select: {
       address: {
         select: {
@@ -120,7 +152,8 @@ async function getAddressEmails(addressIds: string[]) {
       subject: true,
       text: true,
     },
-    take: 50,
+    skip: cursor ? 1 : 0,
+    take: inboxEmailPageSize + 1,
     where: {
       addressId: {
         in: addressIds,
@@ -128,7 +161,15 @@ async function getAddressEmails(addressIds: string[]) {
     },
   });
 
-  return emails.map(toDashboardEmail);
+  const hasNextPage = emails.length > inboxEmailPageSize;
+  const pageEmails = emails.slice(0, inboxEmailPageSize);
+
+  return {
+    emails: pageEmails.map(toDashboardEmail),
+    nextCursor: hasNextPage
+      ? (pageEmails.at(-1)?.id ?? null)
+      : null,
+  };
 }
 
 export const getWorkspace = createServerFn({
@@ -240,11 +281,11 @@ export const getWorkspaceInboxFn = createServerFn({ method: "GET" })
       data: { workspaceSlug },
     }): Promise<DashboardInboxData> => {
       const addresses = await getMemberAddresses(user.id, workspaceSlug);
-      const emails = await getAddressEmails(addresses.map(({ id }) => id));
+      const emailPage = await getAddressEmails(addresses.map(({ id }) => id));
 
       return {
         addresses,
-        emails,
+        emailPage,
       };
     }
   );
@@ -268,13 +309,37 @@ export const getAddressInboxFn = createServerFn({ method: "GET" })
         });
       }
 
-      const emails = await getAddressEmails([address.id]);
+      const emailPage = await getAddressEmails([address.id]);
 
       return {
         address,
         addresses,
-        emails,
+        emailPage,
       };
+    }
+  );
+
+export const getInboxEmailPageFn = createServerFn({ method: "GET" })
+  .middleware([authMiddleware])
+  .validator(inboxEmailPageSchema)
+  .handler(
+    async ({
+      context: { user },
+      data: { addressSlug, cursor, workspaceSlug },
+    }): Promise<DashboardEmailPage> => {
+      const addressIds = await getMemberAddressIds(
+        user.id,
+        workspaceSlug,
+        addressSlug
+      );
+
+      if (addressSlug && addressIds.length === 0) {
+        throw new Response(m["dashboard.errors.address_not_found"](), {
+          status: 404,
+        });
+      }
+
+      return getAddressEmails(addressIds, cursor);
     }
   );
 

@@ -1,13 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DashboardWorkspace } from "#/components/dashboard-workspace";
 import { getAddressInboxFn, getDashboardWorkspacesFn } from "#/lib/workspaces";
-import { m } from "#/paraglide/messages";
-
-function formatEmailCount(count: number) {
-  return count === 1
-    ? m["dashboard.inbox.email_count_one"]({ count })
-    : m["dashboard.inbox.email_count"]({ count });
-}
 
 export const Route = createFileRoute(
   "/_authed/$workspaceSlug/_workspace/$addressSlug"
@@ -32,9 +25,8 @@ export const Route = createFileRoute(
 });
 
 function RouteComponent() {
-  const { workspace } = Route.useRouteContext();
-  const { address, addresses, emails, workspaces } = Route.useLoaderData();
-  const emailCount = formatEmailCount(emails.length);
+  const { member, workspace } = Route.useRouteContext();
+  const { address, addresses, emailPage, workspaces } = Route.useLoaderData();
 
   if (!workspace) {
     console.error("[workspace-address-route] workspace context missing", {
@@ -49,11 +41,8 @@ function RouteComponent() {
       addresses={addresses}
       currentAddressSlug={address.addressSlug}
       currentWorkspace={workspace}
-      emails={emails}
-      subtitle={m["dashboard.address.subtitle"]({
-        address: address.email,
-        count: emailCount,
-      })}
+      initialEmailPage={emailPage}
+      memberId={member.id}
       title={address.handle}
       workspaces={workspaces}
     />
