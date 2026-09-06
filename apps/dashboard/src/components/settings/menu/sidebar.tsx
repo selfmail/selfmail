@@ -128,16 +128,12 @@ export default function SettingsSidebar({
       data-slot="settings-dialog-sidebar"
     >
       <SettingsMenu aria-label={m["dashboard.settings.menu.aria_label"]()}>
-        <div className="flex cursor-pointer items-center justify-start rounded-sm px-2 py-1 transition-colors hover:bg-neutral-700">
-          <Dialog.Close
-            aria-label={m["dashboard.settings.close"]()}
-            className="flex cursor-pointer items-center space-x-2 text-neutral-200"
-            title={m["dashboard.settings.close"]()}
-          >
-            <ArrowLeftIcon size={16} />
-            <span className="text-sm">Close Menu</span>
-          </Dialog.Close>
-        </div>
+        <Dialog.Close
+          render={<SettingsMenuItem icon={<ArrowLeftIcon />} />}
+          title={m["dashboard.settings.close"]()}
+        >
+          {m["dashboard.settings.close"]()}
+        </Dialog.Close>
         {visiblePages.map((page) => (
           <abbr className="no-underline" key={page.id} title={page.title()}>
             <SettingsMenuItem

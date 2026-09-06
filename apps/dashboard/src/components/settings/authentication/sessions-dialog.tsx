@@ -33,7 +33,12 @@ export function SessionsDialog({ sessionCount }: { sessionCount: number }) {
 	return (
 		<AlertDialog onOpenChange={handleOpenChange} open={open}>
 			<AlertDialogTrigger asChild>
-				<Button disabled={sessionCount === 0} size="sm" variant="outline">
+				<Button
+					className="rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+					disabled={sessionCount === 0}
+					size="sm"
+					variant="ghost"
+				>
 					{m["dashboard.settings.authentication.delete_sessions"]()}
 				</Button>
 			</AlertDialogTrigger>
