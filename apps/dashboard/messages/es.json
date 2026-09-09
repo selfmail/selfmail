@@ -177,6 +177,10 @@
       "hour_ago": "Hace {count} h",
       "day_ago": "Hace {count} d"
     },
+    "search": {
+      "placeholder": "Buscar en la bandeja de entrada…",
+      "empty": "No se encontraron resultados."
+    },
     "sample_emails": {
       "alerts_from": "Alertas de Selfmail",
       "daily_deliverability_subject": "Resumen diario de entregabilidad",

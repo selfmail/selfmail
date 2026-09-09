@@ -177,6 +177,10 @@
       "hour_ago": "Il y a {count} h",
       "day_ago": "Il y a {count} j"
     },
+    "search": {
+      "placeholder": "Rechercher dans la boîte de réception…",
+      "empty": "Aucun résultat trouvé."
+    },
     "sample_emails": {
       "alerts_from": "Alertes Selfmail",
       "daily_deliverability_subject": "Récapitulatif quotidien de délivrabilité",

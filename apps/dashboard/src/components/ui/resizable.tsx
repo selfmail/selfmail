@@ -28,7 +28,7 @@ function ResizableHandle({
 	...props
 }: ResizableHandleProps) {
 	return (
-		<ResizablePrimitiveHandle className={cn("", className)} {...props}>
+		<ResizablePrimitiveHandle className={cn("cursor-col-resize", className)} {...props}>
 			{withHandle ? (
 				<div className="flex h-8 w-4 items-center justify-center rounded-md border border-border bg-card text-muted-foreground shadow-sm">
 					<GripVerticalIcon className="size-3.5" />

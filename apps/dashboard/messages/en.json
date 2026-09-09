@@ -178,6 +178,10 @@
       "hour_ago": "{count}h ago",
       "day_ago": "{count}d ago"
     },
+    "search": {
+      "placeholder": "Search inbox…",
+      "empty": "No results found."
+    },
     "sample_emails": {
       "alerts_from": "Selfmail Alerts",
       "daily_deliverability_subject": "Daily deliverability summary",

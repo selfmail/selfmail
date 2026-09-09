@@ -175,6 +175,10 @@
       "hour_ago": "vor {count} Std.",
       "day_ago": "vor {count} Tg."
     },
+    "search": {
+      "placeholder": "Posteingang durchsuchen …",
+      "empty": "Keine Ergebnisse gefunden."
+    },
     "sample_emails": {
       "alerts_from": "Selfmail-Benachrichtigungen",
       "daily_deliverability_subject": "Tägliche Zustellbarkeitsübersicht",
