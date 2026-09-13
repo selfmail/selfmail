@@ -61,15 +61,6 @@ services:
     volumes:
       - clamav-data:/var/lib/clamav
 
-  inngest:
-    image: inngest/inngest:latest
-    container_name: selfmail-inngest-dev
-    restart: unless-stopped
-    ports:
-      - "8288:8288"
-    environment:
-      - TZ=${TZ:-UTC}
-
 volumes:
   postgres-data:
   redis-data:

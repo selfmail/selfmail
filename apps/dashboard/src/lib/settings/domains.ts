@@ -104,6 +104,7 @@ export const addNewDomain = createServerFn({
         data: {
           domain,
           workspaceId,
+          verified: false,
           verificationToken: tokenHash,
         },
       });

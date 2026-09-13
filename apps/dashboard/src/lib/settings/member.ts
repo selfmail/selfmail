@@ -175,6 +175,7 @@ export const inviteMember = createServerFn({ method: "POST" })
           token: hashedToken,
           invitedById: currentMember.id,
           workspaceId,
+          message,
         },
       });
 

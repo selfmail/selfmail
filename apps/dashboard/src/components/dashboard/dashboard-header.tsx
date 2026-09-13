@@ -4,8 +4,8 @@ import {
   CheckIcon,
   ChevronsUpDownIcon,
   DoorOpenIcon,
-  PlaneTakeoffIcon,
   PlusIcon,
+  Send,
   SettingsIcon,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -119,11 +119,11 @@ export function DashboardHeader({
         </DropdownContent>
       </Dropdown>
       <button
-        className="flex cursor-pointer items-center gap-x-3 rounded-xl border border-border border-dashed p-2 text-center text-muted-foreground text-sm hover:bg-accent hover:text-accent-foreground hover:ring-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
+        className="flex cursor-pointer items-center gap-x-3 rounded-2xl border border-border px-4 py-2 text-center text-muted-foreground text-sm hover:bg-accent hover:text-accent-foreground hover:ring-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25"
         onClick={() => onComposeOpen({})}
         type="button"
       >
-        <PlaneTakeoffIcon className="inline-block size-5" />
+        <Send className="inline-block size-4" />
         <span>{m["dashboard.header.compose"]()}</span>
       </button>
     </header>
