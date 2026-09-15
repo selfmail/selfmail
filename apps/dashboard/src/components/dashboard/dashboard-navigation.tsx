@@ -11,7 +11,7 @@ import { ChevronDownIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
-import SettingsDialog, { settingsDialogHandle } from "../settings";
+import { settingsDialogHandle } from "../settings";
 import type { DashboardAddress } from "./types";
 
 const buildLinks = [
@@ -199,8 +199,6 @@ function AddressNavLink({
 export function DashboardNavigation({
   addresses,
   currentAddressSlug,
-  workspaceId,
-  memberId,
   workspaceSlug,
 }: DashboardNavigationProps) {
   const getWorkspaceHref = (href: string) => `/${workspaceSlug}${href}`;
@@ -289,11 +287,6 @@ export function DashboardNavigation({
 
   return (
     <nav className="grid w-full min-w-0 @2xl/dashboard-shell:grid-cols-[repeat(2,minmax(0,max-content))] @min-[68rem]/dashboard-shell:grid-cols-[repeat(3,minmax(0,max-content))] grid-cols-1 items-start @2xl/dashboard-shell:justify-between @2xl/dashboard-shell:gap-8 gap-4">
-      <SettingsDialog
-        memberId={memberId}
-        workspaceId={workspaceId}
-        workspaceSlug={workspaceSlug}
-      />
       <NavColumn
         renderContent={renderAddressLinks}
         title={m["dashboard.address.navigation_label"]()}

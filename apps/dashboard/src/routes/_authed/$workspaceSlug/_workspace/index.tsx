@@ -1,37 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DashboardWorkspace } from "#/components/dashboard-workspace";
-import {
-  getDashboardWorkspacesFn,
-  getWorkspaceInboxFn,
-} from "#/lib/workspaces";
+import { getWorkspaceInboxFn } from "#/lib/workspaces";
 
 export const Route = createFileRoute("/_authed/$workspaceSlug/_workspace/")({
   component: RouteComponent,
-  loader: async ({ params }) => {
-    const [inbox, workspaces] = await Promise.all([
-      getWorkspaceInboxFn({
-        data: {
-          workspaceSlug: params.workspaceSlug,
-        },
-      }),
-      getDashboardWorkspacesFn(),
-    ]);
-
-    return {
-      inbox,
-      workspaces,
-    };
-  },
+  loader: async ({ params }) => ({
+    inbox: await getWorkspaceInboxFn({
+      data: { workspaceSlug: params.workspaceSlug },
+    }),
+  }),
 });
 
 function RouteComponent() {
   const { workspace, member } = Route.useRouteContext();
-  const { inbox, workspaces } = Route.useLoaderData();
+  const { inbox } = Route.useLoaderData();
 
   if (!workspace) {
-    console.error("[workspace-index-route] workspace context missing", {
-      workspaces: workspaces.map(({ id, slug }) => ({ id, slug })),
-    });
     return null;
   }
 
@@ -43,7 +27,6 @@ function RouteComponent() {
       currentWorkspace={workspace}
       initialEmailPage={emailPage}
       memberId={member.id}
-      workspaces={workspaces}
     />
   );
 }

@@ -213,7 +213,6 @@ export function DashboardWorkspace({
 	subtitle,
 	title,
 	memberId,
-	workspaces,
 }: DashboardWorkspaceProps) {
 	const [composeDraft, setComposeDraft] = useState<
 		ComposeSidebarDraft | undefined
@@ -259,7 +258,6 @@ export function DashboardWorkspace({
 		currentWorkspaceId: currentWorkspace?.id,
 		currentWorkspaceSlug: currentWorkspace?.slug,
 		emailCount: emails.length,
-		workspaceCount: workspaces.length,
 	});
 
 	if (!currentWorkspace) {
@@ -267,7 +265,6 @@ export function DashboardWorkspace({
 			addressCount: addresses.length,
 			currentAddressSlug,
 			emailCount: emails.length,
-			workspaces: workspaces.map(({ id, slug }) => ({ id, slug })),
 		});
 		return null;
 	}
@@ -297,7 +294,6 @@ export function DashboardWorkspace({
 				<DashboardHeader
 					currentWorkspace={currentWorkspace}
 					onComposeOpen={openCompose}
-					workspaces={workspaces}
 				/>
 				<DashboardNavigation
 					addresses={addresses}

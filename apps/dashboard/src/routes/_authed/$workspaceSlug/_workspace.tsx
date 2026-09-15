@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { CommandMenu } from "#/components/command-menu";
+import SettingsDialog from "#/components/settings";
 import { getWorkspace } from "#/lib/workspaces";
 import { m } from "#/paraglide/messages";
 
@@ -117,6 +118,11 @@ function WorkspaceRouteComponent() {
   return (
     <>
       <CommandMenu workspaceSlug={workspace.slug} />
+      <SettingsDialog
+        memberId={member.id}
+        workspaceId={workspace.id}
+        workspaceSlug={workspace.slug}
+      />
       <Outlet />
     </>
   );

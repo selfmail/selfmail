@@ -17,7 +17,6 @@ export interface DashboardAddress {
 export interface DashboardHeaderProps {
 	currentWorkspace: WorkspaceSummary;
 	onComposeOpen: (draft?: ComposeSidebarDraft) => void;
-	workspaces: WorkspaceSummary[];
 }
 
 export interface DashboardWorkspaceProps {
@@ -28,7 +27,6 @@ export interface DashboardWorkspaceProps {
 	memberId: string;
 	subtitle?: string;
 	title?: string;
-	workspaces: WorkspaceSummary[];
 }
 
 export type EmailPage = {
