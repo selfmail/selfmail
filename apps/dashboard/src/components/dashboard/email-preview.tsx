@@ -69,6 +69,7 @@ export function EmailPreview({
 
   return (
     <aside
+      data-email-preview=""
       className={cn(
         "sticky top-0 z-10 hidden h-dvh w-full shrink-0 flex-col overflow-hidden rounded-l-2xl border-border bg-background xl:flex",
         className

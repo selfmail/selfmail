@@ -1,5 +1,5 @@
 import { PaperclipIcon } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { type Ref, useEffect, useRef } from "react";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
 import { useViewedEmail } from "#/stores/viewed-email";
@@ -13,6 +13,7 @@ function formatAttachmentCount(count: number) {
 
 interface EmailListProps {
   emails: Email[];
+  listRef?: Ref<HTMLDivElement>;
   hasNextPage: boolean;
   isLoadingMore: boolean;
   loadMoreError: boolean;
@@ -35,6 +36,8 @@ function EmailItem({ email, isLast, onSelect, selected }: EmailItemProps) {
         !isLast && "border-border border-b",
         selected && "bg-accent/60"
       )}
+      aria-current={selected ? "true" : undefined}
+      data-email-id={email.id}
       onClick={() => onSelect(email.id)}
       type="button"
     >
@@ -95,6 +98,7 @@ export function EmailList({
   hasNextPage,
   isLoadingMore,
   loadMoreError,
+  listRef,
   onLoadMore,
   onSelectEmail,
 }: EmailListProps) {
@@ -123,7 +127,10 @@ export function EmailList({
   }, [hasNextPage, isLoadingMore, loadMoreError, onLoadMore]);
 
   return (
-    <div className="flex w-full flex-col overflow-hidden rounded-xl border border-border bg-card">
+    <div
+      className="flex w-full flex-col overflow-hidden rounded-xl border border-border bg-card"
+      ref={listRef}
+    >
       {emails.length > 0 ? (
         emails.map((email, index) => (
           <EmailItem

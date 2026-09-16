@@ -19,6 +19,7 @@ import { Route as AuthedWorkspaceSlugWorkspaceConsoleRouteImport } from './route
 import { Route as AuthedWorkspaceSlugWorkspaceNewAddressRouteImport } from './routes/_authed/$workspaceSlug/_workspace/new-address'
 import { Route as AuthedWorkspaceSlugMailEmailIdRouteImport } from './routes/_authed/$workspaceSlug/mail/$emailId'
 import { Route as AuthedWorkspaceSlugWorkspaceConsoleAnalyticsRouteImport } from './routes/_authed/$workspaceSlug/_workspace/_console/analytics'
+import { Route as AuthedWorkspaceSlugWorkspaceConsoleLogsRouteImport } from './routes/_authed/$workspaceSlug/_workspace/_console/logs'
 import { Route as AuthedWorkspaceSlugWorkspaceConsoleAiIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/_console/ai/index'
 import { Route as AuthedWorkspaceSlugWorkspaceConsoleContactsIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/_console/contacts/index'
 import { Route as AuthedWorkspaceSlugWorkspaceConsoleConversationsIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/_console/conversations/index'
@@ -82,6 +83,12 @@ const AuthedWorkspaceSlugWorkspaceConsoleAnalyticsRoute =
     path: '/analytics',
     getParentRoute: () => AuthedWorkspaceSlugWorkspaceConsoleRoute,
   } as any)
+const AuthedWorkspaceSlugWorkspaceConsoleLogsRoute =
+  AuthedWorkspaceSlugWorkspaceConsoleLogsRouteImport.update({
+    id: '/logs',
+    path: '/logs',
+    getParentRoute: () => AuthedWorkspaceSlugWorkspaceConsoleRoute,
+  } as any)
 const AuthedWorkspaceSlugWorkspaceConsoleAiIndexRoute =
   AuthedWorkspaceSlugWorkspaceConsoleAiIndexRouteImport.update({
     id: '/ai/',
@@ -134,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/$workspaceSlug/mail/$emailId': typeof AuthedWorkspaceSlugMailEmailIdRoute
   '/$workspaceSlug/': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
   '/$workspaceSlug/analytics': typeof AuthedWorkspaceSlugWorkspaceConsoleAnalyticsRoute
+  '/$workspaceSlug/logs': typeof AuthedWorkspaceSlugWorkspaceConsoleLogsRoute
   '/$workspaceSlug/domains/add': typeof AuthedWorkspaceSlugWorkspaceConsoleDomainsAddRoute
   '/$workspaceSlug/ai/': typeof AuthedWorkspaceSlugWorkspaceConsoleAiIndexRoute
   '/$workspaceSlug/contacts/': typeof AuthedWorkspaceSlugWorkspaceConsoleContactsIndexRoute
@@ -150,6 +158,7 @@ export interface FileRoutesByTo {
   '/$workspaceSlug/new-address': typeof AuthedWorkspaceSlugWorkspaceNewAddressRoute
   '/$workspaceSlug/mail/$emailId': typeof AuthedWorkspaceSlugMailEmailIdRoute
   '/$workspaceSlug/analytics': typeof AuthedWorkspaceSlugWorkspaceConsoleAnalyticsRoute
+  '/$workspaceSlug/logs': typeof AuthedWorkspaceSlugWorkspaceConsoleLogsRoute
   '/$workspaceSlug/domains/add': typeof AuthedWorkspaceSlugWorkspaceConsoleDomainsAddRoute
   '/$workspaceSlug/ai': typeof AuthedWorkspaceSlugWorkspaceConsoleAiIndexRoute
   '/$workspaceSlug/contacts': typeof AuthedWorkspaceSlugWorkspaceConsoleContactsIndexRoute
@@ -170,6 +179,7 @@ export interface FileRoutesById {
   '/_authed/$workspaceSlug/mail/$emailId': typeof AuthedWorkspaceSlugMailEmailIdRoute
   '/_authed/$workspaceSlug/_workspace/': typeof AuthedWorkspaceSlugWorkspaceIndexRoute
   '/_authed/$workspaceSlug/_workspace/_console/analytics': typeof AuthedWorkspaceSlugWorkspaceConsoleAnalyticsRoute
+  '/_authed/$workspaceSlug/_workspace/_console/logs': typeof AuthedWorkspaceSlugWorkspaceConsoleLogsRoute
   '/_authed/$workspaceSlug/_workspace/_console/domains/add': typeof AuthedWorkspaceSlugWorkspaceConsoleDomainsAddRoute
   '/_authed/$workspaceSlug/_workspace/_console/ai/': typeof AuthedWorkspaceSlugWorkspaceConsoleAiIndexRoute
   '/_authed/$workspaceSlug/_workspace/_console/contacts/': typeof AuthedWorkspaceSlugWorkspaceConsoleContactsIndexRoute
@@ -189,6 +199,7 @@ export interface FileRouteTypes {
     | '/$workspaceSlug/mail/$emailId'
     | '/$workspaceSlug/'
     | '/$workspaceSlug/analytics'
+    | '/$workspaceSlug/logs'
     | '/$workspaceSlug/domains/add'
     | '/$workspaceSlug/ai/'
     | '/$workspaceSlug/contacts/'
@@ -205,6 +216,7 @@ export interface FileRouteTypes {
     | '/$workspaceSlug/new-address'
     | '/$workspaceSlug/mail/$emailId'
     | '/$workspaceSlug/analytics'
+    | '/$workspaceSlug/logs'
     | '/$workspaceSlug/domains/add'
     | '/$workspaceSlug/ai'
     | '/$workspaceSlug/contacts'
@@ -224,6 +236,7 @@ export interface FileRouteTypes {
     | '/_authed/$workspaceSlug/mail/$emailId'
     | '/_authed/$workspaceSlug/_workspace/'
     | '/_authed/$workspaceSlug/_workspace/_console/analytics'
+    | '/_authed/$workspaceSlug/_workspace/_console/logs'
     | '/_authed/$workspaceSlug/_workspace/_console/domains/add'
     | '/_authed/$workspaceSlug/_workspace/_console/ai/'
     | '/_authed/$workspaceSlug/_workspace/_console/contacts/'
@@ -309,6 +322,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceConsoleAnalyticsRouteImport
       parentRoute: typeof AuthedWorkspaceSlugWorkspaceConsoleRoute
     }
+    '/_authed/$workspaceSlug/_workspace/_console/logs': {
+      id: '/_authed/$workspaceSlug/_workspace/_console/logs'
+      path: '/logs'
+      fullPath: '/$workspaceSlug/logs'
+      preLoaderRoute: typeof AuthedWorkspaceSlugWorkspaceConsoleLogsRouteImport
+      parentRoute: typeof AuthedWorkspaceSlugWorkspaceConsoleRoute
+    }
     '/_authed/$workspaceSlug/_workspace/_console/ai/': {
       id: '/_authed/$workspaceSlug/_workspace/_console/ai/'
       path: '/ai'
@@ -363,6 +383,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthedWorkspaceSlugWorkspaceConsoleRouteChildren {
   AuthedWorkspaceSlugWorkspaceConsoleAnalyticsRoute: typeof AuthedWorkspaceSlugWorkspaceConsoleAnalyticsRoute
+  AuthedWorkspaceSlugWorkspaceConsoleLogsRoute: typeof AuthedWorkspaceSlugWorkspaceConsoleLogsRoute
   AuthedWorkspaceSlugWorkspaceConsoleDomainsAddRoute: typeof AuthedWorkspaceSlugWorkspaceConsoleDomainsAddRoute
   AuthedWorkspaceSlugWorkspaceConsoleAiIndexRoute: typeof AuthedWorkspaceSlugWorkspaceConsoleAiIndexRoute
   AuthedWorkspaceSlugWorkspaceConsoleContactsIndexRoute: typeof AuthedWorkspaceSlugWorkspaceConsoleContactsIndexRoute
@@ -376,6 +397,8 @@ const AuthedWorkspaceSlugWorkspaceConsoleRouteChildren: AuthedWorkspaceSlugWorks
   {
     AuthedWorkspaceSlugWorkspaceConsoleAnalyticsRoute:
       AuthedWorkspaceSlugWorkspaceConsoleAnalyticsRoute,
+    AuthedWorkspaceSlugWorkspaceConsoleLogsRoute:
+      AuthedWorkspaceSlugWorkspaceConsoleLogsRoute,
     AuthedWorkspaceSlugWorkspaceConsoleDomainsAddRoute:
       AuthedWorkspaceSlugWorkspaceConsoleDomainsAddRoute,
     AuthedWorkspaceSlugWorkspaceConsoleAiIndexRoute:

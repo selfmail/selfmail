@@ -20,6 +20,7 @@ import type {
 	Email,
 	EmailPage,
 } from "./dashboard/types";
+import { useMailKeyboard } from "./dashboard/use-mail-keyboard";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./ui";
 
 function formatEmailCount(count: number) {
@@ -238,6 +239,19 @@ export function DashboardWorkspace({
 		() => getMediaQuerySnapshot(resizablePreviewBreakpoint),
 		() => false,
 	);
+	const emailListRef = useMailKeyboard({
+		emailId,
+		previewOpen: canResizePreview && previewOpen,
+		composeOpen: canResizePreview && composeOpen,
+		onSelectEmail: setEmailId,
+		onClosePreview: () => {
+			void setEmailId(null);
+		},
+		onCloseCompose: () => {
+			setComposeOpen(false);
+			setComposeDraft(undefined);
+		},
+	});
 	const currentAddress = currentAddressSlug
 		? addresses.find((address) => address.addressSlug === currentAddressSlug)
 		: undefined;
@@ -318,6 +332,7 @@ export function DashboardWorkspace({
 						emails={emails}
 						hasNextPage={hasNextPage}
 						isLoadingMore={isFetchingNextPage}
+						listRef={emailListRef}
 						loadMoreError={isFetchNextPageError}
 						onLoadMore={loadMore}
 						onSelectEmail={selectEmail}

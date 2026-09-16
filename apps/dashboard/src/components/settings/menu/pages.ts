@@ -9,7 +9,6 @@ import {
 	type LucideIcon,
 	SettingsIcon,
 	ShieldAlertIcon,
-	ShieldCheckIcon,
 	ShieldIcon,
 	SlidersHorizontalIcon,
 	UsersIcon,
@@ -19,7 +18,6 @@ import { m } from "#/paraglide/messages";
 import type { Page } from "..";
 import { AddressSettingsPage } from "../addresses";
 import { AppSettingsPage } from "../app";
-import { AuditLogsSettingsPage } from "../audit-logs";
 import { AuthenticationSettingsPage } from "../authentication";
 import { BillingSettingsPage } from "../billing";
 import { DomainSettingsPage } from "../domains";
@@ -80,13 +78,7 @@ export const settingsPages: SettingsPage[] = [
 		id: "permissions",
 		title: m["dashboard.settings.menu.permissions.title"],
 	},
-	{
-		component: AuditLogsSettingsPage,
-		description: m["dashboard.settings.menu.audit_logs.description"],
-		icon: ShieldCheckIcon,
-		id: "auditLogs",
-		title: m["dashboard.settings.menu.audit_logs.title"],
-	},
+
 	{
 		component: PlaceholderSettingsPage,
 		description: m["dashboard.settings.menu.storage.description"],
