@@ -10,6 +10,7 @@ import {
   toDashboardWorkspaceDomain,
 } from "./domain-presenter";
 import { toDashboardEmail } from "./email-format";
+import { sanitizeEmailHtml } from "./sanitize-email-html";
 import {
   addressInboxSchema,
   inboxEmailPageSchema,
@@ -361,6 +362,7 @@ export const getDashboardEmailFn = createServerFn({ method: "GET" })
         attachments: true,
         date: true,
         from: true,
+        html: true,
         id: true,
         read: true,
         subject: true,
@@ -386,7 +388,10 @@ export const getDashboardEmailFn = createServerFn({ method: "GET" })
       });
     }
 
-    return toDashboardEmail(email);
+    return {
+      ...toDashboardEmail(email),
+      html: email.html?.trim() ? sanitizeEmailHtml(email.html) : null,
+    };
   });
 
 export const getWorkspaceAddressDomainsFn = createServerFn({ method: "GET" })

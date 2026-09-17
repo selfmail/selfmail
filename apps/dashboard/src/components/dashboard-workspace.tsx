@@ -9,7 +9,6 @@ import { cn } from "#/lib/utils";
 import { getInboxEmailPageFn } from "#/lib/workspaces";
 import { m } from "#/paraglide/messages";
 import { useViewedEmail } from "#/stores/viewed-email";
-import BottomBar from "./bottombar";
 import { ComposeSidebar, type ComposeSidebarDraft } from "./compose-sidebar";
 import { DashboardHeader } from "./dashboard/dashboard-header";
 import { DashboardNavigation } from "./dashboard/dashboard-navigation";
@@ -339,7 +338,6 @@ export function DashboardWorkspace({
 					/>
 				</main>
 			</div>
-			<BottomBar emails={emails} onSelectEmail={selectEmail} />
 		</div>
 	);
 

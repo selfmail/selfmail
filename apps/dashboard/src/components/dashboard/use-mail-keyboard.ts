@@ -28,6 +28,7 @@ export function useMailKeyboard({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
         event.defaultPrevented ||
+        document.querySelector("[data-panel-fullscreen]") ||
         event.isComposing ||
         event.altKey ||
         event.ctrlKey ||
@@ -97,7 +98,9 @@ export function useMailKeyboard({
               )
             );
       const next = buttons[nextIndex];
-      if (!next?.dataset.emailId) return;
+      if (!next?.dataset.emailId) {
+        return;
+      }
       event.preventDefault();
       next.focus({ preventScroll: true });
       next.scrollIntoView({ block: "nearest" });

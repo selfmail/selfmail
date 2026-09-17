@@ -1,7 +1,11 @@
-import { Maximize2Icon, XIcon } from "lucide-react";
+import { Maximize2Icon, Minimize2Icon, XIcon } from "lucide-react";
 import type { FormEvent } from "react";
 import { useState } from "react";
 import { cn } from "#/components/ui";
+import {
+	panelFullscreenClassName,
+	usePanelFullscreen,
+} from "#/hooks/use-panel-fullscreen";
 import { m } from "#/paraglide/messages";
 import {
 	AttachmentUpload,
@@ -32,6 +36,7 @@ export function ComposeSidebar({
 	onClose,
 	workspaceSlug,
 }: ComposeSidebarProps) {
+	const { panelRef, isFullscreen, toggleFullscreen } = usePanelFullscreen();
 	const [attachments, setAttachments] = useState<ComposeAttachment[]>([]);
 	const [bodyMarkdown, setBodyMarkdown] = useState("");
 	const [discardOpen, setDiscardOpen] = useState(false);
@@ -52,9 +57,12 @@ export function ComposeSidebar({
 
 	return (
 		<aside
+			ref={panelRef}
+			data-panel-fullscreen={isFullscreen || undefined}
 			className={cn(
 				"sticky top-0 z-10 flex h-dvh w-full shrink-0 flex-col overflow-hidden rounded-l-2xl border-border bg-background",
 				className,
+				isFullscreen && panelFullscreenClassName,
 			)}
 		>
 			<form className="flex min-h-0 flex-1 flex-col" onSubmit={handleSubmit}>
@@ -67,10 +75,20 @@ export function ComposeSidebar({
 					<div className="flex shrink-0 items-center gap-2">
 						<button
 							className="flex items-center gap-2 rounded-lg px-3 py-2 text-muted-foreground text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+							aria-pressed={isFullscreen}
+							onClick={toggleFullscreen}
 							type="button"
 						>
-							<Maximize2Icon className="size-4" />
-							<span>{m["dashboard.compose.fullscreen"]()}</span>
+							{isFullscreen ? (
+								<Minimize2Icon className="size-4" />
+							) : (
+								<Maximize2Icon className="size-4" />
+							)}
+							<span>
+								{isFullscreen
+									? m["dashboard.compose.exit_fullscreen"]()
+									: m["dashboard.compose.fullscreen"]()}
+							</span>
 						</button>
 						<button
 							aria-label={m["dashboard.compose.close_label"]()}

@@ -1,7 +1,17 @@
-import { Maximize2Icon, PaperclipIcon, XIcon } from "lucide-react";
+import {
+  Maximize2Icon,
+  Minimize2Icon,
+  PaperclipIcon,
+  XIcon,
+} from "lucide-react";
+import {
+  panelFullscreenClassName,
+  usePanelFullscreen,
+} from "#/hooks/use-panel-fullscreen";
 import { cn } from "#/lib/utils";
 import { m } from "#/paraglide/messages";
 import { useViewedEmail } from "#/stores/viewed-email";
+import { EmailBody } from "./email-body";
 import type { Email } from "./types";
 
 interface EmailAttachmentsProps {
@@ -57,6 +67,7 @@ export function EmailPreview({
   onClose,
   selectedEmailId,
 }: EmailPreviewProps) {
+  const { panelRef, isFullscreen, toggleFullscreen } = usePanelFullscreen();
   const { closePreview, emailId } = useViewedEmail();
   const email = emails.find(
     (sampleEmail) => sampleEmail.id === (selectedEmailId ?? emailId)
@@ -69,11 +80,14 @@ export function EmailPreview({
 
   return (
     <aside
-      data-email-preview=""
       className={cn(
         "sticky top-0 z-10 hidden h-dvh w-full shrink-0 flex-col overflow-hidden rounded-l-2xl border-border bg-background xl:flex",
-        className
+        className,
+        isFullscreen && panelFullscreenClassName
       )}
+      data-email-preview=""
+      data-panel-fullscreen={isFullscreen || undefined}
+      ref={panelRef}
     >
       <div className="flex items-center justify-between border-border border-b px-6 py-4">
         <h2 className="truncate font-medium text-lg">
@@ -81,11 +95,21 @@ export function EmailPreview({
         </h2>
         <div className="flex items-center gap-2">
           <button
+            aria-pressed={isFullscreen}
             className="flex items-center gap-2 rounded-lg px-3 py-2 text-muted-foreground text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+            onClick={toggleFullscreen}
             type="button"
           >
-            <Maximize2Icon className="size-4" />
-            <span>{m["dashboard.email.fullscreen"]()}</span>
+            {isFullscreen ? (
+              <Minimize2Icon className="size-4" />
+            ) : (
+              <Maximize2Icon className="size-4" />
+            )}
+            <span>
+              {isFullscreen
+                ? m["dashboard.email.exit_fullscreen"]()
+                : m["dashboard.email.fullscreen"]()}
+            </span>
           </button>
           <button
             aria-label={m["dashboard.email.close_preview"]()}
@@ -120,11 +144,7 @@ export function EmailPreview({
           </div>
         </div>
         <EmailAttachments email={email} />
-        <div className="max-w-none">
-          <p className="whitespace-pre-wrap text-pretty font-sans text-foreground text-sm leading-6">
-            {email.snippet}
-          </p>
-        </div>
+        <EmailBody email={email} key={email.id} />
       </div>
     </aside>
   );

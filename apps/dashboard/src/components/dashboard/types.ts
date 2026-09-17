@@ -35,6 +35,7 @@ export type EmailPage = {
 };
 
 export interface Email {
+	html?: string | null;
 	attachments?: number;
 	date: string;
 	from: string;
