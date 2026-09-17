@@ -24,9 +24,9 @@ import { settingsDialogHandle } from "../settings";
 import type { WorkspaceSummary } from "./types";
 import { WorkspaceAvatar } from "./workspace-avatar";
 
-type AccountSwitcherProps = {
+interface AccountSwitcherProps {
   currentWorkspace: WorkspaceSummary;
-};
+}
 
 export function AccountSwitcher({ currentWorkspace }: AccountSwitcherProps) {
   const navigate = useNavigate();
