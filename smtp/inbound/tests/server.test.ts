@@ -37,17 +37,15 @@ describe("SMTP Inbound Server", () => {
     expect(typeof server.options.onData).toBe("function");
   });
 
-  test("should listen on port 25", async () => {
+  test("should listen on configured port", async () => {
     const smtpModule = await import("../src/index");
     server = smtpModule.server;
-
-    // Since smtp-server does not expose the listening port directly,
-    // we can check if the server is listening by attempting to connect to it.
 
     const client = new net.Socket();
 
     await new Promise<void>((resolve, reject) => {
-      client.connect(25, "localhost", () => {
+      client.connect(smtpModule.SMTP_PORT, "localhost", () => {
+        client.destroy();
         resolve();
       });
 
