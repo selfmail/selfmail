@@ -23,6 +23,7 @@
     "@selfmail/db": "workspace:*",
     "@selfmail/payments": "workspace:*",
     "@selfmail/permissions": "workspace:*",
+    "@selfmail/s3": "workspace:*",
     "@selfmail/ui": "workspace:*",
     "@selfmail/web-ratelimit": "workspace:*",
     "@t3-oss/env-core": "^0.13.11",

@@ -1,4 +1,35 @@
 services:
+  minio:
+    image: quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
+    container_name: selfmail-minio-dev
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    environment:
+      MINIO_ROOT_USER: selfmail
+      MINIO_ROOT_PASSWORD: selfmail-local-secret
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  minio-init:
+    image: quay.io/minio/mc:RELEASE.2025-08-13T08-35-41Z
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        mc alias set local http://minio:9000 selfmail selfmail-local-secret
+        mc mb --ignore-existing local/workspace-images
+        mc anonymous set download local/workspace-images
+
   postgres:
     image: postgres:16-alpine
     container_name: selfmail-postgres-dev
@@ -62,6 +93,7 @@ services:
       - clamav-data:/var/lib/clamav
 
 volumes:
+  minio-data:
   postgres-data:
   redis-data:
   clamav-data:
