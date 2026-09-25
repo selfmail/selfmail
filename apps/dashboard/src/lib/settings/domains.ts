@@ -1,262 +1,272 @@
 import crypto from "node:crypto";
+import { resolveMx, resolveTxt } from "node:dns/promises";
 import { db } from "@selfmail/db";
-import {
-  addDomainToQueue,
-  verifyDomainRecordsExternal,
-} from "@selfmail/domain-in-queue";
+import { addDomainToQueue } from "@selfmail/domain-in-queue";
 import { permissions } from "@selfmail/permissions";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
 import { authMiddleware } from "#/utils/auth";
+import { domainTxtHost, domainTxtValue } from "../workspaces/domain-utils";
 export const getWorkspaceDomains = createServerFn({
-  method: "GET",
+	method: "GET",
 })
-  .validator(
-    z.object({
-      workspaceId: z.string(),
-      memberId: z.string(),
-    })
-  )
-  .middleware([authMiddleware])
-  .handler(async ({ context: { user }, data: { memberId, workspaceId } }) => {
-    // Check whether the member exists
-    await db.member.findUniqueOrThrow({
-      where: {
-        id: memberId,
-        workspaceId,
-        userId: user.id,
-      },
-    });
+	.validator(
+		z.object({
+			workspaceId: z.string(),
+			memberId: z.string(),
+		}),
+	)
+	.middleware([authMiddleware])
+	.handler(async ({ context: { user }, data: { memberId, workspaceId } }) => {
+		// Check whether the member exists
+		await db.member.findUniqueOrThrow({
+			where: {
+				id: memberId,
+				workspaceId,
+				userId: user.id,
+			},
+		});
 
-    const p = await permissions({
-      memberId,
-      workspaceId,
-      permissions: ["domains:add", "domains:delete", "domains:update"],
-    });
+		const p = await permissions({
+			memberId,
+			workspaceId,
+			permissions: ["domains:add", "domains:delete", "domains:update"],
+		});
 
-    const domains = await db.domain.findMany({
-      where: {
-        workspaceId,
-      },
-    });
+		const domains = await db.domain.findMany({
+			where: {
+				workspaceId,
+			},
+		});
 
-    return {
-      canDeleteDomains: p.includes("domains:delete"),
-      canAddDomains: p.includes("domains:add"),
-      canUpdateDomains: p.includes("domains:update"),
+		return {
+			canDeleteDomains: p.includes("domains:delete"),
+			canAddDomains: p.includes("domains:add"),
+			canUpdateDomains: p.includes("domains:update"),
 
-      domains,
-    };
-  });
+			domains,
+		};
+	});
 
 export const addNewDomain = createServerFn({
-  method: "POST",
+	method: "POST",
 })
-  .middleware([authMiddleware])
-  .validator(
-    z.object({
-      domain: z.string().regex(z.regexes.domain),
-      workspaceId: z.string(),
-      memberId: z.string(),
-    })
-  )
-  .handler(
-    async ({ data: { domain, memberId, workspaceId }, context: { user } }) => {
-      const member = await db.member.findUnique({
-        where: {
-          id: memberId,
-          userId: user.id,
-          workspaceId,
-        },
-      });
+	.middleware([authMiddleware])
+	.validator(
+		z.object({
+			domain: z.string().regex(z.regexes.domain),
+			workspaceId: z.string(),
+			memberId: z.string(),
+		}),
+	)
+	.handler(
+		async ({ data: { domain, memberId, workspaceId }, context: { user } }) => {
+			const member = await db.member.findUnique({
+				where: {
+					id: memberId,
+					userId: user.id,
+					workspaceId,
+				},
+			});
 
-      if (!member) {
-        throw new Error("Member not found");
-      }
+			if (!member) {
+				throw new Error("Member not found");
+			}
 
-      // Check permissions
-      const p = await permissions({
-        memberId: member.id,
-        workspaceId,
-        permissions: ["domains:add"],
-      });
+			// Check permissions
+			const p = await permissions({
+				memberId: member.id,
+				workspaceId,
+				permissions: ["domains:add"],
+			});
 
-      if (!p.includes("domains:add")) {
-        throw new Error("You do not have permission to add domains");
-      }
+			if (!p.includes("domains:add")) {
+				throw new Error("You do not have permission to add domains");
+			}
 
-      // Check whether domain is already part of a workspace
-      const existingDomain = await db.domain.findUnique({
-        where: {
-          domain,
-        },
-      });
+			// Check whether domain is already part of a workspace
+			const existingDomain = await db.domain.findUnique({
+				where: {
+					domain,
+				},
+			});
 
-      if (existingDomain) {
-        throw new Error("Domain already exists in this workspace");
-      }
+			if (existingDomain) {
+				throw new Error("Domain already exists in this workspace");
+			}
 
-      const verificationToken = `sd_${crypto.randomBytes(32).toString("base64url")}`;
+			const verificationToken = `sd_${crypto.randomBytes(32).toString("base64url")}`;
 
-      const tokenHash = crypto
-        .createHash("sha256")
-        .update(verificationToken)
-        .digest("hex");
+			const tokenHash = crypto
+				.createHash("sha256")
+				.update(verificationToken)
+				.digest("hex");
 
-      const newDomain = await db.domain.create({
-        data: {
-          domain,
-          workspaceId,
-          verified: false,
-          verificationToken: tokenHash,
-        },
-      });
+			const newDomain = await db.domain.create({
+				data: {
+					domain,
+					workspaceId,
+					verified: false,
+					verificationToken: tokenHash,
+				},
+			});
 
-      // Enqueue a new job to verify the domain after certain period of time
-      addDomainToQueue(newDomain.id);
+			// Enqueue a new job to verify the domain after certain period of time
+			addDomainToQueue(newDomain.id);
 
-      return {
-        token: verificationToken,
-        domain: newDomain.domain,
-      };
-    }
-  );
+			return {
+				token: verificationToken,
+				domain: newDomain.domain,
+			};
+		},
+	);
 
 export const removeDomain = createServerFn({
-  method: "POST",
+	method: "POST",
 })
-  .middleware([authMiddleware])
-  .validator(
-    z.object({
-      domainId: z.string(),
-      workspaceId: z.string(),
-      memberId: z.string(),
-    })
-  )
-  .handler(
-    async ({
-      data: { domainId, workspaceId, memberId },
-      context: { user },
-    }) => {
-      const member = await db.member.findUnique({
-        where: {
-          id: memberId,
-          userId: user.id,
-          workspaceId,
-        },
-      });
+	.middleware([authMiddleware])
+	.validator(
+		z.object({
+			domainId: z.string(),
+			workspaceId: z.string(),
+			memberId: z.string(),
+		}),
+	)
+	.handler(
+		async ({
+			data: { domainId, workspaceId, memberId },
+			context: { user },
+		}) => {
+			const member = await db.member.findUnique({
+				where: {
+					id: memberId,
+					userId: user.id,
+					workspaceId,
+				},
+			});
 
-      if (!member) {
-        throw new Error("Member not found");
-      }
+			if (!member) {
+				throw new Error("Member not found");
+			}
 
-      // Check permissions
-      const p = await permissions({
-        memberId: member.id,
-        workspaceId,
-        permissions: ["domains:delete"],
-      });
+			// Check permissions
+			const p = await permissions({
+				memberId: member.id,
+				workspaceId,
+				permissions: ["domains:delete"],
+			});
 
-      if (!p.includes("domains:delete")) {
-        throw new Error("You do not have permission to delete domains");
-      }
+			if (!p.includes("domains:delete")) {
+				throw new Error("You do not have permission to delete domains");
+			}
 
-      // Check whether domain exists
-      const existingDomain = await db.domain.findUnique({
-        where: {
-          id: domainId,
-          workspaceId,
-        },
-      });
+			// Check whether domain exists
+			const existingDomain = await db.domain.findUnique({
+				where: {
+					id: domainId,
+					workspaceId,
+				},
+			});
 
-      if (!existingDomain) {
-        throw new Error("Domain not found");
-      }
+			if (!existingDomain) {
+				throw new Error("Domain not found");
+			}
 
-      await db.domain.delete({
-        where: {
-          id: domainId,
-        },
-      });
+			await db.domain.delete({
+				where: {
+					id: domainId,
+				},
+			});
 
-      return { success: true };
-    }
-  );
+			return { success: true };
+		},
+	);
 
 export const verifyDomain = createServerFn({
-  method: "POST",
+	method: "POST",
 })
-  .middleware([authMiddleware])
-  .validator(
-    z.object({
-      domainId: z.string(),
-      workspaceId: z.string(),
-      memberId: z.string(),
-    })
-  )
-  .handler(
-    async ({
-      data: { domainId, workspaceId, memberId },
-      context: { user },
-    }) => {
-      const member = await db.member.findUnique({
-        where: {
-          id: memberId,
-          userId: user.id,
-          workspaceId,
-        },
-      });
+	.middleware([authMiddleware])
+	.validator(
+		z.object({
+			domainId: z.string(),
+			workspaceId: z.string(),
+			memberId: z.string(),
+		}),
+	)
+	.handler(
+		async ({
+			data: { domainId, workspaceId, memberId },
+			context: { user },
+		}) => {
+			const member = await db.member.findUnique({
+				where: {
+					id: memberId,
+					userId: user.id,
+					workspaceId,
+				},
+			});
 
-      if (!member) {
-        throw new Error("Member not found");
-      }
+			if (!member) {
+				throw new Error("Member not found");
+			}
 
-      // Check permissions
-      const p = await permissions({
-        memberId: member.id,
-        workspaceId,
-        permissions: ["domains:update"],
-      });
+			// Check permissions
+			const p = await permissions({
+				memberId: member.id,
+				workspaceId,
+				permissions: ["domains:update"],
+			});
 
-      if (!p.includes("domains:update")) {
-        throw new Error("You do not have permission to verify domains");
-      }
+			if (!p.includes("domains:update")) {
+				throw new Error("You do not have permission to verify domains");
+			}
 
-      // Check whether domain exists
-      const existingDomain = await db.domain.findUnique({
-        where: {
-          id: domainId,
-          workspaceId,
-          verified: false,
-        },
-      });
+			// Check whether domain exists
+			const existingDomain = await db.domain.findUnique({
+				where: {
+					id: domainId,
+					workspaceId,
+					verified: false,
+				},
+			});
 
-      if (!existingDomain) {
-        throw new Error("Domain not found or already verified");
-      }
+			if (!existingDomain) {
+				throw new Error("Domain not found or already verified");
+			}
 
-      // Verify domain records using functionality already provded by @selfmail/domain-in-queue package
-      const verificationResult = await verifyDomainRecordsExternal({
-        domain: existingDomain,
-        verificationToken: existingDomain.verificationToken,
-      });
+			const [txtRecords, mxRecords] = await Promise.all([
+				resolveTxt(domainTxtHost(existingDomain.domain)).catch(() => []),
+				resolveMx(existingDomain.domain).catch(() => []),
+			]);
+			const verificationResult =
+				txtRecords.some(
+					(record) =>
+						record.join("") ===
+						domainTxtValue(existingDomain.verificationToken),
+				) &&
+				mxRecords.some(
+					(record) =>
+						record.exchange.toLowerCase().replace(/\.$/, "") ===
+						"mail.selfmail.app",
+				);
 
-      if (!verificationResult) {
-        throw new Error(
-          "Domain verification failed. Please check your DNS records."
-        );
-      }
+			if (!verificationResult) {
+				throw new Error(
+					"Domain verification failed. Please check your DNS records.",
+				);
+			}
 
-      // update domain
-      await db.domain.update({
-        where: {
-          id: domainId,
-        },
-        data: {
-          verified: true,
-        },
-      });
+			// update domain
+			await db.domain.update({
+				where: {
+					id: domainId,
+				},
+				data: {
+					verified: true,
+					verifiedAt: new Date(),
+				},
+			});
 
-      return { success: true };
-    }
-  );
+			return { success: true };
+		},
+	);

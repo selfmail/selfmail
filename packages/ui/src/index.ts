@@ -61,6 +61,7 @@ export {
   DialogTitle,
   DialogTrigger,
 } from "./components/dialog";
+export { Divider } from "./components/divider";
 export {
   Dropdown,
   DropdownContent,

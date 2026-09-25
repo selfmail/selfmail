@@ -8,6 +8,7 @@ import {
 import { getWorkspaceDomains } from "#/lib/settings/domains";
 import { m } from "#/paraglide/messages";
 import type { SettingsPageContext } from "../menu/pages";
+import { useSettingsSubpageQuery } from "../menu/subpage-query";
 import { SettingsPage } from "../ui";
 import { DomainActions } from "./actions";
 import { AddDomainDialog } from "./dialog";
@@ -23,6 +24,7 @@ export function DomainSettingsPage({
   workspaceId,
   memberId,
 }: SettingsPageContext) {
+  const [, setSubpage] = useSettingsSubpageQuery();
   const { data, isLoading, isFetching, error, refetch } = useQuery({
     queryKey: ["domains", workspaceId],
     queryFn: () =>
@@ -111,6 +113,19 @@ export function DomainSettingsPage({
                       </span>
                     </td>
                     <td className="w-12 px-4 py-3.5 align-middle">
+                      <Button
+                        className="mb-1"
+                        onClick={() =>
+                          setSubpage({
+                            settings: "domain-console",
+                            "settings-item": domain.id,
+                          })
+                        }
+                        size="sm"
+                        variant="outline"
+                      >
+                        Edit domain
+                      </Button>
                       <DomainActions
                         canDelete={data?.canDeleteDomains ?? false}
                         canVerify={data?.canUpdateDomains ?? false}
