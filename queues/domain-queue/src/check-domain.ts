@@ -46,7 +46,7 @@ const verifyTxt = (hostname: string, expected: string) =>
   );
 
 export const checkDomainRecords = Effect.fn("CheckDomainRecords")(
-  function* (domain: { domain: string; verficationToken: string }) {
+  function* (domain: { domain: string; verificationToken: string }) {
     const config = yield* AppConfig;
 
     return yield* Effect.all(
@@ -65,7 +65,7 @@ export const checkDomainRecords = Effect.fn("CheckDomainRecords")(
 
         verification: verifyTxt(
           "selfmail-verification",
-          `verification=${domain.verficationToken}`
+          `verification=${domain.verificationToken}`
         ),
 
         dmarc: verifyTxt(`_dmarc.${domain.domain}`, "v=DMARC1; p=none"),

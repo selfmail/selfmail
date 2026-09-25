@@ -25,6 +25,7 @@
     "@selfmail/permissions": "workspace:*",
     "@selfmail/s3": "workspace:*",
     "@selfmail/ui": "workspace:*",
+    "@selfmail/domain-in-queue": "workspace:*",
     "@selfmail/web-ratelimit": "workspace:*",
     "@t3-oss/env-core": "^0.13.11",
     "@tailwindcss/vite": "^4.3.0",

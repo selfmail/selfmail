@@ -2,6 +2,7 @@ import "prosekit/basic/style.css";
 import "prosekit/basic/typography.css";
 import "prosekit/extensions/list/style.css";
 import "prosekit/extensions/placeholder/style.css";
+import "./editor.css";
 
 import { defineBasicExtension } from "prosekit/basic";
 import { createEditor, jsonFromHTML, union } from "prosekit/core";
@@ -150,7 +151,7 @@ export function ComposeEditor({
 				<div
 					className={cn(
 						"ProseMirror h-full px-4 py-3 text-foreground text-sm outline-none",
-						"prosekit-typography max-w-none text-pretty",
+						"compose-editor prosekit-typography max-w-none text-pretty",
 						"[&_a]:text-primary [&_a]:underline [&_blockquote]:border-border [&_blockquote]:text-muted-foreground",
 						"[&_.prosekit-placeholder:before]:text-muted-foreground",
 					)}

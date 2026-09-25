@@ -1,10 +1,13 @@
 import crypto from "node:crypto";
 import { db } from "@selfmail/db";
+import {
+  addDomainToQueue,
+  verifyDomainRecordsExternal,
+} from "@selfmail/domain-in-queue";
 import { permissions } from "@selfmail/permissions";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
 import { authMiddleware } from "#/utils/auth";
-
 export const getWorkspaceDomains = createServerFn({
   method: "GET",
 })
@@ -108,6 +111,9 @@ export const addNewDomain = createServerFn({
           verificationToken: tokenHash,
         },
       });
+
+      // Enqueue a new job to verify the domain after certain period of time
+      addDomainToQueue(newDomain.id);
 
       return {
         token: verificationToken,
@@ -221,14 +227,25 @@ export const verifyDomain = createServerFn({
         where: {
           id: domainId,
           workspaceId,
+          verified: false,
         },
       });
 
       if (!existingDomain) {
-        throw new Error("Domain not found");
+        throw new Error("Domain not found or already verified");
       }
 
-      // TODO: Verify Domain records
+      // Verify domain records using functionality already provded by @selfmail/domain-in-queue package
+      const verificationResult = await verifyDomainRecordsExternal({
+        domain: existingDomain,
+        verificationToken: existingDomain.verificationToken,
+      });
+
+      if (!verificationResult) {
+        throw new Error(
+          "Domain verification failed. Please check your DNS records."
+        );
+      }
 
       // update domain
       await db.domain.update({
