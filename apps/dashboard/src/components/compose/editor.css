@@ -1,0 +1,62 @@
+.ProseMirror.compose-editor :is(h1, h2, h3, h4, h5, h6) {
+	margin: 16px 0 4px;
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.4;
+}
+
+.ProseMirror.compose-editor h1 {
+	font-size: var(--text-xl);
+}
+
+.ProseMirror.compose-editor h2 {
+	font-size: var(--text-lg);
+}
+
+.ProseMirror.compose-editor :is(h3, h4) {
+	font-size: var(--text-base);
+}
+
+.ProseMirror.compose-editor :is(h5, h6) {
+	font-size: var(--text-sm);
+}
+
+.ProseMirror.compose-editor > :first-child {
+	margin-top: 0;
+}
+
+.ProseMirror.compose-editor p {
+	font-size: var(--text-sm);
+	line-height: 1.5;
+}
+
+.ProseMirror.compose-editor pre {
+	padding: 12px;
+}
+
+.ProseMirror.compose-editor
+	.prosemirror-flat-list:has(> .list-content > :is(h1, h2, h3, h4, h5, h6)) {
+	--compose-list-marker-top: 17px;
+}
+
+.ProseMirror.compose-editor .prosemirror-flat-list:has(> .list-content > h1) {
+	--compose-list-marker-top: 21px;
+}
+
+.ProseMirror.compose-editor .prosemirror-flat-list:has(> .list-content > h2) {
+	--compose-list-marker-top: 20px;
+}
+
+.ProseMirror.compose-editor
+	.prosemirror-flat-list:has(> .list-content > :is(h3, h4)) {
+	--compose-list-marker-top: 18px;
+}
+
+.ProseMirror.compose-editor
+	.prosemirror-flat-list:has(
+		> .list-content > :is(h1, h2, h3, h4, h5, h6)
+	)::before,
+.ProseMirror.compose-editor
+	.prosemirror-flat-list:has(> .list-content > :is(h1, h2, h3, h4, h5, h6))
+	> .list-marker {
+	top: var(--compose-list-marker-top);
+}
