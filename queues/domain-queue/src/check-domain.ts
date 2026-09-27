@@ -7,8 +7,10 @@ class DnsLookupError extends Data.TaggedError("DnsLookupError")<{
   cause: unknown;
 }> {}
 
+const trailingDot = /\.$/;
+
 const normalizeHostname = (value: string) =>
-  value.toLowerCase().replace(/\.$/, "");
+  value.toLowerCase().replace(trailingDot, "");
 
 const verifyMx = (hostname: string, expectedExchange: string) =>
   Effect.tryPromise({
@@ -24,7 +26,18 @@ const verifyMx = (hostname: string, expectedExchange: string) =>
       ),
       expected: expectedExchange,
       actual: records,
-    }))
+      error: null as string | null,
+    })),
+    Effect.catchTag("DnsLookupError", () =>
+      Effect.succeed({
+        type: "MX" as const,
+        hostname,
+        valid: false,
+        expected: expectedExchange,
+        actual: [],
+        error: "DNS lookup failed or record is missing",
+      })
+    )
   );
 
 const verifyTxt = (hostname: string, expected: string) =>
@@ -41,8 +54,19 @@ const verifyTxt = (hostname: string, expected: string) =>
         valid: values.includes(expected),
         expected,
         actual: values,
+        error: null as string | null,
       };
-    })
+    }),
+    Effect.catchTag("DnsLookupError", () =>
+      Effect.succeed({
+        type: "TXT" as const,
+        hostname,
+        valid: false,
+        expected,
+        actual: [],
+        error: "DNS lookup failed or record is missing",
+      })
+    )
   );
 
 export const checkDomainRecords = Effect.fn("CheckDomainRecords")(
@@ -64,8 +88,8 @@ export const checkDomainRecords = Effect.fn("CheckDomainRecords")(
         ),
 
         verification: verifyTxt(
-          "selfmail-verification",
-          `verification=${domain.verificationToken}`
+          `_selfmail.${domain.domain}`,
+          `selfmail-verification=${domain.verificationToken}`
         ),
 
         dmarc: verifyTxt(`_dmarc.${domain.domain}`, "v=DMARC1; p=none"),

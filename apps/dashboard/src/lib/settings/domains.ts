@@ -1,12 +1,13 @@
 import crypto from "node:crypto";
-import { resolveMx, resolveTxt } from "node:dns/promises";
 import { db } from "@selfmail/db";
-import { addDomainToQueue } from "@selfmail/domain-in-queue";
+import {
+	addDomainToQueue,
+	verifyDomainRecordsExternal,
+} from "@selfmail/domain-in-queue";
 import { permissions } from "@selfmail/permissions";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
 import { authMiddleware } from "#/utils/auth";
-import { domainTxtHost, domainTxtValue } from "../workspaces/domain-utils";
 export const getWorkspaceDomains = createServerFn({
 	method: "GET",
 })
@@ -234,25 +235,20 @@ export const verifyDomain = createServerFn({
 				throw new Error("Domain not found or already verified");
 			}
 
-			const [txtRecords, mxRecords] = await Promise.all([
-				resolveTxt(domainTxtHost(existingDomain.domain)).catch(() => []),
-				resolveMx(existingDomain.domain).catch(() => []),
-			]);
-			const verificationResult =
-				txtRecords.some(
-					(record) =>
-						record.join("") ===
-						domainTxtValue(existingDomain.verificationToken),
-				) &&
-				mxRecords.some(
-					(record) =>
-						record.exchange.toLowerCase().replace(/\.$/, "") ===
-						"mail.selfmail.app",
-				);
+			const verificationResult = await verifyDomainRecordsExternal({
+				domain: existingDomain,
+				verificationToken: existingDomain.verificationToken,
+			});
 
-			if (!verificationResult) {
+			if (!verificationResult.verified) {
+				const invalidRecords = Object.entries(verificationResult.records)
+					.filter(([, record]) => !record.valid)
+					.map(
+						([name, record]) =>
+							`${name.toUpperCase()} (${record.hostname}): ${record.error ?? `expected ${record.expected}; found ${JSON.stringify(record.actual)}`}`,
+					);
 				throw new Error(
-					"Domain verification failed. Please check your DNS records.",
+					`Domain verification failed. ${invalidRecords.join("; ")}`,
 				);
 			}
 

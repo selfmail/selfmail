@@ -33,19 +33,15 @@ new Worker(
 
       const records = yield* checkDomainRecords({
         domain: domain.domain,
-        verficationToken: domain.verificationToken,
-      }).pipe(
-        Effect.tapErrorTag("DnsLookupError", (error) =>
-          Effect.logError(`DNS lookup failed for ${domain.domain}`, {
-            cause: error.cause,
-          })
-        )
-      );
+        verificationToken: domain.verificationToken,
+      });
 
       const checks = [
         ["MX", records.mx],
         ["SPF", records.spf],
         ["DKIM", records.dkim],
+        ["Verification", records.verification],
+        ["DMARC", records.dmarc],
       ] as const;
 
       const invalidRecords = checks.filter(([, record]) => !record.valid);
@@ -110,11 +106,6 @@ new Worker(
         Match.tag(
           "SchemaError",
           () => new UnrecoverableError("Invalid domain job payload")
-        ),
-
-        Match.tag(
-          "DnsLookupError",
-          (error) => new Error(`DNS lookup failed: ${String(error.cause)}`)
         ),
 
         Match.exhaustive

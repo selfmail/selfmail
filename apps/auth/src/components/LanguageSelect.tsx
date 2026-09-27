@@ -36,7 +36,7 @@ export default function LanguageSelect() {
 				>
 					<SelectValue />
 				</SelectTrigger>
-				<SelectContent align="start">
+				<SelectContent align="start" className="shadow-none">
 					{locales.map((locale) => (
 						<SelectItem key={locale} value={locale}>
 							{LANGUAGE_LABELS[locale]}

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
+import { Route as ApiRealtimeRouteImport } from './routes/api/realtime'
 import { Route as AuthedWorkspaceSlugWorkspaceRouteImport } from './routes/_authed/$workspaceSlug/_workspace'
 import { Route as AuthedOnboardingIndexRouteImport } from './routes/_authed/onboarding/index'
 import { Route as AuthedWorkspaceSlugWorkspaceIndexRouteImport } from './routes/_authed/$workspaceSlug/_workspace/index'
@@ -36,6 +37,11 @@ const AuthedIndexRoute = AuthedIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthedRoute,
+} as any)
+const ApiRealtimeRoute = ApiRealtimeRouteImport.update({
+  id: '/api/realtime',
+  path: '/api/realtime',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthedWorkspaceSlugWorkspaceRoute =
   AuthedWorkspaceSlugWorkspaceRouteImport.update({
@@ -134,6 +140,7 @@ const AuthedWorkspaceSlugWorkspaceConsoleWorkflowsIndexRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthedIndexRoute
+  '/api/realtime': typeof ApiRealtimeRoute
   '/$workspaceSlug': typeof AuthedWorkspaceSlugWorkspaceConsoleRouteWithChildren
   '/onboarding/': typeof AuthedOnboardingIndexRoute
   '/$workspaceSlug/$addressSlug': typeof AuthedWorkspaceSlugWorkspaceAddressSlugRoute
@@ -151,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/$workspaceSlug/workflows/': typeof AuthedWorkspaceSlugWorkspaceConsoleWorkflowsIndexRoute
 }
 export interface FileRoutesByTo {
+  '/api/realtime': typeof ApiRealtimeRoute
   '/': typeof AuthedIndexRoute
   '/onboarding': typeof AuthedOnboardingIndexRoute
   '/$workspaceSlug/$addressSlug': typeof AuthedWorkspaceSlugWorkspaceAddressSlugRoute
@@ -170,6 +178,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authed': typeof AuthedRouteWithChildren
+  '/api/realtime': typeof ApiRealtimeRoute
   '/_authed/': typeof AuthedIndexRoute
   '/_authed/$workspaceSlug/_workspace': typeof AuthedWorkspaceSlugWorkspaceRouteWithChildren
   '/_authed/onboarding/': typeof AuthedOnboardingIndexRoute
@@ -192,6 +201,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/api/realtime'
     | '/$workspaceSlug'
     | '/onboarding/'
     | '/$workspaceSlug/$addressSlug'
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/$workspaceSlug/workflows/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/api/realtime'
     | '/'
     | '/onboarding'
     | '/$workspaceSlug/$addressSlug'
@@ -227,6 +238,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_authed'
+    | '/api/realtime'
     | '/_authed/'
     | '/_authed/$workspaceSlug/_workspace'
     | '/_authed/onboarding/'
@@ -248,6 +260,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   AuthedRoute: typeof AuthedRouteWithChildren
+  ApiRealtimeRoute: typeof ApiRealtimeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -265,6 +278,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof AuthedIndexRouteImport
       parentRoute: typeof AuthedRoute
+    }
+    '/api/realtime': {
+      id: '/api/realtime'
+      path: '/api/realtime'
+      fullPath: '/api/realtime'
+      preLoaderRoute: typeof ApiRealtimeRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authed/$workspaceSlug/_workspace': {
       id: '/_authed/$workspaceSlug/_workspace'
@@ -464,6 +484,7 @@ const AuthedRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   AuthedRoute: AuthedRouteWithChildren,
+  ApiRealtimeRoute: ApiRealtimeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
