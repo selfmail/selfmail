@@ -8,20 +8,26 @@ export class Redis extends Context.Service<Redis>()(
     make: Effect.gen(function* () {
       const config = yield* AppConfig;
 
-      return new IORedis(config.REDIS_URL);
+      return yield* Effect.acquireRelease(
+        Effect.sync(() => new IORedis(config.REDIS_URL)),
+        (redis) => Effect.sync(() => redis.disconnect())
+      );
     }),
   }
 ) {
   static readonly layer = Layer.effect(this, this.make);
 }
 
-export class SubscribeRedis extends Context.Service<Redis>()(
-  "@selfmail/realtime/redis",
+export class SubscribeRedis extends Context.Service<SubscribeRedis>()(
+  "@selfmail/realtime/subscriber",
   {
     make: Effect.gen(function* () {
       const config = yield* AppConfig;
 
-      return new IORedis(config.REDIS_URL);
+      return yield* Effect.acquireRelease(
+        Effect.sync(() => new IORedis(config.REDIS_URL)),
+        (redis) => Effect.sync(() => redis.disconnect())
+      );
     }),
   }
 ) {
