@@ -15,6 +15,9 @@ export const server = new SMTPServer({
   onData: Data.init,
 });
 
-server.listen(25, () => {
-  console.log("SMTP Server is listening on port 25");
+const defaultPort = process.env.NODE_ENV === "test" ? 2525 : 25;
+export const SMTP_PORT = Number(process.env.SMTP_PORT ?? defaultPort);
+
+server.listen(SMTP_PORT, () => {
+  console.log(`SMTP Server is listening on port ${SMTP_PORT}`);
 });
