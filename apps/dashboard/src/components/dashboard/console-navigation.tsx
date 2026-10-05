@@ -33,7 +33,11 @@ const consolePages = [
 		icon: CodeXmlIcon,
 		label: m["dashboard.navigation.developers"],
 	},
-	{ to: "/$workspaceSlug/logs", icon: ListFilterIcon, label: () => "Logs" },
+	{
+		to: "/$workspaceSlug/logs",
+		icon: ListFilterIcon,
+		label: m["dashboard.navigation.logs"],
+	},
 	{
 		to: "/$workspaceSlug/contacts",
 		icon: UsersIcon,
@@ -75,12 +79,14 @@ export function ConsoleNavigation({ workspaceSlug }: ConsoleNavigationProps) {
 		<Popover onOpenChange={setOpen} open={open}>
 			<PopoverTrigger asChild>
 				<button
-					aria-label={`Console navigation: ${currentPage?.label() ?? "Console"}`}
+					aria-label={m["dashboard.console.navigation_label"]({
+						page: currentPage?.label() ?? m["dashboard.console.title"](),
+					})}
 					className="flex h-10 shrink-0 items-center gap-3 rounded-full bg-muted px-3 text-sm outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring data-[state=open]:bg-accent sm:pl-4"
 					type="button"
 				>
 					<span className="hidden max-w-40 truncate font-medium sm:block">
-						{currentPage?.label() ?? "Console"}
+						{currentPage?.label() ?? m["dashboard.console.title"]()}
 					</span>
 					<span className="hidden h-4 w-px bg-border sm:block" />
 					<LayoutGridIcon aria-hidden="true" className="size-4" />
@@ -88,15 +94,18 @@ export function ConsoleNavigation({ workspaceSlug }: ConsoleNavigationProps) {
 			</PopoverTrigger>
 			<PopoverContent
 				align="end"
-				aria-label="Console pages"
+				aria-label={m["dashboard.console.pages_label"]()}
 				className="w-80 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-2xl border p-2 [max-height:var(--radix-popover-content-available-height)]"
 				collisionPadding={16}
 				sideOffset={12}
 			>
 				<div className="px-3 pt-2 pb-3 font-medium text-muted-foreground text-xs">
-					Console
+					{m["dashboard.console.title"]()}
 				</div>
-				<nav aria-label="Console" className="grid grid-cols-2 gap-1">
+				<nav
+					aria-label={m["dashboard.console.title"]()}
+					className="grid grid-cols-2 gap-1"
+				>
 					{pages.map(({ to, icon: Icon, label, active }) => (
 						<Link
 							aria-current={active ? "page" : undefined}
@@ -127,7 +136,7 @@ export function ConsoleNavigation({ workspaceSlug }: ConsoleNavigationProps) {
 						to="/$workspaceSlug"
 					>
 						<ArrowLeftIcon aria-hidden="true" className="size-4" />
-						{m["dashboard.inbox.unified"]()}
+						{m["dashboard.console.back_to_inbox"]()}
 					</Link>
 				</div>
 			</PopoverContent>

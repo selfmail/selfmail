@@ -119,7 +119,7 @@ describe("realtime", () => {
   test("retries failed subscriptions", async () => {
     const redis = new FakeRedis();
     redis.failSubscribe = true;
-    await expect(listen(redis, () => Effect.void)).rejects.toThrow();
+    expect(listen(redis, () => Effect.void)).rejects.toThrow();
     redis.failSubscribe = false;
     const cleanup = await listen(redis, () => Effect.void);
     expect(redis.subscriptions).toHaveLength(2);
@@ -143,7 +143,7 @@ describe("realtime", () => {
     const redis = new FakeRedis();
     const cleanup = await listen(redis, () => Effect.void);
     redis.failUnsubscribe = true;
-    await expect(Effect.runPromise(cleanup)).rejects.toThrow();
+    expect(Effect.runPromise(cleanup)).rejects.toThrow();
     redis.failUnsubscribe = false;
     await Effect.runPromise(cleanup);
     expect(redis.unsubscriptions).toHaveLength(2);

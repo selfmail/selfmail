@@ -9,6 +9,14 @@ checksums:
     learn_router: c9f8f55cae3ad60c1b06b23a4f76247a
     root/not_found: 97612e6230bc7a1ebd99380bf561b732
     root/error_title: 53a2b5f5e7d83c737c8e02fe18fb4bdb
+    dashboard/command/title: f09a9458917512669cb2a5f25e431571
+    dashboard/command/description: 7634cfbb727ea4ad0e4703cfcf573224
+    dashboard/command/placeholder: d000cf35df7e7410b51084cacf18e91e
+    dashboard/command/empty: 8e37a23d37d7b4f501a20991a0d311ea
+    dashboard/command/navigation: 0373afd8238db1c49f4be4fa6cdf5cd3
+    dashboard/command/actions: c46571856723b03262fd33f511116298
+    dashboard/command/settings: f34fba7d342342e7e079cd991559bff3
+    dashboard/command/domains: 2a7008e68c4870199acbdf0e4f8091c1
     dashboard/inbox/unified: 772b991d3b7469ffbed574b30d765e1e
     dashboard/inbox/email_count: 6525eb0292d44204d0879a94a001380a
     dashboard/inbox/email_count_one: 1cfd2de5f9c6e6cb7f6b2f27a0b4192f
@@ -22,12 +30,15 @@ checksums:
     dashboard/compose/dialog_description: ccbdc15b594b3948f4b94e9a630f762a
     dashboard/compose/sidebar_description: fe029fac6e53d6f793a9d1fa01173abf
     dashboard/compose/fullscreen: b91a5ead5b61021207f462adbaf82528
+    dashboard/compose/exit_fullscreen: 910de8c8ec56a0b09328c471d76ea301
     dashboard/compose/close: 2c2e22f8424a1031de89063bd0022e16
     dashboard/compose/close_label: af734639ca1ea59dbf252f45c872c88d
     dashboard/compose/subject: de5b885eb327b2f233f3b67aab4c4c0a
     dashboard/compose/from: 3d84daca8c92c8609deeab4b294b4afb
     dashboard/compose/to: 24ef32707b456cff90a91d438df59bbe
     dashboard/compose/to_placeholder: 0a23b21cb9a62ca823ec96ea22ccb2e0
+    dashboard/compose/recipient_search_placeholder: 8f4c7454425c8bb8337c219344305134
+    dashboard/compose/no_recipient_matches: b49a38fbd25dbc767ea52c7c125006a1
     dashboard/compose/from_placeholder: 438cae356153a9fd40bf415dbaba036e
     dashboard/compose/loading_addresses: fc6526f87c016610db68c390f5ffe807
     dashboard/compose/no_addresses: 1415df3a54ec11b1c01efddbb800dbec
@@ -96,6 +107,7 @@ checksums:
     dashboard/errors/member_not_found: 4569d4ebd7b07fcfaf25f506702c09f2
     dashboard/errors/owner_remove_denied: 5d005d7331c2fbf0d49c956da4236178
     dashboard/navigation/build: b9133d1d6f232e6d15178f12bbae79aa
+    dashboard/navigation/api: 01d9819514e27056dcc69463194b63d2
     dashboard/navigation/platform: c68862170146325333c7f25af11a3fa2
     dashboard/navigation/workspace: b63ef0e99ee6f7fef6cbe4971ca6cf0f
     dashboard/navigation/ai: b764382ca31f0c1570802ead170ad235
@@ -109,11 +121,13 @@ checksums:
     dashboard/navigation/contacts: d5b6c3f890b3904eaf5754081945c03d
     dashboard/navigation/conversations: 6dd493bfcba36eaa4b9844e55400cc29
     dashboard/navigation/spam_analysis: 612c9b0899aa8adb354739922d3fb931
+    dashboard/navigation/logs: cc9e9e82182a1b8173d7cf321b811683
     dashboard/header/switch_workspace: 4248dd13e96f40d15ddb4f7f62752c67
     dashboard/header/workspaces: 8ba082a84aa35cf851af1cf874b853e2
     dashboard/header/manage: a3d40c0267b81ae53c9598eaeb05087d
     dashboard/header/settings: 8df6777277469c1fd88cc18dde2f1cc3
     dashboard/header/members: 0932e80cba1e3e0a7f52bb67ff31da32
+    dashboard/header/logout: 07948fdf20705e04a7bf68ab197512bf
     dashboard/header/billing: b01dbdd049ebbd4a349fa64d6ce65a3b
     dashboard/header/domains: 87955beb56bd7e2da09e44bacb294b6a
     dashboard/header/webhooks: 0329bc102d3ab3c73410d126e119de12
@@ -121,12 +135,22 @@ checksums:
     dashboard/header/support: 55aab5fd0f31a9cb055a2edeeedfaf63
     dashboard/header/create_workspace: 2e6718e79964ea5ce22d76c2189c77ca
     dashboard/header/compose: 10883cdd59f05364cda62d711af745ad
+    dashboard/email/load_images: dcd379d3deef33123fb4abb2a21286f0
+    dashboard/email/images_notice: 7a81e1b2438c69557ecfef0df0f216e4
+    dashboard/email/show_text: 60a0093b38563d15ce6355d19a8f576d
+    dashboard/email/show_html: 3d44a8b4ac6bfcae03c7cf9d3f1a4ca2
+    dashboard/email/loading_body: 1804fb08dc400911bd95f28e811a1afb
+    dashboard/email/body_error: 56ffce9121142944a32a8afb911b47ce
+    dashboard/email/retry_body: 6e44d18639560596569a1278f9c83676
     dashboard/email/attachment_count: 3f816f3d1cd0ef90a7e9eb1bc950c2b0
     dashboard/email/attachment_count_one: e9b482af5ff95dbc8fb0f43ab310d4ca
     dashboard/email/empty_title: c8d2576c066fffad181a4a4f835cf7dd
     dashboard/email/empty_description: 05fb4956fd1991fbaea2708a46387851
+    dashboard/email/loading_more: 742709493c6da850480f0eb769669a45
+    dashboard/email/load_more_retry: 3f8bca9be2bbac3379898237c6d0fdc0
     dashboard/email/preview_title: 84458b39d3fd3bebb92de0e81d41b7da
     dashboard/email/fullscreen: b91a5ead5b61021207f462adbaf82528
+    dashboard/email/exit_fullscreen: 910de8c8ec56a0b09328c471d76ea301
     dashboard/email/close_preview: 764d2ad35636be6d10914cb7b88c4a6f
     dashboard/email/attachment_label: 06344b3df33be376073e6720f0be21df
     dashboard/email/attachment_size: 294754bb65c4605de180122c4af79f30
@@ -136,6 +160,8 @@ checksums:
     dashboard/email/minute_ago: 44aed4142fc9d928be0d61f6da5b793b
     dashboard/email/hour_ago: dadbfaa20c13cde96e5fb75c7d5e690d
     dashboard/email/day_ago: fcdfa15f1138647a32f83848a3d9c7db
+    dashboard/search/placeholder: d29b4e888d8675f4aa60b2efcad28d0b
+    dashboard/search/empty: 8e37a23d37d7b4f501a20991a0d311ea
     dashboard/sample_emails/alerts_from: 6fce3200ec49c78744d87d0332cafa02
     dashboard/sample_emails/daily_deliverability_subject: b52e5a39097739fb3a3a50273615b62b
     dashboard/sample_emails/daily_deliverability_snippet: 669f7f6715a74d723b9a2bb3346a372c
@@ -263,6 +289,13 @@ checksums:
     dashboard/settings/member_settings/empty_description: dfaab63c5d4f9d49c5a9576d53cc6453
     dashboard/settings/member_settings/load_error: c32327763ce143d5f140b4c2241e1d72
     dashboard/settings/member_settings/retry: 6e44d18639560596569a1278f9c83676
+    dashboard/settings/audit_logs/event: 4a04a93ec14995d089bd95d271e288a0
+    dashboard/settings/audit_logs/actor: 1eaf56d9f779ff0ea16571767a2050c2
+    dashboard/settings/audit_logs/target: 569e5f09543453de7b2dde95e4378261
+    dashboard/settings/audit_logs/date: 56f41c5d30a76295bb087b20b7bee4c3
+    dashboard/settings/audit_logs/empty_title: f88897ac05afd6bf8af0d4834ad24ffc
+    dashboard/settings/audit_logs/empty_description: 2d3dba8394157a2617ade13c61894125
+    dashboard/settings/audit_logs/load_error: 0831cedbcc309f11b99a197f4170dcf8
     dashboard/settings/domains/invalid: 74c6684b435ca3b395af917007438021
     dashboard/settings/domains/draft: e8a92958ad300aacfe46c2bf6644927e
     dashboard/settings/domains/verified: 9566bd61c1f754dd5082eea5101f15a8
@@ -308,6 +341,37 @@ checksums:
     dashboard/settings/domains/empty_title: 3f931e56b8ad85a2de74941b9b2ee176
     dashboard/settings/domains/empty_description: 48c793c739d14d10b3fbe7f8a3d653c1
     dashboard/settings/domains/settings_placeholder: e41ccaecadacb951a247fe065aa3c92b
+    dashboard/settings/billing/empty_title: 51e1350db2e0ba5bd602e8aac609a419
+    dashboard/settings/billing/empty_description: 418bcb8014840796ba4910110c16e2ec
+    dashboard/settings/authentication/email: 8f61978d1c5a8b4c4406b2270b10d171
+    dashboard/settings/authentication/change_email: de3d14d915838e1eb5b04e620de35114
+    dashboard/settings/authentication/change_email_title: e20f88484669789b7ce6d0f0aee6dd5a
+    dashboard/settings/authentication/change_email_description: 4aca3ee0b99465db616616d81001108f
+    dashboard/settings/authentication/new_email: c69507de5c6da25930748dc4bb4a5528
+    dashboard/settings/authentication/changing_email: 406322e1ff2b49a523da21ca6a2765ec
+    dashboard/settings/authentication/email_changed: 7ff3fbb6d43922c9fa9c5dd6a8967e60
+    dashboard/settings/authentication/invalid_email: a615b67b73c83c6b68b9b96863f57db5
+    dashboard/settings/authentication/verified: 9566bd61c1f754dd5082eea5101f15a8
+    dashboard/settings/authentication/unverified: 014ace75aeff2c0f707aefcfa55efa24
+    dashboard/settings/authentication/sign_in_methods: b6412a007eef3114e82b542c0c47b14f
+    dashboard/settings/authentication/sign_in_methods_description: 89c295e60f139cab42e25956b33d40c7
+    dashboard/settings/authentication/provider_email: 39e077c9581fb80858c179182f4e10c0
+    dashboard/settings/authentication/provider_google: 6cc462fb53d90d404f48d5a6695c1de1
+    dashboard/settings/authentication/sessions: ae1e55ccf0ab6f257a52c09b03669441
+    dashboard/settings/authentication/sessions_description: 6ce02a16fc5ad78b32a6ecfaedf7a637
+    dashboard/settings/authentication/current_session: 27f172f76ac28e72cb062f80002b0ad5
+    dashboard/settings/authentication/unknown_region: 3379daa0da3401ed4543a892fbf6fbf0
+    dashboard/settings/authentication/unknown_user_agent: d6cd9b106eaa106090ee283b14d31b12
+    dashboard/settings/authentication/created_at: 14603ed516133ca1b5c69802d3ea4fee
+    dashboard/settings/authentication/expires_at: 67b3cd8021cffffa2e9c1804e6b0f821
+    dashboard/settings/authentication/delete_session: 4ef6a0f8f58e94af4a00d0a0d150ff4b
+    dashboard/settings/authentication/delete_session_title: 661b29c9fa634d1e3a419add5e5bc9a0
+    dashboard/settings/authentication/delete_session_description: 9a0298a536dd9a32ce04fa21e715beaa
+    dashboard/settings/authentication/deleting_session: 8a9d0349e3d1115c5663c3d982e91164
+    dashboard/settings/authentication/delete_sessions: bd92d87917a6c1ca3e30012c086ac291
+    dashboard/settings/authentication/delete_sessions_title: a957c2a72e5f17f94e16d2b5e62f5b3f
+    dashboard/settings/authentication/delete_sessions_description: f16aec468afbbb9b29f88c3fe4be3123
+    dashboard/settings/authentication/deleting_sessions: 683cd814a3fc94e50b3e4e4a9c90c19c
     dashboard/settings/app/theme/title: 21fe00b7a518089576fb83c08631107a
     dashboard/settings/app/theme/description: 3e66319da56fe6d6711b1c9644dc9ffc
     dashboard/settings/app/theme/auto: d477ad57b6ffec9fb6b2676b9433ec0c
@@ -330,11 +394,13 @@ checksums:
     dashboard/settings/menu/workspace/description: dfded3c21e97d029982cc61480cbeea4
     dashboard/settings/menu/billing/title: 7bd9e0e2854d342eae5c519a891bf3e5
     dashboard/settings/menu/billing/description: 831d3788ee2c1ada8a1c4aa2679334e8
+    dashboard/settings/menu/upgrade/title: 972773025e763ddf53273df6d37a729a
+    dashboard/settings/menu/upgrade/description: 0fccfbf242c17e2318da5a18d9f47545
     dashboard/settings/menu/permissions/title: 2160be68b1d6b6577e64634e9feba2ed
     dashboard/settings/menu/permissions/description: 8f36bb204a09426f2cadb7f49a4e8d8e
     dashboard/settings/menu/audit_logs/title: c7efb33d09676938d07651774b067bf6
     dashboard/settings/menu/audit_logs/description: 2a62fb580ec990c27e8528973ebcfd94
-    dashboard/settings/menu/storage/title: 3fb27857303af05dac5e82239ddcfda9
+    dashboard/settings/menu/storage/title: 99d4c24fb975d64b57a6ca3acd428558
     dashboard/settings/menu/storage/description: a329a1f490a5e2c2590e5b9a0fd45830
     dashboard/settings/menu/support/title: 55aab5fd0f31a9cb055a2edeeedfaf63
     dashboard/settings/menu/support/description: 59e97284de1da48a96921fac0d9c1bbf
@@ -347,13 +413,23 @@ checksums:
     dashboard/settings/menu/addresses/title: 87b49e2ffcdbe3cc4bfd2d25cc75c096
     dashboard/settings/menu/addresses/description: 3921808b26bf23e1a50f14a55ce03e2e
     dashboard/settings/menu/authentication/title: 491fbb938cfe44df0438ad3e198d23e6
-    dashboard/settings/menu/authentication/description: f1baf18154c2212580ee9255795bf56c
+    dashboard/settings/menu/authentication/description: 0fd07fed0bb146620a58cc2cd492009d
     dashboard/settings/menu/spam_analysis/title: 2acca2ca3709aa41af00fb72f0ad58db
     dashboard/settings/menu/spam_analysis/description: a2ae43ac12de242b7be74377063691b1
     dashboard/settings/menu/workspace_ai/title: 16ada40297df1df3849d4fa44d0d09e9
     dashboard/settings/menu/workspace_ai/description: cf4c6248c346268ab56a168e58ba4b93
     dashboard/settings/menu/placeholder: 55627145af56840812f45893d700e52e
     dashboard/settings/menu/placeholder_description: 397f516ffd81b4bc0aa278aac24a74c9
+    dashboard/console/title: 1a3300a8fcde6a0a974659f0dad5b8ec
+    dashboard/console/navigation_label: ddab63359f21ab2c1c30c08c15be4739
+    dashboard/console/pages_label: 61d9d9c3b4f50493ebfd97f2ac165d84
+    dashboard/console/back_to_inbox: c5fc8653163cdddcf25940336de7e8d3
+    dashboard/console/ai/description: de3239846ad36086429520c45f7a8a21
+    dashboard/console/workflows/description: 9ecbf14d21749c5f89c5eed070e35128
+    dashboard/console/developers/description: c82d4392b90f5d6bcbbb15952f5e2d4d
+    dashboard/console/contacts/description: 8f66b741653df7102fb128a47166ba59
+    dashboard/console/conversations/description: a898ba20276652efc502ee0b56bff47b
+    dashboard/console/analytics/description: 3cce6c8a445e37d7c80a1f30492788ef
     onboarding/meta/title: 08fefbaa64d75c1e2d89a183eb9a62ab
     onboarding/actions/back: f541015a827e37cb3b1234e56bc2aa3c
     onboarding/actions/continue: b8d1cccacabd4d66f74364570f2df025

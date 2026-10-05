@@ -130,6 +130,7 @@
     },
     "navigation": {
       "build": "Build",
+      "api": "API",
       "platform": "Plataforma",
       "workspace": "Workspace",
       "ai": "IA",
@@ -142,7 +143,8 @@
       "domains": "Dominios",
       "contacts": "Contactos",
       "conversations": "Conversaciones",
-      "spam_analysis": "Análisis de spam"
+      "spam_analysis": "Análisis de spam",
+      "logs": "Registros"
     },
     "header": {
       "switch_workspace": "Cambiar de workspace",
@@ -450,6 +452,10 @@
           "title": "Información de facturación",
           "description": "Plan, facturas, seats y datos de pago."
         },
+        "upgrade": {
+          "title": "Mejorar a Pro",
+          "description": "Actualiza para obtener más funciones y colaboración."
+        },
         "permissions": {
           "title": "Permisos",
           "description": "Roles, capacidades y controles de acceso del workspace."
@@ -459,7 +465,7 @@
           "description": "Eventos de seguridad y cambios recientes en el workspace."
         },
         "storage": {
-          "title": "Memoria y espacio disponible",
+          "title": "Almacenamiento",
           "description": "Almacenamiento del buzón, archivos adjuntos y capacidad restante del espacio de trabajo."
         },
         "support": {
@@ -484,7 +490,7 @@
         },
         "authentication": {
           "title": "Autenticación",
-          "description": "Email de la cuenta, métodos de inicio de sesión y sesiones activas."
+          "description": "Correo de la cuenta, métodos de inicio de sesión y sesiones activas."
         },
         "spam_analysis": {
           "title": "Análisis de spam",
@@ -496,6 +502,30 @@
         },
         "placeholder": "Añade aquí los controles de {pageTitle}.",
         "placeholder_description": "Configura los ajustes de {pageTitle} para {workspaceName}."
+      }
+    },
+    "console": {
+      "title": "Consola",
+      "navigation_label": "Navegación de la consola: {page}",
+      "pages_label": "Páginas de la consola",
+      "back_to_inbox": "Volver a la bandeja de entrada",
+      "ai": {
+        "description": "Las funciones de IA aún no están disponibles. Vuelve más tarde para ver las novedades."
+      },
+      "workflows": {
+        "description": "Los flujos de trabajo aún no están disponibles. Vuelve más tarde para ver las novedades."
+      },
+      "developers": {
+        "description": "Las herramientas para desarrolladores aún no están disponibles. Vuelve más tarde para ver las novedades."
+      },
+      "contacts": {
+        "description": "La gestión de contactos aún no está disponible. Vuelve más tarde para ver las novedades."
+      },
+      "conversations": {
+        "description": "Las conversaciones aún no están disponibles. Vuelve más tarde para ver las novedades."
+      },
+      "analytics": {
+        "description": "Los análisis aún no están disponibles. Vuelve más tarde para ver las novedades."
       }
     }
   },

@@ -23,7 +23,7 @@ function RouteComponent() {
 						to="/$workspaceSlug"
 					>
 						<ChevronLeftIcon aria-hidden="true" size={15} />
-						{m["dashboard.address.create.back"]()}
+						{m["dashboard.console.back_to_inbox"]()}
 					</Link>
 					<AccountSwitcher currentWorkspace={workspace} />
 				</div>

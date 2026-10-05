@@ -18,7 +18,7 @@ const buildLinks = [
 	{ href: "/ai", label: m["dashboard.navigation.ai"] },
 	{ href: "/workflows", label: m["dashboard.navigation.workflows"] },
 	{ href: "/dev", label: m["dashboard.navigation.developers"] },
-	{ href: "/logs", label: () => "Logs" },
+	{ href: "/logs", label: m["dashboard.navigation.logs"] },
 	{ href: "/api", label: m["dashboard.navigation.api"] },
 ] as const;
 const workspaceLinks = [

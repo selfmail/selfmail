@@ -143,7 +143,8 @@
       "domains": "Domains",
       "contacts": "Contacts",
       "conversations": "Conversations",
-      "spam_analysis": "Spam analysis"
+      "spam_analysis": "Spam analysis",
+      "logs": "Logs"
     },
     "header": {
       "switch_workspace": "Switch workspace",
@@ -501,6 +502,30 @@
         },
         "placeholder": "Add {pageTitle} controls here.",
         "placeholder_description": "Configure {pageTitle} settings for {workspaceName}."
+      }
+    },
+    "console": {
+      "title": "Console",
+      "navigation_label": "Console navigation: {page}",
+      "pages_label": "Console pages",
+      "back_to_inbox": "Back to inbox",
+      "ai": {
+        "description": "AI features are not available yet. Check back later for updates."
+      },
+      "workflows": {
+        "description": "Workflows are not available yet. Check back later for updates."
+      },
+      "developers": {
+        "description": "Developer tools are not available yet. Check back later for updates."
+      },
+      "contacts": {
+        "description": "Contact management is not available yet. Check back later for updates."
+      },
+      "conversations": {
+        "description": "Conversations are not available yet. Check back later for updates."
+      },
+      "analytics": {
+        "description": "Analytics are not available yet. Check back later for updates."
       }
     }
   },

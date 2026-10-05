@@ -12,7 +12,9 @@ function LogsPage() {
 
 	return (
 		<>
-			<h1 className="mb-4 text-balance font-semibold text-xl">Logs</h1>
+			<h1 className="mb-4 text-balance font-semibold text-xl">
+				{m["dashboard.navigation.logs"]()}
+			</h1>
 			<AuditLogsSettingsPage
 				description={m["dashboard.settings.menu.audit_logs.description"]}
 				id="logs"

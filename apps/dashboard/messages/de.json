@@ -2,8 +2,10 @@
   "$schema": "https://inlang.com/schema/inlang-message-format",
   "home_page": "Startseite",
   "about_page": "Info-Seite",
+  "example_message": "Willkommen in deiner i18n‑App.",
   "language_label": "Sprache",
   "current_locale": "Aktuelle Sprache: {locale}",
+  "learn_router": "Paraglide JS kennenlernen",
   "root": {
     "not_found": "Seite nicht gefunden",
     "error_title": "Es ist ein Fehler aufgetreten"
@@ -128,6 +130,7 @@
     },
     "navigation": {
       "build": "Build",
+      "api": "API",
       "platform": "Plattform",
       "workspace": "Workspace",
       "ai": "AI",
@@ -140,7 +143,8 @@
       "domains": "Domains",
       "contacts": "Kontakte",
       "conversations": "Unterhaltungen",
-      "spam_analysis": "Spam-Analyse"
+      "spam_analysis": "Spam-Analyse",
+      "logs": "Protokolle"
     },
     "header": {
       "switch_workspace": "Workspace wechseln",
@@ -448,6 +452,10 @@
           "title": "Abrechnungsinformationen",
           "description": "Plan, Rechnungen, Seats und Zahlungsdaten."
         },
+        "upgrade": {
+          "title": "Upgrade auf Pro",
+          "description": "Führe ein Upgrade durch, um mehr Funktionen und Zusammenarbeit zu erhalten."
+        },
         "permissions": {
           "title": "Berechtigungen",
           "description": "Workspace-Rollen, Funktionen und Zugriffskontrollen."
@@ -457,7 +465,7 @@
           "description": "Sicherheitsereignisse und letzte Änderungen im Workspace."
         },
         "storage": {
-          "title": "Speicher und verbleibender Platz",
+          "title": "Speicher",
           "description": "Postfachspeicher, Anhänge und verbleibende Arbeitsbereichskapazität."
         },
         "support": {
@@ -494,6 +502,30 @@
         },
         "placeholder": "Füge hier {pageTitle}-Einstellungen hinzu.",
         "placeholder_description": "Konfiguriere die {pageTitle}-Einstellungen für {workspaceName}."
+      }
+    },
+    "console": {
+      "title": "Konsole",
+      "navigation_label": "Konsolen-Navigation: {page}",
+      "pages_label": "Konsolenseiten",
+      "back_to_inbox": "Zurück zum Posteingang",
+      "ai": {
+        "description": "KI-Funktionen sind noch nicht verfügbar. Schau später für Aktualisierungen wieder vorbei."
+      },
+      "workflows": {
+        "description": "Workflows sind noch nicht verfügbar. Schau später für Aktualisierungen wieder vorbei."
+      },
+      "developers": {
+        "description": "Entwicklertools sind noch nicht verfügbar. Schau später für Aktualisierungen wieder vorbei."
+      },
+      "contacts": {
+        "description": "Kontaktverwaltung ist noch nicht verfügbar. Schau später für Aktualisierungen wieder vorbei."
+      },
+      "conversations": {
+        "description": "Unterhaltungen sind noch nicht verfügbar. Schau später für Aktualisierungen wieder vorbei."
+      },
+      "analytics": {
+        "description": "Analysen sind noch nicht verfügbar. Schau später für Aktualisierungen wieder vorbei."
       }
     }
   },

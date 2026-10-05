@@ -130,6 +130,7 @@
     },
     "navigation": {
       "build": "Build",
+      "api": "API",
       "platform": "Plateforme",
       "workspace": "Espace de travail",
       "ai": "IA",
@@ -142,7 +143,8 @@
       "domains": "Domaines",
       "contacts": "Contacts",
       "conversations": "Conversations",
-      "spam_analysis": "Analyse du spam"
+      "spam_analysis": "Analyse du spam",
+      "logs": "Journaux"
     },
     "header": {
       "switch_workspace": "Changer d’espace de travail",
@@ -450,6 +452,10 @@
           "title": "Informations de facturation",
           "description": "Plan, factures, seats et informations de paiement."
         },
+        "upgrade": {
+          "title": "Passer à Pro",
+          "description": "Effectuez une mise à niveau pour bénéficier de plus de fonctionnalités et de collaboration."
+        },
         "permissions": {
           "title": "Autorisations",
           "description": "Rôles, capacités et contrôles d’accès du workspace."
@@ -459,7 +465,7 @@
           "description": "Événements de sécurité et modifications récentes du workspace."
         },
         "storage": {
-          "title": "Mémoire et espace restant",
+          "title": "Stockage",
           "description": "Stockage de la boîte aux lettres, pièces jointes et capacité d’espace de travail restante."
         },
         "support": {
@@ -496,6 +502,30 @@
         },
         "placeholder": "Ajoutez ici les contrôles {pageTitle}.",
         "placeholder_description": "Configurez les paramètres {pageTitle} pour {workspaceName}."
+      }
+    },
+    "console": {
+      "title": "Console",
+      "navigation_label": "Navigation de la console : {page}",
+      "pages_label": "Pages de la console",
+      "back_to_inbox": "Retour à la boîte de réception",
+      "ai": {
+        "description": "Les fonctionnalités d’IA ne sont pas encore disponibles. Revenez plus tard pour voir les mises à jour."
+      },
+      "workflows": {
+        "description": "Les workflows ne sont pas encore disponibles. Revenez plus tard pour voir les mises à jour."
+      },
+      "developers": {
+        "description": "Les outils pour développeurs ne sont pas encore disponibles. Revenez plus tard pour voir les mises à jour."
+      },
+      "contacts": {
+        "description": "La gestion des contacts n’est pas encore disponible. Revenez plus tard pour voir les mises à jour."
+      },
+      "conversations": {
+        "description": "Les conversations ne sont pas encore disponibles. Revenez plus tard pour voir les mises à jour."
+      },
+      "analytics": {
+        "description": "Les statistiques ne sont pas encore disponibles. Revenez plus tard pour voir les mises à jour."
       }
     }
   },
