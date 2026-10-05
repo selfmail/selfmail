@@ -9,7 +9,6 @@ import { docsUrl } from "../../lib/urls";
     <a href="/analytics">{m.analytics()}</a>
     <a href="/conversations">{m.conversations()}</a>
     <a href="/encryption">{m.encryption()}</a>
-    <a href="/customers">{m.customers()}</a>
     <a href="https://selfmail.app/features/api">{m.api()}</a>
     <a href="/workflows">{m.workflows()}</a>
   </div>
@@ -19,13 +18,12 @@ import { docsUrl } from "../../lib/urls";
   <div class="nav-panel">
     <a href={docsUrl}>{m.docs()}</a>
     <a href="https://github.com/selfmail/selfmail">{m.source()}</a>
-  </div>
-</details>
-<details class="nav-dropdown" name="navigation-dropdown">
-  <summary class="nav-link">{m.about()}</summary>
-  <div class="nav-panel">
-    <a href="https://github.com/selfmail/selfmail">{m.source()}</a>
+    <a href="/about">{m.about()}</a>
+    <a href="/customers">{m.customers()}</a>
     <a href="mailto:sales@selfmail.app">{m.contact()}</a>
+    <a href="https://github.com/selfmail/selfmail/discussions">{m.community()}</a>
+    <a href="mailto:sales@selfmail.app?subject=Feedback">{m.feedback()}</a>
+    <a href="https://github.com/selfmail/selfmail/issues">{m.bugs()}</a>
   </div>
 </details>
 <a class="nav-link" href="https://selfmail.app/features/security">{m.security()}</a>

@@ -16,7 +16,6 @@ const groups: HeaderMenuGroup[] = [
           { label: m.analytics(), href: "/analytics" },
           { label: m.conversations(), href: "/conversations" },
           { label: m.encryption(), href: "/encryption" },
-          { label: m.customers(), href: "/customers" },
           { label: m.api(), href: "https://selfmail.app/features/api" },
           { label: m.workflows(), href: "/workflows" },
           {
@@ -49,6 +48,26 @@ const groups: HeaderMenuGroup[] = [
         links: [
           { label: m.docs(), href: docsUrl },
           { label: m.source(), href: "https://github.com/selfmail/selfmail" },
+          { label: m.about(), href: "/about" },
+          { label: m.customers(), href: "/customers" },
+        ],
+      },
+      {
+        label: m.contactHeading(),
+        links: [
+          { label: m.contact(), href: "mailto:sales@selfmail.app" },
+          {
+            label: m.community(),
+            href: "https://github.com/selfmail/selfmail/discussions",
+          },
+          {
+            label: m.feedback(),
+            href: "mailto:sales@selfmail.app?subject=Feedback",
+          },
+          {
+            label: m.bugs(),
+            href: "https://github.com/selfmail/selfmail/issues",
+          },
         ],
       },
     ],
