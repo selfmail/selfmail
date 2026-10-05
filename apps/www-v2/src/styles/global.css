@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --font-sans: Arial, Helvetica, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+  --background: #fafafa;
+  --surface: #f4f4f5;
+  --foreground: #191d20;
+  --muted: #686d72;
+  --border: #dedee1;
+}
+
+:root.dark {
+  color-scheme: dark;
+  --background: #141618;
+  --surface: #1b1e21;
+  --foreground: #f4f4f5;
+  --muted: #a6aaaf;
+  --border: #363b40;
+}
+
+@layer base {
+  body {
+    margin: 0;
+  }
+  button,
+  select,
+  summary {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--foreground);
+    outline-offset: 5px;
+  }
+  summary {
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply rounded-sm py-2 hover:text-muted;
+  }
+  .nav-dropdown {
+    @apply relative;
+  }
+  .nav-dropdown > summary {
+    @apply flex items-center gap-2;
+  }
+  .nav-dropdown > summary::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid var(--muted);
+    border-bottom: 1.5px solid var(--muted);
+    transform: rotate(45deg) translateY(-2px);
+    margin-left: 3px;
+  }
+  .nav-dropdown[open] > summary::after {
+    transform: rotate(225deg);
+  }
+  .nav-panel {
+    @apply absolute left-0 top-full z-20 mt-4 grid min-w-56 gap-1 rounded-2xl border border-border bg-surface p-3 text-base shadow-sm;
+  }
+  .nav-panel a {
+    @apply rounded-lg px-3 py-2 hover:bg-background;
+  }
+  .button-primary {
+    @apply inline-flex items-center justify-center whitespace-nowrap rounded-full bg-foreground px-6 py-3 text-background hover:opacity-80;
+  }
+  .button-secondary {
+    @apply inline-flex items-center justify-center whitespace-nowrap rounded-full border border-border px-5 py-3 hover:bg-background;
+  }
+  @media (width < 96rem) {
+    .nav-panel {
+      @apply static mt-1 border-0 bg-background shadow-none;
+    }
+  }
+}

@@ -2,12 +2,6 @@
   "name": "@selfmail/www",
   "type": "module",
   "version": "0.0.1",
-  "scripts": {
-    "dev": "portless selfmail astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.10",
     "@astrojs/mdx": "^4.3.8",

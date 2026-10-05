@@ -1,0 +1,28 @@
+---
+import { m } from "../paraglide/messages.js";
+---
+<details class="nav-dropdown" name="navigation-dropdown">
+  <summary class="nav-link">{m.platform()}</summary>
+  <div class="nav-panel">
+    <a href="https://selfmail.app/features">{m.features()}</a>
+    <a href="https://selfmail.app/features/api">{m.api()}</a>
+    <a href="https://selfmail.app/features/workflows">{m.workflows()}</a>
+  </div>
+</details>
+<details class="nav-dropdown" name="navigation-dropdown">
+  <summary class="nav-link">{m.resources()}</summary>
+  <div class="nav-panel">
+    <a href="https://docs.selfmail.app">{m.docs()}</a>
+    <a href="https://github.com/selfmail/selfmail">{m.source()}</a>
+  </div>
+</details>
+<details class="nav-dropdown" name="navigation-dropdown">
+  <summary class="nav-link">{m.about()}</summary>
+  <div class="nav-panel">
+    <a href="https://github.com/selfmail/selfmail">{m.source()}</a>
+    <a href="mailto:sales@selfmail.app">{m.contact()}</a>
+  </div>
+</details>
+<a class="nav-link" href="https://selfmail.app/features/security">{m.security()}</a>
+<a class="nav-link" href="mailto:sales@selfmail.app">{m.enterprise()}</a>
+<a class="nav-link" href="https://selfmail.app/pricing">{m.pricing()}</a>

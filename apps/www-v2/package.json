@@ -1,0 +1,31 @@
+{
+  "name": "www",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "portless selfmail astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check-types": "astro check",
+    "start": "node ./dist/server/entry.mjs"
+  },
+  "dependencies": {
+    "@astrojs/node": "^11.1.6",
+    "@inlang/paraglide-js": "^2.18.2",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^7.3.5",
+    "posthog-js": "^1.378.1",
+    "tailwindcss": "^4.3.0"
+  },
+  "allowScripts": {
+    "esbuild": true
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "~5.9.3"
+  }
+}
