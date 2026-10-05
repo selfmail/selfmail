@@ -1,0 +1,25 @@
+---
+import { m } from "../lib/messages";
+import { getLocale, locales } from "../paraglide/runtime.js";
+
+const names = { en: "English", de: "Deutsch", fr: "Français", es: "Español" };
+---
+<div class="flex flex-wrap items-center justify-end gap-5 text-sm text-muted">
+  <label class="flex items-center gap-2">
+    <span>{m.language()}</span>
+    <select id="locale" class="rounded-md border border-border bg-background px-2 py-2 text-foreground">
+      {locales.map((locale) => <option value={locale} selected={locale === getLocale()} lang={locale}>{names[locale]}</option>)}
+    </select>
+  </label>
+  <label class="flex items-center gap-2">
+    <span>{m.appearance()}</span>
+    <select id="theme" class="rounded-md border border-border bg-background px-2 py-2 text-foreground">
+      <option value="auto">{m.auto()}</option>
+      <option value="light">{m.light()}</option>
+      <option value="dark">{m.dark()}</option>
+    </select>
+  </label>
+</div>
+<script>
+  import "../scripts/preferences";
+</script>

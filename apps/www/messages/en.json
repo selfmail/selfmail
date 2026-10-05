@@ -1,0 +1,48 @@
+{
+  "pages": {
+    "layout": {
+      "header": {
+        "description": "Email built around you.",
+        "navigation": "Main navigation",
+        "platform": "Platform",
+        "developer": "Developer",
+        "sdk": "SDK",
+        "developerApi": "API",
+        "contactEmbedding": "Contact embedding",
+        "bulkSending": "Bulk sending",
+        "transactionalEmails": "Transactional emails",
+        "resources": "Resources",
+        "about": "About us",
+        "security": "Security",
+        "enterprise": "Enterprise",
+        "pricing": "Pricing",
+        "login": "Log in",
+        "sales": "Talk to sales",
+        "start": "Dashboard",
+        "features": "All features",
+        "api": "Email API",
+        "workflows": "Workflows",
+        "docs": "Documentation",
+        "source": "Open source",
+        "contact": "Contact us",
+        "language": "Language",
+        "appearance": "Appearance",
+        "auto": "System",
+        "light": "Light",
+        "dark": "Dark",
+        "menu": "Menu",
+        "skip": "Skip to content",
+        "changelog": "Changelog",
+        "analytics": "Analytics",
+        "conversations": "Conversations",
+        "encryption": "Encryption",
+        "customers": "Customers"
+      }
+    },
+    "home": {
+      "hero": {
+        "heading": "Email built around you."
+      }
+    }
+  }
+}

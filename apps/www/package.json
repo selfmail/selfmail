@@ -1,23 +1,41 @@
 {
-  "name": "@selfmail/www",
+  "name": "www",
   "type": "module",
   "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "portless selfmail astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check-types": "astro check",
+    "start": "node ./dist/server/entry.mjs"
+  },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.10",
-    "@astrojs/mdx": "^4.3.8",
-    "@astrojs/react": "^4.4.0",
-    "@astrojs/rss": "^4.0.13",
-    "@astrojs/sitemap": "^3.6.0",
-    "@lucide/astro": "^0.555.0",
-    "@tailwindcss/vite": "^4.1.16",
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2",
-    "astro": "^5.15.1",
-    "dither-plugin": "^1.1.1",
-    "lucide-react": "^0.548.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "sharp": "^0.34.3",
-    "tailwindcss": "^4.1.16"
+    "@astrojs/node": "^11.1.6",
+    "@astrojs/react": "^7.0.0",
+    "@base-ui/react": "^1.8.0",
+    "@inlang/paraglide-js": "^2.18.2",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^7.3.5",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.52.0",
+    "posthog-js": "^1.378.1",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "tailwind-merge": "^3.7.0",
+    "tailwindcss": "^4.3.0"
+  },
+  "allowScripts": {
+    "esbuild": true
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "~5.9.3"
   }
 }

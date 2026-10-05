@@ -1,0 +1,48 @@
+{
+  "pages": {
+    "layout": {
+      "header": {
+        "description": "E-Mail, auf dich abgestimmt.",
+        "navigation": "Hauptnavigation",
+        "platform": "Plattform",
+        "developer": "Developer",
+        "sdk": "SDK",
+        "developerApi": "API",
+        "contactEmbedding": "Kontakt-Einbettung",
+        "bulkSending": "Massenversand",
+        "transactionalEmails": "Transaktions-E-Mails",
+        "resources": "Ressourcen",
+        "about": "Über uns",
+        "security": "Sicherheit",
+        "enterprise": "Enterprise",
+        "pricing": "Preise",
+        "login": "Log in",
+        "sales": "Mit Sales sprechen",
+        "start": "Jetzt starten",
+        "features": "Alle Funktionen",
+        "api": "E-Mail-API",
+        "workflows": "Workflows",
+        "docs": "Dokumentation",
+        "source": "Open Source",
+        "contact": "Kontakt",
+        "language": "Sprache",
+        "appearance": "Darstellung",
+        "auto": "System",
+        "light": "Hell",
+        "dark": "Dunkel",
+        "menu": "Menü",
+        "skip": "Zum Inhalt springen",
+        "changelog": "Changelog",
+        "analytics": "Analytics",
+        "conversations": "Unterhaltungen",
+        "encryption": "Verschlüsselung",
+        "customers": "Kunden"
+      }
+    },
+    "home": {
+      "hero": {
+        "heading": "E-Mail, auf dich abgestimmt."
+      }
+    }
+  }
+}

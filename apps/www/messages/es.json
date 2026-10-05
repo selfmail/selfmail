@@ -1,0 +1,48 @@
+{
+  "pages": {
+    "layout": {
+      "header": {
+        "description": "Email creado en torno a ti.",
+        "navigation": "Navegación principal",
+        "platform": "Plataforma",
+        "developer": "Desarrollador",
+        "sdk": "SDK",
+        "developerApi": "API",
+        "contactEmbedding": "Integración de contacto",
+        "bulkSending": "Envío masivo",
+        "transactionalEmails": "Emails transaccionales",
+        "resources": "Recursos",
+        "about": "Sobre nosotros",
+        "security": "Seguridad",
+        "enterprise": "Empresas",
+        "pricing": "Precios",
+        "login": "Iniciar sesión",
+        "sales": "Hablar con ventas",
+        "start": "Panel",
+        "features": "Todas las funciones",
+        "api": "API de email",
+        "workflows": "Flujos de trabajo",
+        "docs": "Documentación",
+        "source": "Código abierto",
+        "contact": "Contacto",
+        "language": "Idioma",
+        "appearance": "Apariencia",
+        "auto": "Sistema",
+        "light": "Claro",
+        "dark": "Oscuro",
+        "menu": "Menú",
+        "skip": "Saltar al contenido",
+        "changelog": "Registro de cambios",
+        "analytics": "Analíticas",
+        "conversations": "Conversaciones",
+        "encryption": "Cifrado",
+        "customers": "Clientes"
+      }
+    },
+    "home": {
+      "hero": {
+        "heading": "Email creado en torno a ti."
+      }
+    }
+  }
+}

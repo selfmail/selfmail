@@ -1,0 +1,39 @@
+version: 1
+checksums:
+  65f0b2bcf7f26084eccbea1631cf7828:
+    pages/layout/header/description: 824c40bb9af9d526bf3116c6474e3705
+    pages/layout/header/navigation: 1eae14dc9836e545e2d7960f98c93481
+    pages/layout/header/platform: c68862170146325333c7f25af11a3fa2
+    pages/layout/header/developer: 7a803617347f091e19a92d8579555af7
+    pages/layout/header/sdk: d90fd36f19499855ad6f3a6821242c7a
+    pages/layout/header/developerApi: 01d9819514e27056dcc69463194b63d2
+    pages/layout/header/contactEmbedding: ff75d1402bdbca374223b2faaa75d4e9
+    pages/layout/header/bulkSending: 17505c69cc1f4437adbb006464d36d70
+    pages/layout/header/transactionalEmails: 61943901f6a53c0f627af62125f9647e
+    pages/layout/header/resources: ec7fb05ed963bb6781a35782b3475502
+    pages/layout/header/about: 7ed93e7bbfca42a405d61ea3c2791aae
+    pages/layout/header/security: 4b34923fef858a2b9a4a914c3e822889
+    pages/layout/header/enterprise: c70474271708e5b27392fde87462fa26
+    pages/layout/header/pricing: ce27f1aeacccc542a174c4b2bce022b0
+    pages/layout/header/login: 9fb886eff8d1d67d8bb79f5c3f78edde
+    pages/layout/header/sales: 3df2b2cc7cb4445c7d99182cb246dcde
+    pages/layout/header/start: c9380ea68c8c76ea451bd9613329a07c
+    pages/layout/header/features: bccfad8b3170cf86405a9bb653f44b8b
+    pages/layout/header/api: 462b1e0acb9347990e9a6c099e793afc
+    pages/layout/header/workflows: b0c9c8615a9ba7d9cb73e767290a7f72
+    pages/layout/header/docs: 1563fcb5ddb5037b0709ccd3dd384a92
+    pages/layout/header/source: 81a747dc664de1a3389b495c8f84843b
+    pages/layout/header/contact: 694a45bc5c96f6f3a27873c1cf5a7707
+    pages/layout/header/language: 277fd1a41cc237a437cd1d5e4a80463b
+    pages/layout/header/appearance: cdd8c41c5fb859234e8a603544fce631
+    pages/layout/header/auto: 803281c327a02a2feba182f4a2b38311
+    pages/layout/header/light: bb78ea2c6edd8662676c81a8a13ecb93
+    pages/layout/header/dark: 73e6e208ba628b26e90fcf6dce15e1b2
+    pages/layout/header/menu: 520968a9770cddeb6d339c0fcbd70240
+    pages/layout/header/skip: b06c206dbd7f20dd2740bf79d2a41d6d
+    pages/layout/header/changelog: 2a0cc1faf653e9ca97786acee96ffbde
+    pages/layout/header/analytics: ec67586974cc78f25959d47bb36683a7
+    pages/layout/header/conversations: 6dd493bfcba36eaa4b9844e55400cc29
+    pages/layout/header/encryption: 0696af0d67eb394c9e3a50f3a1bd2196
+    pages/layout/header/customers: c31a0dfd0d92496ba6f5673781db24ef
+    pages/home/hero/heading: 824c40bb9af9d526bf3116c6474e3705

@@ -1,0 +1,91 @@
+---
+import { m } from "../../lib/messages";
+import { authUrl, docsUrl } from "../../lib/urls";
+import HeaderMegaMenu, { type HeaderMenuGroup } from "./header-mega-menu";
+import NavigationLinks from "./NavigationLinks.astro";
+
+const groups: HeaderMenuGroup[] = [
+  {
+    label: m.platform(),
+    feature: { label: m.workflows(), href: "/workflows" },
+    sections: [
+      {
+        label: m.platform(),
+        links: [
+          { label: m.changelog(), href: "/changelog" },
+          { label: m.analytics(), href: "/analytics" },
+          { label: m.conversations(), href: "/conversations" },
+          { label: m.encryption(), href: "/encryption" },
+          { label: m.customers(), href: "/customers" },
+          { label: m.api(), href: "https://selfmail.app/features/api" },
+          { label: m.workflows(), href: "/workflows" },
+          {
+            label: m.security(),
+            href: "https://selfmail.app/features/security",
+          },
+        ],
+      },
+      {
+        label: m.developer(),
+        links: [
+          { label: m.sdk(), href: docsUrl },
+          {
+            label: m.developerApi(),
+            href: "https://selfmail.app/features/api",
+          },
+          { label: m.contactEmbedding(), href: docsUrl },
+          { label: m.bulkSending(), href: docsUrl },
+          { label: m.transactionalEmails(), href: docsUrl },
+        ],
+      },
+    ],
+  },
+  {
+    label: m.resources(),
+    feature: { label: m.docs(), href: docsUrl },
+    sections: [
+      {
+        label: m.resources(),
+        links: [
+          { label: m.docs(), href: docsUrl },
+          { label: m.source(), href: "https://github.com/selfmail/selfmail" },
+        ],
+      },
+    ],
+  },
+];
+const links = [
+  { label: m.enterprise(), href: "/enterprise" },
+  { label: m.pricing(), href: "/pricing" },
+];
+---
+<header class="site-header relative z-30 bg-surface px-5 sm:px-8 2xl:px-16">
+  <div class="flex min-h-14 items-center gap-8  2xl:gap-16">
+    <a href="/" class="relative z-40 tracking-tight text-xl font-medium">Selfmail</a>
+    <div class="hidden items-center gap-6 whitespace-nowrap text-sm lg:flex lg:gap-8">
+      <HeaderMegaMenu client:load label={m.navigation()} groups={groups} links={links} />
+    </div>
+    <div class="relative z-40 ml-auto hidden items-center gap-3 whitespace-nowrap text-sm lg:flex">
+      <a href={new URL("/login", authUrl).href} class="font-medium tracking-tight mr-4">{m.login()}</a>
+      <a href="mailto:sales@selfmail.app" class="border border-border px-3 py-1 rounded-full hover:bg-background">{m.sales()}</a>
+      <a href={new URL("/register", authUrl).href} class="bg-foreground px-3 py-1 rounded-full text-background hover:opacity-80">{m.start()}</a>
+    </div>
+    <details id="mobile-navigation" class="group ml-auto lg:hidden">
+      <summary class="flex min-h-11 items-center gap-3 rounded-md px-2 text-sm">
+        {m.menu()}
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="size-5"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+      </summary>
+      <div class="absolute inset-x-0 top-full z-30 grid max-h-[calc(100dvh-5rem)] gap-3 overflow-y-auto border-b border-border bg-surface px-6 pt-5 pb-[max(2rem,env(safe-area-inset-bottom))] text-lg shadow-sm">
+        <NavigationLinks />
+        <a href={new URL("/login", authUrl).href} class="nav-link">{m.login()}</a>
+        <div class="flex flex-wrap gap-3 pt-3">
+          <a href="mailto:sales@selfmail.app" class="button-secondary">{m.sales()}</a>
+          <a href={new URL("/register", authUrl).href} class="button-primary">{m.start()}</a>
+        </div>
+      </div>
+    </details>
+  </div>
+</header>
+<script>
+  import "../../scripts/navigation";
+</script>

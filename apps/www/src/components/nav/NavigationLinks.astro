@@ -1,0 +1,33 @@
+---
+import { m } from "../../lib/messages";
+import { docsUrl } from "../../lib/urls";
+---
+<details class="nav-dropdown" name="navigation-dropdown">
+  <summary class="nav-link">{m.platform()}</summary>
+  <div class="nav-panel">
+    <a href="/changelog">{m.changelog()}</a>
+    <a href="/analytics">{m.analytics()}</a>
+    <a href="/conversations">{m.conversations()}</a>
+    <a href="/encryption">{m.encryption()}</a>
+    <a href="/customers">{m.customers()}</a>
+    <a href="https://selfmail.app/features/api">{m.api()}</a>
+    <a href="/workflows">{m.workflows()}</a>
+  </div>
+</details>
+<details class="nav-dropdown" name="navigation-dropdown">
+  <summary class="nav-link">{m.resources()}</summary>
+  <div class="nav-panel">
+    <a href={docsUrl}>{m.docs()}</a>
+    <a href="https://github.com/selfmail/selfmail">{m.source()}</a>
+  </div>
+</details>
+<details class="nav-dropdown" name="navigation-dropdown">
+  <summary class="nav-link">{m.about()}</summary>
+  <div class="nav-panel">
+    <a href="https://github.com/selfmail/selfmail">{m.source()}</a>
+    <a href="mailto:sales@selfmail.app">{m.contact()}</a>
+  </div>
+</details>
+<a class="nav-link" href="https://selfmail.app/features/security">{m.security()}</a>
+<a class="nav-link" href="mailto:sales@selfmail.app">{m.enterprise()}</a>
+<a class="nav-link" href="https://selfmail.app/pricing">{m.pricing()}</a>

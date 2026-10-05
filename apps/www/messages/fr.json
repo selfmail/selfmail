@@ -1,0 +1,48 @@
+{
+  "pages": {
+    "layout": {
+      "header": {
+        "description": "Une messagerie conçue pour vous.",
+        "navigation": "Navigation principale",
+        "platform": "Plateforme",
+        "developer": "Développeur",
+        "sdk": "SDK",
+        "developerApi": "API",
+        "contactEmbedding": "Intégration des contacts",
+        "bulkSending": "Envois en masse",
+        "transactionalEmails": "E-mails transactionnels",
+        "resources": "Ressources",
+        "about": "À propos de nous",
+        "security": "Sécurité",
+        "enterprise": "Entreprise",
+        "pricing": "Tarifs",
+        "login": "Se connecter",
+        "sales": "Contacter l’équipe commerciale",
+        "start": "Tableau de bord",
+        "features": "Toutes les fonctionnalités",
+        "api": "API d’email",
+        "workflows": "Workflows",
+        "docs": "Documentation",
+        "source": "Open source",
+        "contact": "Nous contacter",
+        "language": "Langue",
+        "appearance": "Apparence",
+        "auto": "Système",
+        "light": "Clair",
+        "dark": "Sombre",
+        "menu": "Menu",
+        "skip": "Aller au contenu",
+        "changelog": "Journal des modifications",
+        "analytics": "Analytique",
+        "conversations": "Conversations",
+        "encryption": "Chiffrement",
+        "customers": "Clients"
+      }
+    },
+    "home": {
+      "hero": {
+        "heading": "Une messagerie conçue pour vous."
+      }
+    }
+  }
+}
