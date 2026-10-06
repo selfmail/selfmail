@@ -17,6 +17,7 @@
     "@astrojs/node": "^11.1.6",
     "@astrojs/react": "^7.0.0",
     "@base-ui/react": "^1.8.0",
+    "@fontsource-variable/geist": "^5.2.8",
     "@inlang/paraglide-js": "^2.18.2",
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^7.3.5",

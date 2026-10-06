@@ -1,5 +1,6 @@
 import * as generated from "../paraglide/messages/_index.js";
 import {
+  "pages.layout.header.ai" as ai,
   "pages.layout.header.analytics" as analytics,
   "pages.layout.header.bugs" as bugs,
   "pages.layout.header.bulkSending" as bulkSending,
@@ -14,6 +15,7 @@ import {
   "pages.layout.header.encryption" as encryption,
   "pages.layout.header.feedback" as feedback,
   "pages.layout.header.sdk" as sdk,
+  "pages.layout.header.selfmailDev" as selfmailDev,
   "pages.layout.header.transactionalEmails" as transactionalEmails,
 } from "../paraglide/messages/_index.js";
 
@@ -27,6 +29,8 @@ export const m = {
   encryption,
   customers,
   developer,
+  ai,
+  selfmailDev,
   sdk,
   developerApi,
   contactEmbedding,

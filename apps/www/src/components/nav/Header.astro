@@ -35,6 +35,8 @@ const groups: HeaderMenuGroup[] = [
           { label: m.contactEmbedding(), href: docsUrl },
           { label: m.bulkSending(), href: docsUrl },
           { label: m.transactionalEmails(), href: docsUrl },
+          { label: m.ai(), href: docsUrl },
+          { label: m.selfmailDev(), href: "https://selfmail.dev" },
         ],
       },
     ],
@@ -85,8 +87,7 @@ const links = [
       <HeaderMegaMenu client:load label={m.navigation()} groups={groups} links={links} />
     </div>
     <div class="relative z-40 ml-auto hidden items-center gap-3 whitespace-nowrap text-sm lg:flex">
-      <a href={new URL("/login", authUrl).href} class="font-medium tracking-tight mr-4">{m.login()}</a>
-      <a href="mailto:sales@selfmail.app" class="border border-border px-3 py-1 rounded-full hover:bg-background">{m.sales()}</a>
+      <a href={new URL("/login", authUrl).href} class="font-medium tracking-tight hover:opacity-80">{m.login()}</a>
       <a href={new URL("/register", authUrl).href} class="bg-foreground px-3 py-1 rounded-full text-background hover:opacity-80">{m.start()}</a>
     </div>
     <details id="mobile-navigation" class="group ml-auto lg:hidden">
@@ -96,9 +97,8 @@ const links = [
       </summary>
       <div class="absolute inset-x-0 top-full z-30 grid max-h-[calc(100dvh-5rem)] gap-3 overflow-y-auto border-b border-border bg-surface px-6 pt-5 pb-[max(2rem,env(safe-area-inset-bottom))] text-lg shadow-sm">
         <NavigationLinks />
-        <a href={new URL("/login", authUrl).href} class="nav-link">{m.login()}</a>
+        <a href={new URL("/login", authUrl).href} class="nav-link hover:opacity-80">{m.login()}</a>
         <div class="flex flex-wrap gap-3 pt-3">
-          <a href="mailto:sales@selfmail.app" class="button-secondary">{m.sales()}</a>
           <a href={new URL("/register", authUrl).href} class="button-primary">{m.start()}</a>
         </div>
       </div>
