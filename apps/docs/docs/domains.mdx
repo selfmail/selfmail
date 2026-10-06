@@ -1,0 +1,33 @@
+---
+title: Custom domains
+description: Connect a domain you own to receive email in Selfmail.
+sidebar:
+  order: 4
+---
+
+You need access to your domain's DNS settings and permission to add or update domains in the workspace.
+
+## Connect a domain
+
+1. Open **Settings → Domains** in the intended workspace.
+2. Add your domain name, such as `example.com`.
+3. Open the domain's settings to view its required DNS records.
+4. Add those records at your DNS provider, using the exact values shown by Selfmail.
+5. Run the domain verification action. Once it succeeds, [create an address](/addresses) using that domain.
+
+## DNS records
+
+| Record | Purpose |
+| --- | --- |
+| TXT | Proves control of the domain. Selfmail uses `_selfmail` with a domain-specific verification value. |
+| MX | Routes incoming mail to Selfmail. Use the host and priority shown in the domain settings. |
+
+Some DNS providers expect a relative record name, such as `_selfmail`, while others display the full hostname. Check the saved hostname to avoid adding your domain twice.
+
+Changing MX records changes where incoming mail is delivered. If the domain already receives mail elsewhere, coordinate the switch before replacing its existing routing.
+
+## Verification problems
+
+Check the record type, hostname, value, and MX priority against the domain settings. DNS changes may take time to become visible; retry verification after the updated records are available.
+
+If a previously verified domain stops receiving mail, check that its MX record still matches the domain settings. If management actions are unavailable, ask a workspace owner or a member with domain-management permission.

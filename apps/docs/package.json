@@ -1,0 +1,13 @@
+{
+  "name": "@selfmail/docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "portless docs.selfmail sh -c 'blume dev --port \"${PORT:-4321}\" --host \"${HOST:-localhost}\"'",
+    "build": "blume build",
+    "doctor": "blume doctor"
+  },
+  "dependencies": {
+    "blume": "^2.1.3"
+  }
+}
