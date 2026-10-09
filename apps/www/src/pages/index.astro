@@ -1,12 +1,31 @@
 ---
+import Preferences from "@/components/Preferences.astro";
+import { EmailPlayground } from "../components/home/email-playground";
 import Header from "../components/nav/Header.astro";
-import Preferences from "../components/Preferences.astro";
 import Layout from "../layouts/Layout.astro";
+import { m } from "../lib/messages";
+import { authUrl } from "../lib/urls";
 ---
+
 <Layout>
   <Header />
   <main id="main" tabindex="-1" class="bg-surface min-h-[calc(100dvh-5rem-2px)] 2xl:min-h-[calc(100dvh-5.5rem-2px)] px-5 pt-6 sm:px-8 2xl:px-16">
-    <h1 class="sr-only">Selfmail</h1>
-    <Preferences />
+      <div class="h-full flex flex-col gap-4">
+          <div class="w-full flex justify-between mt-12 sm:mt-20">
+              <h1 class="max-w-2xl text-balance text-3xl leading-tight [hyphens:auto] sm:text-4xl">
+                  {m.homeHeading()} {m.homeHeadingContinuation()}
+              </h1>
+          </div>
+          <div class="flex flex-row gap-4 mt-2">
+              <a href={new URL("/register", authUrl).href} class="bg-foreground active:scale-[99%] px-3 py-1 rounded-full text-background hover:opacity-80">
+                  {m.homeStart()}
+              </a>
+              <a href="#email-playground" class="hidden hover:bg-neutral-300 dark:hover:bg-neutral-700/50 active:scale-[99%] px-3 py-1 rounded-full lg:inline-flex">
+                  {m.homeDemo()}
+              </a>
+          </div>
+          <EmailPlayground client:load />
+          <Preferences />
+      </div>
   </main>
 </Layout>

@@ -24,6 +24,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.52.0",
+    "motion": "^12.42.2",
     "posthog-js": "^1.378.1",
     "react": "19.2.6",
     "react-dom": "19.2.6",

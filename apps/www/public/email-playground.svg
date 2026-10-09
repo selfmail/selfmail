@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="620" viewBox="0 0 960 620" fill="none">
+  <rect width="960" height="620" rx="16" fill="#fafafa"/>
+  <g stroke="#dedee1"><path d="M400 0v620M0 64h960M0 184h400M0 304h400M0 424h400M0 544h400"/></g>
+  <g font-family="Arial, sans-serif" fill="#191d20">
+    <text x="28" y="40" font-size="20">Inbox</text><text x="430" y="40" font-size="20">Email preview</text>
+    <rect x="1" y="65" width="398" height="118" fill="#f0f0f1"/>
+    <g fill="#f0f0f1" stroke="#dedee1"><circle cx="48" cy="108" r="22"/><circle cx="48" cy="228" r="22"/><circle cx="48" cy="348" r="22"/><circle cx="48" cy="468" r="22"/></g>
+    <g font-size="16"><text x="37" y="114">SM</text><text x="36" y="234">AM</text><text x="37" y="354">SN</text><text x="38" y="474">JC</text></g>
+    <g font-size="16" font-weight="600"><text x="86" y="104">The selfmail team</text><text x="86" y="224">Alex Morgan</text><text x="86" y="344">Studio North</text><text x="86" y="464">Jamie Chen</text></g>
+    <g font-size="15"><text x="86" y="132">A little less inbox. A little more you.</text><text x="86" y="252">Coffee and a good idea?</text><text x="86" y="372">The first sketches are ready</text><text x="86" y="492">Out of office, into the mountains</text></g>
+    <g fill="#686d72" font-size="14"><text x="86" y="158">Welcome to your new inbox.</text><text x="86" y="278">First round’s on me.</text><text x="86" y="398">Can’t wait to hear what you think.</text><text x="86" y="518">I’ll bring the snacks.</text></g>
+    <text x="436" y="118" font-size="26">A little less inbox.</text><text x="436" y="152" font-size="26">A little more you.</text>
+    <text x="436" y="204" font-size="16" font-weight="600">The selfmail team</text><text x="436" y="230" font-size="14" fill="#686d72">To: you@example.com</text>
+    <g font-size="17"><text x="436" y="294">Hey there,</text><text x="436" y="340">Welcome to your new inbox. A calm place</text><text x="436" y="370">for conversations, ideas, and the occasional</text><text x="436" y="400">very important cat photo.</text><text x="436" y="452">Make yourself at home.</text><text x="436" y="510">— The selfmail team</text></g>
+  </g>
+</svg>

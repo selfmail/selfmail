@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
+@import "@fontsource-variable/inter";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -9,6 +10,7 @@
   font-family: "Geist Variable", Geist, sans-serif;
   font-optical-sizing: auto;
   font-weight: 500;
+  --overlay: 0 0 0;
   --background: oklch(1 0 0);
   --foreground: oklch(0.16 0 0);
   --card: oklch(1 0 0);
@@ -39,6 +41,7 @@
 }
 
 .dark {
+  --overlay: 255 255 255;
   --background: oklch(0.16 0 0);
   --foreground: oklch(0.95 0 0);
   --card: oklch(0.2 0 0);

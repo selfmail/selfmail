@@ -27,6 +27,8 @@ export default function HeaderMegaMenu({
           <NavigationMenuLink
             className="flex min-h-40 flex-col justify-between gap-6 rounded-xl border border-border bg-background p-6"
             href={feature.href}
+            rel="noopener noreferrer"
+            target="_blank"
           >
             <span className="font-mono text-muted text-xs uppercase tracking-wider">
               {group.label}

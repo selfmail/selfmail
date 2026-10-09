@@ -1,7 +1,9 @@
 ---
+import { ArrowUpRightIcon } from "lucide-react";
 import { m } from "../../lib/messages";
 import { docsUrl } from "../../lib/urls";
 ---
+
 <details class="nav-dropdown" name="navigation-dropdown">
   <summary class="nav-link">{m.platform()}</summary>
   <div class="nav-panel">
@@ -16,8 +18,8 @@ import { docsUrl } from "../../lib/urls";
 <details class="nav-dropdown" name="navigation-dropdown">
   <summary class="nav-link">{m.resources()}</summary>
   <div class="nav-panel">
-    <a href={docsUrl}>{m.docs()}</a>
-    <a href="https://github.com/selfmail/selfmail">{m.source()}</a>
+    <a href={docsUrl} target="_blank" rel="noopener noreferrer">{m.docs()}<ArrowUpRightIcon aria-hidden="true" className="ml-1 inline-block size-5 align-middle" /></a>
+    <a href="https://github.com/selfmail/selfmail" target="_blank" rel="noopener noreferrer">{m.source()}<ArrowUpRightIcon aria-hidden="true" className="ml-1 inline-block size-5 align-middle" /></a>
     <a href="/about">{m.about()}</a>
     <a href="/customers">{m.customers()}</a>
     <a href="mailto:sales@selfmail.app">{m.contact()}</a>

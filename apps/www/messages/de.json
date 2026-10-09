@@ -5,7 +5,7 @@
         "description": "E-Mail, auf dich abgestimmt.",
         "navigation": "Hauptnavigation",
         "platform": "Plattform",
-        "developer": "Developer",
+        "developer": "Entwickler",
         "sdk": "SDK",
         "developerApi": "API",
         "contactEmbedding": "Kontakt-Einbettung",
@@ -16,8 +16,8 @@
         "security": "Sicherheit",
         "enterprise": "Enterprise",
         "pricing": "Preise",
-        "login": "Log in",
-        "sales": "Mit Sales sprechen",
+        "login": "Anmelden",
+        "sales": "Mit dem Vertrieb sprechen",
         "start": "Jetzt starten",
         "features": "Alle Funktionen",
         "api": "E-Mail-API",
@@ -36,12 +36,21 @@
         "analytics": "Analytics",
         "conversations": "Unterhaltungen",
         "encryption": "Verschlüsselung",
-        "customers": "Kunden"
+        "customers": "Kunden",
+        "ai": "KI",
+        "selfmailDev": "Selfmail Dev",
+        "contactHeading": "Kontakt",
+        "community": "Community",
+        "feedback": "Feedback",
+        "bugs": "Fehler melden"
       }
     },
     "home": {
       "hero": {
-        "heading": "E-Mail, auf dich abgestimmt."
+        "heading": "Endlich ist E-Mail",
+        "headingContinuation": "im 21. Jahrhundert angekommen.",
+        "start": "Jetzt starten",
+        "demo": "Demo anfordern"
       }
     }
   }

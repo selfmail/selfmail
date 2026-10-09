@@ -75,6 +75,7 @@ export {
   DropdownSubTrigger,
   DropdownTrigger,
 } from "./components/dropdown";
+export { FancySwitch, type FancySwitchProps } from "./components/fancy-switch";
 export { Input } from "./components/input";
 export { Label } from "./components/label";
 export {
@@ -172,3 +173,4 @@ export {
   TooltipTrigger,
 } from "./components/tooltip";
 export { cn } from "./lib/cn";
+export { SizeProvider, type SizeVariant } from "./lib/size-context";

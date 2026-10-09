@@ -18,7 +18,7 @@
         "pricing": "Tarifs",
         "login": "Se connecter",
         "sales": "Contacter l’équipe commerciale",
-        "start": "Tableau de bord",
+        "start": "S’inscrire",
         "features": "Toutes les fonctionnalités",
         "api": "API d’email",
         "workflows": "Workflows",
@@ -36,12 +36,21 @@
         "analytics": "Analytique",
         "conversations": "Conversations",
         "encryption": "Chiffrement",
-        "customers": "Clients"
+        "customers": "Clients",
+        "ai": "IA",
+        "selfmailDev": "Selfmail Dev",
+        "contactHeading": "Contact",
+        "community": "Communauté",
+        "feedback": "Commentaires",
+        "bugs": "Signaler un bug"
       }
     },
     "home": {
       "hero": {
-        "heading": "Une messagerie conçue pour vous."
+        "heading": "Enfin, la messagerie est entrée",
+        "headingContinuation": "dans le XXIe siècle.",
+        "start": "Commencer",
+        "demo": "Demander une démo"
       }
     }
   }

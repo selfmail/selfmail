@@ -1,3 +1,4 @@
+import { ArrowUpRightIcon } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
@@ -13,6 +14,7 @@ export interface MenuLink {
   label: string;
   href: string;
   description?: string;
+  external?: boolean;
 }
 
 export interface MenuSection {
@@ -71,8 +73,22 @@ export default function MegaMenu({ label, groups, links }: MegaMenuProps) {
                               <NavigationMenuLink
                                 className="w-fit max-w-full whitespace-normal py-1 text-base"
                                 href={link.href}
+                                rel={
+                                  link.external
+                                    ? "noopener noreferrer"
+                                    : undefined
+                                }
+                                target={link.external ? "_blank" : undefined}
                               >
-                                <span className="block">{link.label}</span>
+                                <span className="flex items-center gap-1">
+                                  {link.label}
+                                  {link.external && (
+                                    <ArrowUpRightIcon
+                                      aria-hidden="true"
+                                      className="size-5 shrink-0"
+                                    />
+                                  )}
+                                </span>
                                 {link.description && (
                                   <span className="mt-1 block text-muted text-sm">
                                     {link.description}

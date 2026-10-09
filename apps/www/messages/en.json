@@ -20,7 +20,7 @@
         "pricing": "Pricing",
         "login": "Log in",
         "sales": "Talk to sales",
-        "start": "Register",
+        "start": "Start now",
         "features": "All features",
         "api": "Email API",
         "workflows": "Workflows",
@@ -47,7 +47,10 @@
     },
     "home": {
       "hero": {
-        "heading": "Email built around you."
+        "heading": "Finally, email has made it",
+        "headingContinuation": "into the 21st century.",
+        "start": "Get started",
+        "demo": "Request a demo"
       }
     }
   }

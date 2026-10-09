@@ -174,3 +174,23 @@
     transform: none;
   }
 }
+
+/* Keep the playground's scroll controls quiet without hiding them. */
+#email-playground .playground-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+#email-playground .playground-scroll::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+#email-playground .playground-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--border);
+}
+
+#email-playground .playground-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}

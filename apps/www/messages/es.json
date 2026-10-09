@@ -18,7 +18,7 @@
         "pricing": "Precios",
         "login": "Iniciar sesión",
         "sales": "Hablar con ventas",
-        "start": "Panel",
+        "start": "Registrarse",
         "features": "Todas las funciones",
         "api": "API de email",
         "workflows": "Flujos de trabajo",
@@ -36,12 +36,21 @@
         "analytics": "Analíticas",
         "conversations": "Conversaciones",
         "encryption": "Cifrado",
-        "customers": "Clientes"
+        "customers": "Clientes",
+        "ai": "IA",
+        "selfmailDev": "Selfmail Dev",
+        "contactHeading": "Contacto",
+        "community": "Comunidad",
+        "feedback": "Comentarios",
+        "bugs": "Informar de errores"
       }
     },
     "home": {
       "hero": {
-        "heading": "Email creado en torno a ti."
+        "heading": "Por fin, el correo electrónico",
+        "headingContinuation": "ha llegado al siglo XXI.",
+        "start": "Comenzar",
+        "demo": "Solicitar una demo"
       }
     }
   }

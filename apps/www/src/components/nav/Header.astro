@@ -36,20 +36,28 @@ const groups: HeaderMenuGroup[] = [
           { label: m.bulkSending(), href: docsUrl },
           { label: m.transactionalEmails(), href: docsUrl },
           { label: m.ai(), href: docsUrl },
-          { label: m.selfmailDev(), href: "https://selfmail.dev" },
+          {
+            label: m.selfmailDev(),
+            href: "https://selfmail.dev",
+            external: true,
+          },
         ],
       },
     ],
   },
   {
     label: m.resources(),
-    feature: { label: m.docs(), href: docsUrl },
+    feature: { label: m.docs(), href: docsUrl, external: true },
     sections: [
       {
         label: m.resources(),
         links: [
-          { label: m.docs(), href: docsUrl },
-          { label: m.source(), href: "https://github.com/selfmail/selfmail" },
+          { label: m.docs(), href: docsUrl, external: true },
+          {
+            label: m.source(),
+            href: "https://github.com/selfmail/selfmail",
+            external: true,
+          },
           { label: m.about(), href: "/about" },
           { label: m.customers(), href: "/customers" },
         ],
@@ -80,26 +88,28 @@ const links = [
   { label: m.pricing(), href: "/pricing" },
 ];
 ---
-<header class="site-header relative z-30 bg-surface px-5 sm:px-8 2xl:px-16">
-  <div class="flex min-h-14 items-center gap-8  2xl:gap-16">
+<header class="site-header group/header relative z-30 max-lg:has-[details[open]]:fixed max-lg:has-[details[open]]:inset-x-0 max-lg:has-[details[open]]:top-0 bg-surface px-5 sm:px-8 2xl:px-16">
+  <div class="flex min-h-14 items-center gap-2 sm:gap-8 2xl:gap-16">
     <a href="/" class="relative z-40 tracking-tight text-xl font-medium">Selfmail</a>
     <div class="hidden items-center gap-6 whitespace-nowrap text-sm lg:flex lg:gap-8">
       <HeaderMegaMenu client:load label={m.navigation()} groups={groups} links={links} />
     </div>
-    <div class="relative z-40 ml-auto hidden items-center gap-3 whitespace-nowrap text-sm lg:flex">
-      <a href={new URL("/login", authUrl).href} class="font-medium tracking-tight hover:opacity-80">{m.login()}</a>
+    <div class="relative z-40 ml-auto flex items-center gap-3 whitespace-nowrap text-sm max-lg:group-has-[details[open]]/header:invisible">
+      <a href={new URL("/login", authUrl).href} class="hidden font-medium tracking-tight hover:opacity-80 lg:inline-flex">{m.login()}</a>
       <a href={new URL("/register", authUrl).href} class="bg-foreground px-3 py-1 rounded-full text-background hover:opacity-80">{m.start()}</a>
     </div>
-    <details id="mobile-navigation" class="group ml-auto lg:hidden">
-      <summary class="flex min-h-11 items-center gap-3 rounded-md px-2 text-sm">
-        {m.menu()}
-        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="size-5"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+    <details id="mobile-navigation" class="group lg:hidden">
+      <summary aria-label={m.menu()} class="flex min-h-11 min-w-11 items-center justify-center rounded-md text-sm">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="size-5 group-open:hidden"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="hidden size-5 group-open:block"><path d="m6 6 12 12M6 18 18 6" /></svg>
       </summary>
-      <div class="absolute inset-x-0 top-full z-30 grid max-h-[calc(100dvh-5rem)] gap-3 overflow-y-auto border-b border-border bg-surface px-6 pt-5 pb-[max(2rem,env(safe-area-inset-bottom))] text-lg shadow-sm">
-        <NavigationLinks />
-        <a href={new URL("/login", authUrl).href} class="nav-link hover:opacity-80">{m.login()}</a>
-        <div class="flex flex-wrap gap-3 pt-3">
-          <a href={new URL("/register", authUrl).href} class="button-primary">{m.start()}</a>
+      <div class="fixed inset-x-0 top-14 z-30 h-[calc(100dvh-3.5rem)] flex flex-col gap-3 overflow-y-auto border-b border-border bg-surface px-6 pt-5 pb-8 text-lg shadow-sm">
+        <div class="grid shrink-0 content-start gap-3">
+          <NavigationLinks />
+          <a href={new URL("/login", authUrl).href} class="nav-link hover:opacity-80">{m.login()}</a>
+        </div>
+        <div class="mt-auto flex shrink-0 pt-3">
+          <a href={new URL("/register", authUrl).href} class="button-primary w-full justify-center">{m.start()}</a>
         </div>
       </div>
     </details>
