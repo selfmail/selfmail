@@ -1,3 +1,4 @@
+import { Dialog } from "@base-ui/react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import {
 	type ReactNode,
@@ -55,6 +56,27 @@ function DashboardLayout({
 		return (
 			<div className="dashboard-viewport h-dvh w-full overflow-hidden bg-background">
 				<div className="flex h-dvh w-full">{children}</div>
+				<Dialog.Root
+					onOpenChange={(open) => {
+						if (!open) closeCompose();
+					}}
+					open={composeOpen}
+				>
+					<Dialog.Portal>
+						<Dialog.Popup className="fixed inset-0 z-50 flex h-dvh w-full flex-col overflow-hidden bg-background pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] outline-none">
+							<Dialog.Title className="sr-only">
+								{m["dashboard.compose.title"]()}
+							</Dialog.Title>
+							<ComposeSidebar
+								className="h-full min-h-0 rounded-none"
+								draft={composeDraft}
+								onClose={closeCompose}
+								showFullscreenToggle={false}
+								workspaceSlug={workspaceSlug}
+							/>
+						</Dialog.Popup>
+					</Dialog.Portal>
+				</Dialog.Root>
 			</div>
 		);
 	}
@@ -327,15 +349,17 @@ export function DashboardWorkspace({
 							</p>
 						</div>
 					</div>
-					<EmailList
-						emails={emails}
-						hasNextPage={hasNextPage}
-						isLoadingMore={isFetchingNextPage}
-						listRef={emailListRef}
-						loadMoreError={isFetchNextPageError}
-						onLoadMore={loadMore}
-						onSelectEmail={selectEmail}
-					/>
+					<div className="@max-2xl/dashboard-shell:-mx-8 @max-2xl/dashboard-shell:[@container_dashboard-shell_(max-height:_42rem)]:-mx-4">
+						<EmailList
+							emails={emails}
+							hasNextPage={hasNextPage}
+							isLoadingMore={isFetchingNextPage}
+							listRef={emailListRef}
+							loadMoreError={isFetchNextPageError}
+							onLoadMore={loadMore}
+							onSelectEmail={selectEmail}
+						/>
+					</div>
 				</main>
 			</div>
 		</div>

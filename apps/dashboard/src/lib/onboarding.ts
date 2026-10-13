@@ -57,7 +57,7 @@ function createWorkspaceSlug() {
 
 export const createOnboardingWorkspaceFn = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator(onboardingSchema)
+  .validator(onboardingSchema)
   .handler(
     async ({ context: { user }, data }): Promise<CreateOnboardingResult> => {
       const addressHandle = data.defaultAddress.toLowerCase();

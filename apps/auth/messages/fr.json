@@ -21,8 +21,8 @@
     "register_text": "Vous n'avez pas de compte ?",
     "register_link": "S'inscrire ici",
     "errors": {
-      "email_required": "L'adresse e-mail est requise",
-      "email_invalid": "Veuillez saisir une adresse e-mail valide",
+      "email_required": "L'adresse e-mail est requise.",
+      "email_invalid": "Veuillez saisir une adresse e-mail valide.",
       "account_not_found": "Aucun compte n'existe encore pour cette adresse e-mail.",
       "rate_limited": "Trop de tentatives de connexion. Veuillez patienter quelques minutes et réessayer."
     },
@@ -33,7 +33,7 @@
       "contact_support_link": "contacter notre équipe d'assistance"
     },
     "dashboard_hint": {
-      "text": "Vous êtes déjà connecté. Vous pouvez accéder directement à votre tableau de bord",
+      "text": "Vous êtes déjà connecté. Vous pouvez accéder directement à votre tableau de bord.",
       "link": "Ouvrir le tableau de bord",
       "dismiss_label": "Fermer l'indication du tableau de bord"
     }
@@ -165,12 +165,12 @@
     "privacy_link": "Politique de confidentialité",
     "terms_text_after_link": ".",
     "dashboard_hint": {
-      "text": "Vous êtes déjà connecté. Vous pouvez accéder directement à votre tableau de bord",
+      "text": "Vous êtes déjà connecté. Vous pouvez accéder directement à votre tableau de bord.",
       "link": "Ouvrir le tableau de bord",
       "dismiss_label": "Fermer l'indication du tableau de bord"
     },
     "errors": {
-      "name_required": "Le nom est obligatoire",
+      "name_required": "Le nom est obligatoire.",
       "email_taken": "Un compte avec cette adresse e-mail existe déjà. Essayez plutôt de vous connecter.",
       "rate_limited": "Trop de tentatives d'inscription. Veuillez patienter quelques minutes et réessayer."
     }

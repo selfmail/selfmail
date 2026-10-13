@@ -19,11 +19,11 @@ const registerSchema = z.object({
 });
 
 export const handleRegisterForm = createServerFn({ method: "POST" })
-	.inputValidator(registerSchema)
+	.validator(registerSchema)
 	.handler((ctx) => RegisterUtils.handleRegister(ctx.data));
 
 export const resendRegisterVerificationFn = createServerFn({ method: "POST" })
-	.inputValidator(
+	.validator(
 		z.object({
 			email: emailSchema,
 			redirect: z.string().optional(),

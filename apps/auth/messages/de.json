@@ -21,8 +21,8 @@
     "register_text": "Noch kein Konto?",
     "register_link": "Hier registrieren",
     "errors": {
-      "email_required": "E-Mail ist erforderlich",
-      "email_invalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+      "email_required": "E-Mail ist erforderlich.",
+      "email_invalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
       "account_not_found": "Für diese E-Mail-Adresse existiert noch kein Konto.",
       "rate_limited": "Zu viele Anmeldeversuche. Bitte warten Sie einige Minuten und versuchen Sie es erneut."
     },
@@ -33,7 +33,7 @@
       "contact_support_link": "Kontaktieren Sie den Support"
     },
     "dashboard_hint": {
-      "text": "Sie sind bereits angemeldet. Sie können direkt zu Ihrem Dashboard gehen",
+      "text": "Sie sind bereits angemeldet. Sie können direkt zu Ihrem Dashboard gehen.",
       "link": "Dashboard öffnen",
       "dismiss_label": "Dashboard-Hinweis schließen"
     }
@@ -165,12 +165,12 @@
     "privacy_link": "Datenschutzrichtlinie",
     "terms_text_after_link": "zu.",
     "dashboard_hint": {
-      "text": "Sie sind bereits angemeldet. Sie können direkt zu Ihrem Dashboard gehen",
+      "text": "Sie sind bereits angemeldet. Sie können direkt zu Ihrem Dashboard gehen.",
       "link": "Dashboard öffnen",
       "dismiss_label": "Dashboard-Hinweis schließen"
     },
     "errors": {
-      "name_required": "Name ist erforderlich",
+      "name_required": "Name ist erforderlich.",
       "email_taken": "Ein Konto mit dieser E-Mail-Adresse existiert bereits. Versuchen Sie stattdessen, sich anzumelden.",
       "rate_limited": "Zu viele Registrierungsversuche. Bitte warten Sie einige Minuten und versuchen Sie es erneut."
     }

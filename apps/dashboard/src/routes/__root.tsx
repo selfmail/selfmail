@@ -56,7 +56,7 @@ export const Route = createRootRoute({
       <div>
         <h2 className="text-2xl">{m["root.error_title"]()}</h2>
         <pre className="mt-4 rounded bg-destructive/10 p-4 text-destructive text-sm">
-          {error.message}
+          {error instanceof Error ? error.message : String(error)}
         </pre>
       </div>
     </main>

@@ -1,8 +1,21 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { ChevronLeftIcon } from "lucide-react";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { useSyncExternalStore } from "react";
 import { AccountSwitcher } from "#/components/dashboard/account-switcher";
 import { ConsoleNavigation } from "#/components/dashboard/console-navigation";
-import { m } from "#/paraglide/messages";
+
+import {
+	ResizableHandle,
+	ResizablePanel,
+	ResizablePanelGroup,
+} from "#/components/ui/resizable";
+
+const sidebarMediaQuery = "(min-width: 40rem)";
+
+function subscribeToSidebarBreakpoint(onStoreChange: () => void) {
+	const mediaQuery = window.matchMedia(sidebarMediaQuery);
+	mediaQuery.addEventListener("change", onStoreChange);
+	return () => mediaQuery.removeEventListener("change", onStoreChange);
+}
 
 export const Route = createFileRoute(
 	"/_authed/$workspaceSlug/_workspace/_console",
@@ -12,26 +25,49 @@ export const Route = createFileRoute(
 
 function RouteComponent() {
 	const { workspace } = Route.useRouteContext();
+	const canResizeSidebar = useSyncExternalStore(
+		subscribeToSidebarBreakpoint,
+		() => window.matchMedia(sidebarMediaQuery).matches,
+		() => false,
+	);
 
 	return (
-		<div className="@container-size/dashboard-shell flex h-dvh flex-col">
-			<header className="flex flex-row items-center justify-between gap-4 @2xl/dashboard-shell:px-10 @3xl/dashboard-shell:px-16 @min-[62.5rem]/dashboard-shell:px-26 px-8 pt-6 pb-2 [@container_dashboard-shell_(max-height:_42rem)]:px-4">
-				<div className="flex min-w-0 items-center gap-4">
-					<Link
-						className="-m-1 flex shrink-0 items-center gap-2 rounded-sm p-1 pr-2 text-foreground text-sm hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-						params={{ workspaceSlug: workspace.slug }}
-						to="/$workspaceSlug"
-					>
-						<ChevronLeftIcon aria-hidden="true" size={15} />
-						{m["dashboard.console.back_to_inbox"]()}
-					</Link>
-					<AccountSwitcher currentWorkspace={workspace} />
-				</div>
-				<ConsoleNavigation workspaceSlug={workspace.slug} />
-			</header>
-			<div className="m-2 flex min-h-0 flex-1 flex-col overflow-y-auto rounded-md bg-muted p-4">
-				<Outlet />
-			</div>
+		<div className="@container-size/dashboard-shell h-dvh overflow-hidden bg-muted">
+			<ResizablePanelGroup
+				className="h-dvh"
+				key={canResizeSidebar ? "desktop" : "mobile"}
+				orientation="horizontal"
+				resizeTargetMinimumSize={{ coarse: 40, fine: 16 }}
+			>
+				<ResizablePanel
+					className="overflow-hidden rounded-r-2xl bg-background"
+					defaultSize={canResizeSidebar ? "224px" : "64px"}
+					disabled={!canResizeSidebar}
+					id="console-sidebar"
+					maxSize={canResizeSidebar ? "320px" : "64px"}
+					minSize={canResizeSidebar ? "192px" : "64px"}
+				>
+					<aside className="flex h-full min-h-0 flex-col gap-4 overflow-y-auto p-3 text-foreground [scrollbar-color:gray_transparent] [scrollbar-width:thin]">
+						<ConsoleNavigation workspaceSlug={workspace.slug} />
+						<div className="mt-auto min-w-0 pt-3 pb-[env(safe-area-inset-bottom)] max-sm:[&_h3]:hidden max-sm:[&_svg]:hidden">
+							<AccountSwitcher currentWorkspace={workspace} />
+						</div>
+					</aside>
+				</ResizablePanel>
+				<ResizableHandle
+					className="w-0.75 bg-transparent"
+					disabled={!canResizeSidebar}
+				/>
+				<ResizablePanel
+					className="rounded-l-2xl bg-background"
+					id="console-main"
+					minSize="0px"
+				>
+					<div className="flex h-full min-h-0 min-w-0 flex-col overflow-y-auto p-4">
+						<Outlet />
+					</div>
+				</ResizablePanel>
+			</ResizablePanelGroup>
 		</div>
 	);
 }

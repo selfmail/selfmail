@@ -1,6 +1,8 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { CommandMenu } from "#/components/command-menu";
 import SettingsDialog from "#/components/settings";
+import { rememberWorkspace } from "#/lib/last-workspace";
 import { getWorkspace } from "#/lib/workspaces";
 import { m } from "#/paraglide/messages";
 
@@ -106,6 +108,12 @@ export const Route = createFileRoute("/_authed/$workspaceSlug/_workspace")({
 
 function WorkspaceRouteComponent() {
   const { member, workspace } = Route.useRouteContext();
+
+  useEffect(() => {
+    if (workspace && member) {
+      rememberWorkspace(workspace.slug);
+    }
+  }, [member, workspace]);
 
   if (!(workspace && member)) {
     logWorkspaceRoute("error", "workspace context missing before render", {

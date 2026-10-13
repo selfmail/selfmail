@@ -1,5 +1,6 @@
 import { Alert, AlertDescription, Button } from "@selfmail/ui";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { getLastWorkspaceFn } from "#/lib/last-workspace";
 import {
   type DashboardWorkspace,
   getDashboardWorkspacesFn,
@@ -12,9 +13,26 @@ export const Route = createFileRoute("/_authed/")({
     search: Record<string, unknown>
   ): { error?: "workspace-access" } =>
     search.error === "workspace-access" ? { error: search.error } : {},
-  loader: async () => ({
-    workspaces: await getDashboardWorkspacesFn(),
-  }),
+  loaderDeps: ({ search }) => ({ error: search.error }),
+  loader: async ({ deps }) => {
+    const [workspaces, lastWorkspaceSlug] = await Promise.all([
+      getDashboardWorkspacesFn(),
+      getLastWorkspaceFn(),
+    ]);
+    const lastWorkspace = workspaces.find(
+      (workspace) => workspace.slug === lastWorkspaceSlug
+    );
+
+    if (lastWorkspace && !deps.error) {
+      throw redirect({
+        params: { workspaceSlug: lastWorkspace.slug },
+        replace: true,
+        to: "/$workspaceSlug",
+      });
+    }
+
+    return { workspaces };
+  },
 });
 
 function RouteComponent() {

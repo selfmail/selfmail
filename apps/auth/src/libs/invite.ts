@@ -131,7 +131,7 @@ const canUseInvitation = (inviteEmail: string, userEmail: string) =>
   inviteEmail.trim().toLowerCase() === userEmail.trim().toLowerCase();
 
 export const getInviteFn = createServerFn({ method: "GET" })
-  .inputValidator(inviteTokenSchema)
+  .validator(inviteTokenSchema)
   .handler(async ({ data: { token } }): Promise<InviteLookupResult> => {
     const user = await getCurrentUser();
 
@@ -168,7 +168,7 @@ export const getInviteFn = createServerFn({ method: "GET" })
   });
 
 export const acceptInviteFn = createServerFn({ method: "POST" })
-  .inputValidator(inviteTokenSchema)
+  .validator(inviteTokenSchema)
   .handler(async ({ data: { token } }): Promise<InviteActionResult> => {
     const user = await getCurrentUser();
 
@@ -261,7 +261,7 @@ export const acceptInviteFn = createServerFn({ method: "POST" })
   });
 
 export const declineInviteFn = createServerFn({ method: "POST" })
-  .inputValidator(inviteTokenSchema)
+  .validator(inviteTokenSchema)
   .handler(async ({ data: { token } }): Promise<InviteActionResult> => {
     const user = await getCurrentUser();
 

@@ -128,7 +128,7 @@ export function EmailList({
 
   return (
     <div
-      className="flex w-full flex-col overflow-hidden rounded-xl border border-border bg-card"
+      className="flex w-full flex-col overflow-hidden rounded-none border-y border-border bg-card @2xl/dashboard-shell:rounded-xl @2xl/dashboard-shell:border-x"
       ref={listRef}
     >
       {emails.length > 0 ? (

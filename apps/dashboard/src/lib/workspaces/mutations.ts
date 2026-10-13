@@ -97,7 +97,7 @@ function getSettingsWorkspaceMember(userId: string, workspaceSlug: string) {
 
 export const updateWorkspaceSettingsFn = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator(updateWorkspaceSettingsSchema)
+  .validator(updateWorkspaceSettingsSchema)
   .handler(
     async ({ context: { user }, data }): Promise<WorkspaceSettingsResult> => {
       const member = await getSettingsWorkspaceMember(
@@ -162,7 +162,7 @@ export const updateWorkspaceSettingsFn = createServerFn({ method: "POST" })
 
 export const deleteWorkspaceFn = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator(workspaceSlugSchema)
+  .validator(workspaceSlugSchema)
   .handler(
     async ({
       context: { user },
@@ -441,7 +441,7 @@ export const deleteWorkspaceFn = createServerFn({ method: "POST" })
 
 export const createWorkspaceAddressFn = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator(createAddressSchema)
+  .validator(createAddressSchema)
   .handler(
     async ({
       context: { user },
@@ -580,7 +580,7 @@ export const createWorkspaceAddressFn = createServerFn({ method: "POST" })
 
 export const createWorkspaceDomainFn = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator(createWorkspaceDomainSchema)
+  .validator(createWorkspaceDomainSchema)
   .handler(
     async ({
       context: { user },
@@ -675,7 +675,7 @@ export const createWorkspaceDomainFn = createServerFn({ method: "POST" })
 
 export const verifyWorkspaceDomainFn = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator(workspaceDomainSchema)
+  .validator(workspaceDomainSchema)
   .handler(
     async ({
       context: { user },
@@ -852,7 +852,7 @@ export const verifyWorkspaceDomainFn = createServerFn({ method: "POST" })
 
 export const deleteWorkspaceDomainFn = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator(workspaceDomainSchema)
+  .validator(workspaceDomainSchema)
   .handler(
     async ({
       context: { user },
@@ -942,7 +942,7 @@ export const deleteWorkspaceDomainFn = createServerFn({ method: "POST" })
 
 export const removeWorkspaceMemberFn = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator(removeWorkspaceMemberSchema)
+  .validator(removeWorkspaceMemberSchema)
   .handler(
     async ({
       context: { user },

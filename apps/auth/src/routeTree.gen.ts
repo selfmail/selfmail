@@ -10,18 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as VerifyIndexRouteImport } from './routes/verify/index'
-import { Route as RegisterIndexRouteImport } from './routes/register/index'
-import { Route as OtpIndexRouteImport } from './routes/otp/index'
-import { Route as MagicIndexRouteImport } from './routes/magic/index'
-import { Route as MagicLinkIndexRouteImport } from './routes/magic-link/index'
-import { Route as LoginIndexRouteImport } from './routes/login/index'
-import { Route as InviteIndexRouteImport } from './routes/invite/index'
-import { Route as HelpIndexRouteImport } from './routes/help/index'
 import { Route as ContactIndexRouteImport } from './routes/contact/index'
-import { Route as RegisterSuccessIndexRouteImport } from './routes/register/success/index'
-import { Route as OtpBackupCodesIndexRouteImport } from './routes/otp/backup-codes/index'
+import { Route as HelpIndexRouteImport } from './routes/help/index'
+import { Route as InviteIndexRouteImport } from './routes/invite/index'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as MagicLinkIndexRouteImport } from './routes/magic-link/index'
+import { Route as MagicIndexRouteImport } from './routes/magic/index'
+import { Route as OtpIndexRouteImport } from './routes/otp/index'
+import { Route as RegisterIndexRouteImport } from './routes/register/index'
+import { Route as VerifyIndexRouteImport } from './routes/verify/index'
 import { Route as LoginSuccessIndexRouteImport } from './routes/login/success/index'
+import { Route as OtpBackupCodesIndexRouteImport } from './routes/otp/backup-codes/index'
+import { Route as RegisterSuccessIndexRouteImport } from './routes/register/success/index'
 import { Route as ApiLoginGoogleIndexRouteImport } from './routes/api/login/google/index'
 import { Route as ApiLoginGoogleCallbackRouteImport } from './routes/api/login/google/callback'
 
@@ -30,39 +30,9 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const VerifyIndexRoute = VerifyIndexRouteImport.update({
-  id: '/verify/',
-  path: '/verify/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterIndexRoute = RegisterIndexRouteImport.update({
-  id: '/register/',
-  path: '/register/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OtpIndexRoute = OtpIndexRouteImport.update({
-  id: '/otp/',
-  path: '/otp/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MagicIndexRoute = MagicIndexRouteImport.update({
-  id: '/magic/',
-  path: '/magic/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MagicLinkIndexRoute = MagicLinkIndexRouteImport.update({
-  id: '/magic-link/',
-  path: '/magic-link/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginIndexRoute = LoginIndexRouteImport.update({
-  id: '/login/',
-  path: '/login/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InviteIndexRoute = InviteIndexRouteImport.update({
-  id: '/invite/',
-  path: '/invite/',
+const ContactIndexRoute = ContactIndexRouteImport.update({
+  id: '/contact/',
+  path: '/contact/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HelpIndexRoute = HelpIndexRouteImport.update({
@@ -70,14 +40,44 @@ const HelpIndexRoute = HelpIndexRouteImport.update({
   path: '/help/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ContactIndexRoute = ContactIndexRouteImport.update({
-  id: '/contact/',
-  path: '/contact/',
+const InviteIndexRoute = InviteIndexRouteImport.update({
+  id: '/invite/',
+  path: '/invite/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RegisterSuccessIndexRoute = RegisterSuccessIndexRouteImport.update({
-  id: '/register/success/',
-  path: '/register/success/',
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MagicLinkIndexRoute = MagicLinkIndexRouteImport.update({
+  id: '/magic-link/',
+  path: '/magic-link/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MagicIndexRoute = MagicIndexRouteImport.update({
+  id: '/magic/',
+  path: '/magic/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OtpIndexRoute = OtpIndexRouteImport.update({
+  id: '/otp/',
+  path: '/otp/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterIndexRoute = RegisterIndexRouteImport.update({
+  id: '/register/',
+  path: '/register/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyIndexRoute = VerifyIndexRouteImport.update({
+  id: '/verify/',
+  path: '/verify/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginSuccessIndexRoute = LoginSuccessIndexRouteImport.update({
+  id: '/login/success/',
+  path: '/login/success/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OtpBackupCodesIndexRoute = OtpBackupCodesIndexRouteImport.update({
@@ -85,9 +85,9 @@ const OtpBackupCodesIndexRoute = OtpBackupCodesIndexRouteImport.update({
   path: '/otp/backup-codes/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LoginSuccessIndexRoute = LoginSuccessIndexRouteImport.update({
-  id: '/login/success/',
-  path: '/login/success/',
+const RegisterSuccessIndexRoute = RegisterSuccessIndexRouteImport.update({
+  id: '/register/success/',
+  path: '/register/success/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiLoginGoogleIndexRoute = ApiLoginGoogleIndexRouteImport.update({
@@ -234,53 +234,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/verify/': {
-      id: '/verify/'
-      path: '/verify'
-      fullPath: '/verify/'
-      preLoaderRoute: typeof VerifyIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register/': {
-      id: '/register/'
-      path: '/register'
-      fullPath: '/register/'
-      preLoaderRoute: typeof RegisterIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/otp/': {
-      id: '/otp/'
-      path: '/otp'
-      fullPath: '/otp/'
-      preLoaderRoute: typeof OtpIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/magic/': {
-      id: '/magic/'
-      path: '/magic'
-      fullPath: '/magic/'
-      preLoaderRoute: typeof MagicIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/magic-link/': {
-      id: '/magic-link/'
-      path: '/magic-link'
-      fullPath: '/magic-link/'
-      preLoaderRoute: typeof MagicLinkIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login/': {
-      id: '/login/'
-      path: '/login'
-      fullPath: '/login/'
-      preLoaderRoute: typeof LoginIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/invite/': {
-      id: '/invite/'
-      path: '/invite'
-      fullPath: '/invite/'
-      preLoaderRoute: typeof InviteIndexRouteImport
+    '/contact/': {
+      id: '/contact/'
+      path: '/contact'
+      fullPath: '/contact/'
+      preLoaderRoute: typeof ContactIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/help/': {
@@ -290,18 +248,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HelpIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/contact/': {
-      id: '/contact/'
-      path: '/contact'
-      fullPath: '/contact/'
-      preLoaderRoute: typeof ContactIndexRouteImport
+    '/invite/': {
+      id: '/invite/'
+      path: '/invite'
+      fullPath: '/invite/'
+      preLoaderRoute: typeof InviteIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/register/success/': {
-      id: '/register/success/'
-      path: '/register/success'
-      fullPath: '/register/success/'
-      preLoaderRoute: typeof RegisterSuccessIndexRouteImport
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login/'
+      preLoaderRoute: typeof LoginIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/magic-link/': {
+      id: '/magic-link/'
+      path: '/magic-link'
+      fullPath: '/magic-link/'
+      preLoaderRoute: typeof MagicLinkIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/magic/': {
+      id: '/magic/'
+      path: '/magic'
+      fullPath: '/magic/'
+      preLoaderRoute: typeof MagicIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/otp/': {
+      id: '/otp/'
+      path: '/otp'
+      fullPath: '/otp/'
+      preLoaderRoute: typeof OtpIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register/': {
+      id: '/register/'
+      path: '/register'
+      fullPath: '/register/'
+      preLoaderRoute: typeof RegisterIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify/': {
+      id: '/verify/'
+      path: '/verify'
+      fullPath: '/verify/'
+      preLoaderRoute: typeof VerifyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/success/': {
+      id: '/login/success/'
+      path: '/login/success'
+      fullPath: '/login/success/'
+      preLoaderRoute: typeof LoginSuccessIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/otp/backup-codes/': {
@@ -311,11 +311,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OtpBackupCodesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/login/success/': {
-      id: '/login/success/'
-      path: '/login/success'
-      fullPath: '/login/success/'
-      preLoaderRoute: typeof LoginSuccessIndexRouteImport
+    '/register/success/': {
+      id: '/register/success/'
+      path: '/register/success'
+      fullPath: '/register/success/'
+      preLoaderRoute: typeof RegisterSuccessIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/login/google/': {

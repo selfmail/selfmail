@@ -7,22 +7,22 @@
     "cta": "Go to login"
   },
   "login": {
-    "title": "Welcome Back!",
+    "title": "Welcome back!",
     "description": "Sign in with your account to continue.",
-    "email_label": "E-Mail address",
+    "email_label": "Email address",
     "email_placeholder": "Your email address",
-    "password_label": "Passwort",
-    "submit_button": "Anmelden",
+    "password_label": "Password",
+    "submit_button": "Sign in",
     "forgot_password_link": "Forgot password?",
-    "proceed_button": "Login",
+    "proceed_button": "Sign in",
     "sign_in_google": "Sign in with Google",
-    "sign_in_passkey": "Sign in with Passkey",
+    "sign_in_passkey": "Sign in with a passkey",
     "enterprises": "Enterprises",
     "register_text": "Don't have an account?",
     "register_link": "Register here",
     "errors": {
-      "email_required": "Email is required",
-      "email_invalid": "Please enter a valid email address",
+      "email_required": "Email is required.",
+      "email_invalid": "Please enter a valid email address.",
       "account_not_found": "No account exists for this email address yet.",
       "rate_limited": "Too many sign-in attempts. Please wait a few minutes and try again."
     },
@@ -33,7 +33,7 @@
       "contact_support_link": "contact our support team"
     },
     "dashboard_hint": {
-      "text": "You are already signed in. You can go straight to your dashboard",
+      "text": "You are already signed in. You can go straight to your dashboard.",
       "link": "Open dashboard",
       "dismiss_label": "Dismiss dashboard hint"
     }
@@ -51,7 +51,7 @@
   "invite": {
     "meta_title": "Workspace invite",
     "missing_token_error": "This invite link is missing a token.",
-    "unknown_error": "An unknown error occurred",
+    "unknown_error": "An unknown error occurred.",
     "default_inviter": "A teammate",
     "default_workspace_name": "a Selfmail workspace",
     "sign_in": "Sign in",
@@ -94,7 +94,7 @@
       "title": "You got an invite! Sign in to continue.",
       "register_title": "Register",
       "register_description": "Don't have an account? Sign up to get started.",
-      "login_title": "Login",
+      "login_title": "Sign in",
       "login_description": "Already have an account? Sign in to continue."
     }
   },
@@ -146,34 +146,34 @@
     "title": "Help & Support",
     "faq": {
       "email_access": {
-        "title": "I can't access my E-Mail address.",
-        "description_before_link": "If you can't access your E-Mail address connected to your account, please contact us via the contact form",
+        "title": "I can't access my email address.",
+        "description_before_link": "If you can't access the email address connected to your account, please contact us via the contact form",
         "description_link": "here",
-        "description_after_link": ". Please also contact us, if you have another email address you'd like to connect to your account."
+        "description_after_link": ". Please also contact us if you'd like to connect another email address to your account."
       },
       "unknown_error": {
-        "title": "Unknown error occurred.",
+        "title": "An unknown error occurred.",
         "description_before_link": "In this case, please try again later or, if this issue keeps occurring, please contact us via the contact form",
         "description_link": "here",
-        "description_after_link": ". Copy your request ID from the error message and include it in your message to us, so we can investigate the issue."
+        "description_after_link": ". Copy the request ID from the error message and include it in your message so we can investigate the issue."
       },
       "passkey": {
         "title": "I can't access my passkey.",
         "description_before_link": "In this case, please try again later or, if this issue keeps occurring, please contact us via the contact form",
         "description_link": "here",
-        "description_after_link": ". Copy your request ID from the error message and include it in your message to us, so we can investigate the issue."
+        "description_after_link": ". Copy the request ID from the error message and include it in your message so we can investigate the issue."
       },
       "email_delivery": {
-        "title": "Haven't received an E-Mail.",
-        "description_before_link": "Please try again later, if no error occurs, please take a look into your spam folder or contact us",
+        "title": "I haven't received an email.",
+        "description_before_link": "Please try again later. If no error appears, check your spam folder or contact us",
         "description_link": "here",
-        "description_after_link": ". In order to help you, you need to provide us your email."
+        "description_after_link": ". Please include your email address so we can help you."
       },
       "two_factor": {
         "title": "Lost my 2FA device or backup codes.",
         "description_before_link": "If you've lost your 2FA device (e.g. you can't access your authenticator app), please use your backup codes. If you also lost them, you need to",
         "description_link": "contact us here",
-        "description_after_link": ". You may need to provide proof of identity, so we can verify that you are the rightful owner of the account. After successful verification, we can help you regain access to your account."
+        "description_after_link": ". You may need to provide proof of identity so we can verify that you are the rightful owner of the account. After successful verification, we can help you regain access to your account."
       }
     },
     "still_questions_before_link": "Still have questions? Please contact us via the contact form",
@@ -182,14 +182,14 @@
   },
   "contact": {
     "title": "Contact Us",
-    "name_placeholder": "Your Full Name",
-    "email_placeholder": "Your E-Mail Address",
+    "name_placeholder": "Your full name",
+    "email_placeholder": "Your email address",
     "problem_aria_label": "Select a problem",
     "problem_placeholder": "Select a Problem",
     "problems": {
-      "email_access": "I can't access my E-Mail address.",
+      "email_access": "I can't access my email address.",
       "passkey": "I can't access my passkey.",
-      "email_delivery": "Haven't received an E-Mail.",
+      "email_delivery": "I haven't received an email.",
       "two_factor": "Lost my 2FA device or backup codes.",
       "other": "Other"
     },
@@ -202,13 +202,13 @@
   },
   "register": {
     "title": "Create Your Account",
-    "name_placeholder": "Your Full Name",
-    "email_placeholder": "Your E-Mail Address",
+    "name_placeholder": "Your full name",
+    "email_placeholder": "Your email address",
     "password_placeholder": "Create a Password",
     "submit_button": "Create Account",
     "sign_in_google": "Sign in with Google",
     "enterprise_setup": "Enterprise Setup",
-    "login_text": "Already have an Account?",
+    "login_text": "Already have an account?",
     "login_link": "Sign in here",
     "terms_text_before_link": "By creating an account, you agree to our",
     "terms_link": "Terms of Service",
@@ -216,31 +216,31 @@
     "privacy_link": "Privacy Policy",
     "terms_text_after_link": ".",
     "dashboard_hint": {
-      "text": "You are already signed in. You can go straight to your dashboard",
+      "text": "You are already signed in. You can go straight to your dashboard.",
       "link": "Open dashboard",
       "dismiss_label": "Dismiss dashboard hint"
     },
     "errors": {
-      "name_required": "Name is required",
+      "name_required": "Name is required.",
       "email_taken": "An account with this email already exists. Try logging in instead.",
       "rate_limited": "Too many registration attempts. Please wait a few minutes and try again."
     }
   },
   "register_success": {
     "title": "Account Created Successfully",
-    "description": "Everything went alright. Your Selfmail account has been created and is ready for the next authentication step.",
+    "description": "Your Selfmail account has been created and is ready for the next authentication step.",
     "resend": "Resend Email"
   },
   "login_success": {
     "title": "Magic Link Sent",
-    "description": "We have sent an magic link to your inbox. If you don't see it, please check your spam folders and whether you don't have an account.",
+    "description": "We have sent a magic link to your email address. Please open it and press the verification button to sign in.",
     "resend": "Resend Email"
   },
   "otp": {
     "title": "Enter OTP Code",
     "description": "You have an authenticator app connected to your account. Please enter the 6-digit code from your app to verify your identity and access your account.",
     "submit_button": "Verify Code",
-    "backup_before_link": "Lost access to authenticator app?",
+    "backup_before_link": "Lost access to your authenticator app?",
     "backup_link": "Use backup codes"
   },
   "otp_backup": {

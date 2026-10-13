@@ -7,7 +7,7 @@ export const getMemberAddresses = createServerFn({
 	method: "GET",
 })
 	.middleware([authMiddleware])
-	.inputValidator(
+	.validator(
 		z.object({
 			workspaceSlug: z.string(),
 		}),
