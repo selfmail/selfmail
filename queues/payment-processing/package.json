@@ -1,0 +1,17 @@
+{
+  "name": "@selfmail/payment-processing-queue",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "typecheck": "bun check"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
+  },
+  "dependencies": {
+    "effect": "^4.0.4"
+  }
+}

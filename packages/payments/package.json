@@ -2,24 +2,16 @@
   "name": "@selfmail/payments",
   "module": "src/index.ts",
   "type": "module",
-  "devDependencies": {
-    "@types/bun": "latest",
-    "@types/node": "^26.1.1"
+  "scripts": {
+    "typecheck": "bun check"
   },
-  "dependencies": {
-    "@selfmail/audit": "workspace:*",
-    "@selfmail/logs": "workspace:*",
-    "@selfmail/payments-processor-polar": "workspace:*",
-    "@selfmail/db": "workspace:*",
-    "@selfmail/permissions": "workspace:*"
+  "devDependencies": {
+    "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^7"
   },
-  "exports": {
-    ".": {
-      "import": "./src/index.ts",
-      "types": "./src/index.ts"
-    }
+  "dependencies": {
+    "effect": "^4.0.4"
   }
 }

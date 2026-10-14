@@ -6,7 +6,7 @@ import {
 	Textarea,
 } from "@selfmail/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ImagePlusIcon, SaveIcon, XIcon } from "lucide-react";
+import { ImagePlusIcon, XIcon } from "lucide-react";
 import {
 	type ChangeEvent,
 	type DragEvent,
@@ -370,7 +370,6 @@ function SaveActions({
 				<p className="mr-auto text-destructive text-sm">{saveError}</p>
 			) : null}
 			<Button disabled={!(canEdit && isDirty) || isSaving} type="submit">
-				<SaveIcon aria-hidden="true" className="size-4" />
 				{isSaving
 					? m["dashboard.settings.saving"]()
 					: m["dashboard.settings.save_changes"]()}
