@@ -1,8 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="620" viewBox="0 0 960 620" fill="none">
   <rect width="960" height="620" rx="16" fill="#fafafa"/>
-  <g stroke="#dedee1"><path d="M400 0v620M0 64h960M0 184h400M0 304h400M0 424h400M0 544h400"/></g>
+  <g stroke="#dedee1"><path d="M400 0v620M0 184h400M0 304h400M0 424h400M0 544h400"/></g>
   <g font-family="Arial, sans-serif" fill="#191d20">
-    <text x="28" y="40" font-size="20">Inbox</text><text x="430" y="40" font-size="20">Email preview</text>
+    <g stroke="#000" stroke-opacity=".1">
+      <circle cx="28" cy="30" r="6" fill="#ff5f57"/><circle cx="48" cy="30" r="6" fill="#febc2e"/><circle cx="68" cy="30" r="6" fill="#28c840"/>
+      <circle cx="428" cy="30" r="6" fill="#ff5f57"/><circle cx="448" cy="30" r="6" fill="#febc2e"/><circle cx="468" cy="30" r="6" fill="#28c840"/>
+    </g>
     <rect x="1" y="65" width="398" height="118" fill="#f0f0f1"/>
     <g fill="#f0f0f1" stroke="#dedee1"><circle cx="48" cy="108" r="22"/><circle cx="48" cy="228" r="22"/><circle cx="48" cy="348" r="22"/><circle cx="48" cy="468" r="22"/></g>
     <g font-size="16"><text x="37" y="114">SM</text><text x="36" y="234">AM</text><text x="37" y="354">SN</text><text x="38" y="474">JC</text></g>

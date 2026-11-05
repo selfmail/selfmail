@@ -1,6 +1,6 @@
-import { SendIcon } from "lucide-react";
+import { PauseIcon, PlayIcon, SendIcon } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
-import { type SubmitEvent, useEffect, useState } from "react";
+import { type SubmitEvent, useEffect, useRef, useState } from "react";
 import { cn } from "../../lib/utils";
 
 interface SampleEmail {
@@ -65,6 +65,24 @@ const samples: SampleEmail[] = [
 const panelClass =
   "min-w-0 overflow-hidden rounded-2xl border border-border/70 bg-background";
 
+function WindowDots() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-3 w-13 shrink-0"
+      fill="none"
+      focusable="false"
+      height="12"
+      viewBox="0 0 52 12"
+      width="52"
+    >
+      <circle cx="6" cy="6" fill="#ff5f57" r="6" />
+      <circle cx="26" cy="6" fill="#febc2e" r="6" />
+      <circle cx="46" cy="6" fill="#28c840" r="6" />
+    </svg>
+  );
+}
+
 function ComposePanel() {
   const [notice, setNotice] = useState("");
   function send(event: SubmitEvent<HTMLFormElement>) {
@@ -77,9 +95,10 @@ function ComposePanel() {
       aria-label="Compose a demo email"
       className={cn(panelClass, "hidden flex-col 2xl:flex")}
     >
-      <h2 className="flex h-16 shrink-0 items-center border-border/70 border-b px-6 font-medium text-sm tracking-tight">
-        New message
-      </h2>
+      <div className="flex h-14 shrink-0 items-center px-6">
+        <WindowDots />
+        <h2 className="sr-only">New message</h2>
+      </div>
       <form
         className="flex min-h-0 flex-1 flex-col"
         onChange={() => setNotice("")}
@@ -146,26 +165,31 @@ export function EmailPlayground() {
   const [emails, setEmails] = useState(samples.slice(0, 4));
   const [selected, setSelected] = useState(samples[0]);
   const [arrivedId, setArrivedId] = useState<string>();
+  const sequence = useRef(0);
   const reducedMotion = useReducedMotion();
+  const [paused, setPaused] = useState(false);
+  const arrivalsPaused = paused || reducedMotion !== false;
 
   useEffect(() => {
+    if (arrivalsPaused) {
+      return;
+    }
     const desktop = window.matchMedia("(min-width: 1024px)");
     let timer: ReturnType<typeof setTimeout>;
-    let sequence = 0;
     function schedule() {
       timer = setTimeout(
         () => {
           if (desktop.matches && !document.hidden) {
-            const sample = samples[(sequence + 4) % samples.length];
+            const sample = samples[(sequence.current + 4) % samples.length];
             if (sample) {
               const email = {
                 ...sample,
-                id: `arrival-${sequence}`,
+                id: `arrival-${sequence.current}`,
                 time: "Just now",
               };
               setEmails((current) => [email, ...current].slice(0, 12));
               setArrivedId(email.id);
-              sequence += 1;
+              sequence.current += 1;
             }
           }
           schedule();
@@ -175,7 +199,7 @@ export function EmailPlayground() {
     }
     schedule();
     return () => clearTimeout(timer);
-  }, []);
+  }, [arrivalsPaused]);
 
   if (!selected) {
     return null;
@@ -196,17 +220,31 @@ export function EmailPlayground() {
       />
       <div className="hidden h-[clamp(720px,80dvh,960px)] grid-cols-[1.1fr_1fr] gap-4 lg:grid 2xl:grid-cols-[1.2fr_1fr_1fr]">
         <div className={cn(panelClass, "flex flex-col")}>
-          <div className="flex h-16 shrink-0 items-center justify-between border-border/70 border-b px-6">
-            <h2 className="font-medium text-sm tracking-tight">Inbox</h2>
-            <span className="text-muted text-xs">Playground</span>
+          <div className="flex h-14 shrink-0 items-center justify-between px-6">
+            <WindowDots />
+            <h2 className="sr-only">Inbox</h2>
+            {!reducedMotion && (
+              <button
+                aria-label={paused ? "Resume demo emails" : "Pause demo emails"}
+                className="flex size-8 items-center justify-center rounded-md text-muted hover:bg-surface hover:text-foreground"
+                onClick={() => setPaused((current) => !current)}
+                type="button"
+              >
+                {paused ? (
+                  <PlayIcon aria-hidden="true" className="size-3.5" />
+                ) : (
+                  <PauseIcon aria-hidden="true" className="size-3.5" />
+                )}
+              </button>
+            )}
           </div>
-          <div className="playground-scroll min-h-0 flex-1 overflow-y-auto">
+          <div className="playground-scroll min-h-0 flex-1 space-y-1 overflow-y-auto px-2 pb-2">
             {emails.map((email) => (
               <motion.button
                 animate={{ opacity: 1, y: 0 }}
                 aria-current={email.id === selected.id ? "true" : undefined}
                 className={cn(
-                  "flex w-full gap-4 border-border/50 border-b px-6 py-5 text-left hover:bg-surface/70 focus-visible:-outline-offset-2",
+                  "flex w-full gap-3 rounded-xl px-4 py-4 text-start hover:bg-surface/70 focus-visible:-outline-offset-2",
                   email.id === selected.id && "bg-surface"
                 )}
                 initial={
@@ -231,14 +269,14 @@ export function EmailPlayground() {
                     <span className="truncate font-medium text-sm">
                       {email.from}
                     </span>
-                    <span className="shrink-0 text-muted text-xs">
+                    <span className="shrink-0 text-muted text-xs tabular-nums">
                       {email.time}
                     </span>
                   </span>
                   <span className="mt-1.5 block truncate text-sm">
                     {email.subject}
                   </span>
-                  <span className="mt-1.5 line-clamp-2 block text-muted text-xs leading-5">
+                  <span className="mt-1.5 line-clamp-2 text-muted text-xs leading-5">
                     {email.body.replaceAll("\n", " ")}
                   </span>
                 </span>
@@ -250,10 +288,11 @@ export function EmailPlayground() {
           aria-label="Email preview"
           className={cn(panelClass, "flex flex-col")}
         >
-          <h2 className="flex h-16 shrink-0 items-center border-border/70 border-b px-6 font-medium text-sm tracking-tight">
-            Email preview
-          </h2>
-          <div className="playground-scroll min-h-0 flex-1 overflow-y-auto p-7 2xl:p-8">
+          <div className="flex h-14 shrink-0 items-center px-6">
+            <WindowDots />
+            <h2 className="sr-only">Email preview</h2>
+          </div>
+          <div className="playground-scroll min-h-0 flex-1 overflow-y-auto px-6 pt-4 pb-8 2xl:px-8">
             <h3 className="mb-8 text-balance font-medium text-2xl leading-tight tracking-tight">
               {selected.subject}
             </h3>

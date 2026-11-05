@@ -4,9 +4,10 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Building2Icon, KeyRoundIcon } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
+import DashboardHint from "#/components/DashboardHint";
 import EnterpriseWorkInProgressDialog from "#/components/EnterpriseWorkInProgressDialog";
 import { Google } from "#/components/ui/svgs/google";
-import { getAppRedirectUrlFn, getCurrentUserFn } from "#/libs/session";
+import { getCurrentUserFn } from "#/libs/session";
 import { m } from "#/paraglide/messages";
 import { handleLoginForm } from "#/utils/login";
 
@@ -23,7 +24,6 @@ export const Route = createFileRoute("/login/")({
   component: RouteComponent,
   loader: async () => ({
     currentUser: await getCurrentUserFn(),
-    dashboardUrl: await getAppRedirectUrlFn(),
   }),
   validateSearch: z.object({
     error: z.string().optional(),
@@ -38,29 +38,10 @@ export const Route = createFileRoute("/login/")({
   }),
 });
 
-const DashboardHint = ({ dashboardUrl }: { dashboardUrl: string }) => {
-  return (
-    <div className="rounded-2xl border border-border bg-muted px-4 py-3 text-muted-foreground text-sm">
-      <div className="flex items-start gap-3">
-        <p className="flex-1 text-pretty">
-          {m["login.dashboard_hint.text"]()}{" "}
-          <a
-            className="font-medium text-foreground underline underline-offset-2"
-            href={dashboardUrl}
-          >
-            {m["login.dashboard_hint.link"]()}
-          </a>
-          .
-        </p>
-      </div>
-    </div>
-  );
-};
-
 function RouteComponent() {
   const { error: routeError, redirect } = Route.useSearch();
   const [error, setError] = useState<string | null>(routeError ?? null);
-  const { currentUser, dashboardUrl } = Route.useLoaderData();
+  const { currentUser } = Route.useLoaderData();
   const [emailError, setEmailError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -114,7 +95,7 @@ function RouteComponent() {
           noValidate
           onSubmit={onSubmit}
         >
-          {currentUser && <DashboardHint dashboardUrl={dashboardUrl} />}
+          {currentUser && <DashboardHint />}
           {error ? (
             <div
               aria-live="polite"
@@ -131,7 +112,9 @@ function RouteComponent() {
             type="email"
           />
           {emailError && (
-            <p className="mt-1 text-red-600 text-sm dark:text-red-400">{emailError}</p>
+            <p className="mt-1 text-red-600 text-sm dark:text-red-400">
+              {emailError}
+            </p>
           )}
           <button
             className="hit-area-2 w-full cursor-pointer rounded-full bg-primary px-6 py-3 text-primary-foreground transition-colors duration-200 focus-within:bg-primary/80 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background hover:bg-primary/80 focus:outline-none disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground"

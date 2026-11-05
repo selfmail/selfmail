@@ -1,0 +1,15 @@
+---
+import GitHubStars from "./github-stars.astro";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-surface px-5 py-6 text-sm sm:px-8 2xl:px-16">
+  <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+    <a href="/" class="rounded-md font-medium tracking-tight hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2">Selfmail</a>
+    <div class="flex items-center gap-6">
+      <span class="text-muted">© {year} Selfmail</span>
+      <GitHubStars />
+    </div>
+  </div>
+</footer>
